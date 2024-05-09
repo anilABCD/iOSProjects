@@ -113,6 +113,16 @@ struct ContentView: View {
                            }
                        }
         
+        LetterByLetterView(
+                   fullText: "Hello, SwiftUI!",
+                   delayPerLetter: 0.04 // Adjust this for faster or slower animation
+               )
+        
+        LeftToRightReveal(
+                   text: "Hello, SwiftUI!", // Text to reveal
+                   duration: 0.5 // Duration to fully reveal the text
+               )
+        
     }
     
     // Schedule a reversal after a delay
@@ -123,6 +133,71 @@ struct ContentView: View {
                 }
             }
         }
+    
+   
+}
+
+struct LeftToRightReveal: View {
+    let text: String
+    let duration: TimeInterval // Total duration for the full animation
+
+    @State private var revealProgress: CGFloat = 0 // Progress of the animation
+
+    var body: some View {
+        Text(text)
+            .font(.title)
+            .foregroundColor(.blue) // Color of the text
+            .mask(
+                GeometryReader { geometry in
+                    Rectangle() // Rectangle as a mask
+                        .frame(width: geometry.size.width * revealProgress) // Width grows with progress
+                        .animation(.linear(duration: duration), value: revealProgress) // Linear animation
+                }
+            )
+            .onAppear {
+                revealText() // Start the animation when the view appears
+            }
+    }
+
+    private func revealText() {
+        // Animate the revealProgress from 0 to 1 over the specified duration
+        withAnimation {
+            revealProgress = 1 // Reveal the full text over the animation duration
+        }
+    }
+}
+
+
+struct LetterByLetterView: View {
+    let fullText: String
+    let delayPerLetter: TimeInterval
+
+    @State private var currentText = ""
+    @State private var currentIndex = 0
+
+    var body: some View {
+        Text(currentText)
+            .font(.title)
+            .animation( .easeIn(duration: delayPerLetter), value: currentText) // Animation applied to text changes
+            .onAppear {
+                startAnimation() // Start the animation when the view appears
+            }
+    }
+
+    private func startAnimation() {
+        Timer.scheduledTimer(withTimeInterval: delayPerLetter, repeats: true) { timer in
+            if currentIndex < fullText.count { // If there are more letters to display
+                let index = fullText.index(fullText.startIndex, offsetBy: currentIndex)
+                currentText += String(fullText[index]) // Append one letter at a time
+                currentIndex += 1 // Move to the next letter
+            } else {
+                timer.invalidate() // Stop the timer when all letters are displayed
+            }
+        }
+    }
+    
+    
+    
 }
 
 #Preview {
