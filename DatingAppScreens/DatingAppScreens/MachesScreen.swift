@@ -8,26 +8,28 @@
 import SwiftUI
 
 
+
+
+
 struct MatchesScreenView : View {
     
-    @State private var profiles = [
-           Profile(name: "John", age: 30, imageName: "menu", heading: "Profile 1"),
-           Profile(name: "Alice", age: 25, imageName: "filter", heading: "Profile 2"),
-           Profile(name: "Bob", age: 35, imageName: "menu", heading: "Profile 3")
-    ];
     
     @State private var currentIndex = -1 ;
     
-    
-    
-    @State var isNewDevMatches : Bool = true;
+    @State private var slides: [Slide] = [
+        Slide( name: "John", age: 25, imageName: "filter", heading: "experice in swiftui", experience: 4, technology: "#swiftui"),
+        Slide( name: "Anil", age: 25, imageName: "menu", heading: "experice in swift", experience: 4, technology: "#swift"),
+        Slide( name: "Kumar", age: 25, imageName: "filter", heading: "experice in react", experience: 4, technology: "#react"),
+    ]
+  
+    @State var isNewDevMatches : Bool = false;
        
     
     var body: some View {
         VStack {
             
             
-            HStack ( spacing:50) {
+            HStack ( spacing:10) {
                 
                 
                 Button("New Devs"){
@@ -36,20 +38,19 @@ struct MatchesScreenView : View {
                     
                     isNewDevMatches = true;
                     
-                }.padding().background(.green).foregroundColor(.white).cornerRadius(30)
+                }.padding().background(.green).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
                 
-                
-                
-                Button("Old Devs") {
+              
+                Button("For You"){
                     
                     print("old devs clicked")
                     
                     isNewDevMatches = false;
                     
-                }.padding().background(.green).foregroundColor(.white).cornerRadius(30)
-                
-                
-            }.frame(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                }.padding().background(.green).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
+            }
+            
+            .frame( maxWidth: .infinity , alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/).padding(20)
             
             if isNewDevMatches {
                 
@@ -58,12 +59,12 @@ struct MatchesScreenView : View {
             }
             else {
                 
-                Text("Hello")
+                ForYouMatches()
                 
             }
         
         }
-        .frame( maxHeight: .infinity , alignment: .topLeading )
+        .frame(  maxHeight: .infinity , alignment: .topLeading )
         .padding()
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
 		B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */; };
 		B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44CF2BEF1F2B00F0AA8B /* DatingAppScreensApp.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouMatches.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
 		B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachesScreen.swift; sourceTree = "<group>"; };
 		B79D44CC2BEF1F2B00F0AA8B /* DatingAppScreens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatingAppScreens.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +106,7 @@
 				B79D44D52BEF1F2C00F0AA8B /* Preview Content */,
 				B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */,
 				B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */,
+				B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */,
 			);
 			path = DatingAppScreens;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
 				B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */,
 				B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */,
+				B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

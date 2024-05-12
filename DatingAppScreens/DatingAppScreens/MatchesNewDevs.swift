@@ -12,19 +12,21 @@ import SwiftUI
 
 struct Profile: Identifiable {
     let id = UUID()
-    let name: String
-    let age: Int
-    let imageName: String
-    let heading: String
+    var name: String
+    var age: Int
+    var imageName: String
+    var heading: String
+    var experience : Int ;
+    var technology : String;
 }
 
 struct MatchesNewDevsView: View {
     
     
     @State private var profiles = [
-        Profile(name: "John", age: 30, imageName: "menu", heading: "Profile 1"),
-        Profile(name: "Alice", age: 25, imageName: "filter", heading: "Profile 2"),
-        Profile(name: "Bob", age: 35, imageName: "menu", heading: "Profile 3")
+        Profile(name: "John", age: 30, imageName: "menu", heading: "Profile 1" , experience: 4 , technology: "#Swift UI" ),
+        Profile(name: "Alice", age: 25, imageName: "filter", heading: "Profile 2" , experience: 4 , technology: "#Swift UI"  ),
+        Profile(name: "Bob", age: 35, imageName: "menu", heading: "Profile 3" , experience: 2 , technology: "#React Native")
     ];
     
     @State private var currentIndex = -1 ;
@@ -39,40 +41,63 @@ struct MatchesNewDevsView: View {
                     
                     VStack {
                         
-                        LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
-                            // Image on the left
-                            Image(profile.imageName )
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 150, height: 150)
-                                .cornerRadius(10)
+                        ScrollView {
                             
-                            // Details on the right
-                            VStack(alignment: .leading, spacing: 10) {
+                            LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
+                                // Image on the left
+                                Image(profile.imageName )
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 150, height: 150)
+                                    .cornerRadius(10)
+                                    .clipShape(Circle())
                                 
-                                Text("Name")
-                                    .font(.headline)
-                                Text("John").padding(2)
-                                Text("Age: 30")
-                                    .font(.subheadline)
-                                Text("Technology: SwiftUI")
-                                    .font(.subheadline)
+                                // Details on the right
+                                VStack(alignment: .leading, spacing: 10 ) {
+                                    
+                                  
+                                        Text("Name :")
+                                            .font(.headline)
+                                    Text("\(profile.name)");
+                                   
+                                   
+                                        Text("Age:")
+                                            .font(.headline)
+                                        
+                                    Text("\(profile.age)");
+
+                           
+                                        Text("Technology :")
+                                            .font(.headline)
+                                        
+                                    Text("\(profile.technology)");
+                                  
+                                    
+                            
+                                        Text("Experience :")
+                                            .font(.headline)
+                                        
+                                    Text("\(profile.experience)");
+                             
+                                    
+                                }
+                                .frame( maxWidth:.infinity , alignment:.topLeading )
+                                .padding()
+                                .background(Color.white)
+                                .cornerRadius(10)
+                                .shadow(radius: 2)
+                               
                                 
                             }
-                            .padding(.vertical)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.white)
-                            .cornerRadius(10)
-                            .shadow(radius: 2)
+                            .padding()
+                            
+                            Text("Profile Headline : " ).frame( maxWidth: .infinity , alignment: .leading).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(2)
+                            
+                            Text ("\(profile.heading )")
+                                .font(.subheadline)
+                                .lineLimit(nil)
+                            
                         }
-                        .padding()
-                        
-                        Text("Profile Headline : " ).frame( maxWidth: .infinity , alignment: .leading).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(2)
-                        
-                        Text ("SwiftUI enthusiast looking for new opportunities.")
-                            .font(.subheadline)
-                            .lineLimit(nil)
-                        
                         
                         Spacer()
                         
@@ -94,9 +119,8 @@ struct MatchesNewDevsView: View {
                                     }
                                 }
                             }) {
-                                Image(systemName: "hand.thumbsdown.fill")
-                                    .font(.title)
-                                
+                                Image(systemName: "xmark.circle.fill")
+                                        .font(.title)
                                 
                             }
                             .padding()
@@ -120,9 +144,8 @@ struct MatchesNewDevsView: View {
                                 }
                                 
                             }) {
-                                Image(systemName: "hand.thumbsup.fill")
-                                    .font(.title)
-                                
+                                Image(systemName: "checkmark.circle.fill")
+                                       .font(.title)
                                 
                             }
                             .padding()
