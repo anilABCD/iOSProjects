@@ -18,15 +18,8 @@ struct MatchesScreenView : View {
     
     @Binding var path :[MyNavigation<String>]
     
-    @State private var isMenuVisible = true
+    @State private var isMenuVisible = false
  
-    
-    @State private var slides: [Slide] = [
-        Slide( name: "John", age: 25, imageName: "filter", heading: "experice in swiftui", experience: 4, technology: "#swiftui"),
-        Slide( name: "Anil", age: 25, imageName: "menu", heading: "experice in swift", experience: 4, technology: "#swift"),
-        Slide( name: "Kumar", age: 25, imageName: "filter", heading: "experice in react", experience: 4, technology: "#react"),
-    ]
-  
     @State var isNewDevMatches : Bool = true;
        
     
@@ -144,7 +137,7 @@ struct SideMenuView: View {
                         }
                     }
                     .padding()
-                    .frame(width: geometry.size.width / 2, alignment: .center)
+                    .frame(width: geometry.size.width / 2 , alignment: .center)
                     .background(Color.white)
                     .offset(x: isMenuVisible ? 0 : -geometry.size.width / 2 )
                     Spacer()

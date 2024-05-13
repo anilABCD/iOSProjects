@@ -10,8 +10,8 @@ import Foundation
 import SwiftUI
 
 
-struct Profile: Identifiable {
-    let id = UUID()
+struct Profile: Identifiable , Decodable {
+    var id: String
     var name: String
     var age: Int
     var imageName: String
@@ -22,16 +22,45 @@ struct Profile: Identifiable {
 
 struct MatchesNewDevsView: View {
     
-    
-    @State private var profiles = [
-        Profile(name: "John", age: 30, imageName: "menu", heading: "Profile 1" , experience: 4 , technology: "#Swift UI" ),
-        Profile(name: "Alice", age: 25, imageName: "filter", heading: "Profile 2" , experience: 4 , technology: "#Swift UI"  ),
-        Profile(name: "Bob", age: 35, imageName: "menu", heading: "Profile 3" , experience: 2 , technology: "#React Native")
-    ];
-    
     @State private var currentIndex = -1 ;
     
+    @State private var profiles = [
+        Profile( id : "abcd" , name: "John", age: 30, imageName: "menu", heading: "Profile 1" , experience: 4 , technology: "#Swift UI" ),
+        Profile( id:"bbcd" , name: "Alice", age: 25, imageName: "filter", heading: "Profile 2" , experience: 4 , technology: "#Swift UI"  ),
+        Profile( id:"ccccc" , name: "Bob", age: 35, imageName: "menu", heading: "Profile 3" , experience: 2 , technology: "#React Native")
+    ];
+    
+
+    func fetchProfiles() {
+          guard let url = URL(string: "http://localhost:8000/matches") else {
+              print("Invalid URL")
+              return
+          }
+          
+          let task = URLSession.shared.dataTask(with: url) { data, response, error in
+              guard let data = data, error == nil else {
+                  print("Error: \(error?.localizedDescription ?? "Unknown error")")
+                  return
+              }
+              
+              do {
+                  let decoder = JSONDecoder()
+                  let decodedData = try decoder.decode([Profile].self, from: data)
+                  
+                  DispatchQueue.main.async {
+                      self.profiles = decodedData
+                  }
+              } catch {
+                  print("Error decoding JSON: \(error.localizedDescription)")
+              }
+          }
+          
+          task.resume()
+      }
+    
     var body: some View {
+        
+    
         ScrollView(.horizontal, showsIndicators: false) {
             
             
@@ -174,6 +203,10 @@ struct MatchesNewDevsView: View {
             .padding() .frame(width: ( UIScreen.main.bounds.width * CGFloat(profiles.count) ) , alignment: .leading)
             
         }.content.offset(x: -UIScreen.main.bounds.width * CGFloat(currentIndex))
-        
+           
+         .onAppear {
+                fetchProfiles()
+        }
     }
 }
+
