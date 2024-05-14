@@ -35,7 +35,15 @@ struct ForYouMatches : View {
     
     var body: some View {
    
+        HStack{
+         
+            Text("Matched Profiles").font(.subheadline).foregroundColor(.gray)
+            
+        }.frame(maxWidth: .infinity , alignment: .leading).padding(.horizontal)
+        
         VStack {
+            
+          
             HStack {
                 ScrollView (.horizontal ) {
                     
@@ -46,7 +54,7 @@ struct ForYouMatches : View {
                                 
                                 print("old devs clicked")
                                 
-                            }.padding(5).foregroundColor(.white).background(.blue).cornerRadius(30).font(.system(size:15))
+                            }.padding(5).foregroundColor(.white).background(.blue).cornerRadius(30)
                             
                         }
                     }
@@ -56,14 +64,12 @@ struct ForYouMatches : View {
             SlideshowView(slides: slides)
             
             Spacer()
-        }.frame(alignment:.topLeading)
+        }.frame(alignment:.topLeading).padding()
           
       
     }
      
 }
-
-
 
 
 struct SlideshowView: View {
@@ -72,61 +78,93 @@ struct SlideshowView: View {
     
     init(slides: [Slide]) {
         self._slides = State(initialValue: slides)
+ 
+        UIPageControl.appearance().currentPageIndicatorTintColor = .blue
+        UIPageControl.appearance().pageIndicatorTintColor = UIColor.blue.withAlphaComponent(0.2)
+        UIPageControl.appearance().backgroundStyle = .prominent;
     }
     
     var body: some View {
-        TabView(selection: $currentIndex) {
-            ForEach( Array(slides.enumerated()), id: \.element.id) { index, item in
-                VStack {
-                    Image(item.imageName )
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300, height: 300)
-                    
-                    VStack(alignment: .leading, spacing: 10 ) {
-                        
-                      
-                            Text("Name :")
-                                .font(.headline)
-                        Text("\(item.name)");
-                       
-                        
-                        Button("Add Slide") {
-                                       slides.append(    Slide( name: "hello", age: 25, imageName: "filter", heading: "experice in swiftui", experience: 4, technology: "#swiftui"))
-                                   }
-                        
-//
-//                            Text("Age:")
-//                                .font(.headline)
-//
-//                        Text("\(profile.age)");
-//
-//
-//                            Text("Technology :")
-//                                .font(.headline)
-//
-//                        Text("\(profile.technology)");
-//
-//
-//
-//                            Text("Experience :")
-//                                .font(.headline)
-//
-//                        Text("\(profile.experience)");
-                 
-                        
+   
+            
+            ZStack {
+            
+                
+                TabView(selection: $currentIndex) {
+                    ForEach( Array(slides.enumerated()), id: \.element.id) { index, item in
+                        VStack {
+                            Image(item.imageName )
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 242, height: 242)
+                            
+                            VStack(alignment: .leading, spacing: 10 ) {
+                                
+                                
+                                Text("Name :")
+                                    .font(.headline)
+                                Text("\(item.name)");
+                                
+                                
+                                Button("Add Slide") {
+                                    slides.append(    Slide( name: "hello", age: 25, imageName: "filter", heading: "experice in swiftui", experience: 4, technology: "#swiftui"))
+                                }
+                                
+                                HStack{
+                                    Image(systemName: "paperplane.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .rotationEffect(Angle(degrees: 45)) // Adjust the angle as needed
+                                        .frame(width: 24, height: 24)
+                                        .foregroundColor(.white) // Customize the color as needed
+                                    
+                                    Text("Send Message")
+                                        .font(.headline)
+                                        .foregroundColor(.white).padding() // Customize the color as needed
+                                }.background(.green).padding()
+                                
+                                
+//                                HStack{
+//                                 
+//                                    Color.black.frame( width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/ , height:20).cornerRadius(10)
+//                                    
+//                                }.frame( maxWidth: .infinity, alignment: .center)
+                                
+                                //                            Text("Age:")
+                                //                                .font(.headline)
+                                //
+                                //                        Text("\(profile.age)");
+                                //
+                                //
+                                //                            Text("Technology :")
+                                //                                .font(.headline)
+                                //
+                                //                        Text("\(profile.technology)");
+                                //
+                                //
+                                //
+                                //                            Text("Experience :")
+                                //                                .font(.headline)
+                                //
+                                //                        Text("\(profile.experience)");
+                                
+                                
+                            }
+                            .frame( maxWidth:.infinity , alignment:.topLeading )
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 2)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .top) .tag(index)
                     }
-                    .frame( maxWidth:.infinity , alignment:.topLeading )
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .shadow(radius: 2)
                 }
-               .frame(maxWidth: .infinity, alignment: .top) .tag(index)
+                .tabViewStyle(PageTabViewStyle()).indexViewStyle(.page(backgroundDisplayMode: .always))
+                .border(Color.brown).frame(alignment: .topLeading)
             }
-        }
-        .tabViewStyle(PageTabViewStyle())  .border(Color.brown).frame(alignment: .topLeading)
+            
         
+            
 //        Picker(selection: $currentIndex, label: EmptyView()) {
 //                   ForEach(slides.indices, id: \.self) { index in
 //                       Text("\(index + 1)")

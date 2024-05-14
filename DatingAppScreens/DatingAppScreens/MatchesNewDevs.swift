@@ -32,7 +32,7 @@ struct MatchesNewDevsView: View {
     
 
     func fetchProfiles() {
-          guard let url = URL(string: "http://localhost:8000/matches") else {
+          guard let url = URL(string: "http://localhost:8000/profiles/search?technologies?") else {
               print("Invalid URL")
               return
           }

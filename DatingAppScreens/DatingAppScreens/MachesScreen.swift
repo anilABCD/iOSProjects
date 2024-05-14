@@ -68,7 +68,7 @@ struct MatchesScreenView : View {
                 HStack ( spacing:10) {
                     
                     
-                    Button("New Devs"){
+                    Button("New Devo"){
                         
                         print("new devs clicked")
                         
@@ -77,13 +77,13 @@ struct MatchesScreenView : View {
                     }.padding().background( isNewDevMatches ? .green : .gray).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
                     
                     
-                    Button("For You"){
-                        
-                        print("old devs clicked")
-                        
-                        isNewDevMatches = false;
-                        
-                    }.padding().background( !isNewDevMatches ? .green : .gray).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
+//                    Button("You"){
+//                        
+//                        print("old devs clicked")
+//                        
+//                        isNewDevMatches = false;
+//                        
+//                    }.padding().background( !isNewDevMatches ? .green : .gray).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
                 }
                 
                 .frame( maxWidth: .infinity , alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/).padding(20)
