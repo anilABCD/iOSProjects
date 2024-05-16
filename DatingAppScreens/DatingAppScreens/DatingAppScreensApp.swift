@@ -7,11 +7,20 @@
 
 import SwiftUI
 
+class TokenManager: ObservableObject {
+    @AppStorage("accessToken") var accessToken: String = ""
+}
+
+
 @main
 struct DatingAppScreensApp: App {
+    
+    @StateObject private var tokenManager = TokenManager()
+   
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(tokenManager)
         }
     }
 }

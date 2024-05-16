@@ -8,61 +8,98 @@
 import SwiftUI
 
 
-
 struct ContentView: View {
     
     @State private var selectedTab = 0
+    @EnvironmentObject private var tokenManager: TokenManager
+    
+    @State var path :[MyNavigation<String>] = []
    
+    
+
+  
     var body: some View {
         
         ZStack {
             
             VStack {
                 
-              
+                if tokenManager.accessToken == "" {
+                    
+                         VStack {
                 
-                
-                                TabView(selection: $selectedTab) {
-                                   HomeView()
-                                        .tabItem {
-                                            Label("Matches", systemImage: "heart").background(.green)
-                                        }
-                                        .tag(0)
-                
-                                    Text("Hello")
-                                        .tabItem {
-                                            Label("Search", systemImage: "magnifyingglass").background(.green)
-                                        }
-                                        .tag(1)
-                
-                                    Text("Hello2")
-                                        .tabItem {
-                                            Label("Questions", systemImage: "plus").background(.green)
-                                        }
-                                        .tag(2)
-                
-                                    Text("Hello3")
-                                        .tabItem {
-                                            Label("Messages", systemImage: "message").background(.green)
-                                        }
-                                        .tag(3)
-                
+                             NavigationStack(path: $path) {
+                                 
+                                LoginView(path:$path).navigationDestination(for: MyNavigation<String>.self) { view in
+                                    switch view.appView {
+                                    case .step2:
+                                        Text("Step 2")
+                                    case .step3:
+                                        Text("Step 3")
+                                        //////////////////////////////////////////////////////////////
+                                    case .page1:
+                                        Text("Page1")
+                                    case .page2:
+                                        Text("Page 2")
+                                    case .home:
+                                        Text("Home")
+                                    }
+                                 }
+                             }
+                             
+                             
+                         }.frame( maxWidth:.infinity)
+                         .navigationBarTitle("", displayMode: .inline)
+                         
+                    
+                } else {
+                    
+                    
+                    VStack {
+                        TabView(selection: $selectedTab) {
+                            
+                            HomeView()
+                                .tabItem {
+                                    Label("Matches", systemImage: "heart")
                                 }
-                                .accentColor(Color.green)
-                
-                
-            }.frame( maxWidth:.infinity )
-            .navigationBarTitle("", displayMode: .inline)
+                                .tag(0)
+                            
+                            Text("Hello")
+                                .tabItem {
+                                    Label("Search", systemImage: "magnifyingglass").background(.green)
+                                }
+                                .tag(1)
+                            
+                            Text("Hello2")
+                                .tabItem {
+                                    Label("Questions", systemImage: "plus").background(.green)
+                                }
+                                .tag(2)
+                            
+                            Text("Hello3")
+                                .tabItem {
+                                    Label("Messages", systemImage: "message").background(.green)
+                                }
+                                .tag(3)
+                            
+                        }
+                        .accentColor(Color.green)
+                        
+                        
+                    }.frame( maxWidth:.infinity )
+                        .navigationBarTitle("", displayMode: .inline)
+                }
+            }
             
-         
         }
        
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        let tokenManager = TokenManager()
+        ContentView()
+            .environmentObject(tokenManager)
+    }
 }
-
-
-
