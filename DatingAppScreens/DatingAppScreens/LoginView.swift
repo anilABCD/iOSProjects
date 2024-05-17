@@ -49,8 +49,14 @@ struct LoginView: View {
         
         
         VStack {
-            Spacer().frame(height: 200)
-            
+        
+            if(UIScreen.main.bounds.height < 800 ) {
+                
+                Spacer().frame(height: 100)
+            }
+            else{
+                Spacer().frame(height: 200)
+            }
           
             
             VStack {
@@ -110,13 +116,13 @@ struct LoginView: View {
 //                                              GoogleSignInButton(action: handleSignInButton)
 
                                     
-                                    Button(action: {
-                                        // Handle Facebook sign-in action here
-                                    }) {
-                                        Image("facebookIcon") // Replace with your Facebook icon image
-                                            .resizable()
-                                            .frame(width: 35, height: 35)
-                                    }
+//                                    Button(action: {
+//                                        // Handle Facebook sign-in action here
+//                                    }) {
+//                                        Image("facebookIcon") // Replace with your Facebook icon image
+//                                            .resizable()
+//                                            .frame(width: 35, height: 35)
+//                                    }
                                 }
                                
                                 
