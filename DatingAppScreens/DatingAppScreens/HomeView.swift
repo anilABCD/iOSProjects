@@ -69,8 +69,8 @@ enum AppView {
     case home
     case page1
     case page2
-    case step2
-    case step3
+    case signIn
+    case signUp
 }
 
 
@@ -94,10 +94,10 @@ struct HomeView: View {
                             Text("Page 1")
                         case .page2:
                             Text("Page 2")
-                        case .step2:
-                            Text("Step 2")
-                        case .step3:
-                            Text("Step 3")
+                        case .signIn:
+                            Text("sign In")
+                        case .signUp:
+                            Text("sign Up")
                         }
                     }
                 }
