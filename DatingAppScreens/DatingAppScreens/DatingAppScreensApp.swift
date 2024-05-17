@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleSignIn
 
 class TokenManager: ObservableObject {
     @AppStorage("accessToken") var accessToken: String = ""
@@ -20,7 +21,13 @@ struct DatingAppScreensApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(tokenManager)
+            ContentView().environmentObject(tokenManager).onOpenURL { url in
+                GIDSignIn.sharedInstance.handle(url)
+              }.onAppear {
+                  GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                    // Check if `user` exists; otherwise, do something with `error`
+                  }
+                }
         }
     }
 }

@@ -1,5 +1,9 @@
 import SwiftUI
 
+import GoogleSignInSwift
+
+import GoogleSignIn
+
 struct LoginView: View {
     
     @Binding var path :[MyNavigation<String>]
@@ -16,6 +20,30 @@ struct LoginView: View {
     @State private var isShowingPasswordError:Bool=false;
     @State private var isShowingConfirmPasswordError:Bool=false;
    
+    func handleSignInButton() {
+           guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
+               return
+           }
+           
+           GIDSignIn.sharedInstance.signIn(
+               withPresenting: rootViewController) { signInResult, error in
+                   guard let result = signInResult else {
+                       if let error = error {
+                           print("Error signing in: \(error.localizedDescription)")
+                       }
+                       return
+                   }
+                   // If sign-in succeeded, display the app's main content view.
+                   let user = result.user
+                   let idToken = user.idToken?.tokenString
+                   let fullName = user.profile?.name
+                   let email = user.profile?.email
+                   
+                   // Handle the signed-in user's information
+                   print("User signed in: \(fullName ?? "No Name"), email: \(email ?? "No Email") , idToken : \(idToken)")
+               }
+       }
+    
     
     var body: some View {
         
@@ -66,8 +94,50 @@ struct LoginView: View {
                     .alert(isPresented: $showAlert) {
                         Alert(title: Text("Error"), message: Text("Failed to sign up. Please try again."), dismissButton: .default(Text("OK")))
                     }
-                }
+                    
+                    
+                    // Social Sign-In
+                                HStack(spacing: 20) {
+                                    Button(action: {
+                                        handleSignInButton()
+                                    }) {
+                                        Image( "googleIcon") // Replace with your Google icon image
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                    }
+                                    
+//                                    // Social Sign-In
+//                                              GoogleSignInButton(action: handleSignInButton)
+
+                                    
+                                    Button(action: {
+                                        // Handle Facebook sign-in action here
+                                    }) {
+                                        Image("facebookIcon") // Replace with your Facebook icon image
+                                            .resizable()
+                                            .frame(width: 35, height: 35)
+                                    }
+                                }
+                               
+                                
+                                // Additional Options
+                                HStack {
+                                    Text("Already have an account?")
+                                    Button(action: {
+                                        // Handle navigation to sign in screen
+                                    }) {
+                                        Text("Sign In")
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                                .padding(.top, 20)
+                                
+                                Spacer()
+                }.frame(alignment: .topLeading )
                 .padding()
+                
+                
+            
                 
                 Spacer( )
             }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.orange)
@@ -314,3 +384,5 @@ extension View {
         clipShape(RoundedCorner(radius: radius, corners: corners) )
     }
 }
+
+
