@@ -11,73 +11,69 @@ struct LoginView: View {
     @State private var showAlert: Bool = false
     @State private var token: String?
     
+    @State private var isShowingNameError:Bool=false;
     @State private var isShowingEmailError:Bool=false;
     @State private var isShowingPasswordError:Bool=false;
     @State private var isShowingConfirmPasswordError:Bool=false;
    
     
     var body: some View {
+        
+        
         VStack {
-            TextField("Name", text: $name)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(5.0)
-                .padding(.bottom, 20) 
-               
+            Spacer().frame(height: 200)
             
-            TextField("Email", text: $email)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(5.0)
-                .padding(.bottom, 20)
-                .keyboardType(.emailAddress)
-                .alert(isPresented: $isShowingEmailError) {
-                    Alert(title: Text("Invalid Email"), message: Text("Please enter a valid email address."), dismissButton: .default(Text("OK")))
-                } .textContentType(.password)
+          
             
-            SecureField("Password", text: $password)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(5.0)
-                .padding(.bottom, 20)
-                .alert(isPresented: $isShowingPasswordError) {
-                    Alert(title: Text("Invalid Password"), message: Text("Password should contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character."), dismissButton: .default(Text("OK")))
+            VStack {
                 
-                } .textContentType(.password)
-                
-            
-            SecureField("Confirm Password", text: $confirmPassword)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(5.0)
-                .padding(.bottom, 20)
-                .alert(isPresented: $isShowingConfirmPasswordError) {
-                    Alert(title: Text("Invalid Confirm Password"), message: Text("Confirm password does not match the password."), dismissButton: .default(Text("OK")))
-                }
-            
-            Button(action: {
-                // Handle signup button action here
-                
-                validateInput()
-                
-//                let signUpData = SignUpData(name: name, email: email, password: password, passwordConfirm: confirmPassword, technology: ["#Swift UI"])
-//                signUp(signUpData)
-            }) {
+                // Title
                 Text("Sign Up")
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .frame(height: 50)
-                    .foregroundColor(.white)
-                    .font(.system(size: 18, weight: .bold))
-                    .background(Color.blue)
-                    .cornerRadius(5.0)
-            }
-            .padding(.horizontal, 20)
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Error"), message: Text("Failed to sign up. Please try again."), dismissButton: .default(Text("OK")))
-            }
-        }
-        .padding()
+                 
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.vertical)
+                   
+                Spacer().frame(height: 40)
+                
+                // Input Fields
+                VStack(spacing: 20) {
+                    CustomTextField(placeholder: "Name", text: $name, isAlert: $isShowingNameError , iconName: "person.fill" , title: "" , message: "")
+                    CustomTextField(placeholder: "Email", text: $email, isAlert: $isShowingEmailError ,iconName: "envelope.fill" , title: "Invalid Email" , message: "Please enter a valid email address.")
+                    CustomTextField(placeholder: "Password", text: $password, isAlert: $isShowingPasswordError, iconName: "lock.fill", isSecure: true , title: "Invalid Password" , message: "Password should contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.")
+                    CustomTextField(placeholder: "Confirm Password", text: $confirmPassword, isAlert: $isShowingConfirmPasswordError , iconName: "lock.fill", isSecure: true , title: "Invalid Confirm Password" , message: "Confirm password does not match the password.")
+                    
+                } .padding(.horizontal, 30)
+                
+                VStack{
+                    Button(action: {
+                        // Handle signup button action here
+                        
+                        validateInput()
+                        
+                        //                let signUpData = SignUpData(name: name, email: email, password: password, passwordConfirm: confirmPassword, technology: ["#Swift UI"])
+                        //                signUp(signUpData)
+                    }) {
+                        Text("Submit")
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .frame(height: 50)
+                            .foregroundColor(.black)
+                            .font(.system(size: 18, weight: .bold))
+                            .background(Color.orange)
+                            .cornerRadius(50)
+                    }
+                    .padding(.horizontal, 20)
+                    .alert(isPresented: $showAlert) {
+                        Alert(title: Text("Error"), message: Text("Failed to sign up. Please try again."), dismissButton: .default(Text("OK")))
+                    }
+                }
+                .padding()
+                
+                Spacer( )
+            }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.orange)
+        }.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.orange)
     }
+    
     
     private func validateInput() {
         
@@ -191,5 +187,130 @@ struct LoginView_Previews: PreviewProvider {
        
     static var previews: some View {
         LoginView(path: $path)
+    }
+}
+
+
+
+//
+//
+// // Code
+//
+//import SwiftUI
+//
+//struct SignUpView: View {
+//    @State private var name: String = ""
+//    @State private var email: String = ""
+//    @State private var password: String = ""
+//    @State private var confirmPassword: String = ""
+//    
+//    @State private var isShowingNameError:Bool=false;
+//    @State private var isShowingEmailError:Bool=false;
+//    @State private var isShowingPasswordError:Bool=false;
+//    @State private var isShowingConfirmPasswordError:Bool=false;
+//   
+//    
+//    var body: some View {
+//        VStack {
+//            Spacer().frame(height: 20)
+//            
+//            // Title
+//            Text("Sign Up")
+//                .font(.largeTitle)
+//                .fontWeight(.bold)
+//            
+//            Spacer().frame(height: 40)
+//            
+//            // Input Fields
+//            VStack(spacing: 20) {
+//                CustomTextField(placeholder: "Name", text: $name, isAlert: $isShowingNameError , iconName: "person.fill" , title: "" , message: "")
+//                CustomTextField(placeholder: "Email", text: $email, isAlert: $isShowingEmailError ,iconName: "envelope.fill" , title: "Invalid Email" , message: "Please enter a valid email address.")
+//                CustomTextField(placeholder: "Password", text: $password, isAlert: $isShowingPasswordError, iconName: "lock.fill", isSecure: true , title: "Invalid Password" , message: "Password should contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.")
+//                CustomTextField(placeholder: "Confirm Password", text: $confirmPassword, isAlert: $isShowingConfirmPasswordError , iconName: "lock.fill", isSecure: true , title: "Invalid Confirm Password" , message: "Confirm password does not match the password.")
+//            }
+//            .padding(.horizontal, 30)
+//            
+//            Spacer().frame(height: 40)
+//            
+//            // Continue Button
+//            Button(action: {
+//                // Action for the continue button
+//            }) {
+//                Text("Continue")
+//                    .fontWeight(.bold)
+//                    .foregroundColor(.white)
+//                    .padding()
+//                    .frame(maxWidth: .infinity)
+//                    .background(Color.red)
+//                    .cornerRadius(20)
+//            }
+//            .padding(.horizontal, 30)
+//            
+//            Spacer()
+//        }
+//        .background(Color.purple.edgesIgnoringSafeArea(.all))
+//    }
+//}
+//
+struct CustomTextField: View {
+    var placeholder: String
+    @Binding var text: String
+    @Binding var isAlert : Bool
+    var iconName: String
+    var isSecure: Bool = false
+    
+    var title : String
+    var message: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: iconName)
+                .foregroundColor(.black).padding(.leading, 5)
+            if isSecure {
+                SecureField(placeholder, text: $text)
+                    .cornerRadius(5.0)
+                    .padding(10)
+                    .alert(isPresented: $isAlert) {
+                        Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK")))
+                    }
+                   
+            } else {
+                TextField(placeholder, text: $text)
+                    .cornerRadius(5.0)
+                    .padding(10)
+                    .alert(isPresented: $isAlert) {
+                        Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK")))
+                    }
+            }
+        }
+        .background(Color.white)
+        .cornerRadius(20)
+        .shadow(radius: 5)
+    }
+}
+
+//struct SignUpView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SignUpView()
+//    }
+//}
+//
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners) )
     }
 }
