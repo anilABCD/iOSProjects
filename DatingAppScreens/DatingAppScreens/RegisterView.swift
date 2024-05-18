@@ -38,6 +38,8 @@ struct RegisterView: View {
     @State private var isShowingEmailError:Bool=false;
     @State private var isShowingPasswordError:Bool=false;
     @State private var isShowingConfirmPasswordError:Bool=false;
+    
+    @State private var isLoading = false;
    
     func handleSignInButton() {
            guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
@@ -84,6 +86,16 @@ struct RegisterView: View {
             }
             else{
                 Spacer().frame(height: 200)
+            }
+            
+            VStack {
+                if isLoading {
+                                
+                    
+                    ProgressView()
+                                          .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                                          .scaleEffect(1.5) // Make the indicator larger
+                }
             }
           
             
@@ -179,6 +191,27 @@ struct RegisterView: View {
                 Spacer()
             }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
         }.background(.orange).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+          
+//
+// Code for skeleton View :
+//
+//            .overlay(
+//            Group {
+//                if isLoading {
+//                    SkeletonView();
+//                }
+//            }
+//           )
+//            
+//            .onAppear {
+//            Task {
+//                // Simulate loading process
+//                try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds delay
+//                isLoading = false
+//            }
+//        }
+//
+        
     }
     
     
@@ -214,10 +247,16 @@ struct RegisterView: View {
            
                 Task {
                     do {
+                        isLoading = true;
+                        
+                        defer {
+                                       isLoading = false
+                                   }
                         
                         try await signUp(signUpData)
                        
                     } catch {
+                        
                         print ("error")
                     }
                 }
@@ -496,10 +535,35 @@ struct RoundedCorner: Shape {
     }
 }
 
+
+
+struct LoadingView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(1.5)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(10)
+                Spacer()
+            }
+            Spacer()
+        }
+        .background(Color.black.opacity(0.4))
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape(RoundedCorner(radius: radius, corners: corners) )
     }
 }
+
 
 

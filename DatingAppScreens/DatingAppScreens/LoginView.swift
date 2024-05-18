@@ -58,6 +58,10 @@ struct LoginView: View {
             }
             
             
+//            SkeletonLoadingExampleView Testing Example ...
+//            SkeletonLoadingExampleView()
+//            This is sepeare example ... 
+
             VStack {
                 
                 // Title
