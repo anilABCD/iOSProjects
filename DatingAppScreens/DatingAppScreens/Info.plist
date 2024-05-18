@@ -4,19 +4,16 @@
 <dict>
 	<key>CFBundleURLTypes</key>
 	<array>
-		<dict/>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln</string>
+			</array>
+		</dict>
 	</array>
-    
-    <key>GIDClientID</key>
-    <string>515311504784-rld7mdecqj1815fgm8qtcbsr2sgsd78g.apps.googleusercontent.com</string>
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>com.googleusercontent.apps.515311504784-rld7mdecqj1815fgm8qtcbsr2sgsd78g</string>
-        </array>
-      </dict>
-    </array>
+	<key>GIDClientID</key>
+	<string>346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln.apps.googleusercontent.com</string>
+	<key>GIDServerClientID</key>
+	<string>346488674498-473kab7r2k8e5j5fcqmh7js4dfvgr6j6.apps.googleusercontent.com</string>
 </dict>
 </plist>

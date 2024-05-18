@@ -30,12 +30,12 @@ struct ContentView: View {
                 
                              NavigationStack(path: $path) {
                                  
-                                SignInView(path:$path).navigationDestination(for: MyNavigation<String>.self) { view in
+                                LoginView(path:$path).navigationDestination(for: MyNavigation<String>.self) { view in
                                     switch view.appView {
                                     case .signIn:
-                                        SignInView(path:$path)
+                                        LoginView(path:$path)
                                     case .signUp:
-                                        SignUpView(path:$path)
+                                        RegisterView(path:$path)
                                     case .page1:
                                         Text("Page1")
                                     case .page2:

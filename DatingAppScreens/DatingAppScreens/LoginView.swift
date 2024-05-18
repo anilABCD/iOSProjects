@@ -1,24 +1,23 @@
+
 import SwiftUI
 
 import GoogleSignInSwift
 
 import GoogleSignIn
 
-struct SignUpView: View {
+struct LoginView: View {
     
     @Binding var path :[MyNavigation<String>]
-    
-    @State private var name: String = ""
+ 
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var confirmPassword: String = ""
+ 
     @State private var showAlert: Bool = false
     @State private var token: String?
     
-    @State private var isShowingNameError:Bool=false;
+  
     @State private var isShowingEmailError:Bool=false;
     @State private var isShowingPasswordError:Bool=false;
-    @State private var isShowingConfirmPasswordError:Bool=false;
    
     func handleSignInButton() {
            guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
@@ -49,7 +48,7 @@ struct SignUpView: View {
         
         
         VStack {
-        
+            
             if(UIScreen.main.bounds.height < 800 ) {
                 
                 Spacer().frame(height: 100)
@@ -57,25 +56,25 @@ struct SignUpView: View {
             else{
                 Spacer().frame(height: 200)
             }
-          
+            
             
             VStack {
                 
                 // Title
-                Text("Sign Up")
-                 
+                Text("Sign In")
+                
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.vertical)
-                   
+                
                 Spacer().frame(height: 40)
                 
                 // Input Fields
                 VStack(spacing: 20) {
-                    CustomTextField(placeholder: "Name", text: $name, isAlert: $isShowingNameError , iconName: "person.fill" , title: "" , message: "")
+                    
                     CustomTextField(placeholder: "Email", text: $email, isAlert: $isShowingEmailError ,iconName: "envelope.fill" , title: "Invalid Email" , message: "Please enter a valid email address.")
-                    CustomTextField(placeholder: "Password", text: $password, isAlert: $isShowingPasswordError, iconName: "lock.fill", isSecure: true , title: "Invalid Password" , message: "Password should contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.")
-                    CustomTextField(placeholder: "Confirm Password", text: $confirmPassword, isAlert: $isShowingConfirmPasswordError , iconName: "lock.fill", isSecure: true , title: "Invalid Confirm Password" , message: "Confirm password does not match the password.")
+                    CustomTextField(placeholder: "Password", text: $password, isAlert: $isShowingPasswordError, iconName: "lock.fill", isSecure: true , title: "Invalid Password" , message: "Please Enter Password.")
+                    
                     
                 } .padding(.horizontal, 30)
                 
@@ -103,59 +102,60 @@ struct SignUpView: View {
                     
                     
                     // Social Sign-In
-                                HStack(spacing: 20) {
-                                    Button(action: {
-                                        handleSignInButton()
-                                    }) {
-                                        Image( "googleIcon") // Replace with your Google icon image
-                                            .resizable()
-                                            .frame(width: 40, height: 40)
-                                    }
-                                    
-//                                    // Social Sign-In
-//                                              GoogleSignInButton(action: handleSignInButton)
-
-                                    
-//                                    Button(action: {
-//                                        // Handle Facebook sign-in action here
-//                                    }) {
-//                                        Image("facebookIcon") // Replace with your Facebook icon image
-//                                            .resizable()
-//                                            .frame(width: 35, height: 35)
-//                                    }
-                                }
-                               
-                                
-                                // Additional Options
-                                HStack {
-                                    Text("Already have an account?")
-                                    Button(action: {
-                                        path.removeLast()
-                                    }) {
-                                        Text("Sign In")
-                                            .foregroundColor(.blue)
-                                    }
-                                }
-                                .padding(.top, 20)
-                                
-                                Spacer()
+                    HStack(spacing: 20) {
+                        Button(action: {
+                            handleSignInButton()
+                        }) {
+                            Image( "googleIcon") // Replace with your Google icon image
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                        }
+                        
+                        //                                    // Social Sign-In
+                        //                                              GoogleSignInButton(action: handleSignInButton)
+                        
+                        
+                        //                                    Button(action: {
+                        //                                        // Handle Facebook sign-in action here
+                        //                                    }) {
+                        //                                        Image("facebookIcon") // Replace with your Facebook icon image
+                        //                                            .resizable()
+                        //                                            .frame(width: 35, height: 35)
+                        //                                    }
+                    }
+                    
+                    
+                    // Additional Options
+                    HStack {
+                        Text("Create A New Account")
+                        Button(action: {
+                            path.append(MyNavigation<String>(appView: .signUp, params: Params<String>(data: "")))
+                        }) {
+                            Text("Sign Up")
+                                .foregroundColor(.blue)
+                        }
+                    }
+                    .padding(.top, 20)
+                    
+                    Spacer()
                 }.frame(alignment: .topLeading )
-                .padding()
+                    .padding()
                 
                 
-            
-                Spacer()
-            }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-        }.background(.orange).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                
+                
+                Spacer( )
+            }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.orange)
+        }.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.orange)
     }
-    
+
     
     private func validateInput() {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             resetValidationFlags()
             
-            print(isShowingEmailError , isShowingPasswordError , isShowingConfirmPasswordError , showAlert)
+            print(isShowingEmailError , isShowingPasswordError , showAlert)
             
         }
         
@@ -167,9 +167,9 @@ struct SignUpView: View {
             
             validateEmail()
             validatePassword()
-            validateConfirmPassword()
+         
             
-            if isShowingEmailError || isShowingPasswordError || isShowingConfirmPasswordError {
+            if isShowingEmailError || isShowingPasswordError  {
                 // Perform signup
                 showAlert = true // For demo purpose
                 
@@ -180,7 +180,7 @@ struct SignUpView: View {
             }
             
             
-            print(isShowingEmailError , isShowingPasswordError , isShowingConfirmPasswordError , showAlert)
+            print(isShowingEmailError , isShowingPasswordError , showAlert)
             
             
         }
@@ -189,7 +189,7 @@ struct SignUpView: View {
     private func resetValidationFlags() {
            isShowingEmailError = false
            isShowingPasswordError = false
-           isShowingConfirmPasswordError = false
+        
         
         showAlert=false;
        }
@@ -243,25 +243,20 @@ struct SignUpView: View {
        }
        
        private func validatePassword() {
-           // Regular expression for password validation
-           let passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$"
-           let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
-           isShowingPasswordError = !passwordPredicate.evaluate(with: password)
+        
+           isShowingPasswordError = ( password == "" )
        }
        
-       private func validateConfirmPassword() {
-           isShowingConfirmPasswordError = (password != confirmPassword)
-       }
-
+     
     
  
 }
 
-struct LoginView_Previews: PreviewProvider {
+struct SignInView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
        
     static var previews: some View {
-        SignUpView(path: $path)
+        LoginView(path: $path)
     }
 }
 
@@ -278,24 +273,24 @@ struct LoginView_Previews: PreviewProvider {
 //    @State private var email: String = ""
 //    @State private var password: String = ""
 //    @State private var confirmPassword: String = ""
-//    
+//
 //    @State private var isShowingNameError:Bool=false;
 //    @State private var isShowingEmailError:Bool=false;
 //    @State private var isShowingPasswordError:Bool=false;
 //    @State private var isShowingConfirmPasswordError:Bool=false;
-//   
-//    
+//
+//
 //    var body: some View {
 //        VStack {
 //            Spacer().frame(height: 20)
-//            
+//
 //            // Title
 //            Text("Sign Up")
 //                .font(.largeTitle)
 //                .fontWeight(.bold)
-//            
+//
 //            Spacer().frame(height: 40)
-//            
+//
 //            // Input Fields
 //            VStack(spacing: 20) {
 //                CustomTextField(placeholder: "Name", text: $name, isAlert: $isShowingNameError , iconName: "person.fill" , title: "" , message: "")
@@ -304,9 +299,9 @@ struct LoginView_Previews: PreviewProvider {
 //                CustomTextField(placeholder: "Confirm Password", text: $confirmPassword, isAlert: $isShowingConfirmPasswordError , iconName: "lock.fill", isSecure: true , title: "Invalid Confirm Password" , message: "Confirm password does not match the password.")
 //            }
 //            .padding(.horizontal, 30)
-//            
+//
 //            Spacer().frame(height: 40)
-//            
+//
 //            // Continue Button
 //            Button(action: {
 //                // Action for the continue button
@@ -320,74 +315,10 @@ struct LoginView_Previews: PreviewProvider {
 //                    .cornerRadius(20)
 //            }
 //            .padding(.horizontal, 30)
-//            
+//
 //            Spacer()
 //        }
 //        .background(Color.purple.edgesIgnoringSafeArea(.all))
 //    }
 //}
 //
-struct CustomTextField: View {
-    var placeholder: String
-    @Binding var text: String
-    @Binding var isAlert : Bool
-    var iconName: String
-    var isSecure: Bool = false
-    
-    var title : String
-    var message: String
-    
-    var body: some View {
-        HStack {
-            Image(systemName: iconName)
-                .foregroundColor(.black).padding(.leading, 5)
-            if isSecure {
-                SecureField(placeholder, text: $text)
-                    .cornerRadius(5.0)
-                    .padding(10)
-                    .alert(isPresented: $isAlert) {
-                        Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK")))
-                    }
-                   
-            } else {
-                TextField(placeholder, text: $text)
-                    .cornerRadius(5.0)
-                    .padding(10)
-                    .alert(isPresented: $isAlert) {
-                        Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("OK")))
-                    }
-            }
-        }
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(radius: 5)
-    }
-}
-
-//struct SignUpView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SignUpView()
-//    }
-//}
-//
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
-}
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners) )
-    }
-}
-
-

@@ -9,8 +9,15 @@ struct SignUpData: Codable {
     let technology: [String]
 }
 
+struct SignInWithGoogleData : Codable {
+    let token: String
+}
+
 // Response model
 struct AuthResponse: Codable {
-    let token: String
+    
+    let error : String?;
+    let token: String?;
+    let details : String?;
     // You can add more properties if needed
 }
