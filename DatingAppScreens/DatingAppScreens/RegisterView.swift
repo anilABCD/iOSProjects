@@ -13,13 +13,13 @@ struct StringError: Error, LocalizedError {
 }
 
 struct ErrorResponse: Decodable {
-    let error: String
+    let error: String?
     let details: [String: String]?
 }
 
 struct RegisterView: View {
     
-    @EnvironmentObject var environmentManager: TokenManager
+    @EnvironmentObject var tokenManager: TokenManager
     
     @Binding var path :[MyNavigation<String>]
     
@@ -34,10 +34,10 @@ struct RegisterView: View {
     @State private var isUserCreated :Bool = false;
     @State private var errorMessage : String = "";
     
-    @State private var isShowingNameError:Bool=false;
-    @State private var isShowingEmailError:Bool=false;
-    @State private var isShowingPasswordError:Bool=false;
-    @State private var isShowingConfirmPasswordError:Bool=false;
+    @State private var isShowingNameError:Bool = false;
+    @State private var isShowingEmailError:Bool = false;
+    @State private var isShowingPasswordError:Bool = false;
+    @State private var isShowingConfirmPasswordError:Bool = false;
     
     @State private var isLoading = false;
    
@@ -61,7 +61,7 @@ struct RegisterView: View {
                    let email = user.profile?.email
                    
                    // Handle the signed-in user's information
-                   print("User signed in: \(fullName ?? "No Name"), email: \(email ?? "No Email") , idToken : \(idToken)");
+                   print("User signed in: \(fullName ?? "No Name"), email: \(email ?? "No Email") , idToken : \(String(describing: idToken))");
                    
                    
                    
@@ -96,6 +96,11 @@ struct RegisterView: View {
                                           .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                                           .scaleEffect(1.5) // Make the indicator larger
                 }
+                
+                if showDuplicateAlert {
+                    
+                   Text("User Already Exists")
+                }
             }
           
             
@@ -123,7 +128,9 @@ struct RegisterView: View {
                     Button(action: {
                         // Handle signup button action here
                         
-                        validateInput()
+                    
+                        validateInputAndSubmit()
+                    
                         
                     }) {
                         Text("Submit")
@@ -134,17 +141,32 @@ struct RegisterView: View {
                             .background(Color.orange)
                             .cornerRadius(50)
                     }
-                    .padding(.horizontal, 20)
+                  
                     .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Error"), message: Text("Failed to sign up. Please try again."), dismissButton: .default(Text("OK")))
-                    }
-                    .alert(isPresented: $showDuplicateAlert) {
-                        Alert(title: Text("Sign Up Failed"), message: Text("User Already Exists."), dismissButton: .default(Text("OK")))
-                    }
-                    .alert(isPresented: $isUserCreated) {
-                        Alert(title: Text("Success"), message: Text("User Created Successfully."), dismissButton: .default(Text("OK")) {
-                                path.append(MyNavigation<String> ( appView: .page2, params: Params<String>(data: "")))
-                            })  }
+                        
+   
+                        
+                        if(showDuplicateAlert){
+                              return  Alert(title: Text("Sign Up Failed"), message: Text("User Already Exists."), dismissButton: .default(Text("OK")))
+                                
+                            }
+                            else{
+                                if(isUserCreated) {
+                                   return Alert(title: Text("Success"), message: Text("User Created Successfully."), dismissButton: .default(Text("OK")) {
+                                        
+                                        tokenManager.updateAccessToken(self.token ?? "")
+                                        
+                                    })
+                                }
+                        
+                        }
+                               
+                        
+                        return  Alert(title: Text("Error"), message: Text("Internal Server Error."), dismissButton: .default(Text("OK")))
+                        
+            
+                      
+                    }.padding(.horizontal, 20)
                     
                     // Social Sign-In
                                 HStack(spacing: 20) {
@@ -215,30 +237,27 @@ struct RegisterView: View {
     }
     
     
-    private func validateInput() {
+    private func validateInputAndSubmit() {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            
+            print(isShowingEmailError , isShowingPasswordError , isShowingConfirmPasswordError , showDuplicateAlert, showAlert)
+            
             resetValidationFlags()
             
-            print(isShowingEmailError , isShowingPasswordError , isShowingConfirmPasswordError , showAlert)
-            
+            print(isShowingEmailError , isShowingPasswordError , isShowingConfirmPasswordError , showDuplicateAlert , showAlert)
         }
         
        
       
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-           
-            resetValidationFlags()
             
             validateEmail()
             validatePassword()
             validateConfirmPassword()
             
             if isShowingEmailError || isShowingPasswordError || isShowingConfirmPasswordError {
-                // Perform signup
-                showAlert = true // For demo purpose
-                
-                
+              
             }
             else{
                 
@@ -250,38 +269,46 @@ struct RegisterView: View {
                         isLoading = true;
                         
                         defer {
-                                       isLoading = false
-                                   }
+                            isLoading = false
+                            
+                        }
                         
                         try await signUp(signUpData)
                        
                     } catch {
                         
+                            showAlert = true;
+                            showDuplicateAlert = true
+                      
                         print ("error")
                     }
+                    
+                    print(isShowingEmailError , isShowingPasswordError , isShowingConfirmPasswordError , showDuplicateAlert , showAlert)
+                    
                 }
                 
+              
+                
          }
-            
-            
-            print(isShowingEmailError , isShowingPasswordError , isShowingConfirmPasswordError , showAlert)
-            
             
         }
     }
     
-    private func resetValidationFlags() {
-           isShowingEmailError = false
-           isShowingPasswordError = false
-           isShowingConfirmPasswordError = false
+    @MainActor private func resetValidationFlags() {
+        
+        isShowingEmailError = false
+        isShowingPasswordError = false
+        isShowingConfirmPasswordError = false
         showDuplicateAlert = false;
         isUserCreated = false;
         
         showAlert=false;
-       }
+        
+    }
        
     
-    func signUp(_ data: SignUpData) async throws {
+   
+  func signUp(_ data: SignUpData) async throws {
         guard let url = URL(string: "http://localhost:8000/auth/signup") else {
             throw URLError(.badURL)
         }
@@ -303,24 +330,28 @@ struct RegisterView: View {
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw StringError(message: "Invalid response received")
             }
-            
-            print ( "Invalid response received");
-            
+         
             if httpResponse.statusCode >= 400 {
                 do {
                     let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                     
                     if errorResponse.error == "DUPLICATE_USER" {
-                        self.showDuplicateAlert = true
+                        
+                        print("DUPLICATE_USER")
+                        
+            
+                        
                         throw StringError(message: "DUPLICATE_USER")
+                    
                     }
                 } catch {
                     print (error.localizedDescription)
-                    throw StringError(message: "Failed to decode error response")
+                    throw StringError(message: errorMessage)
                 }
                 return
             }
             
+            print ("error: after duplicate executed")
            
             do {
                 let decodedResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
@@ -328,6 +359,8 @@ struct RegisterView: View {
                 if ( decodedResponse.token != "" ) {
     
                     self.token =  decodedResponse.token
+                   
+                    self.showAlert = true
                     self.isUserCreated = true
                 } else {
                     self.errorMessage = "Invalid token received"
@@ -372,13 +405,17 @@ struct RegisterView: View {
                 }
                 
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
-                    // Save token locally
-                    self.token = decodedResponse.token
-                    print("Token: \(self.token ?? "No token received")")
-                    // Handle successful signup, maybe navigate to another view
+                  
+                    DispatchQueue.main.async {
+                        tokenManager.updateAccessToken(self.token ?? "")
+                    }
+                  
                 } else {
                     // Show error alert
-                    self.showAlert = true
+                    DispatchQueue.main.async {
+                            
+                               self.showAlert = true
+                    }
                     print("Invalid response from server")
                 }
             }.resume()
