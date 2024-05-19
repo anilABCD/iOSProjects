@@ -8,16 +8,19 @@ import GoogleSignIn
 struct LoginView: View {
     
     @Binding var path :[MyNavigation<String>]
- 
-    @State private var email: String = ""
-    @State private var password: String = ""
- 
+    @EnvironmentObject private var tokenManger : TokenManager
+  
+    @State private var email: String = "Anil@gmail.com"
+    @State private var password: String = "Password@123"
+    
     @State private var showAlert: Bool = false
     @State private var token: String?
     
   
     @State private var isShowingEmailError:Bool=false;
     @State private var isShowingPasswordError:Bool=false;
+
+
    
     func handleSignInButton() {
            guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
@@ -39,7 +42,14 @@ struct LoginView: View {
                    let email = user.profile?.email
                    
                    // Handle the signed-in user's information
-                   print("User signed in: \(fullName ?? "No Name"), email: \(email ?? "No Email") , idToken : \(idToken)")
+                   print("User signed in: \(fullName ?? "No Name"), email: \(email ?? "No Email") , idToken : \(String(describing: idToken))")
+                   
+                   
+                   if let googleToken = idToken {
+                       let signInWithGoogleData = SignInWithGoogleData(token: googleToken )
+                       
+                       signInWithGoogle(signInWithGoogleData)
+                   }
                }
        }
     
@@ -101,7 +111,7 @@ struct LoginView: View {
                     }
                     .padding(.horizontal, 20)
                     .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Error"), message: Text("Failed to sign up. Please try again."), dismissButton: .default(Text("OK")))
+                        Alert(title: Text(""), message: Text("Incorrect email or password."), dismissButton: .default(Text("OK")))
                     }
                     
                     
@@ -180,7 +190,10 @@ struct LoginView: View {
                 
             }
             else{
-                path.append(MyNavigation<String> ( appView: .page2, params: Params<String>(data: "")))
+                
+                let signInData = SignInData(email: email, password: password)
+        
+                signIn(signInData)
             }
             
             
@@ -199,9 +212,9 @@ struct LoginView: View {
        }
        
     
-    func signUp(_ data: SignUpData) {
+    func signIn(_ data: SignInData) {
         Task {
-            guard let url = URL(string: "http://localhost:8000/auth/signup") else {
+            guard let url = URL(string: "http://localhost:8000/auth/login") else {
                 print("Invalid URL")
                 return
             }
@@ -225,12 +238,27 @@ struct LoginView: View {
                 
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                     // Save token locally
-                    self.token = decodedResponse.token
-                    print("Token: \(self.token ?? "No token received")")
-                    // Handle successful signup, maybe navigate to another view
+         
+                    if let tokenId = decodedResponse.token {
+                        
+                          DispatchQueue.main.async {
+                              
+                              self.token = tokenId;
+                              
+                              tokenManger.updateAccessToken( self.token ?? "" )
+                              print("Token: \(self.token ?? "No token received")")
+                              // Handle successful signup, maybe navigate to another view
+                          }
+                    } else {
+                        print("No Token")
+                    }
+                   
+               
                 } else {
                     // Show error alert
-                    self.showAlert = true
+                    DispatchQueue.main.async {
+                        showAlert = true
+                    }
                     print("Invalid response from server")
                 }
             }.resume()
@@ -239,6 +267,52 @@ struct LoginView: View {
         
         
     }
+    
+    
+    func signInWithGoogle(_ data: SignInWithGoogleData) {
+        Task {
+            guard let url = URL(string: "http://localhost:8000/google") else {
+                print("Invalid URL")
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            do {
+                request.httpBody = try JSONEncoder().encode(data)
+            } catch {
+                print("Error encoding data: \(error.localizedDescription)")
+                return
+            }
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data else {
+                    print("No data in response: \(error?.localizedDescription ?? "Unknown error")")
+                    return
+                }
+                
+                if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
+                  
+                    DispatchQueue.main.async {
+                        tokenManger.updateAccessToken(self.token ?? "")
+                    }
+                  
+                } else {
+                    // Show error alert
+                    DispatchQueue.main.async {
+                            
+                               self.showAlert = true
+                    }
+                    print("Invalid response from server")
+                }
+            }.resume()
+        }
+        
+    }
+    
+    
     private func validateEmail() {
            // Regular expression for email validation
            let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"

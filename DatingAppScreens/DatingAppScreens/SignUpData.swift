@@ -9,6 +9,12 @@ struct SignUpData: Codable {
     let technology: [String]
 }
 
+// Request body model
+struct SignInData: Codable {
+    let email: String
+    let password: String
+}
+
 struct SignInWithGoogleData : Codable {
     let token: String
 }

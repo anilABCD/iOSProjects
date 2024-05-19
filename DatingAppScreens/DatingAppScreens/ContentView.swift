@@ -21,6 +21,7 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
+        
             
             VStack {
                 
@@ -53,6 +54,9 @@ struct ContentView: View {
                     
                 } else {
                     
+                    Button("Reset Token"){
+                        tokenManager.resetAccessToken()
+                    }
                     
                     VStack {
                         TabView(selection: $selectedTab) {
