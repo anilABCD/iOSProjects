@@ -9,15 +9,43 @@ import Foundation
 
 import SwiftUI
 
+struct ObjectId: Decodable, Hashable {
+    let value: String
+    
+    init(from string: String) {
+          self.value = string
+      }
+      
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let objectIdString = try container.decode(String.self)
+        self.value = objectIdString
+    }
+}
 
-struct Profile: Identifiable , Decodable {
-    var id: String
-    var name: String
-    var age: Int
-    var imageName: String
-    var heading: String
-    var experience : Int ;
-    var technology : String;
+struct Profile: Identifiable, Decodable {
+    var objectId: ObjectId
+    var name: String?
+    var email: String?
+   
+    var experience: Int?
+    var technology: [String]?
+  
+    // Computed property for Identifiable protocol
+    var id: String {
+        return objectId.value
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case objectId = "_id"
+        case name
+        case email
+      
+        case experience
+        case technology
+    
+    }
 }
 
 struct MatchesNewDevsView: View {
@@ -26,133 +54,131 @@ struct MatchesNewDevsView: View {
     
     @EnvironmentObject private var tokenManger : TokenManager
     
-    @State private var profiles = [
-        Profile( id : "abcd" , name: "John", age: 30, imageName: "menu", heading: "Profile 1" , experience: 4 , technology: "#Swift UI" ),
-        Profile( id:"bbcd" , name: "Alice", age: 25, imageName: "filter", heading: "Profile 2" , experience: 4 , technology: "#Swift UI"  ),
-        Profile( id:"ccccc" , name: "Bob", age: 35, imageName: "menu", heading: "Profile 3" , experience: 2 , technology: "#React Native")
-    ];
+    init(){
+        
+    }
     
-
-    func fetchProfiles() {
-          guard let url = URL(string: "http://localhost:8000/profiles/matches?technologies?") else {
-              print("Invalid URL")
-              return
-          }
-          
-          let task = URLSession.shared.dataTask(with: url) { data, response, error in
-              guard let data = data, error == nil else {
-                  print("Error: \(error?.localizedDescription ?? "Unknown error")")
-                  return
-              }
-              
-              do {
-                  let decoder = JSONDecoder()
-                  let decodedData = try decoder.decode([Profile].self, from: data)
-                  
-                  DispatchQueue.main.async {
-                      self.profiles = decodedData
-                  }
-              } catch {
-                  print("Error decoding JSON: \(error.localizedDescription)")
-              }
-          }
-          
-          task.resume()
-      }
+    
+    @State private var profiles = [Profile(objectId: ObjectId(from:"hello"), name: "")];
+    
+    
+    
+    func fetchProfiles() async throws {
+        
+        
+        let data = MatchesFilter(technologies: tokenManger.technologies , minExperience: 0, maxExperience: 5)
+        
+        print (data)
+        
+        guard let url = URL(string: "http://localhost:8000/profiles/matches") else {
+            throw URLError(.badURL)
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let token = tokenManger.accessToken;
+        
+        print (token)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        do {
+            request.httpBody = try JSONEncoder().encode(data)
+        } catch {
+            print (error.localizedDescription)
+            throw error
+        }
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw StringError(message: "Invalid response received")
+            }
+            
+            if httpResponse.statusCode >= 400 {
+                
+                throw StringError(message: "\(httpResponse.statusCode )" )
+            }
+            
+            do {
+                print ("decode started")
+                
+                print (data)
+                let decodedResponse = try JSONDecoder().decode([Profile].self, from: data)
+                
+                print ("decode ended")
+                print (decodedResponse)
+                DispatchQueue.main.async {
+                    
+                    currentIndex = -1
+                    self.profiles = decodedResponse
+                    
+                    print(self.profiles)
+                }
+                
+            } catch {
+                
+                print (error.localizedDescription)
+                
+                throw StringError(message: "Failed to decode response data")
+            }
+        }
+        
+        
+        
+    };
+    
+    
+    
     
     var body: some View {
         
-    
-        ScrollView(.horizontal, showsIndicators: false) {
-            
-            
-            HStack {
-                
-                ForEach(profiles) { profile in
-                    
+        
+        VStack {
+            TabView(selection: $currentIndex) {
+                ForEach(profiles.indices, id: \.self) { index in
                     VStack {
-                        
                         ScrollView {
-                            
                             LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
-                                // Image on the left
-                                Image(profile.imageName )
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 150, height: 150)
-                                    .cornerRadius(10)
-                                    .clipShape(Circle())
-                                
-                                // Details on the right
-                                VStack(alignment: .leading, spacing: 10 ) {
-                                    
-                                  
-                                        Text("Name :")
-                                            .font(.headline)
-                                    Text("\(profile.name)");
-                                   
-                                   
-                                        Text("Age:")
-                                            .font(.headline)
-                                        
-                                    Text("\(profile.age)");
-
-                           
-                                        Text("Technology :")
-                                            .font(.headline)
-                                        
-                                    Text("\(profile.technology)");
-                                  
-                                    
-                            
-                                        Text("Experience :")
-                                            .font(.headline)
-                                        
-                                    Text("\(profile.experience)");
-                             
-                                    
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text("Name:")
+                                        .font(.headline)
+                                    Text(profiles[index].name ?? "")
+                                    Text("Email:")
+                                        .font(.headline)
+                                    Text(profiles[index].email ?? "")
+                                    Text("Technology:")
+                                        .font(.headline)
+                                    Text(profiles[index].technology?.joined(separator: ", ") ?? "")
+                                    Text("Experience:")
+                                        .font(.headline)
+                                    Text("\(profiles[index].experience ?? 0)")
                                 }
-                                .frame( maxWidth:.infinity , alignment:.topLeading )
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .padding()
                                 .background(Color.white)
                                 .cornerRadius(10)
                                 .shadow(radius: 2)
-                               
-                                
                             }
                             .padding()
-                            
-                            Text("Profile Headline : " ).frame( maxWidth: .infinity , alignment: .leading).fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/).padding(2)
-                            
-                            Text ("\(profile.heading )")
-                                .font(.subheadline)
-                                .lineLimit(nil)
-                            
+                            Text("Profile Headline:")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .fontWeight(.bold)
+                                .padding(2)
                         }
                         
                         Spacer()
                         
-                        // Action Buttons
                         HStack(spacing: 30) {
                             Button(action: {
-                                // Action for dislike
-                                
-                                
-                                withAnimation{
-                                    currentIndex = ( currentIndex + 1) % profiles.count
-                                    
-                                    
-                                    print(currentIndex)
-                                    
-                                    
-                                    if(profiles.count - 1 == currentIndex){
-                                        currentIndex = -1 ;
-                                    }
+                                withAnimation {
+                                    currentIndex = (currentIndex + 1) % profiles.count
                                 }
                             }) {
                                 Image(systemName: "xmark.circle.fill")
-                                        .font(.title)
-                                
+                                    .font(.title)
                             }
                             .padding()
                             .background(Color.red)
@@ -160,33 +186,19 @@ struct MatchesNewDevsView: View {
                             .clipShape(Circle())
                             
                             Button(action: {
-                                // Action for like
-                                
-                                withAnimation{
-                                    currentIndex = ( currentIndex + 1) %  profiles.count
-                                    
-                                    
-                                    print(currentIndex)
-                                    
-                                    if(profiles.count - 1 == currentIndex){
-                                        currentIndex = -1 ;
-                                    }
-                                    
+                                withAnimation {
+                                    currentIndex = (currentIndex + 1) % profiles.count
                                 }
-                                
                             }) {
                                 Image(systemName: "checkmark.circle.fill")
-                                       .font(.title)
-                                
+                                    .font(.title)
                             }
                             .padding()
                             .background(Color.green)
                             .foregroundColor(.white)
                             .clipShape(Circle())
                             
-                            Button(action: {
-                                // Action for message
-                            }) {
+                            Button(action: {}) {
                                 Image(systemName: "message.fill")
                                     .font(.title)
                             }
@@ -197,17 +209,22 @@ struct MatchesNewDevsView: View {
                         }
                         .padding(.horizontal)
                         
+                       
                     }
+                    .tag(index)
                 }
-                
             }
-            
-            .padding() .frame(width: ( UIScreen.main.bounds.width * CGFloat(profiles.count) ) , alignment: .leading)
-            
-        }.content.offset(x: -UIScreen.main.bounds.width * CGFloat(currentIndex))
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
            
-         .onAppear {
-                fetchProfiles()
+        }
+        .onAppear {
+            Task {
+                do {
+                    try await fetchProfiles()
+                } catch {
+                    // Handle the error
+                }
+            }
         }
     }
 }
@@ -220,5 +237,4 @@ struct  MatchesNewDevsView_Previews: PreviewProvider {
         MatchesNewDevsView().environmentObject(TokenManager())
     }
 }
-
 

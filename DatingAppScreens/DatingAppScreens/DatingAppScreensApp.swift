@@ -17,7 +17,8 @@ class TokenManager: ObservableObject {
     @AppStorage("accessToken") var accessToken: String = ""
     @AppStorage("email") var email: String = ""
     @AppStorage("name") var name: String = ""
-    
+    @AppStorage("technologies") var technologies: String = "#Swift UI,"
+    @AppStorage("experience") var experience: String = ""
     
     func updateAccessToken( token: String , email : String , name : String ) {
         self.accessToken = token
