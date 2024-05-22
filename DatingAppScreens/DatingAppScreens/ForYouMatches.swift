@@ -34,42 +34,57 @@ struct ForYouMatches : View {
     
     
     var body: some View {
-   
-        HStack{
-         
-            Text("Matched Profiles").font(.subheadline).foregroundColor(.gray)
-            
-        }.frame(maxWidth: .infinity , alignment: .leading).padding(.horizontal)
         
         VStack {
+            HStack{
+                
+                Text("Matched Profiles").font(.subheadline).foregroundColor(.gray)
+                
+            }.frame(maxWidth: .infinity , alignment: .leading).padding(.horizontal)
             
-          
-            HStack {
-                ScrollView (.horizontal ) {
-                    
-                    HStack {
-                        ForEach (technologies  , id: \.self) { technology in
-                            
-                            Text("\(technology)").onTapGesture {
+            VStack {
+                
+                
+                HStack {
+                    ScrollView (.horizontal ) {
+                        
+                        HStack {
+                            ForEach (technologies  , id: \.self) { technology in
                                 
-                                print("old devs clicked")
+                                Text("\(technology)").onTapGesture {
+                                    
+                                    print("old devs clicked")
+                                    
+                                }.padding(5).foregroundColor(.white).background(.blue).cornerRadius(30)
                                 
-                            }.padding(5).foregroundColor(.white).background(.blue).cornerRadius(30)
-                            
+                            }
                         }
                     }
-                }
-            } .frame( maxWidth: UIScreen.main.bounds.width - 100)
+                } .frame( maxWidth: UIScreen.main.bounds.width - 100)
+                
+                SlideshowView(slides: slides)
+                
+                Spacer()
+            }.frame(alignment:.topLeading).padding()
             
-            SlideshowView(slides: slides)
             
-            Spacer()
-        }.frame(alignment:.topLeading).padding()
-          
-      
+        }
     }
      
 }
+
+
+struct  ForYouMatches_Previews: PreviewProvider {
+//    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+       
+    static var previews: some View {
+//        ForYouMatches().environmentObject(TokenManager())
+        ForYouMatches()
+    }
+}
+
+
+
 
 
 struct SlideshowView: View {

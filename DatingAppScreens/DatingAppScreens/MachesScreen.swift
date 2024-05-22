@@ -123,6 +123,16 @@ struct MatchesScreenView : View {
 }
 
 
+struct  MatchesScreennView_Previews: PreviewProvider {
+    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+       
+    static var previews: some View {
+        MatchesScreenView(path: $path).environmentObject(TokenManager())
+    }
+}
+
+
+
 
 struct SideMenuView: View {
     @Binding var isMenuVisible: Bool

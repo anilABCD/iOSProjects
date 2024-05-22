@@ -212,3 +212,13 @@ struct MatchesNewDevsView: View {
     }
 }
 
+
+struct  MatchesNewDevsView_Previews: PreviewProvider {
+    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+       
+    static var previews: some View {
+        MatchesNewDevsView().environmentObject(TokenManager())
+    }
+}
+
+

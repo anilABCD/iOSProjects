@@ -113,6 +113,6 @@ struct HomeView: View {
 }
 
 #Preview {
-   HomeView()
+    HomeView().environmentObject(TokenManager())
 }
 
