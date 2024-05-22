@@ -50,7 +50,7 @@ struct Profile: Identifiable, Decodable {
 
 struct MatchesNewDevsView: View {
     
-    @State private var currentIndex = -1 ;
+    @State private var currentIndex = 0 ;
     
     @EnvironmentObject private var tokenManger : TokenManager
     
@@ -112,7 +112,6 @@ struct MatchesNewDevsView: View {
                 print (decodedResponse)
                 DispatchQueue.main.async {
                     
-                    currentIndex = -1
                     self.profiles = decodedResponse
                     
                     print(self.profiles)
