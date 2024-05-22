@@ -15,6 +15,7 @@ struct MatchesScreenView : View {
     
     
     @State private var currentIndex = -1 ;
+    @EnvironmentObject private var tokenManger : TokenManager
     
     @Binding var path :[MyNavigation<String>]
     
@@ -126,11 +127,16 @@ struct MatchesScreenView : View {
 struct SideMenuView: View {
     @Binding var isMenuVisible: Bool
     @Binding var path :[MyNavigation<String>]
+    @EnvironmentObject private var tokenManger : TokenManager
     var body: some View {
          
             GeometryReader { geometry in
                 HStack {
                     VStack(alignment: .leading, spacing: 20) {
+                        
+                        Button(tokenManger.email) {
+                            path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
+                        }
                         
                         Button("Home"){
                             path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
@@ -142,7 +148,7 @@ struct SideMenuView: View {
                     .offset(x: isMenuVisible ? 0 : -geometry.size.width / 2 )
                     Spacer()
                 }
-            }
+            }.padding(.horizontal)
             .frame(maxWidth: 600, alignment: .leading)
         
     }

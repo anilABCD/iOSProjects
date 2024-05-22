@@ -24,6 +24,8 @@ struct MatchesNewDevsView: View {
     
     @State private var currentIndex = -1 ;
     
+    @EnvironmentObject private var tokenManger : TokenManager
+    
     @State private var profiles = [
         Profile( id : "abcd" , name: "John", age: 30, imageName: "menu", heading: "Profile 1" , experience: 4 , technology: "#Swift UI" ),
         Profile( id:"bbcd" , name: "Alice", age: 25, imageName: "filter", heading: "Profile 2" , experience: 4 , technology: "#Swift UI"  ),

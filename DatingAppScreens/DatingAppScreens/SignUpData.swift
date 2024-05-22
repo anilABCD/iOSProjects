@@ -25,5 +25,20 @@ struct AuthResponse: Codable {
     let error : String?;
     let token: String?;
     let details : String?;
+    let data : UserData?;
     // You can add more properties if needed
+    
+    struct UserData : Codable {
+        
+        let user : User?
+    }
+
+    struct User : Codable {
+        
+        let name : String?
+        let email : String?
+        
+    }
+
 }
+

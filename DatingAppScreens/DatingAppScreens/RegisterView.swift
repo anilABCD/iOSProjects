@@ -154,7 +154,7 @@ struct RegisterView: View {
                                 if(isUserCreated) {
                                    return Alert(title: Text("Success"), message: Text("User Created Successfully."), dismissButton: .default(Text("OK")) {
                                         
-                                        tokenManager.updateAccessToken(self.token ?? "")
+                                       tokenManager.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name )
                                         
                                     })
                                 }
@@ -407,7 +407,7 @@ struct RegisterView: View {
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                   
                     DispatchQueue.main.async {
-                        tokenManager.updateAccessToken(self.token ?? "")
+                        tokenManager.updateAccessToken( token: self.token ?? "" , email: self.email , name: self.name )
                     }
                   
                 } else {

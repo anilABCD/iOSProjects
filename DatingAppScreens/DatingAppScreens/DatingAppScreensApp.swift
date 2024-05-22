@@ -13,14 +13,22 @@ import GoogleSignIn
 
 
 class TokenManager: ObservableObject {
-    @AppStorage("accessToken") var accessToken: String = ""
     
-    func updateAccessToken(_ token: String) {
-           self.accessToken = token
-       }
+    @AppStorage("accessToken") var accessToken: String = ""
+    @AppStorage("email") var email: String = ""
+    @AppStorage("name") var name: String = ""
+    
+    
+    func updateAccessToken( token: String , email : String , name : String ) {
+        self.accessToken = token
+        self.email = email
+        self.name = name;
+    }
     
     func resetAccessToken () {
         self.accessToken = ""
+        self.email = ""
+        self.name = ""
     }
 }
 

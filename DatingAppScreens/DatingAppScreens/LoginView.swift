@@ -245,8 +245,10 @@ struct LoginView: View {
                               
                               self.token = tokenId;
                               
-                              tokenManger.updateAccessToken( self.token ?? "" )
+                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "" )
                               print("Token: \(self.token ?? "No token received")")
+                              print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
+                              print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
                               // Handle successful signup, maybe navigate to another view
                           }
                     } else {
@@ -296,7 +298,7 @@ struct LoginView: View {
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                   
                     DispatchQueue.main.async {
-                        tokenManger.updateAccessToken(self.token ?? "")
+                        tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "" )
                     }
                   
                 } else {
