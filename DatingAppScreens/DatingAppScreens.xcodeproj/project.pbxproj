@@ -71,7 +71,6 @@
 		B79D44EA2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITests.swift; sourceTree = "<group>"; };
 		B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingExample.swift; sourceTree = "<group>"; };
-		B7F297E22BF8E88D0073E993 /* DatingAppScreens.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DatingAppScreens.entitlements; sourceTree = "<group>"; };
 		DEA2D24977437D01B7513847 /* Pods_DatingAppScreensTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DatingAppScreensTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECB4CB945EA494BDC5A4916E /* Pods-DatingAppScreensTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.release.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,7 +138,6 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
-				B7F297E22BF8E88D0073E993 /* DatingAppScreens.entitlements */,
 				B7957DA62BF76CA700D7E26A /* Info.plist */,
 				B79D44CF2BEF1F2B00F0AA8B /* DatingAppScreensApp.swift */,
 				B79D44D12BEF1F2B00F0AA8B /* ContentView.swift */,
