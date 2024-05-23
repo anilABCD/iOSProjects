@@ -25,13 +25,25 @@ struct ContentView: View {
             
             VStack {
                 
-                if tokenManager.accessToken == "" {
+                if ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" ) {
                     
                          VStack {
                 
                              NavigationStack(path: $path) {
                                  
-                                LoginView(path:$path).navigationDestination(for: MyNavigation<String>.self) { view in
+                                   Group {
+                                       if tokenManager.photo.isEmpty {
+                                           UploadYourPhotoView(path:$path)
+                                           
+                                       } else
+                                                if tokenManager.accessToken.isEmpty {
+                                                    LoginView(path: $path)
+                                                } else if tokenManager.photo.isEmpty {
+                                                    UploadYourPhotoView(path: $path)
+                                                } else {
+                                                    LoginView(path: $path)
+                                                }
+                                   } .navigationDestination(for: MyNavigation<String>.self) { view in
                                     switch view.appView {
                                     case .signIn:
                                         LoginView(path:$path)

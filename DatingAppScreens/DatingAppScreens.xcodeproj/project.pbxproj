@@ -17,6 +17,7 @@
 		B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A36F32BF863D00051ACF1 /* RegisterView.swift */; };
 		B793200D2BF4975300FE954A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200C2BF4975300FE954A /* LoginView.swift */; };
 		B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200E2BF49AEF00FE954A /* SignUpData.swift */; };
+		B79B38BB2BFEF2A9007D1E01 /* UploadYourPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */; };
 		B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44CF2BEF1F2B00F0AA8B /* DatingAppScreensApp.swift */; };
 		B79D44D22BEF1F2B00F0AA8B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44D12BEF1F2B00F0AA8B /* ContentView.swift */; };
 		B79D44D42BEF1F2C00F0AA8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B79D44D32BEF1F2C00F0AA8B /* Assets.xcassets */; };
@@ -60,6 +61,7 @@
 		B793200C2BF4975300FE954A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B793200E2BF49AEF00FE954A /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		B7957DA62BF76CA700D7E26A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadYourPhoto.swift; sourceTree = "<group>"; };
 		B79D44CC2BEF1F2B00F0AA8B /* DatingAppScreens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatingAppScreens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79D44CF2BEF1F2B00F0AA8B /* DatingAppScreensApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensApp.swift; sourceTree = "<group>"; };
 		B79D44D12BEF1F2B00F0AA8B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				B793200E2BF49AEF00FE954A /* SignUpData.swift */,
 				B77A36F32BF863D00051ACF1 /* RegisterView.swift */,
 				B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */,
+				B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */,
 			);
 			path = DatingAppScreens;
 			sourceTree = "<group>";
@@ -440,6 +443,7 @@
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
+				B79B38BB2BFEF2A9007D1E01 /* UploadYourPhoto.swift in Sources */,
 				B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */,
 				B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */,
 				B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */,
