@@ -21,11 +21,12 @@ class TokenManager: ObservableObject {
      @AppStorage("experience") var experience: String = ""
      @AppStorage("photo") var photo: String = ""
     
-    func updateAccessToken( token: String , email : String , name : String  ) {
+    func updateAccessToken( token: String , email : String , name : String , photo:String ) {
+        self.photo = photo
         self.accessToken = token
         self.email = email
         self.name = name;
-        self.photo = photo
+     
         
         print ( token , email , name , photo)
     }

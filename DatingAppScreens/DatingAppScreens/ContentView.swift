@@ -27,44 +27,56 @@ struct ContentView: View {
                 
                 if ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" ) {
                     
-                         VStack {
-                
-                             NavigationStack(path: $path) {
-                                 
-                                   Group {
-                                       if tokenManager.accessToken.isEmpty {
-                                         
-                                           LoginView(path: $path)
-                                       } else
-                                       if tokenManager.photo.isEmpty {
-                                                 
-                                           UploadYourPhotoView(path:$path)
-                                           
-                                                } else if tokenManager.photo.isEmpty {
-                                                    UploadYourPhotoView(path: $path)
-                                                } else {
-                                                    LoginView(path: $path)
-                                                }
-                                   } .navigationDestination(for: MyNavigation<String>.self) { view in
-                                    switch view.appView {
-                                    case .signIn:
-                                        LoginView(path:$path)
-                                    case .signUp:
-                                        RegisterView(path:$path)
-                                    case .page1:
-                                        Text("Page1")
-                                    case .page2:
-                                        Text("Page 2")
-                                    case .home:
-                                        Text("Home")
-                                    }
-                                 }
-                             }
-                             
-                             
-                         }.frame( maxWidth:.infinity)
-                         .navigationBarTitle("", displayMode: .inline)
-                         
+                    VStack {
+                        
+                        NavigationStack(path: $path) {
+                            
+                            Group {
+                                if tokenManager.accessToken.isEmpty {
+                                    
+                                    LoginView(path: $path)
+                                } else
+                                if tokenManager.photo.isEmpty {
+                                    
+                                    UploadYourPhotoView(path:$path)
+                                    
+                                } else if tokenManager.photo.isEmpty {
+                                    UploadYourPhotoView(path: $path)
+                                } else {
+                                    LoginView(path: $path)
+                                }
+                            } .navigationDestination(for: MyNavigation<String>.self) { view in
+                                switch view.appView {
+                                case .signIn:
+                                    LoginView(path:$path)
+                                case .signUp:
+                                    RegisterView(path:$path)
+                                case .page1:
+                                    UploadYourPhotoView(path: $path)
+                                case .page2:
+                                    Text("Page 2")
+                                case .home:
+                                    Text("Technologies")
+                                }
+                            }
+                        }  .onChange(of: tokenManager.accessToken) { newValue in
+                            if !newValue.isEmpty {
+                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                            } else {
+                                path.append(MyNavigation<String>(appView: .signIn, params: Params<String>(data: "")))
+                            }
+                        }.onChange(of: tokenManager.photo ) { newValue in
+                            if !newValue.isEmpty {
+                                path.append(MyNavigation<String>(appView: .home, params: Params<String>(data: "")))
+                            } else {
+                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                            }
+                        }
+                       
+                        
+                        
+                    }.frame( maxWidth:.infinity)
+                                 .navigationBarTitle("", displayMode: .inline)
                     
                 } else {
                     

@@ -245,7 +245,7 @@ struct LoginView: View {
                               
                               self.token = tokenId;
                               
-                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "")
+                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "")
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
@@ -298,7 +298,7 @@ struct LoginView: View {
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                   
                     DispatchQueue.main.async {
-                        tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "" )
+                        tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "" , photo: decodedResponse.data?.user?.photo ?? "" )
                        let photo =  decodedResponse.data?.user?.photo
                         print(photo)
                     }

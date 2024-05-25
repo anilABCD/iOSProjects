@@ -364,7 +364,7 @@ struct RegisterView: View {
                     self.isUserCreated = true
                  
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        tokenManger.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name  )
+                        tokenManger.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name , photo: "" )
                     }
                     
                 } else {
@@ -416,7 +416,7 @@ struct RegisterView: View {
                     
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        tokenManger.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name )
+                        tokenManger.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name , photo:  "" )
                     }
                   
                 } else {
