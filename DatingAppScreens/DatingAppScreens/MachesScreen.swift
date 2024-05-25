@@ -40,6 +40,8 @@ struct MatchesScreenView : View {
                             withAnimation {
                                 isMenuVisible.toggle()
                             }
+                            
+                            print("http://localhost:8000/\(tokenManger.photo)")
                         }
                     
                     
@@ -144,6 +146,17 @@ struct SideMenuView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 20) {
                         
+                        AsyncImage(url: URL(string: "http://localhost:8000/images/\(tokenManger.photo)")) { image in
+                                  image
+                                      .resizable()
+                                      .aspectRatio(contentMode: .fill)
+                              } placeholder: {
+                                  ProgressView()
+                              }
+                              .frame(width: 100, height: 100 )
+                              .clipShape(Circle()) // Apply circle clipping to the image
+                                              .overlay(Circle().stroke(Color.white, lineWidth: 4)) // Add a white stroke around the circle
+                                              .shadow(radius: 10) // Add a shadow effect to the circl
                         Button(tokenManger.email) {
                             path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
                         }

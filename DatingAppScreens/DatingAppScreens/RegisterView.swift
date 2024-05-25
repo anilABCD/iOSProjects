@@ -19,7 +19,7 @@ struct ErrorResponse: Decodable {
 
 struct RegisterView: View {
     
-    @EnvironmentObject var tokenManager: TokenManager
+    @EnvironmentObject private var tokenManger : TokenManager
     
     @Binding var path :[MyNavigation<String>]
     
@@ -152,10 +152,9 @@ struct RegisterView: View {
                             }
                             else{
                                 if(isUserCreated) {
-                                   return Alert(title: Text("Success"), message: Text("User Created Successfully."), dismissButton: .default(Text("OK")) {
-                                        
-                                       tokenManager.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name )
-                                        
+                                  
+                                    return Alert(title: Text("Success"), message: Text("User Created Successfully."), dismissButton: .default(Text("OK")) {
+                                      
                                     })
                                 }
                         
@@ -360,11 +359,19 @@ struct RegisterView: View {
     
                     self.token =  decodedResponse.token
                    
+                    
                     self.showAlert = true
                     self.isUserCreated = true
+                 
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        tokenManger.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name  )
+                    }
+                    
                 } else {
                     self.errorMessage = "Invalid token received"
                     self.showAlert = true
+                    
+                    print ("no token")
                 }
             } catch {
                 
@@ -406,8 +413,10 @@ struct RegisterView: View {
                 
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                   
-                    DispatchQueue.main.async {
-                        tokenManager.updateAccessToken( token: self.token ?? "" , email: self.email , name: self.name )
+                    
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        tokenManger.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name )
                     }
                   
                 } else {

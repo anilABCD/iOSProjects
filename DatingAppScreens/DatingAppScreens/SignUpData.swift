@@ -26,6 +26,8 @@ struct AuthResponse: Codable {
     let token: String?;
     let details : String?;
     let data : UserData?;
+    let message : String?;
+
     // You can add more properties if needed
     
     struct UserData : Codable {
@@ -37,6 +39,7 @@ struct AuthResponse: Codable {
         
         let name : String?
         let email : String?
+        let photo : String?
         
     }
 

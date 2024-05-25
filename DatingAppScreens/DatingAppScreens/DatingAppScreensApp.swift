@@ -14,23 +14,31 @@ import GoogleSignIn
 
 class TokenManager: ObservableObject {
     
-    @AppStorage("accessToken") var accessToken: String = ""
-    @AppStorage("email") var email: String = ""
-    @AppStorage("name") var name: String = ""
-    @AppStorage("technologies") var technologies: String = "#Swift UI,"
-    @AppStorage("experience") var experience: String = ""
-    @AppStorage("photo") var photo: String = ""
+     @AppStorage("accessToken") var accessToken: String = ""
+     @AppStorage("email") var email: String = ""
+     @AppStorage("name") var name: String = ""
+     @AppStorage("technologies") var technologies: String = "#Swift UI,"
+     @AppStorage("experience") var experience: String = ""
+     @AppStorage("photo") var photo: String = ""
     
-    func updateAccessToken( token: String , email : String , name : String ) {
+    func updateAccessToken( token: String , email : String , name : String  ) {
         self.accessToken = token
         self.email = email
         self.name = name;
+        self.photo = photo
+        
+        print ( token , email , name , photo)
+    }
+    
+    func updatePhoto ( photo : String){
+        self.photo = photo;
     }
     
     func resetAccessToken () {
         self.accessToken = ""
         self.email = ""
         self.name = ""
+        self.photo = ""
     }
 }
 

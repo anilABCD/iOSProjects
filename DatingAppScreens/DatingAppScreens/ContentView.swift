@@ -32,12 +32,14 @@ struct ContentView: View {
                              NavigationStack(path: $path) {
                                  
                                    Group {
+                                       if tokenManager.accessToken.isEmpty {
+                                         
+                                           LoginView(path: $path)
+                                       } else
                                        if tokenManager.photo.isEmpty {
+                                                 
                                            UploadYourPhotoView(path:$path)
                                            
-                                       } else
-                                                if tokenManager.accessToken.isEmpty {
-                                                    LoginView(path: $path)
                                                 } else if tokenManager.photo.isEmpty {
                                                     UploadYourPhotoView(path: $path)
                                                 } else {

@@ -8,7 +8,12 @@ struct UploadYourPhotoView: View {
     @Binding var path :[MyNavigation<String>]
     
     
-    @State private var avatarImage : UIImage?
+    @State private var image : UIImage?
+    
+    @EnvironmentObject private var tokenManger : TokenManager
+  
+    
+    @State private var isUploading : Bool?
     
     @State private var photoPickerItem : PhotosPickerItem?;
     
@@ -16,54 +21,160 @@ struct UploadYourPhotoView: View {
         
         VStack{
             
-            HStack(spacing:20){
-                
-                PhotosPicker(selection: $photoPickerItem , matching: .images)
-                {
-                    Image(uiImage: avatarImage  ?? UIImage( resource: .filter ) )
-                        .resizable()
-                        .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                        .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 100)
-                        .clipShape(.circle)
-                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                    //                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 0)
-                    
-                }
-                
-                
-                
-                VStack(alignment: .leading){
-                    Text("Sean Allen")
-                    
-                    Text("iOS Developer")
-                        .foregroundStyle(.secondary)
-                }
+            
+            Text("Upload Your Photo")
+                .font(.headline)
+                .padding(.bottom, 20)
+                .foregroundColor(.black)
+            
+        
+            VStack{
                 
                 Spacer()
-            }
+                
+                if( image != nil ) {
+                    Image(uiImage: image ?? UIImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
+                        .clipShape(.circle)
+                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                }
+                else{
+                    
+                    Image(systemName: "person.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
+                        .clipShape(.circle)
+                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                }
+                
+                HStack(spacing:20){
+                    
+                    PhotosPicker(selection: $photoPickerItem , matching: .images)
+                    {
+                        
+                        Text ("Upload Photo").padding().foregroundColor(.white).background(.blue).cornerRadius(8)
+                        
+                    }
+                }
+                
+                
+                Spacer()
+                
+            }.frame(maxWidth: .infinity).background(.white)
             
-            Spacer()
-            
-            
-            
-        }.padding(20)
+        }.frame(maxWidth: .infinity).background(.orange)
             .onChange(of: photoPickerItem) { newValue in
                 Task {
                     if let photoPickerItem = newValue {
                         if let data = try? await photoPickerItem.loadTransferable(type: Data.self) {
                             
-                            if let image = UIImage(data: data){
-                                avatarImage = image
+                            if let imagedata = UIImage(data: data){
+                                image = imagedata
+                              
+                                Task {
+                                   
+                                    await uploadImage()
+                        
+                                    
+                                }
+                                
                             }
                             
                             // Process the loaded data asynchronously
                         }
                     }
-                    
+                   
                     photoPickerItem = nil
                 }
             }
     }
+    
+    
+    func uploadImage() async {
+        
+        
+           guard let image = image,
+                 let imageData = image.jpegData(compressionQuality: 1.0) else {
+               print("No image or failed to convert image to data.")
+               return
+           }
+
+           guard let url = URL(string: "http://localhost:8000/user/uploadImage") else {
+               print("Invalid URL.")
+               return
+           }
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "POST"
+
+           let boundary = UUID().uuidString
+           let fieldName = "myImage"
+           let fileName = "image.jpg"
+        let token = tokenManger.accessToken;
+           request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+
+           var body = Data()
+        
+           body.append("--\(boundary)\r\n".data(using: .utf8)!)
+           body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+           body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+           body.append(imageData)
+           body.append("\r\n".data(using: .utf8)!)
+   
+           body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+    
+
+           request.httpBody = body
+        
+      
+           do {
+               isUploading = true
+               
+               defer {
+                   isUploading = false
+               }
+               
+               let (data, response) = try await URLSession.shared.data(for: request)
+               if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                   print("Image uploaded successfully!")
+                   
+                   if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
+                       // Save token locally
+            
+                       if let photo = decodedResponse.data?.user?.photo {
+                           
+                             DispatchQueue.main.async {
+                                
+                                 tokenManger.updatePhoto(photo: photo)
+                                 print("Photo: \(photo)")
+                              
+                             }
+                       } else {
+                           print("No Token")
+                       }
+                      
+                  
+                   }
+                   
+//                   uploadResult = "Image uploaded successfully!"
+               } else {
+                   print("Failed to upload image.")
+//                   uploadResult = "Failed to upload image."
+               }
+               
+             
+               
+           } catch {
+               print("Error uploading image: \(error)")
+//               uploadResult = "Error uploading image: \(error.localizedDescription)"
+           }
+       }
     
     //    Button(action: {
     //   //                         requestPhotoLibraryPermission()
