@@ -47,7 +47,7 @@ class RouteDetails : Hashable , Equatable {
 
 struct MyNavigation<T: Equatable & Hashable >: Equatable, Hashable  {
     
-    public let appView : AppView;
+    public let appView : HomeTabEnumViews;
     var params : Params<T>;
     
 //    init(appView: AppView , params : Params) {
@@ -65,7 +65,7 @@ struct MyNavigation<T: Equatable & Hashable >: Equatable, Hashable  {
        }
 }
 
-enum AppView {
+enum HomeTabEnumViews {
     case home
     case page1
     case page2
@@ -78,6 +78,10 @@ struct HomeView: View {
     @State var path :[MyNavigation<String>] = []
    
     @State private var selectedTab = 0
+    
+    @EnvironmentObject private var tokenManager : TokenManager;
+  
+    
   
     var body: some View {
         
@@ -89,9 +93,10 @@ struct HomeView: View {
                     MatchesScreenView(path:$path).navigationDestination(for: MyNavigation<String>.self) { view in
                         switch view.appView {
                         case .home:
-                            Text("Home")
-                        case .page1:
                             Text("Page 1")
+                           
+                        case .page1:
+                            ProfileView(path: $path)
                         case .page2:
                             Text("Page 2")
                         case .signIn:
@@ -100,7 +105,17 @@ struct HomeView: View {
                             Text("sign Up")
                         }
                     }
+                }.onChange(of: tokenManager.homeTabView ) { newValue in
+                    if let newValue = newValue {
+                        if newValue == .page1 {
+                            path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                        }
+                    } else {
+                        path.append(MyNavigation<String>(appView: .signIn, params: Params<String>(data: "")))
+                   }
                 }
+               
+                
                 
                 
             }.frame( maxWidth:.infinity)

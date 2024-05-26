@@ -21,6 +21,12 @@ class TokenManager: ObservableObject {
      @AppStorage("experience") var experience: String = ""
      @AppStorage("photo") var photo: String = ""
     
+    
+    @Published var homeTabView : HomeTabEnumViews? = nil;
+    
+    
+    @Published var isMenuView : Bool = false;
+ 
 //    @Published  var localhost : String = "http://169.254.23.107:8000"
         @Published var localhost : String = "http://localhost:8000"
     

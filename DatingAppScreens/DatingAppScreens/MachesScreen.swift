@@ -12,14 +12,13 @@ import SwiftUI
 
 
 struct MatchesScreenView : View {
-    
-    
+
     @State private var currentIndex = -1 ;
     @EnvironmentObject private var tokenManger : TokenManager
     
     @Binding var path :[MyNavigation<String>]
     
-    @State private var isMenuVisible = false
+    @State private var isMenuVisible = true
  
     @State var isNewDevMatches : Bool = true;
        
@@ -30,66 +29,66 @@ struct MatchesScreenView : View {
         ZStack {
             VStack {
                 
-                HStack {
-                    
-                    Image("menu").resizable().frame(width: 25, height: 25)
-                        .font(.title)
-                    
-                        .cornerRadius(4)
-                        .onTapGesture {
-                            withAnimation {
-                                isMenuVisible.toggle()
-                            }
-                            
-                            print("\(tokenManger.localhost)/\(tokenManger.photo)")
-                        }
-                    
-                    
-                    Spacer()
-                    
-                    Text("Devo").fontWeight(.bold)
-                    
-                    
-                    Spacer()
-                    
-                    Image("filter").resizable().frame(width: 25, height: 25)
-                        .font(.title)
-                    
-                    //                              .border(Color.gray, width: 2)
-                        .cornerRadius(4)
-                        .onTapGesture {
-                            print("Filter clicked")
-                            
-                            
-                            
-                        }
-                    
-                    
-                }.frame(width: UIScreen.main.bounds.width - 50).padding(.horizontal, 30)
+//                HStack {
+//                    
+//                    Image("menu").resizable().frame(width: 25, height: 25)
+//                        .font(.title)
+//                    
+//                        .cornerRadius(4)
+//                        .onTapGesture {
+//                            withAnimation {
+//                                isMenuVisible.toggle()
+//                            }
+//                            
+//                            print("\(tokenManger.localhost)/\(tokenManger.photo)")
+//                        }
+//                    
+//                    
+//                    Spacer()
+//                    
+//                    Text("Devo").fontWeight(.bold)
+//                    
+//                    
+//                    Spacer()
+//                    
+//                    Image("filter").resizable().frame(width: 25, height: 25)
+//                        .font(.title)
+//                    
+//                    //                              .border(Color.gray, width: 2)
+//                        .cornerRadius(4)
+//                        .onTapGesture {
+//                            print("Filter clicked")
+//                            
+//                            
+//                            
+//                        }
+//                    
+//                    
+//                }.frame(width: UIScreen.main.bounds.width - 50).padding(.horizontal, 30)
+//                
                 
-                
-                HStack ( spacing:10) {
-                    
-                    
-                    Button("New Devo"){
-                        
-                        print("new devs clicked")
-                        
-                        isNewDevMatches = true;
-                        
-                    }.padding().background( isNewDevMatches ? .green : .gray).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
-                    
-                    
-//                    Button("You"){
+//                HStack ( spacing:10) {
+//                    
+//                    
+//                    Button("New Devo"){
 //                        
-//                        print("old devs clicked")
+//                        print("new devs clicked")
 //                        
-//                        isNewDevMatches = false;
+//                        isNewDevMatches = true;
 //                        
-//                    }.padding().background( !isNewDevMatches ? .green : .gray).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
-                }
-                
-                .frame( maxWidth: .infinity , alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/).padding(20)
+//                    }.padding().background( isNewDevMatches ? .green : .gray).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
+//                    
+//                    
+////                    Button("You"){
+////                        
+////                        print("old devs clicked")
+////                        
+////                        isNewDevMatches = false;
+////                        
+////                    }.padding().background( !isNewDevMatches ? .green : .gray).foregroundColor(.white).cornerRadius(30).padding(.horizontal)
+//                }
+//                
+//                .frame( maxWidth: .infinity , alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/).padding(20)
                 
                 if isNewDevMatches {
                     
@@ -107,19 +106,19 @@ struct MatchesScreenView : View {
             .padding()
             
             
-
-                Color.black.opacity( isMenuVisible ? 0.5 : 0).edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        withAnimation {
-                            isMenuVisible.toggle()
-                        }
-                    }
-                
-                
-   
-            
-            SideMenuView(isMenuVisible: $isMenuVisible , path: $path
-            )
+//
+//                Color.black.opacity( isMenuVisible ? 0.5 : 0).edgesIgnoringSafeArea(.all)
+//                    .onTapGesture {
+//                        withAnimation {
+//                            isMenuVisible.toggle()
+//                        }
+//                    }
+//                
+//                
+//   
+//            
+//            SideMenuView(isMenuVisible: $isMenuVisible , path: $path
+//            )
         }
     }
 }
@@ -135,52 +134,3 @@ struct  MatchesScreennView_Previews: PreviewProvider {
 
 
 
-
-struct SideMenuView: View {
-    @Binding var isMenuVisible: Bool
-    @Binding var path :[MyNavigation<String>]
-    @EnvironmentObject private var tokenManger : TokenManager
-    var body: some View {
-        
-        
-        GeometryReader { geometry in
-            
-            ScrollView {
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 20) {
-                    
-                    AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(tokenManger.photo)")) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(width: 100, height: 100 )
-                    .clipShape(Circle()) // Apply circle clipping to the image
-                    .overlay(Circle().stroke(Color.white, lineWidth: 4)) // Add a white stroke around the circle
-                    .shadow(radius: 2) // Add a shadow effect to the circl
-                    
-                    Spacer().frame(height: 50)
-                    
-                    Button(tokenManger.email) {
-                        path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
-                    }.foregroundColor(.black)
-                    
-                    Button("Home"){
-                        path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
-                    }.foregroundColor(.black)
-                }
-               
-            }
-        }.padding()
-                .frame(width: geometry.size.width / 1.5 , alignment: .center)
-                .background(Color.white)
-                .offset(x: isMenuVisible ? 0 : -geometry.size.width / 1.5 )
-                Spacer()
-    }.padding(.horizontal)
-            .frame(maxWidth: 600, alignment: .leading)
-        
-    }
-}
