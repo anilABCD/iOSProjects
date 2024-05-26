@@ -214,7 +214,7 @@ struct LoginView: View {
     
     func signIn(_ data: SignInData) {
         Task {
-            guard let url = URL(string: "http://localhost:8000/auth/login") else {
+            guard let url = URL(string: "\(tokenManger.localhost)/auth/login") else {
                 print("Invalid URL")
                 return
             }
@@ -273,7 +273,7 @@ struct LoginView: View {
     
     func signInWithGoogle(_ data: SignInWithGoogleData) {
         Task {
-            guard let url = URL(string: "http://localhost:8000/google") else {
+            guard let url = URL(string: "\(tokenManger.localhost)/google") else {
                 print("Invalid URL")
                 return
             }

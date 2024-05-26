@@ -41,7 +41,7 @@ struct MatchesScreenView : View {
                                 isMenuVisible.toggle()
                             }
                             
-                            print("http://localhost:8000/\(tokenManger.photo)")
+                            print("\(tokenManger.localhost)/\(tokenManger.photo)")
                         }
                     
                     
@@ -141,37 +141,45 @@ struct SideMenuView: View {
     @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
     var body: some View {
-         
-            GeometryReader { geometry in
-                HStack {
-                    VStack(alignment: .leading, spacing: 20) {
-                        
-                        AsyncImage(url: URL(string: "http://localhost:8000/images/\(tokenManger.photo)")) { image in
-                                  image
-                                      .resizable()
-                                      .aspectRatio(contentMode: .fill)
-                              } placeholder: {
-                                  ProgressView()
-                              }
-                              .frame(width: 100, height: 100 )
-                              .clipShape(Circle()) // Apply circle clipping to the image
-                                              .overlay(Circle().stroke(Color.white, lineWidth: 4)) // Add a white stroke around the circle
-                                              .shadow(radius: 10) // Add a shadow effect to the circl
-                        Button(tokenManger.email) {
-                            path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
-                        }
-                        
-                        Button("Home"){
-                            path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
-                        }
+        
+        
+        GeometryReader { geometry in
+            
+            ScrollView {
+            
+            HStack {
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(tokenManger.photo)")) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        ProgressView()
                     }
-                    .padding()
-                    .frame(width: geometry.size.width / 2 , alignment: .center)
-                    .background(Color.white)
-                    .offset(x: isMenuVisible ? 0 : -geometry.size.width / 2 )
-                    Spacer()
+                    .frame(width: 100, height: 100 )
+                    .clipShape(Circle()) // Apply circle clipping to the image
+                    .overlay(Circle().stroke(Color.white, lineWidth: 4)) // Add a white stroke around the circle
+                    .shadow(radius: 2) // Add a shadow effect to the circl
+                    
+                    Spacer().frame(height: 50)
+                    
+                    Button(tokenManger.email) {
+                        path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
+                    }.foregroundColor(.black)
+                    
+                    Button("Home"){
+                        path = [  MyNavigation<String>(appView: .home, params: Params<String>(data: "hello"))]
+                    }.foregroundColor(.black)
                 }
-            }.padding(.horizontal)
+               
+            }
+        }.padding()
+                .frame(width: geometry.size.width / 1.5 , alignment: .center)
+                .background(Color.white)
+                .offset(x: isMenuVisible ? 0 : -geometry.size.width / 1.5 )
+                Spacer()
+    }.padding(.horizontal)
             .frame(maxWidth: 600, alignment: .leading)
         
     }

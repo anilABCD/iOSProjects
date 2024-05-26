@@ -21,9 +21,14 @@ class TokenManager: ObservableObject {
      @AppStorage("experience") var experience: String = ""
      @AppStorage("photo") var photo: String = ""
     
+//    @Published  var localhost : String = "http://169.254.23.107:8000"
+        @Published var localhost : String = "http://localhost:8000"
+    
     func updateAccessToken( token: String , email : String , name : String , photo:String ) {
-        self.photo = photo
+     
         self.accessToken = token
+        self.photo = photo
+
         self.email = email
         self.name = name;
      

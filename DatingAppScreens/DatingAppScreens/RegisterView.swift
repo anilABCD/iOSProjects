@@ -308,7 +308,7 @@ struct RegisterView: View {
     
    
   func signUp(_ data: SignUpData) async throws {
-        guard let url = URL(string: "http://localhost:8000/auth/signup") else {
+        guard let url = URL(string: "\(tokenManger.localhost)/auth/signup") else {
             throw URLError(.badURL)
         }
         
@@ -389,7 +389,7 @@ struct RegisterView: View {
     
     func signInWithGoogle(_ data: SignInWithGoogleData) {
         Task {
-            guard let url = URL(string: "http://localhost:8000/google") else {
+            guard let url = URL(string: "\(tokenManger.localhost)/google") else {
                 print("Invalid URL")
                 return
             }

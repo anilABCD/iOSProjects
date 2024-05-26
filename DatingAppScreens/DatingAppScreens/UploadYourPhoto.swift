@@ -25,7 +25,7 @@ struct UploadYourPhotoView: View {
             Text("Upload Your Photo")
                 .font(.headline)
                 .padding(.bottom, 20)
-                .foregroundColor(.black)
+                .foregroundColor(.orange)
             
         
             VStack{
@@ -45,6 +45,7 @@ struct UploadYourPhotoView: View {
                     Image(systemName: "person.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .foregroundColor(.black)
                         .frame(width: 200, height: 200)
                         .clipShape(.circle)
                         .overlay(Circle().stroke(Color.gray, lineWidth: 1))
@@ -65,7 +66,7 @@ struct UploadYourPhotoView: View {
                 
             }.frame(maxWidth: .infinity).background(.white)
             
-        }.frame(maxWidth: .infinity).background(.orange)
+        }.frame(maxWidth: .infinity).background(.black)
             .onChange(of: photoPickerItem) { newValue in
                 Task {
                     if let photoPickerItem = newValue {
@@ -102,7 +103,7 @@ struct UploadYourPhotoView: View {
                return
            }
 
-           guard let url = URL(string: "http://localhost:8000/user/uploadImage") else {
+           guard let url = URL(string: "\(tokenManger.localhost)/user/uploadImage") else {
                print("Invalid URL.")
                return
            }

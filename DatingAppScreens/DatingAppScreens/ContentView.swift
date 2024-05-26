@@ -59,20 +59,20 @@ struct ContentView: View {
                                     Text("Technologies")
                                 }
                             }
-                        }  .onChange(of: tokenManager.accessToken) { newValue in
+                        }.onChange(of: tokenManager.accessToken) { newValue in
                             if !newValue.isEmpty {
                                 path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
                             } else {
                                 path.append(MyNavigation<String>(appView: .signIn, params: Params<String>(data: "")))
                             }
-                        }.onChange(of: tokenManager.photo ) { newValue in
+                        }
+                        .onChange(of: tokenManager.photo ) { newValue in
                             if !newValue.isEmpty {
                                 path.append(MyNavigation<String>(appView: .home, params: Params<String>(data: "")))
                             } else {
                                 path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
                             }
                         }
-                       
                         
                         
                     }.frame( maxWidth:.infinity)

@@ -28,7 +28,7 @@ struct Profile: Identifiable, Decodable {
     var objectId: ObjectId
     var name: String?
     var email: String?
-   
+    var photo : String?
     var experience: Int?
     var technology: [String]?
   
@@ -41,7 +41,7 @@ struct Profile: Identifiable, Decodable {
         case objectId = "_id"
         case name
         case email
-      
+        case photo
         case experience
         case technology
     
@@ -70,7 +70,7 @@ struct MatchesNewDevsView: View {
         
         print (data)
         
-        guard let url = URL(string: "http://localhost:8000/profiles/matches") else {
+        guard let url = URL(string: "\(tokenManger.localhost)/profiles/matches") else {
             throw URLError(.badURL)
         }
         
@@ -109,7 +109,7 @@ struct MatchesNewDevsView: View {
                 let decodedResponse = try JSONDecoder().decode([Profile].self, from: data)
                 
                 print ("decode ended")
-                print (decodedResponse)
+
                 DispatchQueue.main.async {
                     
                     self.profiles = decodedResponse
@@ -140,58 +140,103 @@ struct MatchesNewDevsView: View {
                 ForEach(profiles.indices, id: \.self) { index in
                     VStack {
                         ScrollView {
-                            LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("Name:")
-                                        .font(.headline)
-                                    Text(profiles[index].name ?? "")
-                                    Text("Email:")
-                                        .font(.headline)
-                                    Text(profiles[index].email ?? "")
-                                    Text("Technology:")
-                                        .font(.headline)
-                                    Text(profiles[index].technology?.joined(separator: ", ") ?? "")
-                                    Text("Experience:")
-                                        .font(.headline)
-                                    Text("\(profiles[index].experience ?? 0)")
+                            
+                            VStack {
+                                
+                                VStack {
+                                    GeometryReader { geometry in
+                                           AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(profiles[index].photo ?? "image.jpg")")) { image in
+                                               image
+                                                   .resizable()
+                                                   .scaledToFill()
+                                                   .frame(width: geometry.size.width, height: 300)
+                                                   .clipped()
+                                                   .cornerRadius(10)
+                                           } placeholder: {
+                                               ProgressView()
+                                                   .frame(width: geometry.size.width, height: 300)
+                                           }
+                                       }
+                                     
+                                } .frame(height: 300).padding()
+
+//                                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
+//                                    
+//aaaaa
+                                VStack {
+                                    HStack {
+                                        
+                                        VStack(alignment: .leading, spacing: 10) {
+                                            Text("Name:")
+                                                .font(.headline)
+                                            Text(profiles[index].name ?? "")
+                                            
+                                        }
+
+                                        Spacer()
+                                        VStack(alignment: .leading, spacing: 10) {
+                                            Text("Experience:")
+                                                .font(.headline)
+                                            Text("\(profiles[index].experience ?? 0)")
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        VStack(alignment: .leading, spacing: 10) {
+                                            Text("Technology:")
+                                                .font(.headline)
+                                            
+                                            Text(profiles[index].technology?.joined(separator: ", ") ?? "")
+                                            
+                                        }
+                                        
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .bottomLeading)
+                                    .padding()
+                                   
+                                    .cornerRadius(10)
+                                    .shadow(radius: 2)
+                                    //                                }
+                                    //                                .padding()
+                                    
+                                 
                                 }
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .padding()
-                                .background(Color.white)
-                                .cornerRadius(10)
-                                .shadow(radius: 2)
-                            }
-                            .padding()
+                            }.background(Color.blue.opacity(0.01))
+                            
                             Text("Profile Headline:")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .fontWeight(.bold)
-                                .padding(2)
+                                .padding()
                         }
                         
                         Spacer()
                         
                         HStack(spacing: 30) {
                             Button(action: {
-                                withAnimation {
-                                    currentIndex = (currentIndex + 1) % profiles.count
+                                withAnimation(.easeInOut(duration: 1.0)) {
+                                    currentIndex = min (currentIndex + 1 , profiles.count - 1)
+                                    
                                 }
                             }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .font(.title)
-                            }
+                            } .disabled(currentIndex == profiles.count - 1)
                             .padding()
                             .background(Color.red)
                             .foregroundColor(.white)
                             .clipShape(Circle())
                             
                             Button(action: {
-                                withAnimation {
-                                    currentIndex = (currentIndex + 1) % profiles.count
+                                withAnimation(.easeInOut(duration: 1.0)) {
+                                    currentIndex = min (currentIndex + 1 , profiles.count - 1)
+                                    
                                 }
+                                
                             }) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.title)
                             }
+                            .disabled(currentIndex == profiles.count - 1)
                             .padding()
                             .background(Color.green)
                             .foregroundColor(.white)
@@ -211,10 +256,10 @@ struct MatchesNewDevsView: View {
                        
                     }
                     .tag(index)
-                }
+                }.gesture(DragGesture().onChanged { _ in }) // Disable swipe gestures
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-           
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never /* turn of dot page index buttons */))
+       
         }
         .onAppear {
             Task {
