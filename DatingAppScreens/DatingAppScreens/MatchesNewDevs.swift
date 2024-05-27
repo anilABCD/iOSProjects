@@ -139,6 +139,7 @@ struct MatchesNewDevsView: View {
             TabView(selection: $currentIndex) {
                 ForEach(profiles.indices, id: \.self) { index in
                     VStack {
+                       
                         ScrollView  {
                             
                             VStack {
@@ -157,39 +158,41 @@ struct MatchesNewDevsView: View {
                                                                           .stroke(Color.clear, lineWidth: 0)
                                                                           .shadow(color: Color.blue.opacity(0.7), radius: 10, x: 0, y: 0)
                                                                   )
-                                                                  .shadow(color: Color.black.opacity(0.7), radius: 10, x: 0, y: 0)
+                                                                  .shadow(color: Color.black.opacity(0.5), radius: 10, x: 0, y: 0)
                                            } placeholder: {
                                                ProgressView()
                                                    .frame(width: geometry.size.width, height: 500)
                                            }
                                        }
                                     
-                                    VStack {
-                                        Spacer()
-                                      
-                                        HStack{
-                                            
-                                            BlueCard(title: "Name", content: profiles[index].name ?? "")
+                                    VStack( alignment: .leading , spacing: 5 ) {
+                                        
+                                        Spacer().frame(maxHeight:.infinity)
+                                       
+//                                        VStack{
+//                                            Spacer()
+                                        GrayCard(title: "Name", content: profiles[index].name ?? "")
                                                          
                                          
-                                            BlueCard(title: "Experience", content: "\(profiles[index].experience ?? 0)")
+                                            GrayCard(title: "Experience", content: "\(profiles[index].experience ?? 0)")
                                                          
-                                            BlueCard(title: "Tech", content: profiles[index].technology?.joined(separator: ", ") ?? "")
+                                            GrayCard(title: "Technology", content: profiles[index].technology?.joined(separator: ", ") ?? "")
                                                          
                                          
                                           
                                             
-                                        }
-                                        .frame(maxHeight: 120, alignment: .leading)
-                                        .padding()
-                                       
-                                        .cornerRadius(10)
-                                        .shadow(radius: 2)
+//                                        }
+//                                        .frame( maxHeight: .infinity, alignment: .leading)
+//                                        .padding()
+//                                       
+//                                        .cornerRadius(10)
+//                                        .shadow(radius: 2)
                                         //                                }
                                         //                                .padding()
                                         
                                      
-                                    }.frame(maxHeight:.infinity, alignment: .bottomLeading)
+                                    }.frame(maxWidth : .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                                        .padding()
                                 }.background(Color.blue.opacity(0.01))
                                 
                                      
@@ -279,34 +282,24 @@ struct  MatchesNewDevsView_Previews: PreviewProvider {
 }
 
 
-struct BlueCard: View {
+struct GrayCard: View {
     var title: String
     var content: String
     
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 4)
-                .fill(Color.gray).opacity(0.5)
-              
-            VStack(alignment: .leading , spacing: 0) {
+      
+            VStack(alignment: .leading ) {
                 Text(title)
                     .font(.headline)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .padding(.top, 8)
-                    .padding(.leading, 8)
-                
+                 
                 Text(content)
                     .font(.caption)
                     .foregroundColor(.white)
-               
-                    .padding(.top, 8)
-                    .padding(.leading, 8)
-                
-                Spacer()
-            }.frame(maxWidth: .infinity,alignment: .topLeading)
-          
-        }
-        .frame( minHeight: 120)
+                   
+              
+            }.frame( maxWidth:.infinity, alignment: .topLeading) .background(Color.gray.opacity(0.5))
+       
     }
 }
