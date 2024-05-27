@@ -300,7 +300,7 @@ struct LoginView: View {
                     DispatchQueue.main.async {
                         tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "" , photo: decodedResponse.data?.user?.photo ?? "" )
                        let photo =  decodedResponse.data?.user?.photo
-                        print(photo)
+                       
                     }
                   
                 } else {

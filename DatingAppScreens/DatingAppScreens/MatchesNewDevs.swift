@@ -139,75 +139,71 @@ struct MatchesNewDevsView: View {
             TabView(selection: $currentIndex) {
                 ForEach(profiles.indices, id: \.self) { index in
                     VStack {
-                        ScrollView {
+                        ScrollView  {
                             
                             VStack {
                                 
-                                VStack {
+                                ZStack {
                                     GeometryReader { geometry in
                                            AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(profiles[index].photo ?? "image.jpg")")) { image in
                                                image
                                                    .resizable()
                                                    .scaledToFill()
-                                                   .frame(width: geometry.size.width, height: 300)
+                                                   .frame(width: geometry.size.width, height: 500)
                                                    .clipped()
                                                    .cornerRadius(10)
+                                                   .overlay(
+                                                                      RoundedRectangle(cornerRadius: 20)
+                                                                          .stroke(Color.clear, lineWidth: 0)
+                                                                          .shadow(color: Color.blue.opacity(0.7), radius: 10, x: 0, y: 0)
+                                                                  )
+                                                                  .shadow(color: Color.black.opacity(0.7), radius: 10, x: 0, y: 0)
                                            } placeholder: {
                                                ProgressView()
-                                                   .frame(width: geometry.size.width, height: 300)
+                                                   .frame(width: geometry.size.width, height: 500)
                                            }
                                        }
+                                    
+                                    VStack {
+                                        Spacer()
+                                      
+                                        HStack{
+                                            
+                                            BlueCard(title: "Name", content: profiles[index].name ?? "")
+                                                         
+                                         
+                                            BlueCard(title: "Experience", content: "\(profiles[index].experience ?? 0)")
+                                                         
+                                            BlueCard(title: "Tech", content: profiles[index].technology?.joined(separator: ", ") ?? "")
+                                                         
+                                         
+                                          
+                                            
+                                        }
+                                        .frame(maxHeight: 120, alignment: .leading)
+                                        .padding()
+                                       
+                                        .cornerRadius(10)
+                                        .shadow(radius: 2)
+                                        //                                }
+                                        //                                .padding()
+                                        
                                      
-                                } .frame(height: 300).padding()
+                                    }.frame(maxHeight:.infinity, alignment: .bottomLeading)
+                                }.background(Color.blue.opacity(0.01))
+                                
+                                     
+                                } .frame(height: 500).padding()
 
 //                                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
 //                                    
 //aaaaa
-                                VStack {
-                                    HStack {
-                                        
-                                        VStack(alignment: .leading, spacing: 10) {
-                                            Text("Name:")
-                                                .font(.headline)
-                                            Text(profiles[index].name ?? "")
-                                            
-                                        }
-
-                                        Spacer()
-                                        VStack(alignment: .leading, spacing: 10) {
-                                            Text("Experience:")
-                                                .font(.headline)
-                                            Text("\(profiles[index].experience ?? 0)")
-                                        }
-                                        
-                                        Spacer()
-                                        
-                                        VStack(alignment: .leading, spacing: 10) {
-                                            Text("Technology:")
-                                                .font(.headline)
-                                            
-                                            Text(profiles[index].technology?.joined(separator: ", ") ?? "")
-                                            
-                                        }
-                                        
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .bottomLeading)
-                                    .padding()
-                                   
-                                    .cornerRadius(10)
-                                    .shadow(radius: 2)
-                                    //                                }
-                                    //                                .padding()
-                                    
-                                 
-                                }
-                            }.background(Color.blue.opacity(0.01))
-                            
+                              
                             Text("Profile Headline:")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .fontWeight(.bold)
                                 .padding()
-                        }
+                        }.scrollIndicators(.hidden)
                         
                         Spacer()
                         
@@ -282,3 +278,35 @@ struct  MatchesNewDevsView_Previews: PreviewProvider {
     }
 }
 
+
+struct BlueCard: View {
+    var title: String
+    var content: String
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.gray).opacity(0.5)
+              
+            VStack(alignment: .leading , spacing: 0) {
+                Text(title)
+                    .font(.headline)
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
+                    .padding(.top, 8)
+                    .padding(.leading, 8)
+                
+                Text(content)
+                    .font(.caption)
+                    .foregroundColor(.white)
+               
+                    .padding(.top, 8)
+                    .padding(.leading, 8)
+                
+                Spacer()
+            }.frame(maxWidth: .infinity,alignment: .topLeading)
+          
+        }
+        .frame( minHeight: 120)
+    }
+}

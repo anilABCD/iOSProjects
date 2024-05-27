@@ -414,8 +414,11 @@ struct RegisterView: View {
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                   
                     
-                    
+                  
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        
+                        self.token  = decodedResponse.token;
+                        
                         tokenManger.updateAccessToken(token : self.token ?? "" , email: self.email, name: self.name , photo:  "" )
                     }
                   

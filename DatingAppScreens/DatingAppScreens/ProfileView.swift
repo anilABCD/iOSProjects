@@ -50,9 +50,10 @@ struct BackButton: View {
 struct ProfileoView_Previews: PreviewProvider {
 
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+    
 
     static var previews: some View {
-        ProfileView(path: $path)
+        ProfileView(path: $path).environmentObject(TokenManager())
 //        UploadYourPhotoView()
     }
 }
