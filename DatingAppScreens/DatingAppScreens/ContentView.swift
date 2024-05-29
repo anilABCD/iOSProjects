@@ -58,7 +58,7 @@ struct ContentView: View {
                                 case .page1:
                                     UploadYourPhotoView(path: $path)
                                 case .page2:
-                                    UpdateTechnologyView(path: $path)
+                                    UpdateTechnologyNewView(path: $path)
                                 case .home:
                                     Text("Technologies")
                                 }
@@ -131,29 +131,29 @@ struct ContentView: View {
                         
                     }.frame( maxWidth:.infinity)
                         .navigationBarTitle("", displayMode: .inline)
-                    //                        .onAppear(){
-                    //
-                    //                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
-                    //
-                    //                                print(tokenManager.accessToken , tokenManager.photo, tokenManager.technologies)
-                    //
-                    //                                if tokenManager.accessToken.isEmpty {
-                    //                                    print("access token empty ")
-                    //                                    path.removeAll()
-                    //                                } else
-                    //                                if tokenManager.photo.isEmpty {
-                    //                                    print("photo token empty ")
-                    //                                    path.removeAll()
-                    //                                    path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-                    //                                } else if tokenManager.technologies.isEmpty {
-                    //                                    print("technologies token empty ")
-                    //                                    path.removeAll()
-                    //                                    path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
-                    //                                } else {
-                    //                                    path.removeAll()
-                    //                                }
-                    //                            }
-                    //                        }
+                                            .onAppear(){
+                    
+                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
+                    
+                                                    print(tokenManager.accessToken , tokenManager.photo, tokenManager.technologies)
+                    
+                                                    if tokenManager.accessToken.isEmpty {
+                                                        print("access token empty ")
+                                                        path.removeAll()
+                                                    } else
+                                                    if tokenManager.photo.isEmpty {
+                                                        print("photo token empty ")
+                                                        path.removeAll()
+                                                        path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                                                    } else if tokenManager.technologies.isEmpty {
+                                                        print("technologies token empty ")
+                                                        path.removeAll()
+                                                        path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
+                                                    } else {
+                                                        path.removeAll()
+                                                    }
+                                                }
+                                            }
                     
                     
                 } else {

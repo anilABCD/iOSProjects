@@ -10,7 +10,7 @@ struct SelectableItem: Identifiable {
 
 
 
-struct UpdateTechnologyView: View {
+struct UpdateTechnologyNewView: View {
    
     @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
@@ -150,6 +150,6 @@ struct UpdateTechnologyView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
     @EnvironmentObject private var tokenManger : TokenManager
     static var previews: some View {
-        UpdateTechnologyView(path: $path)
+        UpdateTechnologyNewView(path: $path)
     }
 }

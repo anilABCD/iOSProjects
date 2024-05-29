@@ -288,7 +288,7 @@ struct GrayCard: View {
     
     var body: some View {
       
-            VStack(alignment: .leading ) {
+            HStack ( ) {
                 Text(title)
                     .font(.headline)
                     .fontWeight(.heavy)
@@ -299,7 +299,9 @@ struct GrayCard: View {
                     .foregroundColor(.white)
                    
               
-            }.frame( maxWidth:.infinity, alignment: .topLeading) .background(Color.gray.opacity(0.5))
+            }.frame( maxWidth:.infinity, alignment: .topLeading) 
+            
+//            .background(Color.gray.opacity(0.5))
        
     }
 }
