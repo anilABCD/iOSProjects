@@ -30,14 +30,14 @@ class TokenManager: ObservableObject {
 //    @Published  var localhost : String = "http://169.254.23.107:8000"
         @Published var localhost : String = "http://localhost:8000"
     
-    func updateAccessToken( token: String , email : String , name : String , photo:String ) {
+    func updateAccessToken( token: String , email : String , name : String , photo:String , technologies : String ) {
      
         self.accessToken = token
         self.photo = photo
 
         self.email = email
         self.name = name;
-     
+        self.technologies = technologies;
         
         print ( token , email , name , photo)
     }

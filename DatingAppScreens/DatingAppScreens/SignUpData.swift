@@ -21,7 +21,7 @@ struct SignInWithGoogleData : Codable {
 
 // Response model
 struct AuthResponse: Codable {
-    
+    let status : String? ;
     let error : String?;
     let token: String?;
     let details : String?;
@@ -40,6 +40,7 @@ struct AuthResponse: Codable {
         let name : String?
         let email : String?
         let photo : String?
+        let technologies : String?
         
     }
 

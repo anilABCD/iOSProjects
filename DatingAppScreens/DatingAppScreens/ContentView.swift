@@ -31,21 +31,25 @@ struct ContentView: View {
                         
                         NavigationStack(path: $path) {
                             
-                            Group {
-                                if tokenManager.accessToken.isEmpty {
-                                    
-                                    LoginView(path: $path)
-                                } else
-                                if tokenManager.photo.isEmpty {
-                                    
-                                    UploadYourPhotoView(path:$path)
-                                    
-                                } else if tokenManager.photo.isEmpty {
-                                    UploadYourPhotoView(path: $path)
-                                } else {
-                                    LoginView(path: $path)
-                                }
-                            } .navigationDestination(for: MyNavigation<String>.self) { view in
+                            //                            Group {
+                            //
+                            //
+                            ////                                if tokenManager.accessToken.isEmpty {
+                            ////
+                            ////                                    LoginView(path: $path)
+                            ////                                } else
+                            ////                                if tokenManager.photo.isEmpty {
+                            ////
+                            ////                                    UploadYourPhotoView(path:$path)
+                            ////
+                            ////                                } else if tokenManager.technologies.isEmpty {
+                            ////                                    UpdateTechnologyView(path: $path)
+                            ////                                } else {
+                            ////                                    LoginView(path: $path)
+                            ////                                }
+                            //                            }
+                            
+                            LoginView(path: $path).navigationDestination(for: MyNavigation<String>.self) { view in
                                 switch view.appView {
                                 case .signIn:
                                     LoginView(path:$path)
@@ -54,29 +58,103 @@ struct ContentView: View {
                                 case .page1:
                                     UploadYourPhotoView(path: $path)
                                 case .page2:
-                                    Text("Page 2")
+                                    UpdateTechnologyView(path: $path)
                                 case .home:
                                     Text("Technologies")
                                 }
                             }
                         }.onChange(of: tokenManager.accessToken) { newValue in
-                            if !newValue.isEmpty {
+                            print("access token")
+                            if tokenManager.accessToken.isEmpty {
+                                print("access token empty ")
+                                path.removeAll()
+                            } else
+                            if tokenManager.photo.isEmpty {
+                                print("photo token empty ")
+                                path.removeAll()
                                 path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                            } else if tokenManager.technologies.isEmpty {
+                                print("technologies token empty ")
+                                path.removeAll()
+                                path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
                             } else {
-                                path.append(MyNavigation<String>(appView: .signIn, params: Params<String>(data: "")))
+                                path.removeAll()
                             }
+                            //                            if !newValue.isEmpty {
+                            //                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                            //                            } else {
+                            //                                path.append(MyNavigation<String>(appView: .signIn, params: Params<String>(data: "")))
+                            //                            }
                         }
                         .onChange(of: tokenManager.photo ) { newValue in
-                            if !newValue.isEmpty {
-                                path.append(MyNavigation<String>(appView: .home, params: Params<String>(data: "")))
-                            } else {
+                            
+                            print("photo")
+                            
+                            if tokenManager.accessToken.isEmpty {
+                                print("access token empty ")
+                                path.removeAll()
+                            } else
+                            if tokenManager.photo.isEmpty {
+                                print("photo token empty ")
+                                path.removeAll()
                                 path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                            } else if tokenManager.technologies.isEmpty {
+                                print("technologies token empty ")
+                                path.removeAll()
+                                path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
+                            } else {
+                                path.removeAll()
                             }
                         }
-                        
+                        .onChange(of: tokenManager.technologies ) { newValue in
+                            
+                            print ("technologies")
+                            
+                            if tokenManager.accessToken.isEmpty {
+                                print("access token empty ")
+                                path.removeAll()
+                            } else
+                            if tokenManager.photo.isEmpty {
+                                print("photo token empty ")
+                                path.removeAll()
+                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                            } else if tokenManager.technologies.isEmpty {
+                                print("technologies token empty ")
+                                path.removeAll()
+                                path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
+                            } else {
+                                path.removeAll()
+                            }
+                            
+                            
+                        }
                         
                     }.frame( maxWidth:.infinity)
                         .navigationBarTitle("", displayMode: .inline)
+                    //                        .onAppear(){
+                    //
+                    //                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
+                    //
+                    //                                print(tokenManager.accessToken , tokenManager.photo, tokenManager.technologies)
+                    //
+                    //                                if tokenManager.accessToken.isEmpty {
+                    //                                    print("access token empty ")
+                    //                                    path.removeAll()
+                    //                                } else
+                    //                                if tokenManager.photo.isEmpty {
+                    //                                    print("photo token empty ")
+                    //                                    path.removeAll()
+                    //                                    path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+                    //                                } else if tokenManager.technologies.isEmpty {
+                    //                                    print("technologies token empty ")
+                    //                                    path.removeAll()
+                    //                                    path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
+                    //                                } else {
+                    //                                    path.removeAll()
+                    //                                }
+                    //                            }
+                    //                        }
+                    
                     
                 } else {
                     
