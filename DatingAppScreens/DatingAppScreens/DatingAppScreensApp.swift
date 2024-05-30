@@ -17,7 +17,7 @@ class TokenManager: ObservableObject {
      @AppStorage("accessToken") var accessToken: String = ""
      @AppStorage("email") var email: String = ""
      @AppStorage("name") var name: String = ""
-     @AppStorage("technologies") var technologies: String = "#Swift UI,"
+     @AppStorage("technologies") var technologies: String = ""
      @AppStorage("experience") var experience: String = ""
      @AppStorage("photo") var photo: String = ""
     

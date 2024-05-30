@@ -30,7 +30,7 @@ struct Profile: Identifiable, Decodable {
     var email: String?
     var photo : String?
     var experience: Int?
-    var technology: [String]?
+    var technologies: [String]?
   
     // Computed property for Identifiable protocol
     var id: String {
@@ -43,7 +43,7 @@ struct Profile: Identifiable, Decodable {
         case email
         case photo
         case experience
-        case technology
+        case technologies
     
     }
 }
@@ -178,7 +178,7 @@ struct MatchesNewDevsView: View {
                                          
                                             GrayCard(title: "Experience", content: "\(profiles[index].experience ?? 0)")
                                                          
-                                            GrayCard(title: "Technology", content: profiles[index].technology?.joined(separator: ", ") ?? "")
+                                            GrayCard(title: "Technology", content: profiles[index].technologies?.joined(separator: ", ") ?? "")
                                                          
                                          
                                           

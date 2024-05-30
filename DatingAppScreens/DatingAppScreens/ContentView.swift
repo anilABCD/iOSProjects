@@ -64,67 +64,16 @@ struct ContentView: View {
                                 }
                             }
                         }.onChange(of: tokenManager.accessToken) { newValue in
-                            print("access token")
-                            if tokenManager.accessToken.isEmpty {
-                                print("access token empty ")
-                                path.removeAll()
-                            } else
-                            if tokenManager.photo.isEmpty {
-                                print("photo token empty ")
-                                path.removeAll()
-                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-                            } else if tokenManager.technologies.isEmpty {
-                                print("technologies token empty ")
-                                path.removeAll()
-                                path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
-                            } else {
-                                path.removeAll()
-                            }
-                            //                            if !newValue.isEmpty {
-                            //                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-                            //                            } else {
-                            //                                path.append(MyNavigation<String>(appView: .signIn, params: Params<String>(data: "")))
-                            //                            }
+                           handleNavigation()                    
+                            
                         }
                         .onChange(of: tokenManager.photo ) { newValue in
                             
-                            print("photo")
-                            
-                            if tokenManager.accessToken.isEmpty {
-                                print("access token empty ")
-                                path.removeAll()
-                            } else
-                            if tokenManager.photo.isEmpty {
-                                print("photo token empty ")
-                                path.removeAll()
-                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-                            } else if tokenManager.technologies.isEmpty {
-                                print("technologies token empty ")
-                                path.removeAll()
-                                path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
-                            } else {
-                                path.removeAll()
-                            }
+                          handleNavigation()
                         }
                         .onChange(of: tokenManager.technologies ) { newValue in
                             
-                            print ("technologies")
-                            
-                            if tokenManager.accessToken.isEmpty {
-                                print("access token empty ")
-                                path.removeAll()
-                            } else
-                            if tokenManager.photo.isEmpty {
-                                print("photo token empty ")
-                                path.removeAll()
-                                path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-                            } else if tokenManager.technologies.isEmpty {
-                                print("technologies token empty ")
-                                path.removeAll()
-                                path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
-                            } else {
-                                path.removeAll()
-                            }
+                          handleNavigation()
                             
                             
                         }
@@ -133,26 +82,11 @@ struct ContentView: View {
                         .navigationBarTitle("", displayMode: .inline)
                                             .onAppear(){
                     
-                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
+//                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
                     
-                                                    print(tokenManager.accessToken , tokenManager.photo, tokenManager.technologies)
-                    
-                                                    if tokenManager.accessToken.isEmpty {
-                                                        print("access token empty ")
-                                                        path.removeAll()
-                                                    } else
-                                                    if tokenManager.photo.isEmpty {
-                                                        print("photo token empty ")
-                                                        path.removeAll()
-                                                        path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-                                                    } else if tokenManager.technologies.isEmpty {
-                                                        print("technologies token empty ")
-                                                        path.removeAll()
-                                                        path.append(MyNavigation<String>(appView: .page2 , params : Params<String>(data: "")))
-                                                    } else {
-                                                        path.removeAll()
-                                                    }
-                                                }
+                                                   handleNavigation()
+//                                                }
+                                
                                             }
                     
                     
@@ -264,6 +198,26 @@ struct ContentView: View {
         }
        
     }
+    
+    
+    func handleNavigation() {
+        print("technologies")
+        
+        if tokenManager.accessToken.isEmpty {
+            print("access token empty ")
+            path.removeAll()
+        } else if tokenManager.photo.isEmpty {
+            print("photo token empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+        } else if tokenManager.technologies.isEmpty {
+            print("technologies token empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page2, params: Params<String>(data: "")))
+        } else {
+            path.removeAll()
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -329,6 +283,9 @@ struct SideMenuView: View {
                             Text(tokenManger.name)
                                 .font(.headline)
                             Text(tokenManger.email)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            Text(tokenManger.technologies)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                         }
