@@ -51,6 +51,8 @@ struct Profile: Identifiable, Decodable {
 struct MatchesNewDevsView: View {
     
     @State private var currentIndex = 0 ;
+    @State var isPopupPresented = false // 1
+    @State private var selectedPerson: String = "John Doe"
     
     @EnvironmentObject private var tokenManger : TokenManager
     
@@ -59,7 +61,7 @@ struct MatchesNewDevsView: View {
     }
     
     
-    @State private var profiles = [Profile(objectId: ObjectId(from:"hello"), name: "")];
+    @State private var profiles : [Profile] = [Profile(objectId: ObjectId(from:"hello"), name: "")];
     
     
     
@@ -241,14 +243,23 @@ struct MatchesNewDevsView: View {
                             .foregroundColor(.white)
                             .clipShape(Circle())
                             
-                            Button(action: {}) {
+                            Button(action: {
+                                
+                                withAnimation {
+                                                 isPopupPresented = true
+                                             }
+                            }) {
                                 Image(systemName: "message.fill")
                                     .font(.title)
+                                
+                                
                             }
                             .padding()
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .clipShape(Circle())
+                            @State var showingPopup = false // 1
+
                         }
                         .padding(.horizontal)
                         
@@ -259,6 +270,9 @@ struct MatchesNewDevsView: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never /* turn of dot page index buttons */))
        
+        }  
+        .popup(isPresented: $isPopupPresented) {
+            ChatPopupView(isPresented: $isPopupPresented, profile: profiles[currentIndex] )
         }
         .onAppear {
             Task {
@@ -269,8 +283,45 @@ struct MatchesNewDevsView: View {
                 }
             }
         }
+      
+    }
+    
+    
+  
+}
+
+extension View {
+    func popup<PopupContent: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> PopupContent) -> some View {
+        self.modifier(Popup(isPresented: isPresented, content: content))
     }
 }
+
+
+
+struct Popup<PopupContent: View>: ViewModifier {
+    let isPresented: Binding<Bool>
+    let content: () -> PopupContent
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                ZStack {
+                    if isPresented.wrappedValue {
+                        Color.black.opacity(0.4)
+                            .edgesIgnoringSafeArea(.all)
+                        
+                        self.content()
+                            .frame(width: 300, height: 200)
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 20)
+                            .transition(.scale)
+                    }
+                }
+            )
+    }
+}
+
 
 
 struct  MatchesNewDevsView_Previews: PreviewProvider {
@@ -305,3 +356,57 @@ struct GrayCard: View {
        
     }
 }
+
+struct ChatPopupView: View {
+    @Binding var isPresented: Bool
+     var profile: Profile
+    @State private var message: String = ""
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Send a message to \(String(describing: profile.name ?? "" ))")
+                .font(.headline)
+            
+            TextField("Enter your message", text: $message)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            HStack {
+                Button(action: {
+                    // Handle send action
+                    print("Message sent to \(String(describing: profile.name)): \(message)")
+                    
+                    withAnimation {
+                        
+                        isPresented = false
+                    }
+                    
+                }) {
+                    Text("Send")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                
+                Button(action: {
+                    withAnimation {
+                        
+                        isPresented = false
+                    }
+                }) {
+                    Text("Cancel")
+                        .padding()
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+            }
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(10)
+        .shadow(radius: 20)
+    }
+}
+
