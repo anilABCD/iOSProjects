@@ -152,7 +152,7 @@ struct MatchesNewDevsView: View {
                                                image
                                                    .resizable()
                                                    .scaledToFill()
-                                                   .frame(width: geometry.size.width, height: 500)
+                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.54 )
                                                    .clipped()
                                                    .cornerRadius(10)
                                                    .overlay(
@@ -163,7 +163,7 @@ struct MatchesNewDevsView: View {
                                                                   .shadow(color: Color.black.opacity(0.5), radius: 10, x: 0, y: 0)
                                            } placeholder: {
                                                ProgressView()
-                                                   .frame(width: geometry.size.width, height: 500)
+                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.54  )
                                            }
                                        }
                                     
@@ -187,7 +187,8 @@ struct MatchesNewDevsView: View {
 //                                        .frame( maxHeight: .infinity, alignment: .leading)
 //                                        .padding()
 //                                       
-//                                        .cornerRadius(10)
+//                           
+                                            .cornerRadius(10)
 //                                        .shadow(radius: 2)
                                         //                                }
                                         //                                .padding()
@@ -198,11 +199,11 @@ struct MatchesNewDevsView: View {
                                 }.background(Color.blue.opacity(0.01))
                                 
                                      
-                                } .frame(height: 500).padding()
+                            } .frame(height:  UIScreen.main.bounds.height * 0.54  ).padding()
 
 //                                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
 //                                    
-//aaaaa
+//
                               
                             Text("Profile Headline:")
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -243,22 +244,22 @@ struct MatchesNewDevsView: View {
                             .foregroundColor(.white)
                             .clipShape(Circle())
                             
-                            Button(action: {
-                                
-                                withAnimation {
-                                                 isPopupPresented = true
-                                             }
-                            }) {
-                                Image(systemName: "message.fill")
-                                    .font(.title)
-                                
-                                
-                            }
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .clipShape(Circle())
-                            @State var showingPopup = false // 1
+//                            Button(action: {
+//                                
+//                                withAnimation {
+//                                                 isPopupPresented = true
+//                                             }
+//                            }) {
+//                                Image(systemName: "message.fill")
+//                                    .font(.title)
+//                                
+//                                
+//                            }
+//                            .padding()
+//                            .background(Color.blue)
+//                            .foregroundColor(.white)
+//                            .clipShape(Circle())
+                         
 
                         }
                         .padding(.horizontal)
