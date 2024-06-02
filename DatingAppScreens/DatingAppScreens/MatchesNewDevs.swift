@@ -72,7 +72,7 @@ struct MatchesNewDevsView: View {
         
         print (data)
         
-        guard let url = URL(string: "\(tokenManger.localhost)/profiles/matches") else {
+        guard let url = URL(string: "\(tokenManger.localhost)/profiles") else {
             throw URLError(.badURL)
         }
         
