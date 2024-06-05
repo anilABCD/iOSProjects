@@ -48,7 +48,7 @@ struct AuthResponse: Codable {
 
 
 struct MatchesFilter : Codable {
-    let technologies : String 
-    let minExperience : Int
-    let maxExperience : Int
+    let technologies : String?
+    let minExperience : Int?
+    let maxExperience : Int?
 }

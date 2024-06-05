@@ -11,10 +11,12 @@
 		365AC1F703A7D08A80217E15 /* Pods_DatingAppScreensTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEA2D24977437D01B7513847 /* Pods_DatingAppScreensTests.framework */; };
 		6D3A0FF4CA5BD3A77D0949E1 /* Pods_DatingAppScreens_DatingAppScreensUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5908A022A92C6953702C3068 /* Pods_DatingAppScreens_DatingAppScreensUITests.framework */; };
 		B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */; };
+		B71184AA2C0F7686004FC55C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71184A92C0F7686004FC55C /* Request.swift */; };
 		B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
 		B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */; };
 		B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76039242BF0F8A90088DFB7 /* HomeView.swift */; };
+		B76620002C107B1100C3D548 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661FFF2C107B1100C3D548 /* LocationManager.swift */; };
 		B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A36F32BF863D00051ACF1 /* RegisterView.swift */; };
 		B78180892C039A550040FADB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78180882C039A550040FADB /* ProfileView.swift */; };
 		B793200D2BF4975300FE954A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200C2BF4975300FE954A /* LoginView.swift */; };
@@ -56,10 +58,12 @@
 		7ECCFAEC1255AB8C35C488A0 /* Pods-DatingAppScreens-DatingAppScreensUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreens-DatingAppScreensUITests.debug.xcconfig"; path = "Target Support Files/Pods-DatingAppScreens-DatingAppScreensUITests/Pods-DatingAppScreens-DatingAppScreensUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B32D99110D926EDF7555D8EA /* Pods-DatingAppScreensTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.debug.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTechnologyView.swift; sourceTree = "<group>"; };
+		B71184A92C0F7686004FC55C /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouMatches.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
 		B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachesScreen.swift; sourceTree = "<group>"; };
 		B76039242BF0F8A90088DFB7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B7661FFF2C107B1100C3D548 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B77A36F32BF863D00051ACF1 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		B78180882C039A550040FADB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B793200C2BF4975300FE954A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -119,6 +123,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B71184A82C0F7674004FC55C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B71184A92C0F7686004FC55C /* Request.swift */,
+				B7661FFF2C107B1100C3D548 /* LocationManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		B79D44C32BEF1F2B00F0AA8B = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +157,7 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B71184A82C0F7674004FC55C /* Utils */,
 				B7957DA62BF76CA700D7E26A /* Info.plist */,
 				B79D44CF2BEF1F2B00F0AA8B /* DatingAppScreensApp.swift */,
 				B79D44D12BEF1F2B00F0AA8B /* ContentView.swift */,
@@ -220,6 +234,8 @@
 			dependencies = (
 			);
 			name = DatingAppScreens;
+			packageProductDependencies = (
+			);
 			productName = DatingAppScreens;
 			productReference = B79D44CC2BEF1F2B00F0AA8B /* DatingAppScreens.app */;
 			productType = "com.apple.product-type.application";
@@ -445,6 +461,7 @@
 			files = (
 				B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */,
 				B79D44D22BEF1F2B00F0AA8B /* ContentView.swift in Sources */,
+				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
@@ -454,6 +471,7 @@
 				B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */,
 				B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */,
 				B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */,
+				B71184AA2C0F7686004FC55C /* Request.swift in Sources */,
 				B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */,
 				B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */,
 			);

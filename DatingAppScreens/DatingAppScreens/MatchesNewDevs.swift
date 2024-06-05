@@ -9,6 +9,7 @@ import Foundation
 
 import SwiftUI
 
+
 struct ObjectId: Decodable, Hashable {
     let value: String
     
@@ -68,16 +69,26 @@ struct MatchesNewDevsView: View {
     func fetchProfiles() async throws {
         
         
-        let data = MatchesFilter(technologies: tokenManger.technologies , minExperience: 0, maxExperience: 5)
+        let data = MatchesFilter(technologies: nil , minExperience: nil, maxExperience: nil)
         
         print (data)
         
-        guard let url = URL(string: "\(tokenManger.localhost)/profiles") else {
+        // Example usage
+        let baseURL = "\(tokenManger.localhost)/profiles"
+        let parameters = [
+            "technologies": (tokenManger.technologies),
+            "minExperience": "0",
+            "maxExperience": "5"
+        ] as [String: String]
+        
+        let createdUrl = createURLWithParameters(baseURL: baseURL, parameters:parameters)
+        
+        guard let url = createdUrl else {
             throw URLError(.badURL)
         }
-        
+    
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let token = tokenManger.accessToken;
@@ -86,7 +97,7 @@ struct MatchesNewDevsView: View {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         do {
-            request.httpBody = try JSONEncoder().encode(data)
+//            request.httpBody = try JSONEncoder().encode(data)
         } catch {
             print (error.localizedDescription)
             throw error
@@ -411,3 +422,17 @@ struct ChatPopupView: View {
     }
 }
 
+
+// Function to create URL with percentage encoded parameters
+func createURLWithParameters(baseURL: String, parameters: [String: String]) -> URL? {
+    var urlComponents = URLComponents(string: baseURL)
+    
+    var queryItems: [URLQueryItem] = []
+    for (key, value) in parameters {
+        let queryItem = URLQueryItem(name: key, value: value)
+        queryItems.append(queryItem)
+    }
+    
+    urlComponents?.queryItems = queryItems
+    return urlComponents?.url
+}

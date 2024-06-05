@@ -7,11 +7,13 @@
 
 import SwiftUI
 
-
 struct ContentView: View {
     
     @State private var selectedTab = 0
     @EnvironmentObject private var tokenManager: TokenManager
+    
+    @StateObject private var locationManager = LocationManager()
+       
     
     @State var path :[MyNavigation<String>] = []
    
@@ -24,6 +26,21 @@ struct ContentView: View {
             
             
             VStack {
+                
+                VStack {
+                           if let location = locationManager.location {
+                               Text("Latitude: \(location.coordinate.latitude)")
+                               Text("Longitude: \(location.coordinate.longitude)")
+                           } else {
+                               Text("Fetching location...")
+                           }
+                       }
+                       .onAppear {
+                           locationManager.startUpdatingLocation()
+                       }
+                       .onDisappear {
+                           locationManager.stopUpdatingLocation()
+                       }
                 
                 if ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" ) {
                     

@@ -30,5 +30,10 @@
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>We need access to add photos to your photo library.</string>
    
+   <key>NSLocationWhenInUseUsageDescription</key>
+   <string>We need your location to show you relevant content.</string>
+   <key>NSLocationAlwaysUsageDescription</key>
+   <string>We need your location to provide continuous tracking even when the app is in the background.</string>
+   
 </dict>
 </plist>
