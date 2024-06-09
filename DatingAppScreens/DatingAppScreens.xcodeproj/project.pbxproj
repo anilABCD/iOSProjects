@@ -17,6 +17,7 @@
 		B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */; };
 		B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76039242BF0F8A90088DFB7 /* HomeView.swift */; };
 		B76620002C107B1100C3D548 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661FFF2C107B1100C3D548 /* LocationManager.swift */; };
+		B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B90852C153B1100BA7B5D /* GlobalConstants.swift */; };
 		B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A36F32BF863D00051ACF1 /* RegisterView.swift */; };
 		B78180892C039A550040FADB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78180882C039A550040FADB /* ProfileView.swift */; };
 		B793200D2BF4975300FE954A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200C2BF4975300FE954A /* LoginView.swift */; };
@@ -64,6 +65,7 @@
 		B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachesScreen.swift; sourceTree = "<group>"; };
 		B76039242BF0F8A90088DFB7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B7661FFF2C107B1100C3D548 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		B76B90852C153B1100BA7B5D /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		B77A36F32BF863D00051ACF1 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		B78180882C039A550040FADB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B793200C2BF4975300FE954A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -132,6 +134,22 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		B76B90812C1538D100BA7B5D /* LoginView */ = {
+			isa = PBXGroup;
+			children = (
+				B793200C2BF4975300FE954A /* LoginView.swift */,
+			);
+			path = LoginView;
+			sourceTree = "<group>";
+		};
+		B76B90842C153AFF00BA7B5D /* GlobalConstants */ = {
+			isa = PBXGroup;
+			children = (
+				B76B90852C153B1100BA7B5D /* GlobalConstants.swift */,
+			);
+			path = GlobalConstants;
+			sourceTree = "<group>";
+		};
 		B79D44C32BEF1F2B00F0AA8B = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +175,8 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B76B90842C153AFF00BA7B5D /* GlobalConstants */,
+				B76B90812C1538D100BA7B5D /* LoginView */,
 				B71184A82C0F7674004FC55C /* Utils */,
 				B7957DA62BF76CA700D7E26A /* Info.plist */,
 				B79D44CF2BEF1F2B00F0AA8B /* DatingAppScreensApp.swift */,
@@ -167,7 +187,6 @@
 				B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */,
 				B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */,
 				B76039242BF0F8A90088DFB7 /* HomeView.swift */,
-				B793200C2BF4975300FE954A /* LoginView.swift */,
 				B793200E2BF49AEF00FE954A /* SignUpData.swift */,
 				B77A36F32BF863D00051ACF1 /* RegisterView.swift */,
 				B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */,
@@ -463,6 +482,7 @@
 				B79D44D22BEF1F2B00F0AA8B /* ContentView.swift in Sources */,
 				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
+				B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,

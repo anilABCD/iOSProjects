@@ -163,18 +163,21 @@ struct MatchesNewDevsView: View {
                                                image
                                                    .resizable()
                                                    .scaledToFill()
-                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.54 )
+                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.65 )
                                                    .clipped()
                                                    .cornerRadius(10)
-                                                   .overlay(
-                                                                      RoundedRectangle(cornerRadius: 20)
-                                                                          .stroke(Color.clear, lineWidth: 0)
-                                                                          .shadow(color: Color.blue.opacity(0.7), radius: 10, x: 0, y: 0)
-                                                                  )
-                                                                  .shadow(color: Color.black.opacity(0.5), radius: 10, x: 0, y: 0)
+                                             
+//                                                   .overlay(
+//                                                                      RoundedRectangle(cornerRadius: 20)
+//                                                                          .stroke(Color.clear, lineWidth: 0)
+//                                                                          .shadow(color: Color.blue.opacity(0.7), radius: 10, x: 0, y: 0)
+//                                                                  )
+//                                                                  .shadow(color: Color.black.opacity(0.5), radius: 10, x: 0, y: 0)
+//
+                                               
                                            } placeholder: {
                                                ProgressView()
-                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.54  )
+                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.65  )
                                            }
                                        }
                                     
@@ -210,7 +213,7 @@ struct MatchesNewDevsView: View {
                                 }.background(Color.blue.opacity(0.01))
                                 
                                      
-                            } .frame(height:  UIScreen.main.bounds.height * 0.54  ).padding()
+                            } .frame(height:  UIScreen.main.bounds.height * 0.65  ).padding()
 
 //                                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
 //                                    
@@ -232,9 +235,9 @@ struct MatchesNewDevsView: View {
                                 }
                             }) {
                                 Image(systemName: "xmark.circle.fill")
-                                    .font(.title)
+                                    .font(.largeTitle)
                             } .disabled(currentIndex == profiles.count - 1)
-                            .padding()
+                                .padding(3)
                             .background(Color.red)
                             .foregroundColor(.white)
                             .clipShape(Circle())
@@ -247,10 +250,10 @@ struct MatchesNewDevsView: View {
                                 
                             }) {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .font(.title)
+                                    .font(.largeTitle)
                             }
                             .disabled(currentIndex == profiles.count - 1)
-                            .padding()
+                            .padding(3)
                             .background(Color.green)
                             .foregroundColor(.white)
                             .clipShape(Circle())

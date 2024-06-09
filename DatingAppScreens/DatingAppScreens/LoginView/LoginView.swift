@@ -297,18 +297,30 @@ struct LoginView: View {
                 }
                 
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
-                  
-                    DispatchQueue.main.async {
-                        tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "" , photo: decodedResponse.data?.user?.photo ?? "" , technologies:  decodedResponse.data?.user?.technologies ?? "" )
-                       let photo =  decodedResponse.data?.user?.photo
-                       
+                    // Save token locally
+         
+                    if let tokenId = decodedResponse.token {
+                        
+                          DispatchQueue.main.async {
+                              
+                              self.token = tokenId;
+                              
+                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "")
+                              print("Token: \(self.token ?? "No token received")")
+                              print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
+                              print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
+                              // Handle successful signup, maybe navigate to another view
+                          }
+                    } else {
+                        print("No Token")
                     }
-                  
+                   
+               
                 } else {
                     // Show error alert
                     DispatchQueue.main.async {
-                            
-                               self.showAlert = true
+                        showAlert = true
                     }
                     print("Invalid response from server")
                 }
