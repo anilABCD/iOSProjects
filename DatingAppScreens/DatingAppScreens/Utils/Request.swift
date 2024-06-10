@@ -25,7 +25,7 @@ func createURLWithParameters(baseURL: String, parameters: [String: String]) -> U
 
 
 // Async function to perform the network request with generic response type
-func createURLRequest<T: Encodable>(baseURL: String, accessToken : String , data : T? , parameters: [String: String]? ) throws -> URLRequest {
+func createURLRequest<T: Encodable>( method : String , baseURL: String, accessToken : String , data : T? , parameters: [String: String]? ) throws -> URLRequest {
   var urlComponents = URLComponents(string: baseURL)
     if let parameters = parameters {
         urlComponents?.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
@@ -34,7 +34,7 @@ func createURLRequest<T: Encodable>(baseURL: String, accessToken : String , data
     throw StringError(message: "Failed to create URL")
   }
   var request = URLRequest(url: url)
-  request.httpMethod = "GET" // Change this to the appropriate HTTP method for your request
+  request.httpMethod = method // Change this to the appropriate HTTP method for your request
   request.setValue("application/json", forHTTPHeaderField: "Content-Type")
   request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
     if let data = data {
@@ -48,7 +48,7 @@ func createURLRequest<T: Encodable>(baseURL: String, accessToken : String , data
 
 
 // Async function to perform the network request with generic response type
-func fetchData<T: Decodable>(from request: URLRequest) async throws -> T {
+func fetchData<T: Identifiable & Decodable>(from request: URLRequest) async throws -> T {
   let (data, response) = try await URLSession.shared.data(for: request)
 
   guard let httpResponse = response as? HTTPURLResponse else {

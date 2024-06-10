@@ -14,6 +14,8 @@ struct UpdateTechnologyNewView: View {
    
     @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
+    
+    @State var IsNoItemsSelected = false;
   
     let columns = [
         GridItem(.flexible()),
@@ -46,6 +48,12 @@ struct UpdateTechnologyNewView: View {
     
     func submitSelections( authToken : String ) {
         let selectedItems = items.filter { $0.isSelected }.map { $0.name }
+        
+        if(selectedItems.isEmpty){
+            IsNoItemsSelected = true;
+            return;
+        }
+        
         guard let url = URL(string: "\(tokenManger.localhost)/profiles/technology") else { return }
         
        
@@ -106,6 +114,9 @@ struct UpdateTechnologyNewView: View {
                 }
             }
             .padding()
+            .alert(isPresented: $IsNoItemsSelected) {
+                Alert(title: Text("Required"), message: Text("Please Select Atleast One Technology"), dismissButton: .default(Text("OK")))
+            }
             
             Button(action: {
                 submitSelections( authToken: tokenManger.accessToken)

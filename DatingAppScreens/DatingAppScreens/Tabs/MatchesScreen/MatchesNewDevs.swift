@@ -51,7 +51,7 @@ struct Profile: Identifiable, Decodable {
 
 struct MatchesNewDevsView: View {
     
-    @State private var currentIndex = 0 ;
+    @State private var currentIndex = -1 ;
     @State var isPopupPresented = false // 1
     @State private var selectedPerson: String = "John Doe"
     
@@ -64,7 +64,20 @@ struct MatchesNewDevsView: View {
     
     @State private var profiles : [Profile] = [Profile(objectId: ObjectId(from:"hello"), name: "")];
     
+    func likeTheProfile() async throws {
+        
+        let user2_id = profiles[currentIndex].id
+        
+        print(currentIndex, user2_id)
+        
+        let matches = Matches(user2_id: user2_id )
     
+        
+        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/matches/", accessToken: tokenManger.accessToken, data: matches, parameters: nil)
+        
+         let response: MatchesResponse = try await fetchData(from: urlRequest)
+        
+    }
     
     func fetchProfiles() async throws {
         
@@ -243,14 +256,28 @@ struct MatchesNewDevsView: View {
                             .clipShape(Circle())
                             
                             Button(action: {
+                              
+                                Task {
+                                    do {
+                                        try await likeTheProfile()
+                                    }catch{
+                                        
+                                    }
+                                }
+                                
                                 withAnimation(.easeInOut(duration: 1.0)) {
                                     currentIndex = min (currentIndex + 1 , profiles.count - 1)
                                     
                                 }
                                 
+                               
+                                
                             }) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.largeTitle)
+                                
+                               
+                                
                             }
                             .disabled(currentIndex == profiles.count - 1)
                             .padding(3)

@@ -31,6 +31,8 @@
 		B79D44EB2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EA2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift */; };
 		B79D44ED2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */; };
 		B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */; };
+		B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */; };
+		B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		B79D44EA2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITests.swift; sourceTree = "<group>"; };
 		B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingExample.swift; sourceTree = "<group>"; };
+		B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesScreen.swift; sourceTree = "<group>"; };
+		B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesModel.swift; sourceTree = "<group>"; };
 		DEA2D24977437D01B7513847 /* Pods_DatingAppScreensTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DatingAppScreensTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECB4CB945EA494BDC5A4916E /* Pods-DatingAppScreensTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.release.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -175,24 +179,20 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B7F2A7F62C17129700A51B3D /* Tabs */,
 				B76B90842C153AFF00BA7B5D /* GlobalConstants */,
-				B76B90812C1538D100BA7B5D /* LoginView */,
 				B71184A82C0F7674004FC55C /* Utils */,
+				B7E2A8392C17017C008ADE0E /* Components */,
+				B7E2A8382C170167008ADE0E /* Models */,
+				B7E2A83C2C17027B008ADE0E /* UserMenu */,
+				B7E2A83A2C170192008ADE0E /* WhenRegistering */,
+				B7E2A8362C1700D6008ADE0E /* RegisterView */,
+				B76B90812C1538D100BA7B5D /* LoginView */,
 				B7957DA62BF76CA700D7E26A /* Info.plist */,
 				B79D44CF2BEF1F2B00F0AA8B /* DatingAppScreensApp.swift */,
 				B79D44D12BEF1F2B00F0AA8B /* ContentView.swift */,
 				B79D44D32BEF1F2C00F0AA8B /* Assets.xcassets */,
 				B79D44D52BEF1F2C00F0AA8B /* Preview Content */,
-				B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */,
-				B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */,
-				B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */,
-				B76039242BF0F8A90088DFB7 /* HomeView.swift */,
-				B793200E2BF49AEF00FE954A /* SignUpData.swift */,
-				B77A36F32BF863D00051ACF1 /* RegisterView.swift */,
-				B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */,
-				B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */,
-				B78180882C039A550040FADB /* ProfileView.swift */,
-				B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */,
 			);
 			path = DatingAppScreens;
 			sourceTree = "<group>";
@@ -220,6 +220,68 @@
 				B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */,
 			);
 			path = DatingAppScreensUITests;
+			sourceTree = "<group>";
+		};
+		B7E2A8362C1700D6008ADE0E /* RegisterView */ = {
+			isa = PBXGroup;
+			children = (
+				B77A36F32BF863D00051ACF1 /* RegisterView.swift */,
+			);
+			path = RegisterView;
+			sourceTree = "<group>";
+		};
+		B7E2A8372C1700F4008ADE0E /* MatchesScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */,
+				B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */,
+				B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */,
+			);
+			path = MatchesScreen;
+			sourceTree = "<group>";
+		};
+		B7E2A8382C170167008ADE0E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B793200E2BF49AEF00FE954A /* SignUpData.swift */,
+				B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B7E2A8392C17017C008ADE0E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B7E2A83A2C170192008ADE0E /* WhenRegistering */ = {
+			isa = PBXGroup;
+			children = (
+				B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */,
+				B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */,
+			);
+			path = WhenRegistering;
+			sourceTree = "<group>";
+		};
+		B7E2A83C2C17027B008ADE0E /* UserMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B78180882C039A550040FADB /* ProfileView.swift */,
+			);
+			path = UserMenu;
+			sourceTree = "<group>";
+		};
+		B7F2A7F62C17129700A51B3D /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				B76039242BF0F8A90088DFB7 /* HomeView.swift */,
+				B7E2A8372C1700F4008ADE0E /* MatchesScreen */,
+				B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */,
+			);
+			path = Tabs;
 			sourceTree = "<group>";
 		};
 		B88FA1018DFEE776CF1EF96E /* Pods */ = {
@@ -479,6 +541,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */,
+				B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */,
 				B79D44D22BEF1F2B00F0AA8B /* ContentView.swift in Sources */,
 				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
@@ -486,6 +549,7 @@
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
+				B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
 				B79B38BB2BFEF2A9007D1E01 /* UploadYourPhoto.swift in Sources */,
 				B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */,

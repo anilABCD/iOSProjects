@@ -126,17 +126,18 @@ struct ContentView: View {
                                 HStack {
                                     
                                     
-                                    Image("menu").resizable().frame(width: 25, height: 25)
-                                        .font(.title)
-                                    
-                                        .cornerRadius(4)
-                                        .onTapGesture {
-                                            withAnimation {
-                                                isMenuVisible.toggle()
-                                            }
-                                            
-                                            print("\(tokenManager.localhost)/\(tokenManager.photo)")
-                                        }
+                                    // Temporarly Commented If Needed , I Will Add In Future , The Menu . on the left top corner.
+//                                    Image("menu").resizable().frame(width: 25, height: 25)
+//                                        .font(.title)
+//                                    
+//                                        .cornerRadius(4)
+//                                        .onTapGesture {
+//                                            withAnimation {
+//                                                isMenuVisible.toggle()
+//                                            }
+//                                            
+//                                            print("\(tokenManager.localhost)/\(tokenManager.photo)")
+//                                        }
                                     
                                     
                                     Spacer()
@@ -167,30 +168,36 @@ struct ContentView: View {
                             
                             HomeView()
                                 .tabItem {
-                                    Label("Matches", systemImage: "heart")
+                                    Label("", systemImage: "rectangle.stack")
                                 }
                                 .tag(0)
                             
-                            Text("Hello")
+                            Text("")
                                 .tabItem {
-                                    Label("Search", systemImage: "magnifyingglass").background(.green)
+                                    Label("", systemImage: "heart").background(.black)
                                 }
                                 .tag(1)
                             
-                            Text("Hello2")
+//                            Text("Hello2")
+//                                .tabItem {
+//                                    Label("Questions", systemImage: "plus").background(.orange)
+//                                }
+//                                .tag(2)
+                            
+                            Text("Hello3")
                                 .tabItem {
-                                    Label("Questions", systemImage: "plus").background(.green)
+                                    Label("", systemImage: "message").background(.black)
                                 }
                                 .tag(2)
                             
                             Text("Hello3")
                                 .tabItem {
-                                    Label("Messages", systemImage: "message").background(.green)
+                                    Label("", systemImage: "person").background(.black)
                                 }
                                 .tag(3)
                             
                         }
-                        .accentColor(Color.green)
+                        .accentColor(Color.black)
                       
                         
                         
