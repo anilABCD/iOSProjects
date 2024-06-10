@@ -63,6 +63,22 @@ func fetchData<T: Identifiable & Decodable>(from request: URLRequest) async thro
   return decodedResponse
 }
 
+// Async function to perform the network request with generic response type
+func fetchDataArray<T: Identifiable & Decodable>(from request: URLRequest) async throws -> [T] {
+  let (data, response) = try await URLSession.shared.data(for: request)
+
+  guard let httpResponse = response as? HTTPURLResponse else {
+    throw StringError(message: "Invalid response received")
+  }
+
+  if httpResponse.statusCode >= 400 {
+    throw StringError(message: "\(httpResponse.statusCode )")
+  }
+
+  let decodedResponse = try JSONDecoder().decode([T].self, from: data)
+  return decodedResponse
+}
+
 
 
 

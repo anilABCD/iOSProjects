@@ -10,45 +10,6 @@ import Foundation
 import SwiftUI
 
 
-struct ObjectId: Decodable, Hashable {
-    let value: String
-    
-    init(from string: String) {
-          self.value = string
-      }
-      
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let objectIdString = try container.decode(String.self)
-        self.value = objectIdString
-    }
-}
-
-struct Profile: Identifiable, Decodable {
-    var objectId: ObjectId
-    var name: String?
-    var email: String?
-    var photo : String?
-    var experience: Int?
-    var technologies: [String]?
-  
-    // Computed property for Identifiable protocol
-    var id: String {
-        return objectId.value
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case objectId = "_id"
-        case name
-        case email
-        case photo
-        case experience
-        case technologies
-    
-    }
-}
-
 struct MatchesNewDevsView: View {
     
     @State private var currentIndex = -1 ;

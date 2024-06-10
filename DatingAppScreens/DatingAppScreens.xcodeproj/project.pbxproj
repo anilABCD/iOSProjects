@@ -30,6 +30,10 @@
 		B79D44E12BEF1F2C00F0AA8B /* DatingAppScreensTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44E02BEF1F2C00F0AA8B /* DatingAppScreensTests.swift */; };
 		B79D44EB2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EA2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift */; };
 		B79D44ED2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */; };
+		B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9462C174A6E00F321A9 /* LikesModel.swift */; };
+		B7E6C9492C174BFD00F321A9 /* ObjectId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9482C174BFD00F321A9 /* ObjectId.swift */; };
+		B7E6C94B2C174C1C00F321A9 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C94A2C174C1C00F321A9 /* ProfileModel.swift */; };
+		B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9512C175D6100F321A9 /* OthersProfile.swift */; };
 		B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */; };
 		B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */; };
 		B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */; };
@@ -84,6 +88,10 @@
 		B79D44E62BEF1F2C00F0AA8B /* DatingAppScreensUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DatingAppScreensUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79D44EA2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITests.swift; sourceTree = "<group>"; };
 		B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B7E6C9462C174A6E00F321A9 /* LikesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesModel.swift; sourceTree = "<group>"; };
+		B7E6C9482C174BFD00F321A9 /* ObjectId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectId.swift; sourceTree = "<group>"; };
+		B7E6C94A2C174C1C00F321A9 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		B7E6C9512C175D6100F321A9 /* OthersProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersProfile.swift; sourceTree = "<group>"; };
 		B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingExample.swift; sourceTree = "<group>"; };
 		B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesScreen.swift; sourceTree = "<group>"; };
 		B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesModel.swift; sourceTree = "<group>"; };
@@ -243,8 +251,11 @@
 		B7E2A8382C170167008ADE0E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B7E6C9482C174BFD00F321A9 /* ObjectId.swift */,
 				B793200E2BF49AEF00FE954A /* SignUpData.swift */,
 				B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */,
+				B7E6C9462C174A6E00F321A9 /* LikesModel.swift */,
+				B7E6C94A2C174C1C00F321A9 /* ProfileModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -274,12 +285,37 @@
 			path = UserMenu;
 			sourceTree = "<group>";
 		};
-		B7F2A7F62C17129700A51B3D /* Tabs */ = {
+		B7E6C94E2C174E5B00F321A9 /* HomeScreen */ = {
 			isa = PBXGroup;
 			children = (
 				B76039242BF0F8A90088DFB7 /* HomeView.swift */,
 				B7E2A8372C1700F4008ADE0E /* MatchesScreen */,
+			);
+			path = HomeScreen;
+			sourceTree = "<group>";
+		};
+		B7E6C94F2C175D2E00F321A9 /* LikesScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B7E6C9502C175D3C00F321A9 /* OthersProfile */,
 				B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */,
+			);
+			path = LikesScreen;
+			sourceTree = "<group>";
+		};
+		B7E6C9502C175D3C00F321A9 /* OthersProfile */ = {
+			isa = PBXGroup;
+			children = (
+				B7E6C9512C175D6100F321A9 /* OthersProfile.swift */,
+			);
+			path = OthersProfile;
+			sourceTree = "<group>";
+		};
+		B7F2A7F62C17129700A51B3D /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				B7E6C94F2C175D2E00F321A9 /* LikesScreen */,
+				B7E6C94E2C174E5B00F321A9 /* HomeScreen */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -547,15 +583,19 @@
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
+				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
 				B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
+				B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */,
 				B79B38BB2BFEF2A9007D1E01 /* UploadYourPhoto.swift in Sources */,
 				B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */,
 				B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */,
+				B7E6C94B2C174C1C00F321A9 /* ProfileModel.swift in Sources */,
 				B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */,
 				B71184AA2C0F7686004FC55C /* Request.swift in Sources */,
+				B7E6C9492C174BFD00F321A9 /* ObjectId.swift in Sources */,
 				B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */,
 				B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */,
 			);

@@ -172,7 +172,7 @@ struct ContentView: View {
                                 }
                                 .tag(0)
                             
-                            Text("")
+                            LikesScreenView()
                                 .tabItem {
                                     Label("", systemImage: "heart").background(.black)
                                 }
