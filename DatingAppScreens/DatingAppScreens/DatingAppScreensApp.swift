@@ -64,7 +64,7 @@ struct DatingAppScreensApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(tokenManager).onOpenURL { url in
+            ContentView(isHome: false).environmentObject(tokenManager).onOpenURL { url in
                 GIDSignIn.sharedInstance.handle(url)
               }.onAppear {
                   GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in

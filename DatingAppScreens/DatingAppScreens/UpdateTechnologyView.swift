@@ -18,7 +18,7 @@ struct UpdateTechnologyNewView: View {
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
-        GridItem(.flexible())
+//        GridItem(.flexible())
     ]
     
   
@@ -138,11 +138,12 @@ struct ItemView: View {
         Text(item.name)
             .font(.headline)
             .foregroundColor(item.isSelected ? .white : .white)
-            .padding()
+            .padding(4)
             .frame(maxWidth: .infinity)
             .background(item.isSelected ? Color.blue : Color.gray)
             .clipShape(Capsule())
                         .overlay(Capsule().stroke(Color.white, lineWidth: 1))
+                        .lineLimit(1)
     }
 }
 

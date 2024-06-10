@@ -425,17 +425,3 @@ struct ChatPopupView: View {
     }
 }
 
-
-// Function to create URL with percentage encoded parameters
-func createURLWithParameters(baseURL: String, parameters: [String: String]) -> URL? {
-    var urlComponents = URLComponents(string: baseURL)
-    
-    var queryItems: [URLQueryItem] = []
-    for (key, value) in parameters {
-        let queryItem = URLQueryItem(name: key, value: value)
-        queryItems.append(queryItem)
-    }
-    
-    urlComponents?.queryItems = queryItems
-    return urlComponents?.url
-}

@@ -8,6 +8,22 @@ import SwiftUI
 import Foundation
 
 
+
+// Function to create URL with percentage encoded parameters
+func createURLWithParameters(baseURL: String, parameters: [String: String]) -> URL? {
+    var urlComponents = URLComponents(string: baseURL)
+    
+    var queryItems: [URLQueryItem] = []
+    for (key, value) in parameters {
+        let queryItem = URLQueryItem(name: key, value: value)
+        queryItems.append(queryItem)
+    }
+    
+    urlComponents?.queryItems = queryItems
+    return urlComponents?.url
+}
+
+
 // Async function to perform the network request with generic response type
 func createURLRequest<T: Encodable>(baseURL: String, accessToken : String , data : T? , parameters: [String: String]? ) throws -> URLRequest {
   var urlComponents = URLComponents(string: baseURL)

@@ -14,12 +14,18 @@ struct ContentView: View {
     
     @StateObject private var locationManager = LocationManager()
        
+    var isHome = false
+
     
     @State var path :[MyNavigation<String>] = []
    
     @State private var isMenuVisible = false
+    
+    init( isHome : Bool ){
+        
+        self.isHome = isHome
+    }
 
-  
     var body: some View {
         
         ZStack {
@@ -42,7 +48,7 @@ struct ContentView: View {
 //                           locationManager.stopUpdatingLocation()
 //                       }
                 
-                if ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" ) {
+                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" ) ) {
                     
                     VStack {
                         
@@ -238,10 +244,75 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    
+    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+       
+    @StateObject static var tokenManager :TokenManager = TokenManager()
+    
+    init(){
+        
+    
+    }
+    
     static var previews: some View {
-        let tokenManager = TokenManager()
-        ContentView()
-            .environmentObject(tokenManager)
+      
+        TabView {
+                   ContentView(isHome: false)
+                       .tabItem {
+                           Label("Home", systemImage: "house")
+                       }
+                       .environmentObject(tokenManager)
+                   
+                   RegisterView(path: $path)
+                       .tabItem {
+                           Label("Register", systemImage: "person.crop.circle")
+                       }
+                       .environmentObject(tokenManager)
+                   
+                   UploadYourPhotoView(path: $path)
+                       .tabItem {
+                           Label("Upload Photo", systemImage: "photo")
+                       }
+                       .environmentObject(tokenManager)
+                   
+                   UpdateTechnologyNewView(path: $path)
+                       .tabItem {
+                           Label("Update Technology", systemImage: "wrench")
+                       }
+                       .environmentObject(tokenManager)
+                   
+                   ContentView(isHome: true)
+                       .tabItem {
+                           Label("Home", systemImage: "house.fill")
+                       }
+                       .environmentObject(tokenManager)
+                   
+                
+               }
+//        
+//        RegisterView(path: $path)
+//            .tabItem {
+//                Label("Register", systemImage: "person.crop.circle")
+//            }
+//            .environmentObject(tokenManager)
+//        
+//        UploadYourPhotoView(path: $path)
+//            .tabItem {
+//                Label("Upload Photo", systemImage: "photo")
+//            }
+//            .environmentObject(tokenManager)
+//        
+//        UpdateTechnologyNewView(path: $path)
+//            .tabItem {
+//                Label("Update Technology", systemImage: "wrench")
+//            }
+//            .environmentObject(tokenManager)
+//        
+//        ContentView(isHome: true)
+//            .tabItem {
+//                Label("Home", systemImage: "house.fill")
+//            }
+//            .environmentObject(tokenManager)
     }
 }
 
