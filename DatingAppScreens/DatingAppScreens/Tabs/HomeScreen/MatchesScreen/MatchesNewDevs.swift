@@ -12,7 +12,7 @@ import SwiftUI
 
 struct MatchesNewDevsView: View {
     
-    @State private var currentIndex = -1 ;
+    @State private var currentIndex = 0 ;
     @State var isPopupPresented = false // 1
     @State private var selectedPerson: String = "John Doe"
     
@@ -25,7 +25,7 @@ struct MatchesNewDevsView: View {
     
     @State private var profiles : [Profile] = [Profile(objectId: ObjectId(from:"hello"), name: "")];
     
-    func likeTheProfile() async throws {
+    func likeTheProfile(currentIndex : Int) async throws {
         
         let user2_id = profiles[currentIndex].id
         
@@ -137,7 +137,7 @@ struct MatchesNewDevsView: View {
                                                image
                                                    .resizable()
                                                    .scaledToFill()
-                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.65 )
+                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.60 )
                                                    .clipped()
                                                    .cornerRadius(10)
                                              
@@ -151,7 +151,7 @@ struct MatchesNewDevsView: View {
                                                
                                            } placeholder: {
                                                ProgressView()
-                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.65  )
+                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.60  )
                                            }
                                        }
                                     
@@ -187,7 +187,7 @@ struct MatchesNewDevsView: View {
                                 }.background(Color.blue.opacity(0.01))
                                 
                                      
-                            } .frame(height:  UIScreen.main.bounds.height * 0.65  ).padding()
+                            } .frame(height:  UIScreen.main.bounds.height * 0.60  ).padding()
 
 //                                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
 //                                    
@@ -204,33 +204,42 @@ struct MatchesNewDevsView: View {
                         HStack(spacing: 30) {
                             Button(action: {
                                 withAnimation(.easeInOut(duration: 1.0)) {
-                                    currentIndex = min (currentIndex + 1 , profiles.count - 1)
+                                    currentIndex = min (currentIndex + 1 , profiles.count - 1 )
                                     
                                 }
                             }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .font(.largeTitle)
-                            } .disabled(currentIndex == profiles.count - 1)
-                                .padding(3)
+                            } .disabled(currentIndex == profiles.count)
+                                .padding()
                             .background(Color.red)
                             .foregroundColor(.white)
                             .clipShape(Circle())
                             
                             Button(action: {
                               
-                                Task {
-                                    do {
-                                        try await likeTheProfile()
-                                    }catch{
-                                        
-                                    }
-                                }
                                 
-                                withAnimation(.easeInOut(duration: 1.0)) {
-                                    currentIndex = min (currentIndex + 1 , profiles.count - 1)
-                                    
-                                }
-                                
+                                // Print the current index
+                                   print(currentIndex)
+                                   
+                                   // Create a local copy of the current index
+                                   let currentIndex2 = currentIndex
+                                   
+                                   // Update currentIndex immediately for UI responsiveness
+                                   withAnimation(.easeInOut(duration: 1.0)) {
+                                       currentIndex = min(currentIndex + 1, profiles.count - 1)
+                                   }
+                                   
+                                   // Start an asynchronous task for the network request
+                                   Task {
+                                       do {
+                                           // Call the asynchronous function with the local copy
+                                           try await likeTheProfile(currentIndex: currentIndex2)
+                                       } catch {
+                                           // Handle any errors here
+                                           print("Failed to like the profile: \(error)")
+                                       }
+                                   }
                                
                                 
                             }) {
@@ -240,8 +249,8 @@ struct MatchesNewDevsView: View {
                                
                                 
                             }
-                            .disabled(currentIndex == profiles.count - 1)
-                            .padding(3)
+                            .disabled(currentIndex == profiles.count)
+                            .padding()
                             .background(Color.green)
                             .foregroundColor(.white)
                             .clipShape(Circle())
