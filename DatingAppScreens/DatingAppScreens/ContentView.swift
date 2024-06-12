@@ -72,10 +72,10 @@ struct ContentView: View {
                             ////                                }
                             //                            }
                             
-                            LoginView(path: $path).navigationDestination(for: MyNavigation<String>.self) { view in
+                            LoginSocialView(path: $path).navigationDestination(for: MyNavigation<String>.self) { view in
                                 switch view.appView {
                                 case .signIn:
-                                    LoginView(path:$path)
+                                    LoginSocialView(path:$path)
                                 case .signUp:
                                     RegisterView(path:$path)
                                 case .page1:
