@@ -166,12 +166,14 @@ struct ContentView: View {
                     VStack {
                         TabView(selection: $selectedTab) {
                             
-                            HomeView()
+                            HomeView().onAppear(){
+                                tokenManager.isMenuView = false
+                            }
                                 .tabItem {
                                     Label("", systemImage: "rectangle.stack")
                                 }
                                 .tag(0)
-                            
+                                .background(Color.white) // Set background color of the first tab
                             LikesScreenView()
                                 .tabItem {
                                     Label("", systemImage: "heart").background(.black)
@@ -190,18 +192,19 @@ struct ContentView: View {
                                 }
                                 .tag(2)
                             
-                            Text("Hello3")
+                            UserSettingsView(path: $path)
                                 .tabItem {
                                     Label("", systemImage: "person").background(.black)
                                 }
                                 .tag(3)
                             
-                        }
+                        }.background(.white)
                         .accentColor(Color.black)
                       
                         
                         
-                    }.frame( maxWidth:.infinity )
+                    }
+                    .frame( maxWidth:.infinity )
                         .navigationBarTitle("", displayMode: .inline)
                 }
                         

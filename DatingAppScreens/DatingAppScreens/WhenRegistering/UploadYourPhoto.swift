@@ -11,8 +11,9 @@ struct UploadYourPhotoView: View {
     @State private var image : UIImage?
     
     @EnvironmentObject private var tokenManger : TokenManager
-  
     
+    
+  
     @State private var isUploading : Bool?
     
     @State private var photoPickerItem : PhotosPickerItem?;
@@ -21,24 +22,25 @@ struct UploadYourPhotoView: View {
         
         VStack{
             
-            
-            Text("Upload Your Photo")
-                .font(.headline)
-                .padding(.bottom, 20)
-                .foregroundColor(.orange)
+           
             
         
             VStack{
                 
                 Spacer()
                 
-                if( image != nil ) {
+                if( image != nil) {
                     Image(uiImage: image ?? UIImage())
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 200, height: 200)
                         .clipShape(.circle)
                         .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                }
+                else if ( tokenManger.photo != "")
+                {
+                    AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo)")
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/).frame(width: 200, height: 200)
                 }
                 else{
                     
@@ -66,7 +68,7 @@ struct UploadYourPhotoView: View {
                 
             }.frame(maxWidth: .infinity).background(.white)
             
-        }.frame(maxWidth: .infinity).background(.black)
+        }.frame(maxWidth: .infinity).navigationTitle("Upload Your Photo")
             .onChange(of: photoPickerItem) { newValue in
                 Task {
                     if let photoPickerItem = newValue {

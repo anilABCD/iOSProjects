@@ -19,8 +19,12 @@
 		B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76039242BF0F8A90088DFB7 /* HomeView.swift */; };
 		B76620002C107B1100C3D548 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661FFF2C107B1100C3D548 /* LocationManager.swift */; };
 		B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B90852C153B1100BA7B5D /* GlobalConstants.swift */; };
+		B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772800C2C19BBA100446085 /* UserSettingsScreen.swift */; };
+		B772800F2C19D62200446085 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772800E2C19D62200446085 /* Utils.swift */; };
 		B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A36F32BF863D00051ACF1 /* RegisterView.swift */; };
+		B77C2D052C1A85880026E36E /* Chips.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C2D042C1A85880026E36E /* Chips.swift */; };
 		B78180892C039A550040FADB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78180882C039A550040FADB /* ProfileView.swift */; };
+		B784EDF22C19ECD000FF97C3 /* UpdateHobbiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */; };
 		B793200D2BF4975300FE954A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200C2BF4975300FE954A /* LoginView.swift */; };
 		B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200E2BF49AEF00FE954A /* SignUpData.swift */; };
 		B79B38BB2BFEF2A9007D1E01 /* UploadYourPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */; };
@@ -74,8 +78,12 @@
 		B76039242BF0F8A90088DFB7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B7661FFF2C107B1100C3D548 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B76B90852C153B1100BA7B5D /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
+		B772800C2C19BBA100446085 /* UserSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsScreen.swift; sourceTree = "<group>"; };
+		B772800E2C19D62200446085 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		B77A36F32BF863D00051ACF1 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		B77C2D042C1A85880026E36E /* Chips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips.swift; sourceTree = "<group>"; };
 		B78180882C039A550040FADB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHobbiesView.swift; sourceTree = "<group>"; };
 		B793200C2BF4975300FE954A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B793200E2BF49AEF00FE954A /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		B7957DA62BF76CA700D7E26A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -144,6 +152,7 @@
 			children = (
 				B71184A92C0F7686004FC55C /* Request.swift */,
 				B7661FFF2C107B1100C3D548 /* LocationManager.swift */,
+				B772800E2C19D62200446085 /* Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -163,6 +172,22 @@
 				B76B90852C153B1100BA7B5D /* GlobalConstants.swift */,
 			);
 			path = GlobalConstants;
+			sourceTree = "<group>";
+		};
+		B772800B2C19BB8700446085 /* UserSettingsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B772800C2C19BBA100446085 /* UserSettingsScreen.swift */,
+			);
+			path = UserSettingsScreen;
+			sourceTree = "<group>";
+		};
+		B77C2D032C1A85740026E36E /* Experimental */ = {
+			isa = PBXGroup;
+			children = (
+				B77C2D042C1A85880026E36E /* Chips.swift */,
+			);
+			path = Experimental;
 			sourceTree = "<group>";
 		};
 		B79D44C32BEF1F2B00F0AA8B = {
@@ -190,6 +215,7 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B77C2D032C1A85740026E36E /* Experimental */,
 				B7F2A7F62C17129700A51B3D /* Tabs */,
 				B76B90842C153AFF00BA7B5D /* GlobalConstants */,
 				B71184A82C0F7674004FC55C /* Utils */,
@@ -276,6 +302,7 @@
 			children = (
 				B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */,
 				B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */,
+				B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */,
 			);
 			path = WhenRegistering;
 			sourceTree = "<group>";
@@ -317,6 +344,7 @@
 		B7F2A7F62C17129700A51B3D /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				B772800B2C19BB8700446085 /* UserSettingsScreen */,
 				B7E6C94F2C175D2E00F321A9 /* LikesScreen */,
 				B7E6C94E2C174E5B00F321A9 /* HomeScreen */,
 			);
@@ -579,13 +607,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B784EDF22C19ECD000FF97C3 /* UpdateHobbiesView.swift in Sources */,
 				B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */,
 				B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */,
 				B79D44D22BEF1F2B00F0AA8B /* ContentView.swift in Sources */,
+				B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */,
 				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
+				B772800F2C19D62200446085 /* Utils.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
+				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
 				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,

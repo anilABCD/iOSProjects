@@ -15,6 +15,9 @@ struct UpdateTechnologyNewView: View {
     @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
     
+    @State private var birthDate = Date()
+
+    
     @State var IsNoItemsSelected = false;
   
     let columns = [
@@ -22,6 +25,7 @@ struct UpdateTechnologyNewView: View {
         GridItem(.flexible()),
 //        GridItem(.flexible())
     ]
+    
     
   
     @State var items: [SelectableItem] = [
@@ -86,8 +90,8 @@ struct UpdateTechnologyNewView: View {
                 DispatchQueue.main.async {
                     self.status = responseMessage.status;
                     
-                    print(self.status)
-                    print (responseMessage.data?.user?.technologies)
+                    print(self.status ?? "")
+                    print (responseMessage.data?.user?.technologies ?? "" )
                     
                     self.tokenManger.technologies =  selectedItems.joined(separator: ",");
                 }
@@ -98,24 +102,56 @@ struct UpdateTechnologyNewView: View {
     }
     
     var body: some View {
+        
         VStack {
-            
-            Text("Technologies")
-                          .font(.largeTitle)
-                          .fontWeight(.bold)
-                          .padding()
-            
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(items) { item in
-                    ItemView(item: item)
-                        .onTapGesture {
-                            toggleSelection(for: item)
-                        }
+            ScrollView {
+                
+                Spacer()
+//                VStack {
+//                    Text("Select your date of birth")
+//                        .font(.headline)
+//                    
+//                    DatePicker("Date of Birth", selection: $birthDate, in: ...Date(), displayedComponents: .date)
+//                        .datePickerStyle(WheelDatePickerStyle())
+//                        .labelsHidden()
+//                    
+//                    Text("Selected Date: \(formattedDate(date: birthDate))")
+//                        .padding()
+//                }.padding(0)
+              
+                Text("Technologies")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+             
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(items) { item in
+                        ItemView(item: item)
+                            .onTapGesture {
+                                toggleSelection(for: item)
+                            }
+                    }
                 }
-            }
-            .padding()
-            .alert(isPresented: $IsNoItemsSelected) {
-                Alert(title: Text("Required"), message: Text("Please Select Atleast One Technology"), dismissButton: .default(Text("OK")))
+                .padding()
+                .alert(isPresented: $IsNoItemsSelected) {
+                    Alert(title: Text("Required"), message: Text("Please Select Atleast One Technology"), dismissButton: .default(Text("OK")))
+                }
+                
+               
+            }.padding().onAppear(){
+                // Assuming tokenManager.technologies is a string containing comma-separated values
+                let technologiesArray = tokenManger.technologies.split(separator: ",").map { String($0) }
+                
+                // Iterate through each item in items
+                for index in items.indices {
+                    let selectedItem = items[index]
+                    
+                    // Check if the name of the selectedItem exists in technologiesArray
+                    if let _ = technologiesArray.first(where: { $0 == selectedItem.name }) {
+                        // If found, update the isSelected property
+                        items[index].isSelected = true
+                    }
+                }
             }
             
             Button(action: {
@@ -136,9 +172,7 @@ struct UpdateTechnologyNewView: View {
                     .foregroundColor(.green)
                     .padding()
             }
-        }
-       
-        .padding()
+        }.navigationTitle("")
     }
 }
 
@@ -147,10 +181,10 @@ struct ItemView: View {
     
     var body: some View {
         Text(item.name)
-            .font(.headline)
+            .fontWeight(.semibold)
             .foregroundColor(item.isSelected ? .white : .white)
-            .padding(4)
-            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .padding(.horizontal)
             .background(item.isSelected ? Color.blue : Color.gray)
             .clipShape(Capsule())
                         .overlay(Capsule().stroke(Color.white, lineWidth: 1))
@@ -160,8 +194,7 @@ struct ItemView: View {
 
 struct UpdateTechnologyView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
-    @EnvironmentObject private var tokenManger : TokenManager
     static var previews: some View {
-        UpdateTechnologyNewView(path: $path)
+        UpdateTechnologyNewView(path: $path).environmentObject(TokenManager())
     }
 }
