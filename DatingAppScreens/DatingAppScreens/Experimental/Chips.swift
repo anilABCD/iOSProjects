@@ -1,135 +1,61 @@
-////
-////  Chips.swift
-////  DatingAppScreens
-////
-////  Created by Anil Kumar Potlapally on 13/06/24.
-////
-//
-//import SwiftUI
-//import Foundation
-//
-//struct Chip: Identifiable {
-//    let id = UUID()
-//    var text: String
-//}
-//
-//import SwiftUI
-//
-//struct ChipView: View {
-//    var chip: Chip
-//
-//    var body: some View {
-//        Text(chip.text)
-//            .padding(.horizontal, 12)
-//            .padding(.vertical, 8)
-//            .background(Color.blue.opacity(0.2))
-//            .cornerRadius(20)
-//            .foregroundColor(.blue)
-//    }
-//}
-//
-//struct ChipsView: View {
-//    let chips: [[Chip]] = [[ Chip(text: "Hello") , Chip(text: "world") ]];
-//    
-//    var maxLenght = 0;
-//
-//    var body: some View {
-//        
-//        VStack {
-//         
-// 
-//            ForEach(chips.indices, id: \.self) { index in
-//                
-//                HStack {
-//                    
-//                    ForEach(chips[index].indices, id: \.self) { chipIndex in
-//                        
-//                        GeometryReader { geometry in
-//                            
-//                            
-//                            
-//                            ChipView(chip: chips[index][chipIndex])
-//                                .frame(width: geometry.size.width, height: geometry.size.height)
-//                            
-//                        } .frame(height: 50) // Set a fixed height for each chip's GeometryReader
-//                    }
-//                }
-//            }
-//            
-//        }
-//     
-//        .padding()
-//    }
-//
-//    private func createChipsLayout(in geometry: GeometryProxy) -> some View {
-//        var width = CGFloat.zero
-//        var height = CGFloat.zero
-//
-//        return ZStack(alignment: .topLeading) {
-//           
-//           
-//        }
-//    }
-//
-//    private func createChipView(for chip: Chip) -> some View {
-//        ChipView(chip: chip)
-//    }
-//}
-//
-//struct  ChipsView_Previews: PreviewProvider {
-//    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
-//       
-//    static var previews: some View {
-//        ChipsView()
-//    }
-//}
-//
-//
-
 
 import SwiftUI
 
 struct Chip: Identifiable, Equatable {
     let id = UUID()
     var name: String
-    
     var isSelected: Bool = false
 
     static func == (lhs: Chip, rhs: Chip) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.isSelected == rhs.isSelected
     }
 }
 
 struct ChipView: View {
-    var chip: Chip
+    @Binding var chip: Chip
 
     var body: some View {
         Text(chip.name)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-//            .background(Color.blue.opacity(0.2))
+            .background(chip.isSelected ? Color.blue : Color.blue.opacity(0.2))
             .cornerRadius(20)
-//            .foregroundColor(.blue)
-            .fontWeight(.semibold)
-            .foregroundColor(chip.isSelected ? .white : .white)
-            .padding(.vertical, 10)
-            .padding(.horizontal)
-            .background(chip.isSelected ? Color.blue : Color.gray)
-            .clipShape(Capsule())
-                        .overlay(Capsule().stroke(Color.white, lineWidth: 1))
-                        .lineLimit(1)
+            .foregroundColor(chip.isSelected ? Color.white : Color.blue)
+//            .fontWeight(.semibold)
+//            .foregroundColor(chip.isSelected ? .white : .white)
+//            .padding(.vertical, 10)
+//            .padding(.horizontal)
+//            .background(chip.isSelected ? Color.blue : Color.gray)
+//            .clipShape(Capsule())
+//                        .overlay(Capsule().stroke(Color.white, lineWidth: 1))
+//                        .lineLimit(1)
+            .onTapGesture {
+                
+                print("is tap clicked \(chip.isSelected) \(chip.name)")
+                
+                
+                chip.isSelected.toggle()
+            }
     }
 }
 
-
 struct ChipsView: View {
-    let chips: [Chip]
-
+    @Binding var chips: [Chip]
+    @State private var containerHeight: CGFloat = 0
     var body: some View {
         GeometryReader { geometry in
-            self.generateChipsLayout(in: geometry)
-        }
-        .padding()
+            VStack (alignment: .center) {
+                       self.generateChipsLayout(in: geometry)
+                           .background(GeometryReader { innerGeometry -> Color in
+                               DispatchQueue.main.async {
+                                   self.containerHeight = innerGeometry.size.height
+                               }
+                               return Color.clear
+                           })
+                   }
+                   .frame(height: containerHeight )
+               }
+               .padding()
     }
 
     private func generateChipsLayout(in geometry: GeometryProxy) -> some View {
@@ -137,8 +63,8 @@ struct ChipsView: View {
         var height = CGFloat.zero
 
         return ZStack(alignment: .topLeading) {
-            ForEach(chips) { chip in
-                ChipView(chip: chip)
+            ForEach($chips.indices, id: \.self) { index in
+                ChipView(chip: $chips[index])
                     .padding([.horizontal, .vertical], 4)
                     .alignmentGuide(.leading, computeValue: { d in
                         if (abs(width - d.width) > geometry.size.width) {
@@ -146,19 +72,16 @@ struct ChipsView: View {
                             height -= d.height
                         }
                         let result = width
-                        if chip == self.chips.last! {
+                        if index == self.chips.count - 1 {
                             width = 0 // last item
                         } else {
                             width -= d.width
                         }
-                        
-                        print (width)
-                        
                         return result
                     })
                     .alignmentGuide(.top, computeValue: { _ in
                         let result = height
-                        if chip == self.chips.last! {
+                        if index == self.chips.count - 1 {
                             height = 0 // last item
                         }
                         return result
@@ -169,8 +92,9 @@ struct ChipsView: View {
 }
 
 
+
 struct abcView: View {
-    let chips = [
+    @State private var chips = [
         Chip(name: "Hello"),
         Chip(name: "world"),
         Chip(name: "SwiftUI"),
@@ -184,15 +108,27 @@ struct abcView: View {
     ]
 
     var body: some View {
-        ScrollView {
-            ChipsView(chips: chips)
-        }
+        VStack (alignment: .leading){
+            Text("Above the chips")
+                .font(.largeTitle)
+                .padding()
+            
+            ScrollView {
+               
+                ChipsView(chips: $chips)
+               
+            }.frame(maxHeight:200)
+            
+            Text("Above the chips")
+                .font(.largeTitle)
+                .padding()
+          
+        }.frame( maxHeight:.infinity, alignment: .topLeading)
     }
 }
 
 struct  abcView_Previews: PreviewProvider {
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
-       
+  
     static var previews: some View {
         abcView()
     }

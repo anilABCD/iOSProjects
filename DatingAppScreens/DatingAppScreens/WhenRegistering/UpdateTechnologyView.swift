@@ -23,11 +23,9 @@ struct UpdateTechnologyNewView: View {
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
-//        GridItem(.flexible())
+
     ]
     
-    
-  
     @State var items: [SelectableItem] = [
         SelectableItem(name: "#React"),
         SelectableItem(name: "#Angular"),
@@ -107,23 +105,12 @@ struct UpdateTechnologyNewView: View {
             ScrollView {
                 
                 Spacer()
-//                VStack {
-//                    Text("Select your date of birth")
-//                        .font(.headline)
-//                    
-//                    DatePicker("Date of Birth", selection: $birthDate, in: ...Date(), displayedComponents: .date)
-//                        .datePickerStyle(WheelDatePickerStyle())
-//                        .labelsHidden()
-//                    
-//                    Text("Selected Date: \(formattedDate(date: birthDate))")
-//                        .padding()
-//                }.padding(0)
-              
-                Text("Technologies")
+                
+                Text("")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding()
-             
+//
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(items) { item in
                         ItemView(item: item)
@@ -172,7 +159,7 @@ struct UpdateTechnologyNewView: View {
                     .foregroundColor(.green)
                     .padding()
             }
-        }.navigationTitle("")
+        }.navigationTitle("Technologies")
     }
 }
 

@@ -267,8 +267,8 @@ struct UpdateHobbiesView: View {
 //                        .padding()
 //                }.padding(0)
                 
-                
-                Text("Hobbies")
+//                
+                Text("")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding()
@@ -321,7 +321,7 @@ struct UpdateHobbiesView: View {
                     .foregroundColor(.green)
                     .padding()
             }
-        }
+        }.navigationTitle("Hobbies")
     }
 }
 
