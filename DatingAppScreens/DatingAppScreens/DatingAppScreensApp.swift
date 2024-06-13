@@ -22,6 +22,11 @@ class TokenManager: ObservableObject {
      @AppStorage("photo") var photo: String = ""
      @AppStorage("hobbies") var hobbies: String = ""
     
+    @AppStorage("smoking") var smoking: String = ""
+    @AppStorage("drinking") var drinking: String = ""
+    @AppStorage("dob") var dob: String = ""
+    
+    
     @Published var homeTabView : HomeTabEnumViews? = nil;
     
     
@@ -43,6 +48,25 @@ class TokenManager: ObservableObject {
         print ( token , email , name , photo)
     }
     
+    func isProfileDobSmokingDrinkingEmpty() -> Bool {
+        
+        if( self.dob == "" || self.drinking == "" || self.smoking == "" ){
+            
+            return true;
+        }
+        
+        return false
+    }
+    
+    func updateProfileDobSmokingDrinkingEmpty( dob: String , drinking : String , smoking : String) {
+        
+        self.dob = dob;
+        self.drinking = drinking
+        self.smoking = smoking
+        
+    }
+    
+    
     func updatePhoto ( photo : String){
         self.photo = photo;
     }
@@ -54,6 +78,9 @@ class TokenManager: ObservableObject {
         self.photo = ""
         self.technologies = ""
         self.hobbies = ""
+        self.dob = ""
+        self.drinking = ""
+        self.smoking = ""
     }
 }
 

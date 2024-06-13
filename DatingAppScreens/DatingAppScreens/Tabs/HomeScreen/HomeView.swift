@@ -70,6 +70,7 @@ enum HomeTabEnumViews {
     case page1
     case page2
     case page3
+    case page4
     case signIn
     case signUp
 }
@@ -101,6 +102,8 @@ struct HomeView: View {
                             Text("Page 2")
                         case .page3:
                             Text("Page 3")
+                        case .page4 :
+                            Text("Page 4")
                         case .signIn:
                             Text("sign In")
                         case .signUp:

@@ -309,9 +309,15 @@ struct LoginSocialView: View {
                               
                               tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
                                                              technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "" )
+                              
+                            
+                              tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: decodedResponse.data?.user?.dob ?? "" , drinking: decodedResponse.data?.user?.drinking ?? "" , smoking: decodedResponse.data?.user?.smoking ?? "" )
+                              
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
+                              
+//                              print (tokenManger.dob , tokenManger.drinking, tokenManger.smoking)
                               // Handle successful signup, maybe navigate to another view
                           }
                     } else {

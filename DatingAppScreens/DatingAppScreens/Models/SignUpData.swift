@@ -43,6 +43,9 @@ struct AuthResponse: Codable {
         let photo : String?
         let technologies : String?
         let hobbies: String?
+        let dob : String?
+        let drinking : String?
+        let smoking : String?
         
     }
 

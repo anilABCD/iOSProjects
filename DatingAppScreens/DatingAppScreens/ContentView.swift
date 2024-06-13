@@ -48,7 +48,7 @@ struct ContentView: View {
 //                           locationManager.stopUpdatingLocation()
 //                       }
                 
-                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" ) ) {
+                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() ) ) {
                     
                     VStack {
                         
@@ -84,6 +84,8 @@ struct ContentView: View {
                                     UpdateTechnologyNewView(path: $path)
                                 case .page3:
                                     UpdateHobbiesView(path : $path)
+                                case .page4 :
+                                    ProfileEditorView()
                                 case .home:
                                     Text("Technologies")
                                 }
@@ -106,6 +108,21 @@ struct ContentView: View {
                             
                           handleNavigation()
                             
+                            
+                        }
+                        .onChange(of: tokenManager.dob ) { newValue in
+                            
+                          handleNavigation()
+                            
+                        }
+                        .onChange(of: tokenManager.drinking ) { newValue in
+                            
+                          handleNavigation()
+                               
+                        }
+                        .onChange(of: tokenManager.smoking ) { newValue in
+                            
+                          handleNavigation()
                             
                         }
                         
@@ -260,7 +277,13 @@ struct ContentView: View {
             print("hobbies token empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page3, params: Params<String>(data: "")))
-        } else {
+        } 
+        else if tokenManager.isProfileDobSmokingDrinkingEmpty() {
+            print("hobbies token empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page4, params: Params<String>(data: "")))
+        }
+        else {
             path.removeAll()
         }
     }
