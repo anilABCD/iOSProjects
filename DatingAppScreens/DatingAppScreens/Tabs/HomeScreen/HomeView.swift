@@ -69,6 +69,7 @@ enum HomeTabEnumViews {
     case home
     case page1
     case page2
+    case page3
     case signIn
     case signUp
 }
@@ -94,11 +95,12 @@ struct HomeView: View {
                         switch view.appView {
                         case .home:
                             Text("Page 1")
-                           
                         case .page1:
                             ProfileView(path: $path)
                         case .page2:
                             Text("Page 2")
+                        case .page3:
+                            Text("Page 3")
                         case .signIn:
                             Text("sign In")
                         case .signUp:

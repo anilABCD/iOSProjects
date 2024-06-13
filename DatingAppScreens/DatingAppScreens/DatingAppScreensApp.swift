@@ -20,7 +20,7 @@ class TokenManager: ObservableObject {
      @AppStorage("technologies") var technologies: String = ""
      @AppStorage("experience") var experience: String = ""
      @AppStorage("photo") var photo: String = ""
-    
+     @AppStorage("hobbies") var hobbies: String = ""
     
     @Published var homeTabView : HomeTabEnumViews? = nil;
     
@@ -30,7 +30,7 @@ class TokenManager: ObservableObject {
 //    @Published  var localhost : String = "http://169.254.23.107:8000"
         @Published var localhost : String = "http://localhost:8000"
     
-    func updateAccessToken( token: String , email : String , name : String , photo:String , technologies : String ) {
+    func updateAccessToken( token: String , email : String , name : String , photo:String , technologies : String , hobbies : String ) {
      
         self.accessToken = token
         self.photo = photo
@@ -38,6 +38,7 @@ class TokenManager: ObservableObject {
         self.email = email
         self.name = name;
         self.technologies = technologies;
+        self.hobbies = hobbies ;
         
         print ( token , email , name , photo)
     }
@@ -51,6 +52,8 @@ class TokenManager: ObservableObject {
         self.email = ""
         self.name = ""
         self.photo = ""
+        self.technologies = ""
+        self.hobbies = ""
     }
 }
 

@@ -246,7 +246,7 @@ struct LoginView: View {
                               self.token = tokenId;
                               
                               tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
-                                                             technologies: decodedResponse.data?.user?.technologies ?? "")
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "")
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
@@ -306,7 +306,7 @@ struct LoginView: View {
                               self.token = tokenId;
                               
                               tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
-                                                             technologies: decodedResponse.data?.user?.technologies ?? "")
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "", hobbies: decodedResponse.data?.user?.hobbies ?? "")
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")

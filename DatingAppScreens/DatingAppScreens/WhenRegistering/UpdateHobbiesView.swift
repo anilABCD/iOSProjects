@@ -180,6 +180,7 @@ struct UpdateHobbiesView: View {
         SelectableItem(name: "#Traveling"),
         SelectableItem(name: "#Cooking"),
         SelectableItem(name: "#Sports"),
+        SelectableItem(name: "#Movies"),
         SelectableItem(name: "#Music"),
         SelectableItem(name: "#Dancing"),
         SelectableItem(name: "#Gaming"),
@@ -206,7 +207,7 @@ struct UpdateHobbiesView: View {
             return;
         }
         
-        guard let url = URL(string: "\(tokenManger.localhost)/profiles/technology") else { return }
+        guard let url = URL(string: "\(tokenManger.localhost)/profiles/hobbies") else { return }
         
        
         var request = URLRequest(url: url)
@@ -220,7 +221,7 @@ struct UpdateHobbiesView: View {
         
         
         
-        let body = ["technologies": selectedItems]
+        let body = ["hobbies": selectedItems]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -239,9 +240,9 @@ struct UpdateHobbiesView: View {
                     self.status = responseMessage.status;
                     
                     print(self.status ?? "")
-                    print (responseMessage.data?.user?.technologies ?? "" )
+                    print (responseMessage.data?.user?.hobbies ?? "" )
                     
-                    self.tokenManger.technologies =  selectedItems.joined(separator: ",");
+                    self.tokenManger.hobbies =  selectedItems.joined(separator: ",");
                 }
             } else {
                 print("Failed to decode response")
@@ -283,13 +284,13 @@ struct UpdateHobbiesView: View {
                 }
                 .padding()
                 .alert(isPresented: $IsNoItemsSelected) {
-                    Alert(title: Text("Required"), message: Text("Please Select Atleast One Technology"), dismissButton: .default(Text("OK")))
+                    Alert(title: Text("Required"), message: Text("Please Select Atleast One Hobby"), dismissButton: .default(Text("OK")))
                 }
                 
                
             }.padding().onAppear(){
                 // Assuming tokenManager.technologies is a string containing comma-separated values
-                let technologiesArray = tokenManger.technologies.split(separator: ",").map { String($0) }
+                let technologiesArray = tokenManger.hobbies.split(separator: ",").map { String($0) }
                 
                 // Iterate through each item in items
                 for index in items.indices {

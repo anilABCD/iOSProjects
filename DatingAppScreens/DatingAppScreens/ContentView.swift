@@ -48,7 +48,7 @@ struct ContentView: View {
 //                           locationManager.stopUpdatingLocation()
 //                       }
                 
-                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" ) ) {
+                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" ) ) {
                     
                     VStack {
                         
@@ -82,6 +82,8 @@ struct ContentView: View {
                                     UploadYourPhotoView(path: $path)
                                 case .page2:
                                     UpdateTechnologyNewView(path: $path)
+                                case .page3:
+                                    UpdateHobbiesView(path : $path)
                                 case .home:
                                     Text("Technologies")
                                 }
@@ -95,6 +97,12 @@ struct ContentView: View {
                           handleNavigation()
                         }
                         .onChange(of: tokenManager.technologies ) { newValue in
+                            
+                          handleNavigation()
+                            
+                            
+                        }
+                        .onChange(of: tokenManager.hobbies ) { newValue in
                             
                           handleNavigation()
                             
@@ -247,6 +255,11 @@ struct ContentView: View {
             print("technologies token empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page2, params: Params<String>(data: "")))
+        }
+        else if tokenManager.hobbies.isEmpty {
+            print("hobbies token empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page3, params: Params<String>(data: "")))
         } else {
             path.removeAll()
         }

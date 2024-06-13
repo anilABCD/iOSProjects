@@ -25,7 +25,7 @@ struct UserSettingsView : View {
                 AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo)").frame(width: 200, height: 200).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                    
                 Form {
-                    Section(header: Text("Account Settings")) {
+                    Section(header: Text("User Profile")) {
                         NavigationLink(destination: UploadYourPhotoView(path:$path)) {
                             Text("Photo")
                         }

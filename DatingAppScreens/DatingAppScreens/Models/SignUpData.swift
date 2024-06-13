@@ -7,6 +7,7 @@ struct SignUpData: Codable {
     let password: String
     let passwordConfirm: String
     let technology: [String]
+    let hobbies:[String]?
 }
 
 // Request body model
@@ -41,6 +42,7 @@ struct AuthResponse: Codable {
         let email : String?
         let photo : String?
         let technologies : String?
+        let hobbies: String?
         
     }
 
