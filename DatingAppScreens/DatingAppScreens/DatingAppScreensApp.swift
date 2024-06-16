@@ -59,7 +59,7 @@ class TokenManager: ObservableObject {
     }
     
     func updateProfileDobSmokingDrinkingEmpty( dob: String , drinking : String , smoking : String) {
-        print (dob)
+        print (dob , "dob date of birth value")
         self.dob = dob;
         self.drinking = drinking
         self.smoking = smoking

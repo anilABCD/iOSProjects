@@ -64,7 +64,7 @@ struct ProfileEditorView: View {
         
         
         
-         let body = ["drinking": viewModel.selectedDrinking.name , "smoking" : viewModel.selectedSmoking.name , "dob" : viewModel.selectedDOB.description ] as [String : String]
+         let body = ["drinking": viewModel.selectedDrinking.name , "smoking" : viewModel.selectedSmoking.name , "dob" : convertToString(from : viewModel.selectedDOB) ] as [String : String]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -85,7 +85,7 @@ struct ProfileEditorView: View {
                     print(self.status )
                   
         
-                    self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: formattedDOB(date: viewModel.selectedDOB ) , drinking: viewModel.selectedDrinking.name , smoking: viewModel.selectedSmoking.name )
+                    self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: convertToString(from: viewModel.selectedDOB ) , drinking: viewModel.selectedDrinking.name , smoking: viewModel.selectedSmoking.name )
        
                     print ( formattedDOB(date: viewModel.selectedDOB ))
                     
@@ -214,7 +214,7 @@ struct ProfileEditorView: View {
 //                
             }.onAppear(){
                 // Update viewModel with tokenManager's values
-                              if let dob = convertStringToDateUsingCustomeDateFormatter(tokenManger.dob) {
+                              if let dob = convertToDate(from: tokenManger.dob) {
                                   viewModel.selectedDOB = dob
                                   
                                   print (dob,tokenManger.dob)
@@ -247,6 +247,22 @@ struct ProfileEditorView: View {
             }
         }
     }
+    
+    func convertToDate(from dateString: String) -> Date? {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+           dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+           dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+           return dateFormatter.date(from: dateString)
+       }
+
+       func convertToString(from date: Date) -> String {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+           dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+           dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+           return dateFormatter.string(from: date)
+       }
     
     func convertStringToDate(_ dateString: String) -> Date? {
            let formatter = ISO8601DateFormatter()
