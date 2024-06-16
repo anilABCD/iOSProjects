@@ -59,7 +59,7 @@ class TokenManager: ObservableObject {
     }
     
     func updateProfileDobSmokingDrinkingEmpty( dob: String , drinking : String , smoking : String) {
-        
+        print (dob)
         self.dob = dob;
         self.drinking = drinking
         self.smoking = smoking
@@ -90,17 +90,43 @@ struct DatingAppScreensApp: App {
     
     @StateObject private var tokenManager = TokenManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
+    @State private var showSplashScreen = true
     
     var body: some Scene {
+
         WindowGroup {
-            ContentView(isHome: false).environmentObject(tokenManager).onOpenURL { url in
-                GIDSignIn.sharedInstance.handle(url)
-              }.onAppear {
-                  GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-                    // Check if `user` exists; otherwise, do something with `error`
-                  }
+                        
+              ZStack {
+                  
+                if showSplashScreen {
+                               SplashScreenView()
+                                   .transition(.opacity)
+                                   .onAppear {
+                                       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                           withAnimation {
+                                               showSplashScreen = false
+                                           }
+                                       }
+                                   }
                 }
+                else
+                {
+                
+                    ContentView(isHome: false).environmentObject(tokenManager).onOpenURL { url in
+                                   GIDSignIn.sharedInstance.handle(url)
+                    
+                    }.onAppear {
+                                   GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                                       // Check if `user` exists; otherwise, do something with `error`
+                                   }
+                    
+                    }.transition(.opacity)
+                               
+                    
+                }
+                      
+            }
+            
         }
     }
 }

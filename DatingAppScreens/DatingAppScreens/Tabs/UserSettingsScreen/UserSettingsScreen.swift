@@ -35,6 +35,10 @@ struct UserSettingsView : View {
                         NavigationLink(destination: UpdateHobbiesView(path:$path)) {
                             Text("Hobbies")
                         }
+                        
+                        NavigationLink(destination: ProfileEditorView()) {
+                            Text("Dob , Habbits")
+                        }
                     }
                     
                     //                          Section(header: Text("Appearance")) {

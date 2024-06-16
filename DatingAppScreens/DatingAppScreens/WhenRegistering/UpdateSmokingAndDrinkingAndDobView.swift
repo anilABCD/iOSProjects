@@ -85,8 +85,10 @@ struct ProfileEditorView: View {
                     print(self.status )
                   
         
-                    self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: viewModel.selectedDOB.description , drinking: viewModel.selectedDrinking.name , smoking: viewModel.selectedSmoking.name )
+                    self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: formattedDOB(date: viewModel.selectedDOB ) , drinking: viewModel.selectedDrinking.name , smoking: viewModel.selectedSmoking.name )
        
+                    print ( formattedDOB(date: viewModel.selectedDOB ))
+                    
                 }
             } else {
                 print("Failed to decode response")
@@ -94,7 +96,7 @@ struct ProfileEditorView: View {
         }.resume()
     }
     
-    
+
     var body: some View {
         VStack {
             
@@ -204,15 +206,30 @@ struct ProfileEditorView: View {
                 .padding(.vertical, 8)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-               
-           
-             
-//                
+
 //                Text("Selected Drinking: \(viewModel.selectedDrinking.name)")
 //                    .padding()
 //                Text("Selected Smoking: \(viewModel.selectedSmoking.name)")
 //                    .padding()
 //                
+            }.onAppear(){
+                // Update viewModel with tokenManager's values
+                              if let dob = convertStringToDateUsingCustomeDateFormatter(tokenManger.dob) {
+                                  viewModel.selectedDOB = dob
+                                  
+                                  print (dob,tokenManger.dob)
+                              }
+                else{
+                    print ("no dob")
+                }
+                              
+                              if let smokingOption = smokingOptions.first(where: { $0.name == tokenManger.smoking }) {
+                                  viewModel.selectedSmoking = smokingOption
+                              }
+                              
+                              if let drinkingOption = drinkingOptions.first(where: { $0.name == tokenManger.drinking }) {
+                                  viewModel.selectedDrinking = drinkingOption
+                              }
             }
             
             
@@ -231,6 +248,22 @@ struct ProfileEditorView: View {
         }
     }
     
+    func convertStringToDate(_ dateString: String) -> Date? {
+           let formatter = ISO8601DateFormatter()
+           let date = formatter.date(from: dateString)
+        
+           print (date )
+           return date
+       }
+    
+    
+      func convertStringToDateUsingCustomeDateFormatter(_ dateString: String) -> Date? {
+          let formatter = DateFormatter()
+          formatter.dateFormat = "dd-MMM-yyyy"
+          return formatter.date(from: dateString)
+      }
+      
+    
     private func formattedDOB(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -243,3 +276,7 @@ struct ProfileEditorView_Previews: PreviewProvider {
         ProfileEditorView().environmentObject(TokenManager())
     }
 }
+
+
+
+

@@ -12,6 +12,7 @@
 		6D3A0FF4CA5BD3A77D0949E1 /* Pods_DatingAppScreens_DatingAppScreensUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5908A022A92C6953702C3068 /* Pods_DatingAppScreens_DatingAppScreensUITests.framework */; };
 		B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */; };
 		B71184AA2C0F7686004FC55C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71184A92C0F7686004FC55C /* Request.swift */; };
+		B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */; };
 		B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */; };
 		B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74E89A92C197E1B005DD13C /* LoginSocialView.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
@@ -72,6 +73,7 @@
 		B32D99110D926EDF7555D8EA /* Pods-DatingAppScreensTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.debug.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTechnologyView.swift; sourceTree = "<group>"; };
 		B71184A92C0F7686004FC55C /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouMatches.swift; sourceTree = "<group>"; };
 		B74E89A92C197E1B005DD13C /* LoginSocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialView.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
@@ -159,6 +161,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		B72A3F302C1DA0A600771B4A /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */,
+			);
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
 		B76B90812C1538D100BA7B5D /* LoginView */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +227,7 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B72A3F302C1DA0A600771B4A /* SplashScreen */,
 				B77C2D032C1A85740026E36E /* Experimental */,
 				B7F2A7F62C17129700A51B3D /* Tabs */,
 				B76B90842C153AFF00BA7B5D /* GlobalConstants */,
@@ -619,6 +630,7 @@
 				B75F69B12C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift in Sources */,
 				B772800F2C19D62200446085 /* Utils.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
+				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
 				B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
 				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
