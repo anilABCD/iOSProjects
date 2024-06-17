@@ -36,7 +36,7 @@ struct UserSettingsView : View {
                             Text("Hobbies")
                         }
                         
-                        NavigationLink(destination: ProfileEditorView()) {
+                        NavigationLink(destination: ProfileEditorView(path : $path)) {
                             Text("Dob , Habbits")
                         }
                     }
@@ -50,7 +50,8 @@ struct UserSettingsView : View {
                     //                              }
                     //                          }
                 }
-            }.navigationBarTitle("Profile Settings").onAppear(){
+            }
+            .navigationBarTitle("Profile Settings").onAppear(){
                 
                 
                 tokenManger.isMenuView = true;

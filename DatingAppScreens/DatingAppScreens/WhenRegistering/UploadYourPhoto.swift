@@ -12,7 +12,7 @@ struct UploadYourPhotoView: View {
     
     @EnvironmentObject private var tokenManger : TokenManager
     
-    
+    @State private var isFirstTimeUpdating = false;
   
     @State private var isUploading : Bool?
     
@@ -146,6 +146,8 @@ struct UploadYourPhotoView: View {
                let (data, response) = try await URLSession.shared.data(for: request)
                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                    print("Image uploaded successfully!")
+                   
+                
                    
                    if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                        // Save token locally

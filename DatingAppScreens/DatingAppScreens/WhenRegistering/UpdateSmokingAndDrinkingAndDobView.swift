@@ -40,8 +40,13 @@ class ProfileEditorViewModel: ObservableObject {
 struct ProfileEditorView: View {
     
     @StateObject private var viewModel = ProfileEditorViewModel()
-    
+    @State private var showAlert = false
     @State private var showDOBPicker = false
+    @State var isFirstTimeUpdatingProfile = false;
+    
+    @Environment(\.presentationMode) var presentationMode
+    
+    @Binding var path :[MyNavigation<String>]
     
      @State var status : String = ""
     
@@ -84,7 +89,13 @@ struct ProfileEditorView: View {
                     
                     print(self.status )
                   
-        
+                    if self.status == "success" {
+                        showAlert = true;
+                        if ( !isFirstTimeUpdatingProfile ) {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                    
                     self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: convertToString(from: viewModel.selectedDOB ) , drinking: viewModel.selectedDrinking.name , smoking: viewModel.selectedSmoking.name )
        
                     print ( formattedDOB(date: viewModel.selectedDOB ))
@@ -98,122 +109,133 @@ struct ProfileEditorView: View {
     
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0){
             
-            List {
-                
-                // Date of Birth Picker
-                HStack() {
+            Form {
+                List {
                     
-                    Text("Date of Birth")
-                        .foregroundColor(.primary)
-                        .padding(.leading)
-                    Spacer()
-                    HStack {
-                        TextField("", text: .constant(formattedDOB(date: viewModel.selectedDOB)))
-                            .disabled(true)
-                            .padding(.horizontal)
-                            .onTapGesture {
-                                showDOBPicker.toggle()
-                            }
-                        
-                        Spacer()
-                        
-                        Image(systemName: "calendar")
-                            .padding(.trailing)
-                            .onTapGesture {
-                                showDOBPicker.toggle()
-                            }
-                    }
-                    .padding(.vertical, 8)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
-                }
-                .sheet(isPresented: $showDOBPicker) {
-                    ZStack {
-//                        Color.black.opacity(0.3) // Semi-transparent black background
-                        
-                        VStack {
-                            DatePicker("", selection: $viewModel.selectedDOB, displayedComponents: .date)
-                                .datePickerStyle(WheelDatePickerStyle())
-                                .labelsHidden()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(8)
-                                .padding()
+                    
+                    Section("Date Of Birth") {
+                        // Date of Birth Picker
+                        HStack() {
                             
-                            Button(action: {
-                                showDOBPicker.toggle()
-                            }) {
-                                Text("OK")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .cornerRadius(8)
+                            Text("Date of Birth")
+                                .foregroundColor(.primary)
+                                .padding(.leading)
+                            Spacer()
+                            HStack {
+                                TextField("", text: .constant(formattedDOB(date: viewModel.selectedDOB)))
+                                    .disabled(true)
+                                    .padding(.horizontal)
+                                    .onTapGesture {
+                                        showDOBPicker.toggle()
+                                    }
+                                
+                                Spacer()
+                                
+                                Image(systemName: "calendar")
+                                    .padding(.trailing)
+                                    .onTapGesture {
+                                        showDOBPicker.toggle()
+                                    }
                             }
-                            .padding()
+                            .padding(.vertical, 8)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
                         }
-                        .frame(maxWidth: .infinity, maxHeight: 300)
-                        .background(Color.clear) // Ensure background is transparent
-                        .gesture(
-                            TapGesture()
-                                .onEnded { _ in
-                                    showDOBPicker = false // Dismiss sheet on background tap
+                        .sheet(isPresented: $showDOBPicker) {
+                            ZStack {
+                                //                        Color.black.opacity(0.3) // Semi-transparent black background
+                                
+                                VStack {
+                                    DatePicker("", selection: $viewModel.selectedDOB, displayedComponents: .date)
+                                        .datePickerStyle(WheelDatePickerStyle())
+                                        .labelsHidden()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.white)
+                                        .cornerRadius(8)
+                                        .padding()
+                                    
+                                    Button(action: {
+                                        showDOBPicker.toggle()
+                                    }) {
+                                        Text("OK")
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .background(Color.blue)
+                                            .cornerRadius(8)
+                                    }
+                                    .padding()
                                 }
-                        )
-                    }
-                    .edgesIgnoringSafeArea(.all) // Ignore safe area for full-screen effect
-                }
-
-                .background(Color(.systemGray6))
-                
-                
-                
-                // Smoking Picker
-                HStack() {
-                    Text("Smoking")
-                        .foregroundColor(.primary)
-                        .padding(.leading)
-                    
-                    Picker("", selection: $viewModel.selectedSmoking) {
-                        ForEach(smokingOptions) { option in
-                            Text(option.name).tag(option)
+                                .frame(maxWidth: .infinity, maxHeight: 300)
+                                .background(Color.clear) // Ensure background is transparent
+                                .gesture(
+                                    TapGesture()
+                                        .onEnded { _ in
+                                            showDOBPicker = false // Dismiss sheet on background tap
+                                        }
+                                )
+                            }
+                            .edgesIgnoringSafeArea(.all) // Ignore safe area for full-screen effect
                         }
+                        
+                        .background(Color(.systemGray6))
                     }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding(.horizontal)
-                }
-                .padding(.vertical, 8)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-              
-                
-                
-                // Drinking Picker
-                HStack() {
-                    Text("Drinking")
-                        .foregroundColor(.primary)
-                        .padding(.leading)
                     
-                    Picker("", selection: $viewModel.selectedDrinking) {
-                        ForEach(drinkingOptions) { option in
-                            Text(option.name).tag(option)
+                    Section("Habbits") {
+                        // Smoking Picker
+                        HStack() {
+                            Text("Smoking")
+                                .foregroundColor(.primary)
+                                .padding(.leading)
+                            
+                            Picker("", selection: $viewModel.selectedSmoking) {
+                                ForEach(smokingOptions) { option in
+                                    Text(option.name).tag(option)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .padding(.horizontal)
                         }
+                        .padding(.vertical, 8)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        
+                        
+                        
+                        // Drinking Picker
+                        HStack() {
+                            Text("Drinking")
+                                .foregroundColor(.primary)
+                                .padding(.leading)
+                            
+                            Picker("", selection: $viewModel.selectedDrinking) {
+                                ForEach(drinkingOptions) { option in
+                                    Text(option.name).tag(option)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .padding(.horizontal)
+                        }
+                        .padding(.vertical, 8)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
                     }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding(.horizontal)
+                    
+                    //                Text("Selected Drinking: \(viewModel.selectedDrinking.name)")
+                    //                    .padding()
+                    //                Text("Selected Smoking: \(viewModel.selectedSmoking.name)")
+                    //                    .padding()
+                    //
                 }
-                .padding(.vertical, 8)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-
-//                Text("Selected Drinking: \(viewModel.selectedDrinking.name)")
-//                    .padding()
-//                Text("Selected Smoking: \(viewModel.selectedSmoking.name)")
-//                    .padding()
-//                
             }.onAppear(){
                 // Update viewModel with tokenManager's values
+                
+                
+                if tokenManger.isProfileDobSmokingDrinkingEmpty() == true {
+                    isFirstTimeUpdatingProfile = true;
+                }
+                
                               if let dob = convertToDate(from: tokenManger.dob) {
                                   viewModel.selectedDOB = dob
                                   
@@ -230,7 +252,9 @@ struct ProfileEditorView: View {
                               if let drinkingOption = drinkingOptions.first(where: { $0.name == tokenManger.drinking }) {
                                   viewModel.selectedDrinking = drinkingOption
                               }
-            }
+            }.padding(0)
+            
+            Spacer()
             
             
             Button(action: {
@@ -245,7 +269,20 @@ struct ProfileEditorView: View {
                     .cornerRadius(10)
                     .padding(.horizontal)
             }
-        }
+//            .alert(isPresented: $showAlert) {
+//                Alert(
+//                    title: Text("Success"),
+//                    message: Text("Profile saved successfully!"),
+//                    dismissButton: .default(Text("OK")) {
+//                        
+//                        presentationMode.wrappedValue.dismiss()
+//                    }
+//                )
+//            }
+            
+            Spacer()
+        } .navigationBarTitle("Profile Settings")
+        
     }
     
     func convertToDate(from dateString: String) -> Date? {
@@ -264,22 +301,6 @@ struct ProfileEditorView: View {
            return dateFormatter.string(from: date)
        }
     
-    func convertStringToDate(_ dateString: String) -> Date? {
-           let formatter = ISO8601DateFormatter()
-           let date = formatter.date(from: dateString)
-        
-           print (date )
-           return date
-       }
-    
-    
-      func convertStringToDateUsingCustomeDateFormatter(_ dateString: String) -> Date? {
-          let formatter = DateFormatter()
-          formatter.dateFormat = "dd-MMM-yyyy"
-          return formatter.date(from: dateString)
-      }
-      
-    
     private func formattedDOB(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -288,8 +309,10 @@ struct ProfileEditorView: View {
 }
 
 struct ProfileEditorView_Previews: PreviewProvider {
+    @State static var path :[MyNavigation<String>] = []
+    
     static var previews: some View {
-        ProfileEditorView().environmentObject(TokenManager())
+        ProfileEditorView(path:$path).environmentObject(TokenManager())
     }
 }
 

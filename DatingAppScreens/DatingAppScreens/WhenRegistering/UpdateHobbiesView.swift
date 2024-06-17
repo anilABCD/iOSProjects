@@ -7,6 +7,8 @@ struct UpdateHobbiesView: View {
    
     @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
+    @Environment(\.presentationMode) var presentationMode
+    @State var isFirstTimeUpdatingProfile = false;
     
     @State private var birthDate = Date()
 
@@ -88,6 +90,12 @@ struct UpdateHobbiesView: View {
                     print(self.status ?? "")
                     print (responseMessage.data?.user?.hobbies ?? "" )
                     
+                    if(self.status == "success"){
+                        if ( !isFirstTimeUpdatingProfile ) {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                    
                     self.tokenManger.hobbies =  selectedItems.joined(separator: ",");
                 }
             } else {
@@ -136,6 +144,12 @@ struct UpdateHobbiesView: View {
                
             }.padding().onAppear(){
                 // Assuming tokenManager.technologies is a string containing comma-separated values
+                
+                
+                if tokenManger.hobbies == "" {
+                    isFirstTimeUpdatingProfile = true;
+                }
+                
                 let technologiesArray = tokenManger.hobbies.split(separator: ",").map { String($0) }
                 
                 // Iterate through each item in items

@@ -23,35 +23,35 @@ struct LoginView: View {
 
    
     func handleSignInButton() {
-           guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
-               return
-           }
-           
-           GIDSignIn.sharedInstance.signIn(
-               withPresenting: rootViewController) { signInResult, error in
-                   guard let result = signInResult else {
-                       if let error = error {
-                           print("Error signing in: \(error.localizedDescription)")
-                       }
-                       return
-                   }
-                   // If sign-in succeeded, display the app's main content view.
-                   let user = result.user
-                   let idToken = user.idToken?.tokenString
-                   let fullName = user.profile?.name
-                   let email = user.profile?.email
-                   
-                   // Handle the signed-in user's information
-                   print("User signed in: \(fullName ?? "No Name"), email: \(email ?? "No Email") , idToken : \(String(describing: idToken))")
-                   
-                   
-                   if let googleToken = idToken {
-                       let signInWithGoogleData = SignInWithGoogleData(token: googleToken )
-                       
-                       signInWithGoogle(signInWithGoogleData)
-                   }
-               }
-       }
+        guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
+            return
+        }
+        
+        GIDSignIn.sharedInstance.signIn(
+            withPresenting: rootViewController) { signInResult, error in
+                guard let result = signInResult else {
+                    if let error = error {
+                        print("Error signing in: \(error.localizedDescription)")
+                    }
+                    return
+                }
+                // If sign-in succeeded, display the app's main content view.
+                let user = result.user
+                let idToken = user.idToken?.tokenString
+                let fullName = user.profile?.name
+                let email = user.profile?.email
+                
+                // Handle the signed-in user's information
+                print("User signed in: \(fullName ?? "No Name"), email: \(email ?? "No Email") , idToken : \(String(describing: idToken))")
+                
+                
+                if let googleToken = idToken {
+                    let signInWithGoogleData = SignInWithGoogleData(token: googleToken )
+                    
+                    signInWithGoogle(signInWithGoogleData)
+                }
+            }
+    }
     
     
     var body: some View {
@@ -247,6 +247,10 @@ struct LoginView: View {
                               
                               tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
                                                              technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "")
+                              
+                              
+                                tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: decodedResponse.data?.user?.dob ?? "" , drinking: decodedResponse.data?.user?.drinking ?? "" , smoking: decodedResponse.data?.user?.smoking ?? "" )
+                                
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
@@ -306,10 +310,16 @@ struct LoginView: View {
                               self.token = tokenId;
                               
                               tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
-                                                             technologies: decodedResponse.data?.user?.technologies ?? "", hobbies: decodedResponse.data?.user?.hobbies ?? "")
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "" )
+                              
+                            
+                              tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: decodedResponse.data?.user?.dob ?? "" , drinking: decodedResponse.data?.user?.drinking ?? "" , smoking: decodedResponse.data?.user?.smoking ?? "" )
+                              
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
+                              
+//                              print (tokenManger.dob , tokenManger.drinking, tokenManger.smoking)
                               // Handle successful signup, maybe navigate to another view
                           }
                     } else {

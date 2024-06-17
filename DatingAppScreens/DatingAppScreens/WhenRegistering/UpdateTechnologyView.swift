@@ -14,9 +14,11 @@ struct UpdateTechnologyNewView: View {
    
     @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State var isFirstTimeUpdatingProfile = false;
     
     @State private var birthDate = Date()
-
     
     @State var IsNoItemsSelected = false;
   
@@ -88,6 +90,12 @@ struct UpdateTechnologyNewView: View {
                 DispatchQueue.main.async {
                     self.status = responseMessage.status;
                     
+                    if( self.status == "success" ) {
+                        if ( !isFirstTimeUpdatingProfile ) {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                    
                     print(self.status ?? "")
                     print (responseMessage.data?.user?.technologies ?? "" )
                     
@@ -127,6 +135,11 @@ struct UpdateTechnologyNewView: View {
                
             }.padding().onAppear(){
                 // Assuming tokenManager.technologies is a string containing comma-separated values
+                
+                if tokenManger.technologies == "" {
+                    isFirstTimeUpdatingProfile = true;
+                }
+                
                 let technologiesArray = tokenManger.technologies.split(separator: ",").map { String($0) }
                 
                 // Iterate through each item in items
