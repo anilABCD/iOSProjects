@@ -45,7 +45,7 @@ struct MatchesNewDevsView: View {
         
         let data = MatchesFilter(technologies: nil , minExperience: nil, maxExperience: nil)
         
-        print (data)
+//        print (data)
         
         // Example usage
         let baseURL = "\(tokenManger.localhost)/profiles"
@@ -101,7 +101,7 @@ struct MatchesNewDevsView: View {
                     
                     self.profiles = decodedResponse
                     
-                    print(self.profiles)
+//                   k
                 }
                 
             } catch {

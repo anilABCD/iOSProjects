@@ -21,7 +21,8 @@ struct SignInWithGoogleData : Codable {
 }
 
 // Response model
-struct AuthResponse: Codable {
+struct AuthResponse: Decodable {
+
     let status : String? ;
     let error : String?;
     let token: String?;
@@ -31,12 +32,19 @@ struct AuthResponse: Codable {
 
     // You can add more properties if needed
     
-    struct UserData : Codable {
+    struct UserData : Decodable {
         
         let user : User?
     }
 
-    struct User : Codable {
+    struct User : Decodable {
+        
+        let objectId : ObjectId
+        
+        // Computed property for Identifiable protocol
+        var id: String {
+            return objectId.value
+        }
         
         let name : String?
         let email : String?
@@ -46,6 +54,20 @@ struct AuthResponse: Codable {
         let dob : String?
         let drinking : String?
         let smoking : String?
+        
+        enum CodingKeys: String, CodingKey {
+               case objectId = "_id"
+               case name
+            case email
+            case photo
+            case technologies
+            case hobbies
+            case dob
+            case drinking
+            case smoking
+              
+               // Other fields...
+           }
         
     }
 

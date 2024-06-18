@@ -247,7 +247,7 @@ struct LoginSocialView: View {
                               
                               self.token = tokenId;
                               
-                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
+                              tokenManger.updateAccessToken( token: self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "" , email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
                                                              technologies: decodedResponse.data?.user?.technologies ?? "", hobbies: decodedResponse.data?.user?.hobbies ?? "")
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
@@ -307,7 +307,7 @@ struct LoginSocialView: View {
                               
                               self.token = tokenId;
                               
-                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
+                              tokenManger.updateAccessToken( token: self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
                                                              technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "" )
                               
                             

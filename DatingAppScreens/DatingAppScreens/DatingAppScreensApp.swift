@@ -12,9 +12,19 @@ import UserNotifications
 import GoogleSignIn
 
 
+func storeDeviceNotificationToken(_ userId: String) {
+    UserDefaults.standard.set(userId, forKey: "deviceNotificationToken")
+}
+
+func getDeviceNotificationToken() -> String? {
+    return UserDefaults.standard.string(forKey: "deviceNotificationToken")
+}
+
+
 class TokenManager: ObservableObject {
     
      @AppStorage("accessToken") var accessToken: String = ""
+     @AppStorage("userId") var userId: String = ""
      @AppStorage("email") var email: String = ""
      @AppStorage("name") var name: String = ""
      @AppStorage("technologies") var technologies: String = ""
@@ -33,10 +43,11 @@ class TokenManager: ObservableObject {
     @Published var isMenuView : Bool = false;
  
 //    @Published  var localhost : String = "http://169.254.23.107:8000"
-        @Published var localhost : String = "http://localhost:8000"
+    @Published var localhost : String = Constants.localhost;
     
-    func updateAccessToken( token: String , email : String , name : String , photo:String , technologies : String , hobbies : String ) {
+    func updateAccessToken( token: String , userId: String , email : String , name : String , photo:String , technologies : String , hobbies : String ) {
      
+        self.userId = userId
         self.accessToken = token
         self.photo = photo
 
@@ -45,7 +56,7 @@ class TokenManager: ObservableObject {
         self.technologies = technologies;
         self.hobbies = hobbies ;
         
-        print ( token , email , name , photo)
+        print ( "User Id" , self.userId , token , email , name , photo)
     }
     
     func isProfileDobSmokingDrinkingEmpty() -> Bool {
@@ -87,7 +98,8 @@ class TokenManager: ObservableObject {
 
 @main
 struct DatingAppScreensApp: App {
-    
+    @StateObject private var dataFetcher = DataFetcher(pollingInterval: 5) // Example with 60 seconds interval
+
     @StateObject private var tokenManager = TokenManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var showSplashScreen = true
@@ -112,7 +124,7 @@ struct DatingAppScreensApp: App {
                 else
                 {
                 
-                    ContentView(isHome: false).environmentObject(tokenManager).onOpenURL { url in
+                    ContentView(isHome: false).environmentObject(tokenManager).environmentObject(dataFetcher).onOpenURL { url in
                                    GIDSignIn.sharedInstance.handle(url)
                     
                     }.onAppear {
@@ -129,6 +141,8 @@ struct DatingAppScreensApp: App {
             
         }
     }
+    
+
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -150,12 +164,16 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
         return true
     }
-
+    
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Convert device token to string
         let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
         let token = tokenParts.joined()
         print("Device Token: \(token)")
+        
+        storeDeviceNotificationToken(token);
+
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

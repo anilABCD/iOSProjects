@@ -7,7 +7,70 @@
 
 import SwiftUI
 
+class DataFetcher: ObservableObject {
+    @Published var data: [String] = []
+    var timer: Timer?
+    var pollingInterval: TimeInterval
+    
+    init(pollingInterval: TimeInterval) {
+        self.pollingInterval = pollingInterval
+        startPolling()
+    }
+    
+    func startPolling() {
+        timer = Timer.scheduledTimer(withTimeInterval: pollingInterval, repeats: true) { _ in
+            self.fetchData()
+        }
+    }
+    
+    func stopPolling() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    func sendDeviceTokenToServer(_ token: String , localhost : String , userId : String) async throws {
+        guard let url = URL(string: "\(localhost)/notificatons/register-device-token") else {
+               throw URLError(.badURL)
+           }
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "POST"
+           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+           let body: [String: Any] = ["token": token, "userId": userId]
+           request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+
+           let (data, response) = try await URLSession.shared.data(for: request)
+
+           if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+               print("Device token successfully sent to server.")
+           } else {
+               print("Failed to send device token to server.")
+           }
+       }
+    
+//    For background tasks .
+//    func fetchDataInBackground(completion: @escaping () -> Void) {
+//           // Perform data fetching logic here (in background)
+//           print("Fetching data in background...")
+//           DispatchQueue.global().async {
+//               // Simulate data fetching
+//               DispatchQueue.main.async {
+//                   self.data = ["Data 1", "Data 2", "Data 3"] // Update @Published var data
+//                   completion() // Call completion handler when done
+//               }
+//           }
+//       }
+//    
+    func fetchData() {
+        // Replace with your data fetching logic
+        print("Fetching data...")
+    }
+}
+
+
 struct ContentView: View {
+    @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
     
     @State private var selectedTab = 0
     @EnvironmentObject private var tokenManager: TokenManager
@@ -248,13 +311,46 @@ struct ContentView: View {
                     }
                 }
             
-            
-
-        
             SideMenuView(selectedTab: $selectedTab, isMenuVisible: $isMenuVisible)
 
         }
-       
+        .onChange(of: tokenManager.userId) { newValue in
+            Task {
+                do {
+                    
+                    print("OnChange toke.userId")
+                    
+                    // Replace "your_device_token_here" with the actual token
+                    try await dataFetcher.sendDeviceTokenToServer(getDeviceNotificationToken() ?? "" , localhost: tokenManager.localhost , userId: tokenManager.userId)
+                    
+                    print ( "Device Notification Token" , getDeviceNotificationToken() ?? "No Device Notification Token" )
+                    
+                } catch {
+                    print("Failed to send device token: \(error)")
+                }
+                
+            }
+        }
+        .onAppear {
+            dataFetcher.startPolling()
+            
+            Task {
+                do {
+                    // Replace "your_device_token_here" with the actual token
+                    try await dataFetcher.sendDeviceTokenToServer(getDeviceNotificationToken() ?? "" , localhost: tokenManager.localhost , userId: tokenManager.userId)
+                    
+                    print ( "Device Notification Token" , getDeviceNotificationToken() ?? "No Device Notification Token" )
+                    
+                } catch {
+                    print("Failed to send device token: \(error)")
+                }
+                
+            }
+                               
+        }
+        .onDisappear {
+            dataFetcher.stopPolling()
+        }
     }
     
     

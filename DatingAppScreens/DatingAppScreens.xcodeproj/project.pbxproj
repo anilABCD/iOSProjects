@@ -13,6 +13,7 @@
 		B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */; };
 		B71184AA2C0F7686004FC55C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71184A92C0F7686004FC55C /* Request.swift */; };
 		B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */; };
+		B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */; };
 		B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */; };
 		B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74E89A92C197E1B005DD13C /* LoginSocialView.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
@@ -74,6 +75,7 @@
 		B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTechnologyView.swift; sourceTree = "<group>"; };
 		B71184A92C0F7686004FC55C /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendUserDeviceNotificationToken.swift; sourceTree = "<group>"; };
 		B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouMatches.swift; sourceTree = "<group>"; };
 		B74E89A92C197E1B005DD13C /* LoginSocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialView.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
@@ -169,6 +171,14 @@
 			path = SplashScreen;
 			sourceTree = "<group>";
 		};
+		B733B3932C2155A000DE9B09 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		B76B90812C1538D100BA7B5D /* LoginView */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +237,7 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B733B3932C2155A000DE9B09 /* Notifications */,
 				B72A3F302C1DA0A600771B4A /* SplashScreen */,
 				B77C2D032C1A85740026E36E /* Experimental */,
 				B7F2A7F62C17129700A51B3D /* Tabs */,
@@ -646,6 +657,7 @@
 				B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */,
 				B7E6C94B2C174C1C00F321A9 /* ProfileModel.swift in Sources */,
 				B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */,
+				B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */,
 				B71184AA2C0F7686004FC55C /* Request.swift in Sources */,
 				B7E6C9492C174BFD00F321A9 /* ObjectId.swift in Sources */,
 				B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */,
@@ -819,6 +831,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DatingAppScreens/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to allow you to take photos.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to provide continuous tracking even when the app is in the background.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show you relevant content.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need access to add photos to your photo library.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photo library to allow you to upload photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -854,6 +871,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DatingAppScreens/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to allow you to take photos.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to provide continuous tracking even when the app is in the background.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show you relevant content.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need access to add photos to your photo library.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photo library to allow you to upload photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

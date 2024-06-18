@@ -238,6 +238,8 @@ struct LoginView: View {
                 
                 if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
                     // Save token locally
+                    
+                    print(decodedResponse, "decoded response")
          
                     if let tokenId = decodedResponse.token {
                         
@@ -245,7 +247,7 @@ struct LoginView: View {
                               
                               self.token = tokenId;
                               
-                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
+                              tokenManger.updateAccessToken( token: self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "", email: decodedResponse.data?.user?.email ?? "" ,  name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
                                                              technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "")
                               
                               
@@ -309,7 +311,7 @@ struct LoginView: View {
                               
                               self.token = tokenId;
                               
-                              tokenManger.updateAccessToken( token: self.token ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
+                              tokenManger.updateAccessToken( token: self.token ?? "", userId: decodedResponse.data?.user?.id ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
                                                              technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "" )
                               
                             
