@@ -147,24 +147,33 @@ struct UploadYourPhotoView: View {
                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                    print("Image uploaded successfully!")
                    
-                
+                   // Print the raw data for debugging
+                   if let rawDataString = String(data: data, encoding: .utf8) {
+                       print("Raw response data: \(rawDataString)")
+                   }
                    
-                   if let decodedResponse = try? JSONDecoder().decode(AuthResponse.self, from: data) {
-                       // Save token locally
-            
-                       if let photo = decodedResponse.data?.user?.photo {
+                   do {
+                       let decodedResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
+                           // Save token locally
+                           print ("image decoded successfully")
+                           if let photo = decodedResponse.data?.user?.photo {
+                               
+                               DispatchQueue.main.async {
+                                   
+                                   tokenManger.updatePhoto(photo: photo)
+                                   print("Photo: \(photo)")
+                                   
+                               }
+                           } else {
+                               print("No Token")
+                           }
                            
-                             DispatchQueue.main.async {
-                                
-                                 tokenManger.updatePhoto(photo: photo)
-                                 print("Photo: \(photo)")
-                              
-                             }
-                       } else {
-                           print("No Token")
-                       }
-                      
-                  
+                           
+                       
+                       
+                   }
+                   catch {
+                       print("Failed to decode response: \(error)")
                    }
                    
 //                   uploadResult = "Image uploaded successfully!"
@@ -208,7 +217,7 @@ struct UploadPhotoView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
 
     static var previews: some View {
-        UploadYourPhotoView(path: $path)
+        UploadYourPhotoView(path: $path).environmentObject(TokenManager())
 //        UploadYourPhotoView()
     }
 }

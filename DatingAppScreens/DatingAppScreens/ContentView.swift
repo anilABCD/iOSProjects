@@ -165,7 +165,6 @@ struct ContentView: View {
                             
                           handleNavigation()
                             
-                            
                         }
                         .onChange(of: tokenManager.hobbies ) { newValue in
                             
@@ -274,7 +273,7 @@ struct ContentView: View {
 //                                }
 //                                .tag(2)
                             
-                            Text("Hello3")
+                             ChatView()
                                 .tabItem {
                                     Label("", systemImage: "message").background(.black)
                                 }
@@ -422,6 +421,8 @@ struct ContentView_Previews: PreviewProvider {
                            Label("Update Technology", systemImage: "wrench")
                        }
                        .environmentObject(tokenManager)
+            
+                   
                    
                    ContentView(isHome: true)
                        .tabItem {

@@ -39,6 +39,8 @@ struct UserSettingsView : View {
                         NavigationLink(destination: ProfileEditorView(path : $path)) {
                             Text("Dob , Habbits")
                         }
+                        
+                        
                     }
                     
                     //                          Section(header: Text("Appearance")) {

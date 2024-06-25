@@ -1,6 +1,0 @@
-framework module Pods_DatingAppScreensTests {
-  umbrella header "Pods-DatingAppScreensTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
