@@ -95,10 +95,22 @@ class TokenManager: ObservableObject {
     }
 }
 
+struct DeepLinkData : Equatable {
+    var view: String
+    var parameters: [String: String]
+    
+    
+    static func == (lhs: DeepLinkData, rhs: DeepLinkData) -> Bool {
+        return lhs.view == rhs.view && lhs.parameters == rhs.parameters
+    }
+}
+
 
 @main
 struct DatingAppScreensApp: App {
-    @StateObject private var dataFetcher = DataFetcher(pollingInterval: 5) // Example with 60 seconds interval
+    @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
+    
+    @State private var deepLinkData: DeepLinkData?
 
     @StateObject private var tokenManager = TokenManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -124,8 +136,13 @@ struct DatingAppScreensApp: App {
                 else
                 {
                 
-                    ContentView(isHome: false).environmentObject(tokenManager).environmentObject(dataFetcher).onOpenURL { url in
-                                   GIDSignIn.sharedInstance.handle(url)
+                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher).onOpenURL { url in
+                                           // First, try to handle Google Sign-In URL
+                                           if GIDSignIn.sharedInstance.handle(url) {
+                                               return
+                                           }
+                                           // If not handled by Google, handle the URL with parameters
+                                           handleURL(url)
                     
                     }.onAppear {
                                    GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
@@ -143,6 +160,23 @@ struct DatingAppScreensApp: App {
     }
     
 
+    private func handleURL(_ url: URL) {
+        // Parse the URL to determine which view to navigate to and extract parameters
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        guard let host = components?.host else { return }
+        
+        // Extract query items
+        var parameters: [String: String] = [:]
+        components?.queryItems?.forEach { item in
+            parameters[item.name] = item.value
+        }
+        
+        deepLinkData = DeepLinkData(view: host, parameters: parameters)
+        
+        print ("deepLinkData" , deepLinkData)
+        
+    }
+    
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {

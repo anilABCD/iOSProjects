@@ -14,7 +14,7 @@ class DataFetcher: ObservableObject {
     
     init(pollingInterval: TimeInterval) {
         self.pollingInterval = pollingInterval
-        startPolling()
+//        startPolling()
     }
     
     func startPolling() {
@@ -70,10 +70,13 @@ class DataFetcher: ObservableObject {
 
 
 struct ContentView: View {
+    
     @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
     
     @State private var selectedTab = 0
     @EnvironmentObject private var tokenManager: TokenManager
+    
+    @Binding  var deepLinkData: DeepLinkData?
     
     @StateObject private var locationManager = LocationManager()
        
@@ -84,9 +87,11 @@ struct ContentView: View {
    
     @State private var isMenuVisible = false
     
-    init( isHome : Bool ){
-        
-        self.isHome = isHome
+    init(isHome: Bool, deepLinkData: Binding<DeepLinkData?>) {
+           self.isHome = isHome
+           self._deepLinkData = deepLinkData
+        print (deepLinkData.wrappedValue)
+        print ("Content View Deep Link Data" , self._deepLinkData.wrappedValue)
     }
 
     var body: some View {
@@ -330,8 +335,15 @@ struct ContentView: View {
                 
             }
         }
+        .onChange(of: deepLinkData) { newDeepLinkData in
+           handleDeepLink()
+        }
         .onAppear {
             dataFetcher.startPolling()
+            
+           
+            
+            print("selected Tab : " , selectedTab )
             
             Task {
                 do {
@@ -345,10 +357,30 @@ struct ContentView: View {
                 }
                 
             }
+            
+           
                                
         }
         .onDisappear {
             dataFetcher.stopPolling()
+        }
+    }
+    
+    func handleDeepLink () {
+        print("deepLinkData : " , deepLinkData ?? "")
+        
+        if let deepLinkData = deepLinkData {
+            // Navigate to the appropriate view based on deepLinkData
+            switch deepLinkData.view {
+            case "view1":
+                selectedTab = 2
+//                    View1(parameter: deepLinkData.parameters["param"] ?? "")
+            case "view2":
+                selectedTab = 3
+//                    View2(parameter: deepLinkData.parameters["param"] ?? "")
+            default:
+                selectedTab = 1
+            }
         }
     }
     
@@ -390,6 +422,8 @@ struct ContentView_Previews: PreviewProvider {
        
     @StateObject static var tokenManager :TokenManager = TokenManager()
     
+    @State static var deepLinkData: DeepLinkData? = nil
+    
     init(){
         
     
@@ -398,7 +432,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
       
         TabView {
-                   ContentView(isHome: false)
+            ContentView(isHome: false, deepLinkData: $deepLinkData)
                        .tabItem {
                            Label("Home", systemImage: "house")
                        }
@@ -424,7 +458,7 @@ struct ContentView_Previews: PreviewProvider {
             
                    
                    
-                   ContentView(isHome: true)
+                   ContentView(isHome: true, deepLinkData: $deepLinkData)
                        .tabItem {
                            Label("Home", systemImage: "house.fill")
                        }
@@ -614,5 +648,24 @@ struct SideMenuView: View {
         default:
             return AnyView(Text("Default View"))
         }
+    }
+}
+
+
+struct View1: View {
+    var parameter: String
+
+    var body: some View {
+        Text("View 1 with parameter: \(parameter)")
+            .padding()
+    }
+}
+
+struct View2: View {
+    var parameter: String
+
+    var body: some View {
+        Text("View 2 with parameter: \(parameter)")
+            .padding()
     }
 }

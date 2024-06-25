@@ -10,6 +10,14 @@
 				<string>com.googleusercontent.apps.346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>devosDatingApp</string>
+			</array>
+		</dict>
 	</array>
 	<key>GIDClientID</key>
 	<string>346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln.apps.googleusercontent.com</string>

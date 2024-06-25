@@ -49,6 +49,11 @@ class WebSocketManager: ObservableObject {
     }
     
     func disconnect() {
-        socket.disconnect()
+        if let socket = socket {
+            socket.disconnect()
+        } else {
+            print("Socket is nil, cannot disconnect")
+        }
+
     }
 }
