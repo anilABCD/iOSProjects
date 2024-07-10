@@ -78,7 +78,7 @@ struct LikeItemView: View {
     
     var body: some View {
         HStack {
-            if let imageName = like.userFrom?.photo , let url = URL(string: "\(photoURL)/\(imageName)")
+            if let imageName = like.userFrom?.photo , let url = URL(string: "\(photoURL)/\("resized-")\(imageName)")
             {
                 AsyncImage(url: url) { phase in
                                    switch phase {

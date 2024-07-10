@@ -10,7 +10,7 @@ import SwiftUI
 
 struct Constants {
     
-    static let localhost = "http://localhost:8000"
+    static let localhost = "http://192.168.1.4:8000"
     
     struct Colors {
         static let primary = Color.orange
