@@ -29,17 +29,42 @@ struct UpdateTechnologyNewView: View {
     ]
     
     @State var items: [SelectableItem] = [
+        
         SelectableItem(name: "#React"),
         SelectableItem(name: "#Angular"),
         SelectableItem(name: "#React Native"),
         SelectableItem(name: "#Flutter"),
         SelectableItem(name: "#iOS"),
         SelectableItem(name: "#Android"),
+        SelectableItem(name: "#Swift"),
         SelectableItem(name: "#Swift UI"),
+        
+        SelectableItem(name: "#Node js"),
+        SelectableItem(name: "#MERN"),
+        SelectableItem(name: "#MEAN"),
+        
+       
         SelectableItem(name: "#Front End"),
+        SelectableItem(name: "#UI/UX Designer"),
         SelectableItem(name: "#Backend"),
         SelectableItem(name: "#Fullstack"),
-        SelectableItem(name: "#Dev Ops")
+        SelectableItem(name: "#Dev Ops"),
+        
+        SelectableItem(name: "#Cloud Engineer"),
+        SelectableItem(name: "#QA Engineer"),
+        
+        SelectableItem(name: "#AI/ML Engineer"),
+        SelectableItem(name: "#Game Developer"),
+
+        SelectableItem(name: "#Database"),
+        SelectableItem(name: "#System Administrator"),
+        SelectableItem(name: "#Security Engineer"),
+        
+        SelectableItem(name: "#Product Manager"),
+        SelectableItem(name: "#CEO"),
+        SelectableItem(name: "#Chairman"),
+ 
+        SelectableItem(name: "#Data Scientist/Engineer"),
     ]
     
     @State var status: String? = nil
