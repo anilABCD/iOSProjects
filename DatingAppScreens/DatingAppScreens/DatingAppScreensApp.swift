@@ -21,6 +21,105 @@ func getDeviceNotificationToken() -> String? {
 }
 
 
+
+func setUserOnline(userId: String, accessToken : String)  async {
+    
+    
+//
+//    
+//    let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(Constants.localhost)/matches/", accessToken: accessToken, data: nil, parameters: nil)
+//
+//     let response: MatchesResponse = try await fetchData(from: urlRequest)
+//   
+//
+    
+    print("online executed");
+    
+//    guard let url = URL(string: "\(Constants.localhost)/user/\(userId)/online") else { print("bad url"); return }
+    
+    
+    do {
+       
+    
+    
+    let data = ProfileEncodable() ;
+
+        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(Constants.localhost)/user/\(userId)/online", accessToken: accessToken , data:data , parameters: nil)
+        
+        let response: Profile = try await fetchData(from: urlRequest)
+    
+    print(" online response" , response)
+        
+        
+        print ( "is Online" , response.isOnline)
+        
+    }
+    catch{
+        let errorMessage = error.localizedDescription
+                 print("Caught an error: \(error)")
+        
+        print (errorMessage)
+    }
+    
+//    var request = URLRequest(url: url)
+//    request.httpMethod = "POST"
+//    
+//    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//        if let error = error {
+//            print("Error setting user online: \(error)")
+//            return
+//        }
+//        if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+//            print("User set to online successfully")
+//        } else {
+//            print("Failed to set user online")
+//        }
+//    }
+//    
+//    task.resume()
+}
+
+func setUserOffline(userId: String, accessToken : String) async {
+    
+    do {
+        
+    let data = ProfileEncodable() ;
+
+        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(Constants.localhost)/user/\(userId)/offline", accessToken: accessToken , data:data , parameters: nil)
+        
+        let response: Profile = try await fetchData(from: urlRequest)
+    
+        
+        print ( "is Online" , response.isOnline)
+    
+}
+catch{
+    let errorMessage = error.localizedDescription
+             print("Caught an error: \(error)")
+    
+    print (errorMessage)
+}
+//    guard let url = URL(string: "\(Constants.localhost)/user/\(userId)/offline") else { return }
+//    
+//    var request = URLRequest(url: url)
+//    request.httpMethod = "POST"
+//    
+//    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//        if let error = error {
+//            print("Error setting user offline: \(error)")
+//            return
+//        }
+//        if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+//            print("User set to offline successfully")
+//        } else {
+//            print("Failed to set user offline")
+//        }
+//    }
+//    
+//    task.resume()
+}
+
+
 class TokenManager: ObservableObject {
     
      @AppStorage("accessToken") var accessToken: String = ""
@@ -109,7 +208,7 @@ struct DeepLinkData : Equatable {
 @main
 struct DatingAppScreensApp: App {
     @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
-    
+
     @State private var deepLinkData: DeepLinkData?
 
     @StateObject private var tokenManager = TokenManager()
@@ -136,7 +235,8 @@ struct DatingAppScreensApp: App {
                 else
                 {
                 
-                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher).onOpenURL { url in
+                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher)
+                        .onOpenURL { url in
                                            // First, try to handle Google Sign-In URL
                                            if GIDSignIn.sharedInstance.handle(url) {
                                                return
@@ -225,4 +325,16 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         print("Received notification: \(userInfo)")
         completionHandler()
     }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+           // Handle app becoming active
+           print("App became active")
+           // Perform operations like updating user status
+       }
+
+       func applicationDidEnterBackground(_ application: UIApplication) {
+           // Handle app entering background
+           print("App entered background")
+           // Perform operations like updating user status
+       }
 }

@@ -72,7 +72,7 @@ class DataFetcher: ObservableObject {
 struct ContentView: View {
     
     @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
-    
+    @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab = 0
     @EnvironmentObject private var tokenManager: TokenManager
     
@@ -219,17 +219,17 @@ struct ContentView: View {
                                     
                                     
                                     // Temporarly Commented If Needed , I Will Add In Future , The Menu . on the left top corner.
-//                                    Image("menu").resizable().frame(width: 25, height: 25)
-//                                        .font(.title)
-//                                    
-//                                        .cornerRadius(4)
-//                                        .onTapGesture {
-//                                            withAnimation {
-//                                                isMenuVisible.toggle()
-//                                            }
-//                                            
-//                                            print("\(tokenManager.localhost)/\(tokenManager.photo)")
-//                                        }
+                                    //                                    Image("menu").resizable().frame(width: 25, height: 25)
+                                    //                                        .font(.title)
+                                    //
+                                    //                                        .cornerRadius(4)
+                                    //                                        .onTapGesture {
+                                    //                                            withAnimation {
+                                    //                                                isMenuVisible.toggle()
+                                    //                                            }
+                                    //
+                                    //                                            print("\(tokenManager.localhost)/\(tokenManager.photo)")
+                                    //                                        }
                                     
                                     
                                     Spacer()
@@ -254,58 +254,69 @@ struct ContentView: View {
                                     
                                 }.frame(width: UIScreen.main.bounds.width - 50).padding(.horizontal, 30)
                             }
-                    
-                    VStack {
-                        TabView(selection: $selectedTab) {
                             
-                            HomeView().onAppear(){
-                                tokenManager.isMenuView = false
+                            VStack {
+                                TabView(selection: $selectedTab) {
+                                    
+                                    HomeView().onAppear(){
+                                        tokenManager.isMenuView = false
+                                    }
+                                    .tabItem {
+                                        Label("", systemImage: "rectangle.stack")
+                                    }
+                                    .tag(0)
+                                    .background(Color.white) // Set background color of the first tab
+                                    LikesScreenView()
+                                        .tabItem {
+                                            Label("", systemImage: "heart").background(.black)
+                                        }
+                                        .tag(1)
+                                    
+                                    //                            Text("Hello2")
+                                    //                                .tabItem {
+                                    //                                    Label("Questions", systemImage: "plus").background(.orange)
+                                    //                                }
+                                    //                                .tag(2)
+                                    
+                                    MatchedScreenView()
+                                        .tabItem {
+                                            Label("", systemImage: "message").background(.black)
+                                        }
+                                        .tag(2)
+                                    
+                                    UserSettingsView(path: $path)
+                                        .tabItem {
+                                            Label("", systemImage: "person").background(.black)
+                                        }
+                                        .tag(3)
+                                    
+                                }.background(.white)
+                                    .accentColor(Color.black)
+                                
                             }
-                                .tabItem {
-                                    Label("", systemImage: "rectangle.stack")
-                                }
-                                .tag(0)
-                                .background(Color.white) // Set background color of the first tab
-                            LikesScreenView()
-                                .tabItem {
-                                    Label("", systemImage: "heart").background(.black)
-                                }
-                                .tag(1)
-                            
-//                            Text("Hello2")
-//                                .tabItem {
-//                                    Label("Questions", systemImage: "plus").background(.orange)
-//                                }
-//                                .tag(2)
-                            
-                             ChatView()
-                                .tabItem {
-                                    Label("", systemImage: "message").background(.black)
-                                }
-                                .tag(2)
-                            
-                            UserSettingsView(path: $path)
-                                .tabItem {
-                                    Label("", systemImage: "person").background(.black)
-                                }
-                                .tag(3)
-                            
-                        }.background(.white)
-                        .accentColor(Color.black)
-                      
-                        
+                            .frame( maxWidth:.infinity )
+                            .navigationBarTitle("", displayMode: .inline)
+                        }
                         
                     }
-                    .frame( maxWidth:.infinity )
-                        .navigationBarTitle("", displayMode: .inline)
                 }
-                        
-                        
-                       
-                    }
-       
+                
+            }.onChange(of: tokenManager.userId) { newValue in
+                
+                // App became active
+                let userId = tokenManager.userId // Replace with actual user ID
+                let accessToken = tokenManager.accessToken
+                
+                Task {
+               
+                         await    setUserOnline(userId: userId , accessToken: accessToken )
+              
+                   
                 }
-            }
+                 
+        
+                 
+             }
           
             
             Color.black.opacity( isMenuVisible ? 0.5 : 0).edgesIgnoringSafeArea(.all)
@@ -317,6 +328,33 @@ struct ContentView: View {
             
             SideMenuView(selectedTab: $selectedTab, isMenuVisible: $isMenuVisible)
 
+        }.onChange(of: scenePhase) { newPhase in
+            
+            print("Scene phase changed to: \(newPhase)")
+            if newPhase == .active {
+                
+                // totodo : completed.
+                // when on change userId , there i need to update the userId to online .
+                
+                // App became active
+                let userId = tokenManager.userId // Replace with actual user ID
+                let accessToken = tokenManager.accessToken;
+                Task {
+                   
+                         await    setUserOnline(userId: userId , accessToken: accessToken )
+                   
+                }
+            } else if newPhase == .background {
+                // App entered background
+                let userId = tokenManager.userId // Replace with actual user ID
+                let accessToken = tokenManager.accessToken;
+                Task {
+                  
+                         await  setUserOffline(userId: userId , accessToken: accessToken )
+                   
+                }
+            }
+            
         }
         .onChange(of: tokenManager.userId) { newValue in
             Task {
@@ -341,7 +379,18 @@ struct ContentView: View {
         .onAppear {
             dataFetcher.startPolling()
             
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // App became active
+            let userId = tokenManager.userId // Replace with actual user ID
+            let accessToken = tokenManager.accessToken;
+            
+            Task {
            
+                await  setUserOnline(userId: userId , accessToken: accessToken )
+              
+            }
+           
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
             print("selected Tab : " , selectedTab )
             
