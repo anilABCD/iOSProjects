@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 class DataFetcher: ObservableObject {
     @Published var data: [String] = []
     var timer: Timer?
@@ -81,6 +83,8 @@ struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
        
     var isHome = false
+    
+    @State private var isTabBarHidden = true
 
     
     @State var path :[MyNavigation<String>] = []
@@ -261,16 +265,16 @@ struct ContentView: View {
                                     HomeView().onAppear(){
                                         tokenManager.isMenuView = false
                                     }
-                                    .tabItem {
-                                        Label("", systemImage: "rectangle.stack")
-                                    }
+//                                    .tabItem {
+//                                        Label("", systemImage: "rectangle.stack")
+//                                    }
                                     .tag(0)
                                     .background(Color.white) // Set background color of the first tab
                                     LikesScreenView()
-                                        .tabItem {
-                                            Label("", systemImage: "heart").background(.black)
-                                        }
-                                        .tag(1)
+//                                        .tabItem {
+//                                            Label("", systemImage: "heart").background(.black)
+//                                        }
+                                    .tag(1)
                                     
                                     //                            Text("Hello2")
                                     //                                .tabItem {
@@ -279,23 +283,62 @@ struct ContentView: View {
                                     //                                .tag(2)
                                     
                                     MatchedScreenView()
-                                        .tabItem {
-                                            Label("", systemImage: "message").background(.black)
-                                        }
-                                        .tag(2)
+//                                        .tabItem {
+//                                            Label("", systemImage: "message").background(.black)
+//                                        }
+                                    .tag(2)
                                     
                                     UserSettingsView(path: $path)
-                                        .tabItem {
-                                            Label("", systemImage: "person").background(.black)
-                                        }
-                                        .tag(3)
+//                                        .tabItem {
+//                                            Label("", systemImage: "person").background(.black)
+//                                        }
+                                    .tag(3)
                                     
-                                }.background(.white)
-                                    .accentColor(Color.black)
+                                }   .id(selectedTab)  
+                                    .toolbar(.hidden, for: .tabBar)
+                                    .padding(.bottom , 5)
+                                    .overlay(alignment: .bottom) {
+
+                                        // Custom tab bar
+                                                   HStack {
+                                                       TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
+                                                           .onTapGesture {
+                                                               selectedTab = 0
+                                                               print("Selected tab: \(selectedTab)")
+                                                           }
+                                                       TabBarItem(imageName: "heart", title: "", isSelected: selectedTab == 1)
+                                                           .onTapGesture {
+                                                               selectedTab = 1
+                                                               print("Selected tab: \(selectedTab)")
+                                                           }
+                                                       TabBarItem(imageName: "message", title: "", isSelected: selectedTab == 2)
+                                                           .onTapGesture {
+                                                               selectedTab = 2
+                                                               print("Selected tab: \(selectedTab)")
+                                                           }
+                                                       TabBarItem(imageName: "person", title: "", isSelected: selectedTab == 3)
+                                                           .onTapGesture {
+                                                               selectedTab = 3
+                                                               print("Selected tab: \(selectedTab)")
+                                                           }
+                                                   }
+                                                   .frame( maxWidth:.infinity)
+                                                   .padding()
+                                                   .background(Color.white)
+                                                   .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
+                                        
+                                                   .frame(height: 100)
+                                    }
+                                   
+                                    .edgesIgnoringSafeArea(.bottom)
+                                    
+                                .edgesIgnoringSafeArea(.bottom)
+                                                
                                 
+                              
                             }
-                            .frame( maxWidth:.infinity )
-                            .navigationBarTitle("", displayMode: .inline)
+                            .frame( maxWidth:.infinity , maxHeight: .infinity )
+                            
                         }
                         
                     }
@@ -716,5 +759,25 @@ struct View2: View {
     var body: some View {
         Text("View 2 with parameter: \(parameter)")
             .padding()
+    }
+}
+
+
+
+struct TabBarItem: View {
+    let imageName: String
+    let title: String
+    let isSelected: Bool
+    
+    var body: some View {
+        VStack {
+            Image(systemName: imageName)
+                .foregroundColor(isSelected ? .blue : .gray)
+                .frame(width: 24, height: 24) // Standard size for the icon
+                .font(.system(size: 20)) // Adjust the icon size within the frame
+            Text(title)
+                .font(.caption)
+                .foregroundColor(isSelected ? .blue : .gray)
+        }.frame( maxWidth:.infinity )
     }
 }

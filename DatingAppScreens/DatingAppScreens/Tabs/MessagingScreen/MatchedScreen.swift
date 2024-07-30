@@ -3,11 +3,28 @@
 
 import SwiftUI
 
+
+struct Item: Identifiable {
+    var id = UUID()
+    var name: String
+    var description: String
+}
+
+
 struct MatchedScreenView: View {
     
     @State var matched : [MatchedResponse] = []
     @EnvironmentObject private var tokenManger : TokenManager
 
+    var items = [
+        Item(name: "Item 1", description: "Description for Item 1"),
+        Item(name: "Item 2", description: "Description for Item 2"),
+        Item(name: "Item 3", description: "Description for Item 3"),
+        Item(name: "Item 4", description: "Description for Item 4"),
+        // Add more items to make it scrollable
+        Item(name: "Item 5", description: "Description for Item 5"),
+        Item(name: "Item 6", description: "Description for Item 6")
+    ]
     
     func fetchMatched() async throws {
         
@@ -22,33 +39,95 @@ struct MatchedScreenView: View {
         print(matchedResponse)
     }
     
+    func fetchMatchedOnline() async throws {
+        
+        let data:MatchedEncodable? = nil;
+        
+        let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/search-matched-users", accessToken: tokenManger.accessToken , data: data, parameters: ["isOnlineQuery" : "true"] )
+        
+        let matchedResponse : [MatchedResponse] = try await fetchDataArray(from: urlRequest)
+        
+        matched = matchedResponse;
+        
+        print(matchedResponse)
+    }
+    
     
     var body: some View {
               NavigationView {
+                  
+           
+                  
+                  VStack {
+                 
+                      HStack{
+                          Text("Messages").bold().font(.largeTitle)
+                          Spacer()
+                      }.padding(.horizontal).frame(height: 45)
+                      
+                  
+                      ScrollView(.horizontal, showsIndicators: false) {
+                      
+                          HStack {
+                          
+                              ForEach(items) { item in
+                             
+                              
+                                  VStack {
+                                  
+                                      Image("splashscreenlogo")
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 50, height: 50)
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color.white, lineWidth: 2)) // Optional: Adding a border
+                                            .overlay(
+                                                           Circle()
+                                                               .fill(Color.green)
+                                                               .frame(width: 14, height: 14)
+                                                               .overlay(
+                                                                   Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
+                                                               )
+                                                               .offset(x: -1, y: -1), // Adjusting position to be near the circle
+                                                           alignment: .bottomTrailing
+                                                       )
+                                  
+                                  
+                                      Text(item.name)
+                                      .font(.headline)
+                              }.frame(maxWidth:.infinity).padding(.horizontal, 10)
+                              
+                          }
+                      }
+                  }.frame(maxWidth:.infinity ) .padding(.horizontal)
 //                   List(likes) { like in
 //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
                        
-                  List {
-                      ForEach(matched) { match in  // Iterate over likes directly
-                     
-                          // Determine which profile to display
-                          let matchProfile = (match.userOne?.id == tokenManger.userId) ? match.userTwo : match.userOne
-                          
-                          NavigationLink(destination: OthersProfileView(profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images")) {
-                              MatchedItemView(profile : matchProfile ?? nil, photoURL: "\(tokenManger.localhost)/images")
-                                  .onAppear {
-                                      if let index = matched.firstIndex(where: { $0.id == match.id }), index == matched.count - 5 {
-                                          //                                              loadMoreItems()
-                                          print ("load more")
+                      List {
+                          ForEach(matched) { match in  // Iterate over likes directly
+                              
+                              // Determine which profile to display
+                              let matchProfile = (match.userOne?.id == tokenManger.userId) ? match.userTwo : match.userOne
+                              
+                              NavigationLink(destination: ChatView(profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images") ) {
+                                  MatchedItemView(profile : matchProfile ?? nil, photoURL: "\(tokenManger.localhost)/images")
+                                      .onAppear {
+                                          if let index = matched.firstIndex(where: { $0.id == match.id }), index == matched.count - 5 {
+                                              //                                              loadMoreItems()
+                                              print ("load more")
+                                          }
+                                          
                                       }
-                                      
-                                  }
+                              }
+                              
+                              
                           }
-                          
-                          
                       }
                       
-                  }.navigationTitle("Messages")
+                  }.navigationTitle("")
+                   .navigationBarHidden(true) // Hides the navigation bar
+                  
+                  
 //                           .onAppear {
 //                               if index == likes.count - 5 {
 //                                  loadMoreItems()
@@ -127,5 +206,6 @@ struct MatchedScreenView_Previews: PreviewProvider {
         MatchedScreenView().environmentObject(TokenManager())
     }
 }
+
 
 
