@@ -52,16 +52,16 @@ struct UserSettingsView : View {
                     //                              }
                     //                          }
                 }
-            }
-            .navigationBarTitle("Profile Settings").onAppear(){
+            }.navigationBarTitle("Profile Settings").onAppear(){
                 
                 
                 tokenManger.isMenuView = true;
                 
             }
           
+          
             
-        }.navigationBarBackButtonHidden(true)
+        }  .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: BackButton {
                 // Handle back button action
                 tokenManger.isMenuView = false;

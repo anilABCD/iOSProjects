@@ -92,7 +92,7 @@ struct MatchesScreenView : View {
                 
                 if isNewDevMatches {
                     
-                    MatchesNewDevsView()
+                    MatchesNewDevsView().padding(.bottom)
                     
                 }
                 else {
@@ -103,7 +103,7 @@ struct MatchesScreenView : View {
                 
             }
             .frame(  maxHeight: .infinity , alignment: .topLeading )
-            .padding()
+      
             
             
 //

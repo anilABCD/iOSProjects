@@ -294,13 +294,14 @@ struct ContentView: View {
 //                                        }
                                     .tag(3)
                                     
-                                }   .id(selectedTab)  
+                                }   .id(selectedTab)     .padding(.bottom , 5)
                                     .toolbar(.hidden, for: .tabBar)
-                                    .padding(.bottom , 5)
+                                 
                                     .overlay(alignment: .bottom) {
 
                                         // Custom tab bar
                                                    HStack {
+                                                       Spacer()
                                                        TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
                                                            .onTapGesture {
                                                                selectedTab = 0
@@ -321,17 +322,18 @@ struct ContentView: View {
                                                                selectedTab = 3
                                                                print("Selected tab: \(selectedTab)")
                                                            }
+                                                       
+                                                       Spacer()
                                                    }
-                                                   .frame( maxWidth:.infinity)
+                                                  
                                                    .padding()
                                                    .background(Color.white)
                                                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
                                         
-                                                   .frame(height: 100)
+                                                   .frame(height: 100) .frame(  maxWidth: UIScreen.main.bounds.width)
                                     }
                                    
-                                    .edgesIgnoringSafeArea(.bottom)
-                                    
+                                
                                 .edgesIgnoringSafeArea(.bottom)
                                                 
                                 
@@ -339,7 +341,7 @@ struct ContentView: View {
                             }
                             .frame( maxWidth:.infinity , maxHeight: .infinity )
                             
-                        }
+                        } .frame( maxWidth:.infinity , maxHeight: .infinity )
                         
                     }
                 }
@@ -773,9 +775,9 @@ struct TabBarItem: View {
         VStack {
             Image(systemName: imageName)
                 .foregroundColor(isSelected ? .blue : .gray)
-                .frame(width: 24, height: 24) // Standard size for the icon
+                .frame(width: 40, height: 40) // Standard size for the icon
                 .font(.system(size: 20)) // Adjust the icon size within the frame
-            Text(title)
+            Text("")
                 .font(.caption)
                 .foregroundColor(isSelected ? .blue : .gray)
         }.frame( maxWidth:.infinity )
