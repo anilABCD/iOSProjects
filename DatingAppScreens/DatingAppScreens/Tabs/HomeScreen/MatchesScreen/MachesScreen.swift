@@ -96,34 +96,55 @@ struct MatchesScreenView : View {
                 
                
                 if currentStep == 1 {
-                                
-                    Button("Allow Notification Settings") {
-                        // Check the current status when the screen appears
-                                          checkNotificationPermission { isGranted in
-                                              permissionGranted = isGranted
-                                              if !isGranted {
-                                                  requestNotificationPermission { granted in
-                                                      permissionGranted = granted
-                                                      
-                                                      tokenManger.notificationSettings = "applied"
-                                                      
-                                                      currentStep = 2
-                                                  }
-                                              }
-                                          }
-                               }
+       
+                    VStack {
+                        
+                        Spacer()
+                        Button("Enable Notifications") {
+                            // Check the current status when the screen appears
+                            checkNotificationPermission { isGranted in
+                                permissionGranted = isGranted
+                                if !isGranted && tokenManger.notificationSettings == "" {
+                                    requestNotificationPermission { granted in
+                                        permissionGranted = granted
+                                        
+                                        tokenManger.notificationSettings = "applied"
+                                        
+                                        currentStep = 2
+                                    }
+                                }
+                                else{
+                                    currentStep = 2
+                                }
+                            }
+                        } .padding()
+                            .background( Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        
+                        Spacer();
+                    }
                     
                             } else if currentStep == 2 {
-                                Button("Allow Location Settings") {
-                                    if !(locationManager.status == .authorizedWhenInUse || locationManager.status == .authorizedAlways ) {
-                                        
-                                        locationManager.requestWhenInUseAuthorization()
-                                        tokenManger.locationSettings = "applied"
+                                
+                                VStack {
+                                    Spacer()
+                                    Button("Enable Location") {
+                                        if !(locationManager.status == .authorizedWhenInUse || locationManager.status == .authorizedAlways ) {
+                                            
+                                            locationManager.requestWhenInUseAuthorization()
+                                            tokenManger.locationSettings = "applied"
                                         }
-                                    else{
-                                        currentStep = 3;
-                                    }
-                                           }
+                                        else{
+                                            currentStep = 3;
+                                        }
+                                    } .padding()
+                                        .background( Color.green )
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                    
+                                    Spacer()
+                                }
                             } else if currentStep == 3 {
                                 if isNewDevMatches {
                                     
