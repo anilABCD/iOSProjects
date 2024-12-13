@@ -27,6 +27,10 @@ struct MatchesScreenView : View {
      @State private var permissionGranted = false
     @StateObject private var locationManager = LocationManager()
     
+    
+    @StateObject private var locationPermissionManager = LocationPermissionManager()
+    @State private var permissionGrantedLocation: Bool = false
+    
     var body: some View {
         
         
@@ -104,7 +108,7 @@ struct MatchesScreenView : View {
                             // Check the current status when the screen appears
                             checkNotificationPermission { isGranted in
                                 permissionGranted = isGranted
-                                if !isGranted && tokenManger.notificationSettings == "" {
+                                if  tokenManger.notificationSettings == "" {
                                     requestNotificationPermission { granted in
                                         permissionGranted = granted
                                         
@@ -113,7 +117,8 @@ struct MatchesScreenView : View {
                                         currentStep = 2
                                     }
                                 }
-                                else{
+                                
+                                if tokenManger.notificationSettings == "applied" {
                                     currentStep = 2
                                 }
                             }
@@ -130,14 +135,16 @@ struct MatchesScreenView : View {
                                 VStack {
                                     Spacer()
                                     Button("Enable Location") {
-                                        if !(locationManager.status == .authorizedWhenInUse || locationManager.status == .authorizedAlways ) {
+                                        if ( tokenManger.locationSettings ==  "" ) {
+                                            requestLocationPermission()
                                             
-                                            locationManager.requestWhenInUseAuthorization()
-                                            tokenManger.locationSettings = "applied"
                                         }
-                                        else{
-                                            currentStep = 3;
+                                            else{
+                                            
+                                                currentStep = 3;
                                         }
+                                      
+                                        
                                     } .padding()
                                         .background( Color.green )
                                         .foregroundColor(.white)
@@ -165,37 +172,40 @@ struct MatchesScreenView : View {
             
             .frame(  maxHeight: .infinity , alignment: .topLeading )
             .onAppear(){
-                
-                checkNotificationPermission { isGranted in
-                    permissionGranted = isGranted
-                    if !isGranted && tokenManger.notificationSettings == ""{
+              
+                    if  tokenManger.notificationSettings == "" {
+                        
                         currentStep = 1
                         
                     }
-                    else if ( ( locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse ) &&  tokenManger.locationSettings == "" ) {
+                    else if  tokenManger.locationSettings == "" {
+                        
                         currentStep = 2
+                        
                     }
-                    
-                    
-                }
-                
-                locationManager.onAuthorizationChange = { newStatus in
-                   
-                    if ( tokenManger.locationSettings == "" ) {
-                        if ( locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse ) {
-                            currentStep = 3
-                        }
-                        else{
-                            
-                        }
-                    }
-                  
-                    if ( tokenManger.locationSettings == "applied" ) {
+                    else  {
                         currentStep = 3
                     }
                     
-                   
-                }
+                print ( currentStep , "abcd")
+                
+//                locationManager.onAuthorizationChange = { newStatus in
+//                   
+//                    if ( tokenManger.locationSettings == "" ) {
+//                        if ( locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse ) {
+//                            currentStep = 3
+//                        }
+//                        else{
+//                            
+//                        }
+//                    }
+//                  
+//                    if ( tokenManger.locationSettings == "applied" ) {
+//                        currentStep = 3
+//                    }
+//                    
+//                   
+//                }
 
             }
       
@@ -248,6 +258,35 @@ struct MatchesScreenView : View {
                 }
             }
         }
+    
+    private func requestLocationPermission() {
+        
+        if ( tokenManger.locationSettings == "" ) {
+            locationPermissionManager.requestLocationPermission { granted in
+                
+                self.permissionGrantedLocation = granted
+                
+                tokenManger.locationSettings = "applied";
+                
+                DispatchQueue.main.async {
+                    self.currentStep = 3
+                }
+                
+                print ( currentStep , "abcdef")
+                
+            }
+            
+            // even when complete(true/false) is not called due to settings already done . 
+            tokenManger.locationSettings = "applied";
+        }
+        else{
+            DispatchQueue.main.async {
+                self.currentStep = 3
+            }
+           
+        }
+        
+    }
     
     func requestNotificationPermission(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
