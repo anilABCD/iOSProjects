@@ -10,11 +10,20 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var location: CLLocation? = nil
     @Published var status: CLAuthorizationStatus?
     
+    
     override init() {
         super.init()
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
+         
+    }
+    
+    // Callback property
+     var onAuthorizationChange: ((CLAuthorizationStatus) -> Void)?
+
+    
+    func requestWhenInUseAuthorization() {
+        locationManager.requestWhenInUseAuthorization()
     }
     
     func startUpdatingLocation() {
@@ -23,6 +32,18 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func stopUpdatingLocation() {
         locationManager.stopUpdatingLocation()
+    }
+    
+    // Monitor changes in authorization status
+       func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+           DispatchQueue.main.async {
+               self.status = manager.authorizationStatus
+               self.onAuthorizationChange?(manager.authorizationStatus)
+           }
+       }
+    func checkLocationStatus() {
+        // Retrieve the current authorization status
+        status = CLLocationManager.authorizationStatus()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

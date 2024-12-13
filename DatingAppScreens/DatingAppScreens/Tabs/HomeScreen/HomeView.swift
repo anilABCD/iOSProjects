@@ -71,6 +71,7 @@ enum HomeTabEnumViews {
     case page2
     case page3
     case page4
+    case notificationPermissionPage 
     case signIn
     case signUp
 }
@@ -84,7 +85,10 @@ struct HomeView: View {
     @EnvironmentObject private var tokenManager : TokenManager;
   
     
-  
+     @State private var permissionGranted = false
+     
+    @StateObject private var locationManager = LocationManager()
+      
     var body: some View {
         
        
@@ -108,8 +112,20 @@ struct HomeView: View {
                             Text("sign In")
                         case .signUp:
                             Text("sign Up")
+                        case .notificationPermissionPage:
+                            Text("Notification Permission Page")
                         }
                     }
+                } .onAppear {
+//                    // Check the current status when the screen appears
+//                    checkNotificationPermission { isGranted in
+//                        permissionGranted = isGranted
+//                        if !isGranted {
+//                            requestNotificationPermission { granted in
+//                                permissionGranted = granted
+//                            }
+//                        }
+//                    }
                 }.onChange(of: tokenManager.homeTabView ) { newValue in
                     if let newValue = newValue {
                         if newValue == .page1 {
@@ -127,8 +143,24 @@ struct HomeView: View {
             .navigationBarTitle("", displayMode: .inline)
             
        
+           
         
-        
+    }
+    
+    func checkNotificationPermission(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus == .authorized)
+            }
+        }
+    }
+
+    func requestNotificationPermission(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            DispatchQueue.main.async {
+                completion(granted)
+            }
+        }
     }
 }
 

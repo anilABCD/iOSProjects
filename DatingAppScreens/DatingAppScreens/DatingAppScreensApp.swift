@@ -131,6 +131,11 @@ class TokenManager: ObservableObject {
      @AppStorage("photo") var photo: String = ""
      @AppStorage("hobbies") var hobbies: String = ""
     
+
+    @AppStorage("notificationsSettings") var notificationSettings : String = ""
+    @AppStorage("locationSettings") var locationSettings : String = ""
+
+    
     @AppStorage("smoking") var smoking: String = ""
     @AppStorage("drinking") var drinking: String = ""
     @AppStorage("dob") var dob: String = ""
@@ -140,6 +145,8 @@ class TokenManager: ObservableObject {
     
     
     @Published var isMenuView : Bool = false;
+    
+    @Published var gotToNotificationsPage : Bool = false;
  
 //    @Published  var localhost : String = "http://169.254.23.107:8000"
     @Published var localhost : String = Constants.localhost;
@@ -191,6 +198,9 @@ class TokenManager: ObservableObject {
         self.dob = ""
         self.drinking = ""
         self.smoking = ""
+        
+        self.notificationSettings = "";
+        self.locationSettings = "";
     }
 }
 
@@ -283,18 +293,18 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         // Set the notification center delegate
         UNUserNotificationCenter.current().delegate = self
-
-        // Request permission to show notifications
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            print("Permission granted: \(granted)")
-            if granted {
-                DispatchQueue.main.async {
-                    application.registerForRemoteNotifications()
-                }
-            } else if let error = error {
-                print("Request authorization failed: \(error.localizedDescription)")
-            }
-        }
+//
+//        // Request permission to show notifications
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+//            print("Permission granted: \(granted)")
+//            if granted {
+//                DispatchQueue.main.async {
+//                    application.registerForRemoteNotifications()
+//                }
+//            } else if let error = error {
+//                print("Request authorization failed: \(error.localizedDescription)")
+//            }
+//        }
 
         return true
     }

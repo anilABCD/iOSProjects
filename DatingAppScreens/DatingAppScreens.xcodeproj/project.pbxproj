@@ -45,6 +45,7 @@
 		B7E6C9492C174BFD00F321A9 /* ObjectId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9482C174BFD00F321A9 /* ObjectId.swift */; };
 		B7E6C94B2C174C1C00F321A9 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C94A2C174C1C00F321A9 /* ProfileModel.swift */; };
 		B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9512C175D6100F321A9 /* OthersProfile.swift */; };
+		B7E898782D054BBA00F0D41D /* UpdateNotificationPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */; };
 		B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */; };
 		B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */; };
 		B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */; };
@@ -114,6 +115,7 @@
 		B7E6C9482C174BFD00F321A9 /* ObjectId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectId.swift; sourceTree = "<group>"; };
 		B7E6C94A2C174C1C00F321A9 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		B7E6C9512C175D6100F321A9 /* OthersProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersProfile.swift; sourceTree = "<group>"; };
+		B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateNotificationPermissionsView.swift; sourceTree = "<group>"; };
 		B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingExample.swift; sourceTree = "<group>"; };
 		B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesScreen.swift; sourceTree = "<group>"; };
 		B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesModel.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 		B7E2A83A2C170192008ADE0E /* WhenRegistering */ = {
 			isa = PBXGroup;
 			children = (
+				B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */,
 				B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */,
 				B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */,
 				B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */,
@@ -645,6 +648,7 @@
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
 				B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */,
+				B7E898782D054BBA00F0D41D /* UpdateNotificationPermissionsView.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
 				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
 				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
@@ -831,7 +835,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DatingAppScreens/Preview Content\"";
-				DEVELOPMENT_TEAM = 57TMWXAVJH;
+				DEVELOPMENT_TEAM = HMPQ2T7A72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DatingAppScreens/Info.plist;
@@ -871,7 +875,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DatingAppScreens/Preview Content\"";
-				DEVELOPMENT_TEAM = 57TMWXAVJH;
+				DEVELOPMENT_TEAM = HMPQ2T7A72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DatingAppScreens/Info.plist;

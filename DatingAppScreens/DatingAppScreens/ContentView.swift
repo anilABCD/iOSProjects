@@ -80,8 +80,7 @@ struct ContentView: View {
     
     @Binding  var deepLinkData: DeepLinkData?
     
-    @StateObject private var locationManager = LocationManager()
-       
+    
     var isHome = false
     
     @State private var isTabBarHidden = true
@@ -156,14 +155,17 @@ struct ContentView: View {
                                     UpdateTechnologyNewView(path: $path)
                                 case .page3:
                                     UpdateHobbiesView(path : $path)
-                                case .page4 :
+                                case .page4:
                                     ProfileEditorView(path : $path)
+                                case .notificationPermissionPage :
+                                    Text("Notifications Settings")
                                 case .home:
                                     Text("Technologies")
                                 }
                             }
-                        }.onChange(of: tokenManager.accessToken) { newValue in
-                           handleNavigation()                    
+                        }
+                        .onChange(of: tokenManager.accessToken) { newValue in
+                           handleNavigation()
                             
                         }
                         .onChange(of: tokenManager.photo ) { newValue in
@@ -196,7 +198,7 @@ struct ContentView: View {
                           handleNavigation()
                             
                         }
-                        
+                       
                     }.frame( maxWidth:.infinity)
                         .navigationBarTitle("", displayMode: .inline)
                                             .onAppear(){
@@ -504,6 +506,8 @@ struct ContentView: View {
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page4, params: Params<String>(data: "")))
         }
+       
+        
         else {
             path.removeAll()
         }

@@ -22,6 +22,10 @@ struct MatchesScreenView : View {
  
     @State var isNewDevMatches : Bool = true;
        
+    @State private var currentStep = 1
+    
+     @State private var permissionGranted = false
+    @StateObject private var locationManager = LocationManager()
     
     var body: some View {
         
@@ -90,19 +94,89 @@ struct MatchesScreenView : View {
 //                
 //                .frame( maxWidth: .infinity , alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/).padding(20)
                 
-                if isNewDevMatches {
+               
+                if currentStep == 1 {
+                                
+                    Button("Allow Notification Settings") {
+                        // Check the current status when the screen appears
+                                          checkNotificationPermission { isGranted in
+                                              permissionGranted = isGranted
+                                              if !isGranted {
+                                                  requestNotificationPermission { granted in
+                                                      permissionGranted = granted
+                                                      
+                                                      tokenManger.notificationSettings = "applied"
+                                                      
+                                                      currentStep = 2
+                                                  }
+                                              }
+                                          }
+                               }
                     
-                    MatchesNewDevsView().padding(.bottom)
+                            } else if currentStep == 2 {
+                                Button("Allow Location Settings") {
+                                    if !(locationManager.status == .authorizedWhenInUse || locationManager.status == .authorizedAlways ) {
+                                        
+                                        locationManager.requestWhenInUseAuthorization()
+                                        tokenManger.locationSettings = "applied"
+                                        }
+                                    else{
+                                        currentStep = 3;
+                                    }
+                                           }
+                            } else if currentStep == 3 {
+                                if isNewDevMatches {
+                                    
+                                    MatchesNewDevsView().padding(.bottom)
+                                    
+                                }
+                                else {
+                                    
+                                    ForYouMatches()
+                                    
+                                }
+                            }
+                
+                
+            }
+            
+            
+            
+            .frame(  maxHeight: .infinity , alignment: .topLeading )
+            .onAppear(){
+                
+                checkNotificationPermission { isGranted in
+                    permissionGranted = isGranted
+                    if !isGranted && tokenManger.notificationSettings == ""{
+                        currentStep = 1
+                        
+                    }
+                    else if ( ( locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse ) &&  tokenManger.locationSettings == "" ) {
+                        currentStep = 2
+                    }
                     
-                }
-                else {
-                    
-                    ForYouMatches()
                     
                 }
                 
+                locationManager.onAuthorizationChange = { newStatus in
+                   
+                    if ( tokenManger.locationSettings == "" ) {
+                        if ( locationManager.status == .authorizedAlways || locationManager.status == .authorizedWhenInUse ) {
+                            currentStep = 3
+                        }
+                        else{
+                            
+                        }
+                    }
+                  
+                    if ( tokenManger.locationSettings == "applied" ) {
+                        currentStep = 3
+                    }
+                    
+                   
+                }
+
             }
-            .frame(  maxHeight: .infinity , alignment: .topLeading )
       
             
             
@@ -121,6 +195,47 @@ struct MatchesScreenView : View {
 //            )
         }
     }
+    
+    func checkNotificationPermission(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus == .authorized)
+               
+            }
+        }
+    }
+
+    func getNotificationStatus(completion: @escaping (String) -> Void) {
+            let center = UNUserNotificationCenter.current()
+
+            center.getNotificationSettings { settings in
+                DispatchQueue.main.async {
+                    switch settings.authorizationStatus {
+                    case .notDetermined:
+                        completion("Not Determined")
+                    case .denied:
+                        completion("Denied")
+                    case .authorized:
+                        completion("Authorized")
+                    case .provisional:
+                        completion("Provisional")
+                    case .ephemeral:
+                        completion("Ephemeral")
+                    @unknown default:
+                        completion("Unknown")
+                    }
+                }
+            }
+        }
+    
+    func requestNotificationPermission(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            DispatchQueue.main.async {
+                completion(granted)
+            }
+        }
+    }
+    
 }
 
 
