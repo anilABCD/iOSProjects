@@ -101,6 +101,8 @@ struct MatchesNewDevsView: View {
                     
                     self.profiles = decodedResponse
                     
+                    isLoading=false
+                    
 //                   k
                 }
                 
@@ -117,172 +119,40 @@ struct MatchesNewDevsView: View {
     };
     
     
-    
-    
+    private let images = ["person.fill", "star.fill"] // Replace with your images
+
+    @State private var isLoading: Bool = false
+        
     var body: some View {
         
-        
-        VStack {
-            TabView(selection: $currentIndex) {
-                ForEach(profiles.indices, id: \.self) { index in
-                    VStack {
-                       
-                        ScrollView  {
-                            
-                            VStack {
-                                
-                                ZStack {
-                                    GeometryReader { geometry in
-                                           AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(profiles[index].photo ?? "image.jpg")")) { image in
-                                               image
-                                                   .resizable()
-                                                   .scaledToFill()
-                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.60 )
-                                                   .clipped()
-                                                   .cornerRadius(10)
-                                             
-//                                                   .overlay(
-//                                                                      RoundedRectangle(cornerRadius: 20)
-//                                                                          .stroke(Color.clear, lineWidth: 0)
-//                                                                          .shadow(color: Color.blue.opacity(0.7), radius: 10, x: 0, y: 0)
-//                                                                  )
-//                                                                  .shadow(color: Color.black.opacity(0.5), radius: 10, x: 0, y: 0)
-//
-                                               
-                                           } placeholder: {
-                                               ProgressView()
-                                                   .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.60  )
-                                           }
-                                       }
-                                    
-                                    VStack( alignment: .leading , spacing: 5 ) {
-                                        
-                                        Spacer().frame(maxHeight:.infinity)
-                                       
-//                                        VStack{
-//                                            Spacer()
-                                        GrayCard(title: "Name", content: profiles[index].name ?? "")
-                                                         
-                                         
-                                            GrayCard(title: "Experience", content: "\(profiles[index].experience ?? 0)")
-                                                         
-                                            GrayCard(title: "Technology", content: profiles[index].technologies?.joined(separator: ", ") ?? "")
-                                                         
-                                         
-                                          
-                                            
-//                                        }
-//                                        .frame( maxHeight: .infinity, alignment: .leading)
-//                                        .padding()
-//                                       
-//                           
-                                            .cornerRadius(10)
-//                                        .shadow(radius: 2)
-                                        //                                }
-                                        //                                .padding()
-                                        
-                                     
-                                    }.frame(maxWidth : .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                                        .padding()
-                                }.background(Color.blue.opacity(0.01))
-                                
-                                     
-                            } .frame(height:  UIScreen.main.bounds.height * 0.60  ).padding()
-
-//                                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
-//                                    
-//
-                              
-                            Text("Profile Headline:")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .fontWeight(.bold)
-                                .padding()
-                        }.scrollIndicators(.hidden)
-                        
-                        Spacer()
-                        
-                        HStack(spacing: 30) {
-                            Button(action: {
-                                withAnimation(.easeInOut(duration: 1.0)) {
-                                    currentIndex = min (currentIndex + 1 , profiles.count - 1 )
-                                    
-                                }
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.largeTitle)
-                            } .disabled(currentIndex == profiles.count)
-                                .padding()
-                            .background(Color.red)
-                            .foregroundColor(.white)
-                            .clipShape(Circle())
-                            
-                            Button(action: {
-                              
-                                
-                                // Print the current index
-                                   print(currentIndex)
-                                   
-                                   // Create a local copy of the current index
-                                   let currentIndex2 = currentIndex
-                                   
-                                   // Update currentIndex immediately for UI responsiveness
-                                   withAnimation(.easeInOut(duration: 1.0)) {
-                                       currentIndex = min(currentIndex + 1, profiles.count - 1)
-                                   }
-                                   
-                                   // Start an asynchronous task for the network request
-                                   Task {
-                                       do {
-                                           // Call the asynchronous function with the local copy
-                                           try await likeTheProfile(currentIndex: currentIndex2)
-                                       } catch {
-                                           // Handle any errors here
-                                           print("Failed to like the profile: \(error)")
-                                       }
-                                   }
+        ZStack {
+                   if isLoading {
+                       ProgressView("Loading...")
+                           .scaleEffect(1.5)
+                   } else if !profiles.isEmpty {
+                       ZStack {
+                           ForEach(profiles.indices , id: \.self ) { index in
                                
-                                
-                            }) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.largeTitle)
-                                
-                               
-                                
-                            }
-                            .disabled(currentIndex == profiles.count)
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .clipShape(Circle())
-                            
-//                            Button(action: {
-//                                
-//                                withAnimation {
-//                                                 isPopupPresented = true
-//                                             }
-//                            }) {
-//                                Image(systemName: "message.fill")
-//                                    .font(.title)
-//                                
-//                                
-//                            }
-//                            .padding()
-//                            .background(Color.blue)
-//                            .foregroundColor(.white)
-//                            .clipShape(Circle())
-                         
-
-                        }
-                        .padding(.horizontal)
-                        
-                       
-                    }
-                    .tag(index)
-                }.gesture(DragGesture().onChanged { _ in }) // Disable swipe gestures
-            }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never /* turn of dot page index buttons */))
-       
-        }  
+                               if index == profiles.count - 1 { // Show topmost item
+                                                   SwipeableView(
+                                                    item: profiles[index],
+                                                       onSwipe: {
+                                                           withAnimation {
+                                                               removeProfile(at: index)
+                                                           }
+                                                       }
+                           
+                                )
+                               }
+                           }
+                       }
+                   } else {
+                       Text("No items to display.")
+                           .font(.headline)
+                           .foregroundColor(.gray)
+                   }
+               }
+               .edgesIgnoringSafeArea(.top)
         .popup(isPresented: $isPopupPresented) {
             ChatPopupView(isPresented: $isPopupPresented, profile: profiles[currentIndex] )
         }
@@ -298,7 +168,10 @@ struct MatchesNewDevsView: View {
       
     }
     
-    
+    private func removeProfile(at index: Int) {
+            guard profiles.indices.contains(index) else { return }
+            profiles.remove(at: index)
+        }
   
 }
 
@@ -356,10 +229,11 @@ struct GrayCard: View {
                     .font(.headline)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                 
+                    .background(.gray)
                 Text(content)
                     .font(.caption)
                     .foregroundColor(.white)
+                    .background(.gray)
                    
               
             }.frame( maxWidth:.infinity, alignment: .topLeading) 
@@ -422,3 +296,345 @@ struct ChatPopupView: View {
     }
 }
 
+
+
+
+
+struct SwipeableView: View {
+    let item: Profile
+    let onSwipe: () -> Void
+    
+    @State private var offset: CGSize = .zero
+    @State private var isHidden: Bool = false
+    @EnvironmentObject private var tokenManger : TokenManager
+    @State private var initialDragPosition: CGPoint = .zero
+    var body: some View {
+        
+        ScrollView {
+            VStack {
+                ZStack(alignment: .bottomLeading) {
+                               // Use AsyncImage to load remote images
+                               AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(item.photo ?? "image.jpg")")) { phase in
+                                   switch phase {
+                                   case .empty:
+                                       ProgressView()
+                                           .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                                   case .success(let image):
+                                       image
+                                           .resizable()
+                                           .aspectRatio(contentMode: .fill)
+                                           .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                                           .clipped()
+                                          
+                                           .offset(x: offset.width, y: 0)
+                                           .rotationEffect(.degrees(Double(offset.width / 20)))
+                                         
+//                                           .gesture(
+//                                            DragGesture()
+//                                                                                      .onChanged { gesture in
+//                                                                                          // Track the initial position of the drag
+//                                                                                          if initialDragPosition == .zero {
+//                                                                                              initialDragPosition = gesture.startLocation
+//                                                                                          }
+//                                                                                          
+//                                                                                          // Update the offset with both x and y translations
+//                                                                                          offset = gesture.translation
+//                                                                                      }
+//                                                                                      .onEnded { gesture in
+//                                                                                          let swipeThreshold: CGFloat = 50 // Threshold to detect swipe
+//
+//                                                                                          // Handle horizontal swipe (left or right)
+//                                                                                          if abs(gesture.translation.width) > swipeThreshold {
+//                                                                                              if gesture.translation.width > 0 {
+//                                                                                                  swipeRight() // Swipe Right
+//                                                                                              } else {
+//                                                                                                  swipeLeft() // Swipe Left
+//                                                                                              }
+//                                                                                          }
+//                                                                                          // Handle vertical swipe (up or down)
+//                                                                                          else if abs(gesture.translation.height) > swipeThreshold {
+//                                                                                              if gesture.translation.height < 0 {
+//                                                                                                  swipeUp() // Swipe Up
+//                                                                                              } else {
+//                                                                                                  swipeDown() // Swipe Down
+//                                                                                              }
+//                                                                                          } else {
+//                                                                                              // If it's not a meaningful swipe, reset the offset
+//                                                                                              withAnimation {
+//                                                                                                  offset = .zero
+//                                                                                              }
+//                                                                                          }
+//                                                                                      }
+//                                   )
+                                   case .failure:
+                                       Color.gray // Fallback for failed loading
+                                           .frame(height: UIScreen.main.bounds.height * 0.6)
+                                   @unknown default:
+                                       EmptyView()
+                                   }
+                               }
+                               
+                               // Text overlay on the image
+                               VStack(alignment: .leading, spacing: 8) {
+                                   Text(item.name ?? "Unknown Name")
+                                       .font(.title)
+                                       .bold()
+                                       .foregroundColor(.white)
+                                   
+                                   Text("Experience: \(item.experience ?? 0) years")
+                                       .font(.subheadline)
+                                       .foregroundColor(.white)
+                                   
+                                   Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
+                                       .font(.subheadline)
+                                       .foregroundColor(.white)
+                               }
+                               .padding(8)
+                               .background(
+                                   LinearGradient(
+                                       gradient: Gradient(colors: [Color.black.opacity(0.7), Color.clear]),
+                                       startPoint: .bottom,
+                                       endPoint: .top
+                                   )
+                               )
+                           }
+                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                           
+                
+                
+                HStack {
+                    Button(action: swipeLeft) {
+                        Text("Reject")
+                            .bold()
+                            .frame(width: 100, height: 50)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                    
+                    Button(action: swipeRight) {
+                        Text("Accept")
+                            .bold()
+                            .frame(width: 100, height: 50)
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                }
+                
+                
+                
+                Text("Profile Headline:")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fontWeight(.bold)
+                    .padding()
+                
+               
+                
+              
+                
+                Spacer()
+            } .opacity(isHidden ? 0 : 1)
+                
+        }.padding()
+       
+    }
+ 
+  
+      private func swipeLeft() {
+           withAnimation(.easeIn(duration: 0.5)) {
+               offset = CGSize(width: -UIScreen.main.bounds.width, height: 0)
+               isHidden = true
+               onSwipe()
+           }
+       }
+
+       private func swipeRight() {
+           withAnimation(.easeIn(duration: 0.5)) {
+               offset = CGSize(width: UIScreen.main.bounds.width, height: 0)
+               isHidden = true
+               onSwipe()
+           }
+       }
+    
+    
+      private func swipeUp() {
+         // Handle natural scroll up
+         withAnimation {
+             offset = CGSize(width: 0, height: -200) // Scroll up behavior, adjust height as needed
+         }
+     }
+     
+     private func swipeDown() {
+         // Handle natural scroll down
+         withAnimation {
+             offset = CGSize(width: 0, height: 200) // Scroll down behavior, adjust height as needed
+         }
+     }
+}
+
+//
+//Vstack 
+//{
+//    TabView(selection: $currentIndex) {
+//        ForEach(profiles.indices, id: \.self) { index in
+//            VStack {
+//               
+//                ScrollView  {
+//                    
+//                    VStack {
+//                        
+//                        ZStack {
+//                            GeometryReader { geometry in
+//                                   AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(profiles[index].photo ?? "image.jpg")")) { image in
+//                                       image
+//                                           .resizable()
+//                                           .scaledToFill()
+//                                           .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.60 )
+//                                           .clipped()
+//                                           .cornerRadius(10)
+//                                     
+////                                                   .overlay(
+////                                                                      RoundedRectangle(cornerRadius: 20)
+////                                                                          .stroke(Color.clear, lineWidth: 0)
+////                                                                          .shadow(color: Color.blue.opacity(0.7), radius: 10, x: 0, y: 0)
+////                                                                  )
+////                                                                  .shadow(color: Color.black.opacity(0.5), radius: 10, x: 0, y: 0)
+////
+//                                       
+//                                   } placeholder: {
+//                                       ProgressView()
+//                                           .frame(width: geometry.size.width, height: UIScreen.main.bounds.height * 0.60  )
+//                                   }
+//                               }
+//                            
+//                            VStack( alignment: .leading , spacing: 5 ) {
+//                                
+//                                Spacer().frame(maxHeight:.infinity)
+//                               
+////                                        VStack{
+////                                            Spacer()
+//                                GrayCard(title: "Name", content: profiles[index].name ?? "")
+//                                                 
+//                                 
+//                                    GrayCard(title: "Experience", content: "\(profiles[index].experience ?? 0)")
+//                                                 
+//                                    GrayCard(title: "Technology", content: profiles[index].technologies?.joined(separator: ", ") ?? "")
+//                                                 
+//                                 
+//                                  
+//                                    
+////                                        }
+////                                        .frame( maxHeight: .infinity, alignment: .leading)
+////                                        .padding()
+////
+////
+//                                    .cornerRadius(10)
+////                                        .shadow(radius: 2)
+//                                //                                }
+//                                //                                .padding()
+//                                
+//                             
+//                            }.frame(maxWidth : .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+//                                .padding()
+//                        }.background(Color.blue.opacity(0.01))
+//                        
+//                             
+//                    } .frame(height:  UIScreen.main.bounds.height * 0.60  ).padding()
+//
+////                                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20) {
+////
+////
+//                      
+//                    Text("Profile Headline:")
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        .fontWeight(.bold)
+//                        .padding()
+//                }.scrollIndicators(.hidden)
+//                
+//                Spacer()
+//                
+//                HStack(spacing: 30) {
+//                    Button(action: {
+//                        withAnimation(.easeInOut(duration: 1.0)) {
+//                            currentIndex = min (currentIndex + 1 , profiles.count - 1 )
+//                            
+//                        }
+//                    }) {
+//                        Image(systemName: "xmark.circle.fill")
+//                            .font(.largeTitle)
+//                    } .disabled(currentIndex == profiles.count)
+//                        .padding()
+//                    .background(Color.red)
+//                    .foregroundColor(.white)
+//                    .clipShape(Circle())
+//                    
+//                    Button(action: {
+//                      
+//                        
+//                        // Print the current index
+//                           print(currentIndex)
+//                           
+//                           // Create a local copy of the current index
+//                           let currentIndex2 = currentIndex
+//                           
+//                           // Update currentIndex immediately for UI responsiveness
+//                           withAnimation(.easeInOut(duration: 1.0)) {
+//                               currentIndex = min(currentIndex + 1, profiles.count - 1)
+//                           }
+//                           
+//                           // Start an asynchronous task for the network request
+//                           Task {
+//                               do {
+//                                   // Call the asynchronous function with the local copy
+//                                   try await likeTheProfile(currentIndex: currentIndex2)
+//                               } catch {
+//                                   // Handle any errors here
+//                                   print("Failed to like the profile: \(error)")
+//                               }
+//                           }
+//                       
+//                        
+//                    }) {
+//                        Image(systemName: "checkmark.circle.fill")
+//                            .font(.largeTitle)
+//                        
+//                       
+//                        
+//                    }
+//                    .disabled(currentIndex == profiles.count)
+//                    .padding()
+//                    .background(Color.green)
+//                    .foregroundColor(.white)
+//                    .clipShape(Circle())
+//                    
+////                            Button(action: {
+////
+////                                withAnimation {
+////                                                 isPopupPresented = true
+////                                             }
+////                            }) {
+////                                Image(systemName: "message.fill")
+////                                    .font(.title)
+////
+////
+////                            }
+////                            .padding()
+////                            .background(Color.blue)
+////                            .foregroundColor(.white)
+////                            .clipShape(Circle())
+//                 
+//
+//                }
+//                .padding(.horizontal)
+//                
+//               
+//            }
+//            .tag(index)
+//        }.gesture(DragGesture().onChanged { _ in }) // Disable swipe gestures
+//    }
+//    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never /* turn of dot page index buttons */))
+//
+//}

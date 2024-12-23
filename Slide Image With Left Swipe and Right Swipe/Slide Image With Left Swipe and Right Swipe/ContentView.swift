@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var currentIndex: Int = 0
-    @State private var isHidden: Bool = false
     private let images = ["person.fill", "star.fill"] // Replace with your images
 
     var body: some View {
@@ -37,12 +36,12 @@ struct SwipeableView: View {
     @State private var isHidden: Bool = false
     
     var body: some View {
-        ScrollView {
+        VStack {
             ZStack(alignment: .bottomLeading) {
-                Image( systemName: imageName)
+                Image(systemName: imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(height: UIScreen.main.bounds.height * 0.8)
+                    .frame(height: UIScreen.main.bounds.height * 0.6) // Adjust image height
                     .clipped()
                     .offset(x: offset.width, y: 0)
                     .rotationEffect(.degrees(Double(offset.width / 20)))
@@ -77,7 +76,32 @@ struct SwipeableView: View {
             Text(headline)
                 .font(.headline)
                 .padding()
-            Spacer()
+            
+            // Buttons at the bottom of the image
+            HStack {
+                Button(action: swipeLeft) {
+                    Text("Reject")
+                        .bold()
+                        .frame(width: 100, height: 50)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
+
+                Button(action: swipeRight) {
+                    Text("Accept")
+                        .bold()
+                        .frame(width: 100, height: 50)
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
+            }
+            .padding(.top)
+            
+            Spacer() // Ensures buttons stay at the bottom
         }
         .opacity(isHidden ? 0 : 1)
     }

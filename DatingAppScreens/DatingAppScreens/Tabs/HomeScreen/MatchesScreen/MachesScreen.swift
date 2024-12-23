@@ -22,7 +22,7 @@ struct MatchesScreenView : View {
  
     @State var isNewDevMatches : Bool = true;
        
-    @State private var currentStep = 1
+    @State private var currentStep : Int = 3
     
      @State private var permissionGranted = false
     @StateObject private var locationManager = LocationManager()
@@ -102,7 +102,7 @@ struct MatchesScreenView : View {
                 if currentStep == 1 {
        
                     VStack {
-                        
+                    
                         Spacer()
                         Button("Enable Notifications") {
                             // Check the current status when the screen appears
