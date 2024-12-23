@@ -399,6 +399,7 @@ struct SwipeableView: View {
                                )
                            }
                 .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                .opacity(isHidden ? 0 : 1)
                            
                 
                 
@@ -436,7 +437,7 @@ struct SwipeableView: View {
               
                 
                 Spacer()
-            } .opacity(isHidden ? 0 : 1)
+            }
                 
         }.padding()
        

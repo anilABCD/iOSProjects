@@ -42,6 +42,7 @@
 		B79D44ED2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */; };
 		B79FF56B2C258E9B007E77DC /* MessagingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */; };
 		B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */; };
+		B7DB2C392D19A97A000DF909 /* UpdateDescribeYourself.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */; };
 		B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9462C174A6E00F321A9 /* LikesModel.swift */; };
 		B7E6C9492C174BFD00F321A9 /* ObjectId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9482C174BFD00F321A9 /* ObjectId.swift */; };
 		B7E6C94B2C174C1C00F321A9 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C94A2C174C1C00F321A9 /* ProfileModel.swift */; };
@@ -113,6 +114,7 @@
 		B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingScreen.swift; sourceTree = "<group>"; };
 		B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDescribeYourself.swift; sourceTree = "<group>"; };
 		B7E6C9462C174A6E00F321A9 /* LikesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesModel.swift; sourceTree = "<group>"; };
 		B7E6C9482C174BFD00F321A9 /* ObjectId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectId.swift; sourceTree = "<group>"; };
 		B7E6C94A2C174C1C00F321A9 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 		B7E2A83A2C170192008ADE0E /* WhenRegistering */ = {
 			isa = PBXGroup;
 			children = (
+				B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */,
 				B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */,
 				B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */,
 				B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */,
@@ -647,6 +650,7 @@
 				B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */,
 				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
 				B75F69B12C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift in Sources */,
+				B7DB2C392D19A97A000DF909 /* UpdateDescribeYourself.swift in Sources */,
 				B772800F2C19D62200446085 /* Utils.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
