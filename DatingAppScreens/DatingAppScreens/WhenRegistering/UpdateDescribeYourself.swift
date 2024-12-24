@@ -87,8 +87,8 @@ struct UpdateDescribeYourselfView : View {
         do {
             let request = try createURLRequest(
                 method: "POST",
-                baseURL: "https://example.com/api/submitDetails",
-                accessToken: "your_access_token_here",
+                baseURL:  "\(tokenManger.localhost)/profiles/bio",
+                accessToken: "\(tokenManger.accessToken)",
                 data: userDetails,
                 parameters: nil
             )
@@ -98,6 +98,7 @@ struct UpdateDescribeYourselfView : View {
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 DispatchQueue.main.async {
                     showSuccessMessage = true
+                    tokenManger.bio = bio 
                 }
             } else {
                 DispatchQueue.main.async {

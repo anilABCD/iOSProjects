@@ -199,6 +199,7 @@ class TokenManager: ObservableObject {
         self.dob = ""
         self.drinking = ""
         self.smoking = ""
+        self.bio=""
         
 //        self.notificationSettings = "";
 //        self.locationSettings = "";
