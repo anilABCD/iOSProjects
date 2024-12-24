@@ -130,7 +130,7 @@ class TokenManager: ObservableObject {
      @AppStorage("experience") var experience: String = ""
      @AppStorage("photo") var photo: String = ""
      @AppStorage("hobbies") var hobbies: String = ""
-    
+     @AppStorage("bio") var bio: String = ""
 
     @AppStorage("notificationsSettings") var notificationSettings : String = ""
     @AppStorage("locationSettings") var locationSettings : String = ""
@@ -151,7 +151,7 @@ class TokenManager: ObservableObject {
 //    @Published  var localhost : String = "http://169.254.23.107:8000"
     @Published var localhost : String = Constants.localhost;
     
-    func updateAccessToken( token: String , userId: String , email : String , name : String , photo:String , technologies : String , hobbies : String ) {
+    func updateAccessToken( token: String , userId: String , email : String , name : String , photo:String , technologies : String , hobbies : String , bio : String ) {
      
         self.userId = userId
         self.accessToken = token
@@ -160,9 +160,10 @@ class TokenManager: ObservableObject {
         self.email = email
         self.name = name;
         self.technologies = technologies;
-        self.hobbies = hobbies ;
+        self.hobbies = hobbies
+        self.bio = bio
         
-        print ( "User Id" , self.userId , token , email , name , photo)
+        print ( "User Id" , self.userId , token , email , name , photo , bio , technologies , hobbies )
     }
     
     func isProfileDobSmokingDrinkingEmpty() -> Bool {

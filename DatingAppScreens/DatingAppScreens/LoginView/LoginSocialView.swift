@@ -248,7 +248,8 @@ struct LoginSocialView: View {
                               self.token = tokenId;
                               
                               tokenManger.updateAccessToken( token: self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "" , email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
-                                                             technologies: decodedResponse.data?.user?.technologies ?? "", hobbies: decodedResponse.data?.user?.hobbies ?? "")
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "", hobbies: decodedResponse.data?.user?.hobbies ?? "" , bio: decodedResponse.data?.user?.bio ?? "")
+                              
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
@@ -308,7 +309,7 @@ struct LoginSocialView: View {
                               self.token = tokenId;
                               
                               tokenManger.updateAccessToken( token: self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
-                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "" )
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "", bio: decodedResponse.data?.user?.bio ?? "" )
                               
                             
                               tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: decodedResponse.data?.user?.dob ?? "" , drinking: decodedResponse.data?.user?.drinking ?? "" , smoking: decodedResponse.data?.user?.smoking ?? "" )

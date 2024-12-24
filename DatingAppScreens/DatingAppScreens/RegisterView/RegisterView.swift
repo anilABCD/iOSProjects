@@ -364,7 +364,7 @@ struct RegisterView: View {
                     self.isUserCreated = true
                  
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        tokenManger.updateAccessToken(token : self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "",email: self.email, name: self.name , photo: "" , technologies: "" , hobbies: "")
+                        tokenManger.updateAccessToken(token : self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "",email: self.email, name: self.name , photo: "" , technologies: "" , hobbies: "" , bio: "")
                     }
                     
                 } else {
@@ -419,7 +419,7 @@ struct RegisterView: View {
                         
                         self.token  = decodedResponse.token;
                         
-                        tokenManger.updateAccessToken(token : self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "" , email: self.email, name: self.name , photo:  "" , technologies: "" , hobbies:  "" )
+                        tokenManger.updateAccessToken(token : self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "" , email: self.email, name: self.name , photo:  "" , technologies: "" , hobbies:  "" , bio: "")
                     }
                   
                 } else {

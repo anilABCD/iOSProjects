@@ -119,7 +119,7 @@ struct ContentView: View {
 //                           locationManager.stopUpdatingLocation()
 //                       }
                 
-                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() ) ) {
+                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" ) ) {
                     
                     VStack {
                         
@@ -157,6 +157,8 @@ struct ContentView: View {
                                     UpdateHobbiesView(path : $path)
                                 case .page4:
                                     ProfileEditorView(path : $path)
+                                case .page5 :
+                                    UpdateDescribeYourselfView(path : $path)
                                 case .notificationPermissionPage :
                                     Text("Notifications Settings")
                                 case .home:
@@ -194,6 +196,11 @@ struct ContentView: View {
                                
                         }
                         .onChange(of: tokenManager.smoking ) { newValue in
+                            
+                          handleNavigation()
+                            
+                        }
+                        .onChange(of: tokenManager.bio ) { newValue in
                             
                           handleNavigation()
                             
@@ -506,7 +513,11 @@ struct ContentView: View {
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page4, params: Params<String>(data: "")))
         }
-       
+        else if tokenManager.bio.isEmpty {
+            print("bio token empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page5, params: Params<String>(data: "")))
+        }
         
         else {
             path.removeAll()

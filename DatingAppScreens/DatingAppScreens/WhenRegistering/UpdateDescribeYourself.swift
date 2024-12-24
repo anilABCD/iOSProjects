@@ -1,17 +1,19 @@
 import SwiftUI
 
-struct UpdateDescribeYourself: View {
+struct UpdateDescribeYourselfView : View {
     @State private var bio: String = ""
     @State private var showSuccessMessage: Bool = false
     @State private var showError: Bool = false
     private let maxLetters = 200
-
+    @EnvironmentObject private var tokenManger : TokenManager
+    @Binding var path :[MyNavigation<String>]
+    
     var body: some View {
         NavigationView {
            
             VStack(spacing: 20) {
                 
-                Spacer()
+              
                 VStack(alignment: .leading) {
                     
                    
@@ -42,6 +44,9 @@ struct UpdateDescribeYourself: View {
                     }
                 }
               
+                
+                Spacer()
+                
                 Button(action: {
                     Task {
                         await submitDetails()
@@ -137,8 +142,9 @@ struct UpdateDescribeYourself: View {
 //    let message: String
 //}
 
-struct UpdateDescribeYourself_Previews: PreviewProvider {
+struct UpdateDescribeYourselfView_Previews: PreviewProvider {
+    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
     static var previews: some View {
-        UpdateDescribeYourself()
+        UpdateDescribeYourselfView(path: $path).environmentObject(TokenManager())
     }
 }
