@@ -15,26 +15,42 @@ class WebSocketManager: ObservableObject {
     @Published var token : String = ""
     private var socket: SocketIOClient!
     
+    @Published var userId : String = ""
     
+    @Published var loclhost : String = "" ;
     
-    init(token:String ) {
+    init(token:String , userId:String) {
        
         self.token = token;
+        self.userId = userId
     }
     
     func connect () {
-        guard let url = URL(string: "http://192.168.1.4:8000/peerjs/") else { return }
+        guard let url = URL(string: "\(Constants.localhost)/peerjs/") else { return }
                 // Corrected to use SocketIOClientOption for connectParams
-        let config: SocketIOClientConfiguration = [.log(true), .compress, .connectParams(["token": self.token])]
+        var config: SocketIOClientConfiguration = [.log(true), .compress]
+       
+        
+        config.insert(.extraHeaders(["Authorization": "Bearer \(token)"]))
+        
         manager = SocketManager(socketURL: url, config: config)
+        
+        
+        
+
+        
         socket = manager?.defaultSocket
         
         socket.on(clientEvent: .connect) { _, _ in
             print("WebSocket connected")
+            
+            self.registerUser(userId: self.userId)
         }
         
         socket.on("message") { data, _ in
-            if let message = data[0] as? String {
+            if let messageData = data.first as? [String: Any],
+                          let userId = messageData["userId"] as? String,
+                          let message = messageData["message"] as? String {
                 DispatchQueue.main.async {
                     self.messages.append(message)
                 }
@@ -44,8 +60,12 @@ class WebSocketManager: ObservableObject {
         socket.connect()
     }
     
-    func sendMessage(_ message: String) {
-        socket.emit("sendMessage", message)
+    func registerUser( userId: String ) {
+        socket.emit("registerUser", userId )
+    }
+    
+    func sendMessage(_ message: [String: Any]) {
+        socket.emit("sendMessage", message )
     }
     
     func disconnect() {

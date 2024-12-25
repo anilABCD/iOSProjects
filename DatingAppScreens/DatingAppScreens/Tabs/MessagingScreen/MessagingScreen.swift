@@ -86,7 +86,7 @@ struct ChatView: View {
     let profile: Profile?
     let photoUrl : String
     
-    @ObservedObject private var webSocketManager = WebSocketManager(token: "")
+    @ObservedObject private var webSocketManager = WebSocketManager(token: "" , userId: "")
     @State private var newMessage: String = ""
     
 
@@ -116,7 +116,17 @@ struct ChatView: View {
                         .padding(.horizontal)
                     
                     Button(action: {
-                        self.webSocketManager.sendMessage(self.newMessage)
+                        
+                        // Create a JSON-like object
+                               let messageObject: [String: Any] = [
+                                "userId": profile?.objectId.value ?? "",
+                                "message": self.newMessage
+                               ]
+                        
+                        
+                        print("sending message", messageObject)
+                        
+                        self.webSocketManager.sendMessage( messageObject )
                         self.newMessage = ""
                     }) {
                         Text("Send")
@@ -132,7 +142,10 @@ struct ChatView: View {
             }
             .onAppear(){
                 webSocketManager.token = tokenManger.accessToken;
+                webSocketManager.userId = tokenManger.userId;
                 webSocketManager.connect()
+                
+                
             }
             
             .onDisappear {
