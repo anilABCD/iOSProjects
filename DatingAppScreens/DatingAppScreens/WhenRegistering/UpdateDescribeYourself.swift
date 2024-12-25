@@ -78,7 +78,7 @@ struct UpdateDescribeYourselfView : View {
             .navigationTitle("Describe Yourself")
         }.onAppear(){
             // Assuming tokenManager.technologies is a string containing comma-separated values
-            if tokenManger.technologies == "" {
+            if tokenManger.bio == "" {
                 isFirstTimeUpdatingBio = true;
             }
             if tokenManger.bio != "" {

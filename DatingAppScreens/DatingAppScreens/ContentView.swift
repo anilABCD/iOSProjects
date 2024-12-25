@@ -119,7 +119,7 @@ struct ContentView: View {
 //                           locationManager.stopUpdatingLocation()
 //                       }
                 
-                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" ) ) {
+                if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" || tokenManager.jobRole == "" ) ) {
                     
                     VStack {
                         
@@ -163,6 +163,8 @@ struct ContentView: View {
                                     Text("Notifications Settings")
                                 case .home:
                                     Text("Technologies")
+                                case .page6:
+                                    UpdateJobRoleView(path : $path)
                                 }
                             }
                         }
@@ -201,6 +203,11 @@ struct ContentView: View {
                             
                         }
                         .onChange(of: tokenManager.bio ) { newValue in
+                            
+                          handleNavigation()
+                            
+                        }
+                        .onChange(of: tokenManager.jobRole ) { newValue in
                             
                           handleNavigation()
                             
@@ -495,28 +502,33 @@ struct ContentView: View {
             print("access token empty ")
             path.removeAll()
         } else if tokenManager.photo.isEmpty {
-            print("photo token empty ")
+            print("photo  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
         } else if tokenManager.technologies.isEmpty {
-            print("technologies token empty ")
+            print("technologies  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page2, params: Params<String>(data: "")))
         }
         else if tokenManager.hobbies.isEmpty {
-            print("hobbies token empty ")
+            print("hobbies  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page3, params: Params<String>(data: "")))
         } 
         else if tokenManager.isProfileDobSmokingDrinkingEmpty() {
-            print("hobbies token empty ")
+            print("hobbies  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page4, params: Params<String>(data: "")))
         }
         else if tokenManager.bio.isEmpty {
-            print("bio token empty ")
+            print("bio  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page5, params: Params<String>(data: "")))
+        }
+        else if tokenManager.jobRole.isEmpty {
+            print("jobRole  empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page6, params: Params<String>(data: "")))
         }
         
         else {

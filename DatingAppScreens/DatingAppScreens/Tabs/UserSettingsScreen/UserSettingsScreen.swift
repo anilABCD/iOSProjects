@@ -43,6 +43,10 @@ struct UserSettingsView : View {
                         NavigationLink(destination: UpdateDescribeYourselfView (path : $path)) {
                             Text("Bio")
                         }
+                        
+                        NavigationLink(destination: UpdateJobRoleView (path : $path)) {
+                            Text("Job Role")
+                        }
                     }
                     
                     //                          Section(header: Text("Appearance")) {

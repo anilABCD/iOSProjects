@@ -51,6 +51,7 @@
 		B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */; };
 		B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */; };
 		B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */; };
+		B7F4CE792D1BB43700F92EDB /* UpdateJobRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4CE782D1BB42E00F92EDB /* UpdateJobRoleView.swift */; };
 		E5CA8AD73DE041FE49A82380 /* libPods-DatingAppScreensUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7021EAA07A9892220AE73256 /* libPods-DatingAppScreensUITests.a */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +124,7 @@
 		B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingExample.swift; sourceTree = "<group>"; };
 		B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesScreen.swift; sourceTree = "<group>"; };
 		B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesModel.swift; sourceTree = "<group>"; };
+		B7F4CE782D1BB42E00F92EDB /* UpdateJobRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateJobRoleView.swift; sourceTree = "<group>"; };
 		BFD6BC4A1445D851D192D506 /* Pods-DatingAppScreensTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.release.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.release.xcconfig"; sourceTree = "<group>"; };
 		C12E0A146B4AA9C68BB0BB0D /* Pods-DatingAppScreensTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.debug.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DCDE0F0A62F8CF337B25F47E /* Pods-DatingAppScreens.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreens.release.xcconfig"; path = "Target Support Files/Pods-DatingAppScreens/Pods-DatingAppScreens.release.xcconfig"; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 		B7E2A83A2C170192008ADE0E /* WhenRegistering */ = {
 			isa = PBXGroup;
 			children = (
+				B7F4CE782D1BB42E00F92EDB /* UpdateJobRoleView.swift */,
 				B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */,
 				B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */,
 				B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */,
@@ -672,6 +675,7 @@
 				B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */,
 				B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */,
 				B7E6C94B2C174C1C00F321A9 /* ProfileModel.swift in Sources */,
+				B7F4CE792D1BB43700F92EDB /* UpdateJobRoleView.swift in Sources */,
 				B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */,
 				B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */,
 				B71184AA2C0F7686004FC55C /* Request.swift in Sources */,
