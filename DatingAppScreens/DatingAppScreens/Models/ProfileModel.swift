@@ -15,6 +15,7 @@ struct Profile: Identifiable, Decodable {
     var photo : String?
     var experience: Int?
     var technologies: [String]?
+    var bio : String?
     var isOnline : Bool?
   
     // Computed property for Identifiable protocol
@@ -29,6 +30,7 @@ struct Profile: Identifiable, Decodable {
         case photo
         case experience
         case technologies
+        case bio
         case isOnline
     }
 }

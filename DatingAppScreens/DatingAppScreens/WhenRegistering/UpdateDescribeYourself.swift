@@ -8,6 +8,9 @@ struct UpdateDescribeYourselfView : View {
     @EnvironmentObject private var tokenManger : TokenManager
     @Binding var path :[MyNavigation<String>]
     
+    @State var isFirstTimeUpdatingBio = false;
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         NavigationView {
            
@@ -73,6 +76,14 @@ struct UpdateDescribeYourselfView : View {
             }
             .padding()
             .navigationTitle("Describe Yourself")
+        }.onAppear(){
+            // Assuming tokenManager.technologies is a string containing comma-separated values
+            if tokenManger.technologies == "" {
+                isFirstTimeUpdatingBio = true;
+            }
+            if tokenManger.bio != "" {
+                bio = tokenManger.bio;
+            }
         }
     }
 
@@ -98,7 +109,10 @@ struct UpdateDescribeYourselfView : View {
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 DispatchQueue.main.async {
                     showSuccessMessage = true
-                    tokenManger.bio = bio 
+                    tokenManger.bio = bio
+                    if ( !isFirstTimeUpdatingBio ) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
             } else {
                 DispatchQueue.main.async {

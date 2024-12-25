@@ -40,7 +40,9 @@ struct UserSettingsView : View {
                             Text("Dob , Habbits")
                         }
                         
-                        
+                        NavigationLink(destination: UpdateDescribeYourselfView (path : $path)) {
+                            Text("Bio")
+                        }
                     }
                     
                     //                          Section(header: Text("Appearance")) {

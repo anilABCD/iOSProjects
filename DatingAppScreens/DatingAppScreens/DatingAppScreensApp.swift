@@ -259,7 +259,7 @@ struct DatingAppScreensApp: App {
                     }.onAppear {
                                    GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                                        // Check if `user` exists; otherwise, do something with `error`
-                                   }
+                               }
                     
                     }.transition(.opacity)
                                

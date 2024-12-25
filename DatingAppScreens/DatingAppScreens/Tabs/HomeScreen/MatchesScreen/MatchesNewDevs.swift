@@ -427,12 +427,15 @@ struct SwipeableView: View {
                 
                 
                 
-                Text("Profile Headline:")
+                Text("Profile Bio:")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fontWeight(.bold)
                     .padding()
                 
-               
+                Text( item.bio ?? "")
+                               .font(.subheadline)
+                               .foregroundColor(.secondary)
+                               .lineLimit(nil)
                 
               
                 
