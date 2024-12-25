@@ -85,11 +85,10 @@ struct ChatView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     let profile: Profile?
     let photoUrl : String
-    
-    @ObservedObject private var webSocketManager = WebSocketManager(token: "" , userId: "")
+  
     @State private var newMessage: String = ""
     
-
+    @ObservedObject var webSocketManager : WebSocketManager ;
     
     var body: some View {
         
@@ -99,14 +98,32 @@ struct ChatView: View {
                
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
-                        ForEach(webSocketManager.messages, id: \.self) { message in
-                            Text(message)
-                                .padding(10)
-                                .background(Color.gray)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
-                    }
+                        ForEach(webSocketManager.messages.indices, id: \.self) { index in
+                            let message = webSocketManager.messages[index]
+                            if let userId = message["userId"] as? String, let messageText = message["message"] as? String {
+                                HStack {
+                                    if userId == tokenManger.userId {
+                                       
+                                        Text(messageText)
+                                            .padding(10)
+                                            .background(Color.blue)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(8)
+                                        
+                                        Spacer() // Push received messages to the left
+                                    } else {
+                                        
+                                        Spacer() // Push current user's messages to the right
+                                        Text(messageText)
+                                            .padding(10)
+                                            .background(Color.gray)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(8)
+                                     
+                                    }
+                                }
+                            }
+                        }                    }
                     .padding()
                 }
                 
@@ -141,16 +158,9 @@ struct ChatView: View {
                 .padding()
             }
             .onAppear(){
-                webSocketManager.token = tokenManger.accessToken;
-                webSocketManager.userId = tokenManger.userId;
-                webSocketManager.connect()
-                
-                
+                webSocketManager.userId = profile?.objectId.value ?? "" ;
             }
-            
-            .onDisappear {
-                self.webSocketManager.disconnect()
-            }
+           
             
         }.navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile, photoUrl: photoUrl )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
     }
@@ -160,7 +170,7 @@ struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
        
     static var previews: some View {
-    ChatView(profile: nil, photoUrl: "").environmentObject(TokenManager())
+        ChatView(profile: nil, photoUrl: "", webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
     }
 }
 

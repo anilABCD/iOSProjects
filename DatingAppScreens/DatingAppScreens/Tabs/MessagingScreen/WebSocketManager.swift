@@ -10,7 +10,7 @@ import Foundation
 import SocketIO
 
 class WebSocketManager: ObservableObject {
-    @Published var messages: [String] = []
+    @Published var messages: [[String: Any]] = []
     @Published private var manager: SocketManager?
     @Published var token : String = ""
     private var socket: SocketIOClient!
@@ -47,21 +47,27 @@ class WebSocketManager: ObservableObject {
             self.registerUser(userId: self.userId)
         }
         
+       
+        
+        socket.connect()
+        
+        
         socket.on("message") { data, _ in
+            
+            print ("message from socket" , data)
+            
             if let messageData = data.first as? [String: Any],
                           let userId = messageData["userId"] as? String,
                           let message = messageData["message"] as? String {
                 DispatchQueue.main.async {
-                    self.messages.append(message)
+                    self.messages.append(["userId": userId , "message" : message])
                 }
             }
         }
-        
-        socket.connect()
     }
     
     func registerUser( userId: String ) {
-        socket.emit("registerUser", userId )
+        socket.emit("registerUser", self.userId )
     }
     
     func sendMessage(_ message: [String: Any]) {

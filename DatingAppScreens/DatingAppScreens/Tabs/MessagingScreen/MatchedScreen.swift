@@ -15,7 +15,9 @@ struct MatchedScreenView: View {
     
     @State var matched : [MatchedResponse] = []
     @EnvironmentObject private var tokenManger : TokenManager
-
+    
+    @State private var webSocketManager = WebSocketManager(token: "" , userId: "")
+    
     var items = [
         Item(name: "Item 1", description: "Description for Item 1"),
         Item(name: "Item 2", description: "Description for Item 2"),
@@ -109,7 +111,7 @@ struct MatchedScreenView: View {
                               // Determine which profile to display
                               let matchProfile = (match.userOne?.id == tokenManger.userId) ? match.userTwo : match.userOne
                               
-                              NavigationLink(destination: ChatView(profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images") ) {
+                              NavigationLink(destination: ChatView(profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", webSocketManager: webSocketManager) ) {
                                   MatchedItemView(profile : matchProfile ?? nil, photoURL: "\(tokenManger.localhost)/images")
                                       .onAppear {
                                           if let index = matched.firstIndex(where: { $0.id == match.id }), index == matched.count - 5 {
@@ -136,16 +138,29 @@ struct MatchedScreenView: View {
 //                   }
                   
                }
-        .onAppear(){
-            Task {
-                do {
-                    try await fetchMatched()
-                }
-                catch{
-                    
-                }
-            }
+             
            
+       .onAppear()
+        {
+                Task {
+                   do {
+                    try await fetchMatched()
+                    
+                    webSocketManager.token = tokenManger.accessToken;
+                    webSocketManager.connect()
+                    
+                 }
+                 catch{
+                    
+                 }
+             }
+           
+        }
+        .onDisappear {
+            
+            print("On Dissepear")
+            
+            self.webSocketManager.disconnect()
         }
     }
 }
