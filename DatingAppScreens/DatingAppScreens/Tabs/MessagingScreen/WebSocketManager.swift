@@ -56,18 +56,33 @@ class WebSocketManager: ObservableObject {
             
             print ("message from socket" , data)
             
-            if let messageData = data.first as? [String: Any],
-                          let userId = messageData["userId"] as? String,
-                          let message = messageData["message"] as? String {
-                DispatchQueue.main.async {
-                    self.messages.append(["userId": userId , "message" : message])
-                }
+            if let messageData = data as? [[String: Any]] {
+                       for item in messageData {
+                           if let sender = item["sender"] as? String,
+                              let text = item["text"] as? String  , let timestampString = item["timestamp"] as? String{
+                               DispatchQueue.main.async {
+                                   self.messages.append(["sender": sender, "text": text , "timestamp" : timestampString ])
+                                   print(self.messages)
+                               }
+                           }
+                       }
+                   }
+            else{
+                print("no message")
             }
+            
+            
         }
     }
     
     func registerUser( userId: String ) {
         socket.emit("registerUser", self.userId )
+    }
+    
+    func joinChat( chatId: String ) {
+        
+        print ("join chat" , chatId)
+        socket.emit("joinChat", chatId )
     }
     
     func sendMessage(_ newMessageText: String , chatId : String , senderId : String) {

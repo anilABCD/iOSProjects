@@ -120,10 +120,10 @@ struct ChatView: View {
 
                 do {
                     let chat: Chat = try await fetchData(from: request)
-                    
+                    self.chat = chat
                     print (chat)
                     DispatchQueue.main.async {
-                        self.chat = chat
+                       
                         self.messages = chat.messages
                         self.isLoading = false
                         
@@ -160,55 +160,92 @@ struct ChatView: View {
                             Text(error)
                                 .foregroundColor(.red)
                         } else {
-                            List(messages) { message in
-                                HStack {
-                                    if message.sender == tokenManger.userId {
-                                        Spacer()
-                                        Text(message.text)
-                                            .padding()
-                                            .background(Color.blue.opacity(0.2))
-                                            .cornerRadius(10)
-                                    } else {
-                                        Text(message.text)
-                                            .padding()
-                                            .background(Color.gray.opacity(0.2))
-                                            .cornerRadius(10)
-                                        Spacer()
-                                    }
-                                }
-                            }
-                            .listStyle(PlainListStyle())
-                            
-                            
-                            
-                            ForEach(webSocketManager.messages.indices, id: \.self) { index in
-                                let message = webSocketManager.messages[index]
-                                if let userId = message["userId"] as? String, let messageText = message["message"] as? String {
-                                    HStack {
-                                        if userId == tokenManger.userId {
+                            ScrollViewReader { proxy in
+                                List {
+                                    
+                                    ForEach(messages.indices, id: \.self) { index in
+                                        let message = messages[index]
+                                        
+                                        if(index != 0) {
                                             
-                                            Text(messageText)
-                                                .padding(10)
-                                                .background(Color.blue)
-                                                .foregroundColor(.white)
-                                                .cornerRadius(8)
-                                            
-                                            Spacer() // Push received messages to the left
-                                        } else {
-                                            
-                                            Spacer() // Push current user's messages to the right
-                                            Text(messageText)
-                                                .padding(10)
-                                                .background(Color.gray)
-                                                .foregroundColor(.white)
-                                                .cornerRadius(8)
-                                            
+                                            HStack {
+                                                
+                                                
+                                                if message.sender == tokenManger.userId {
+                                                    Spacer()
+                                                    Text(message.text)
+                                                        .padding()
+                                                        .background(Color.blue.opacity(0.2))
+                                                        .cornerRadius(10)
+                                                } else {
+                                                    Text(message.text)
+                                                        .padding()
+                                                        .background(Color.gray.opacity(0.2))
+                                                        .cornerRadius(10)
+                                                    Spacer()
+                                                }
+                                            }.id(message.id)
                                         }
                                     }
                                 }
+                                .listStyle(PlainListStyle())
                                 
+                                .onChange(of: messages.count) { _ in
+                                    
+                                    withAnimation {
+                                       
+                                        proxy.scrollTo(messages.last?.id, anchor: .bottom)
+                                        
+                                        print( "scroll id " , messages.last?.id)
+                                    }
+                                    
+                                }
+                                .onChange(of: webSocketManager.messages.count) { _ in
+                           
+                                    let message = webSocketManager.messages.last
+                                    if let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"] {
+                                      
+                                        let dateFormatter = DateFormatter()
+                                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" // Adjust the format to match your string
+                                        let timestampNew = dateFormatter.date(from: timeStamp as! String)
+                                        
+                                        
+                                        let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timestampNew as! Date )
+
+                                        
+                                      DispatchQueue.main.async {
+
+                                                messages.append(newMessage);
+         
+                                       }
+                                    }
+                                   
+                                }
+                               
                             }
-                            .padding()
+                            
+//                            ForEach(webSocketManager.messages.indices, id: \.self) { index in
+//                                let message = webSocketManager.messages[index]
+//                                if let sender = message["sender"] as? String, let messageText = message["text"] as? String {
+//                                    HStack {
+//                                        if sender == tokenManger.userId {
+//                                            Spacer()
+//                                            Text(messageText)
+//                                                .padding()
+//                                                .background(Color.blue.opacity(0.2))
+//                                                .cornerRadius(10)
+//                                        } else {
+//                                            Text(messageText)
+//                                                .padding()
+//                                                .background(Color.gray.opacity(0.2))
+//                                                .cornerRadius(10)
+//                                            Spacer()
+//                                        }
+//                                    }
+//                                }
+//                                
+//                            }
+//                            .padding()
                         }
                         
                      
@@ -217,14 +254,28 @@ struct ChatView: View {
                         webSocketManager.userId = profile?.objectId.value ?? "" ;
                         
                         Task {
-                        
+                            
                             await fetchChats()
                             
+                            
+                            print ("chat id", chat?.id)
+                            if ( chat?.id != "" ) {
+                                self.webSocketManager.joinChat(chatId: self.chat?.id ?? "")
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                
+                                messages.insert( Chat.Message( sender: "", text: "", timestamp: Date.now), at: 0)  // Insert at the start of the array
+                            }
+                            
+                            
                         }
+                            
+                            
+                        
                     }
-                    
-                    
-                }.navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile, photoUrl: photoUrl )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
+                   
+                }
                 
                 Spacer()
                 
@@ -252,7 +303,8 @@ struct ChatView: View {
                 .padding()
                 
             }
-        }
+            
+        } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile, photoUrl: photoUrl )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
     }
 }
 
