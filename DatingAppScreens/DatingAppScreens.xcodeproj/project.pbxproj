@@ -12,6 +12,7 @@
 		7CEA45602C42645C00524FB3 /* MatchedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA455F2C42645C00524FB3 /* MatchedModel.swift */; };
 		B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */; };
 		B71184AA2C0F7686004FC55C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71184A92C0F7686004FC55C /* Request.swift */; };
+		B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CBEC22D1DBDA400E81103 /* Chat.swift */; };
 		B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */; };
 		B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */; };
 		B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */; };
@@ -82,6 +83,7 @@
 		7CEA455F2C42645C00524FB3 /* MatchedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedModel.swift; sourceTree = "<group>"; };
 		B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTechnologyView.swift; sourceTree = "<group>"; };
 		B71184A92C0F7686004FC55C /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		B71CBEC22D1DBDA400E81103 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendUserDeviceNotificationToken.swift; sourceTree = "<group>"; };
 		B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouMatches.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		B7E2A8382C170167008ADE0E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B71CBEC22D1DBDA400E81103 /* Chat.swift */,
 				B7E6C9482C174BFD00F321A9 /* ObjectId.swift */,
 				B793200E2BF49AEF00FE954A /* SignUpData.swift */,
 				B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */,
@@ -657,6 +660,7 @@
 				B772800F2C19D62200446085 /* Utils.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
+				B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */,
 				B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */,
 				B7E898782D054BBA00F0D41D /* UpdateNotificationPermissionsView.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,

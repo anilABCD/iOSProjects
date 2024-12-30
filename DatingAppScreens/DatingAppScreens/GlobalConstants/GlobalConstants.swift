@@ -10,7 +10,7 @@ import SwiftUI
 
 struct Constants {
     
-    static let localhost = "http://192.168.2.1:8000"
+    static let localhost = "http://192.168.1.5:8000"
 // get from : ifconfig : check all ipaddresses from ifconfig , give this list to chatgpt , chagpt will provide with the ip addressses list . to work on iphone
 // prompt : to use by the iPhone device when connected to xcode
 //    static let localhost = "http://169.254.80.145:8000"

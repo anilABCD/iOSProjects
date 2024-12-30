@@ -81,51 +81,152 @@ struct CustomBackButton: View {
 
 
 struct ChatView: View {
-  
+    
     @EnvironmentObject private var tokenManger : TokenManager
     let profile: Profile?
     let photoUrl : String
-  
+    
+    @State var chat: Chat? // The chat data
+    @State var messages: [Chat.Message] = [] // The messages to displ
+    
+    @State var isLoading: Bool = false
+    @State var error: String?
+    
     @State private var newMessage: String = ""
     
     @ObservedObject var webSocketManager : WebSocketManager ;
+    
+    
+    
+    func fetchChats () async
+    {
+        
+        self.isLoading = true
+        self.error = nil
+        
+        let baseURL = "\(tokenManger.localhost)/messages/chats"
+        let accessToken = tokenManger.accessToken
+        let parameters :  [ String:String]? = ["user1": tokenManger.userId , "user2": profile?.objectId.value ?? ""]
+        
+        do {
+            let request = try createURLRequest(
+                method: "GET",
+                baseURL: baseURL,
+                accessToken: accessToken,
+                data: Optional<Data>.none, // No body data for GET request
+                parameters: parameters
+            )
+            
+
+                do {
+                    let chat: Chat = try await fetchData(from: request)
+                    
+                    print (chat)
+                    DispatchQueue.main.async {
+                        self.chat = chat
+                        self.messages = chat.messages
+                        self.isLoading = false
+                        
+                        print (self.messages)
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.error = "Failed to fetch chat: \(error)"
+                        self.isLoading = false
+                    }
+                }
+                
+              
+       
+        } catch {
+            self.error = "Failed to create request: \(error)"
+            self.isLoading = false
+        }
+        
+    }
     
     var body: some View {
         
         NavigationView {
             VStack {
                 
-               
-                ScrollView {
+                
+                VStack {
                     VStack(alignment: .leading, spacing: 10) {
-                        ForEach(webSocketManager.messages.indices, id: \.self) { index in
-                            let message = webSocketManager.messages[index]
-                            if let userId = message["userId"] as? String, let messageText = message["message"] as? String {
+                        
+                        if isLoading {
+                            ProgressView("Loading chat...")
+                        } else if let error = error {
+                            Text(error)
+                                .foregroundColor(.red)
+                        } else {
+                            List(messages) { message in
                                 HStack {
-                                    if userId == tokenManger.userId {
-                                       
-                                        Text(messageText)
-                                            .padding(10)
-                                            .background(Color.blue)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(8)
-                                        
-                                        Spacer() // Push received messages to the left
+                                    if message.sender == tokenManger.userId {
+                                        Spacer()
+                                        Text(message.text)
+                                            .padding()
+                                            .background(Color.blue.opacity(0.2))
+                                            .cornerRadius(10)
                                     } else {
-                                        
-                                        Spacer() // Push current user's messages to the right
-                                        Text(messageText)
-                                            .padding(10)
-                                            .background(Color.gray)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(8)
-                                     
+                                        Text(message.text)
+                                            .padding()
+                                            .background(Color.gray.opacity(0.2))
+                                            .cornerRadius(10)
+                                        Spacer()
                                     }
                                 }
                             }
-                        }                    }
-                    .padding()
-                }
+                            .listStyle(PlainListStyle())
+                            
+                            
+                            
+                            ForEach(webSocketManager.messages.indices, id: \.self) { index in
+                                let message = webSocketManager.messages[index]
+                                if let userId = message["userId"] as? String, let messageText = message["message"] as? String {
+                                    HStack {
+                                        if userId == tokenManger.userId {
+                                            
+                                            Text(messageText)
+                                                .padding(10)
+                                                .background(Color.blue)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(8)
+                                            
+                                            Spacer() // Push received messages to the left
+                                        } else {
+                                            
+                                            Spacer() // Push current user's messages to the right
+                                            Text(messageText)
+                                                .padding(10)
+                                                .background(Color.gray)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(8)
+                                            
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            .padding()
+                        }
+                        
+                     
+                    }
+                    .onAppear(){
+                        webSocketManager.userId = profile?.objectId.value ?? "" ;
+                        
+                        Task {
+                        
+                            await fetchChats()
+                            
+                        }
+                    }
+                    
+                    
+                }.navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile, photoUrl: photoUrl )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
+                
+                Spacer()
                 
                 HStack {
                     TextField("Type a message...", text: $newMessage)
@@ -134,16 +235,9 @@ struct ChatView: View {
                     
                     Button(action: {
                         
-                        // Create a JSON-like object
-                               let messageObject: [String: Any] = [
-                                "userId": profile?.objectId.value ?? "",
-                                "message": self.newMessage
-                               ]
+                        print("sending message", self.newMessage)
                         
-                        
-                        print("sending message", messageObject)
-                        
-                        self.webSocketManager.sendMessage( messageObject )
+                        self.webSocketManager.sendMessage(  self.newMessage , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId )
                         self.newMessage = ""
                     }) {
                         Text("Send")
@@ -156,13 +250,9 @@ struct ChatView: View {
                     .padding(.trailing)
                 }
                 .padding()
+                
             }
-            .onAppear(){
-                webSocketManager.userId = profile?.objectId.value ?? "" ;
-            }
-           
-            
-        }.navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile, photoUrl: photoUrl )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
+        }
     }
 }
 

@@ -52,7 +52,7 @@ class WebSocketManager: ObservableObject {
         socket.connect()
         
         
-        socket.on("message") { data, _ in
+        socket.on("newMessage") { data, _ in
             
             print ("message from socket" , data)
             
@@ -70,8 +70,20 @@ class WebSocketManager: ObservableObject {
         socket.emit("registerUser", self.userId )
     }
     
-    func sendMessage(_ message: [String: Any]) {
-        socket.emit("sendMessage", message )
+    func sendMessage(_ newMessageText: String , chatId : String , senderId : String) {
+//        socket.emit("sendMessage", message )
+      
+               guard !newMessageText.isEmpty else { return }
+
+               let messageData: [String: Any] = [
+                   "chatId": chatId,
+                   "sender": senderId,
+                   "text": newMessageText
+               ]
+
+        socket.emit( "sendMessage", messageData)
+              
+           
     }
     
     func disconnect() {
