@@ -124,7 +124,7 @@ struct ChatView: View {
                     print (chat)
                     DispatchQueue.main.async {
                        
-                        self.messages = chat.messages
+                        self.messages = chat.messages.reversed()
                         self.isLoading = false
                         
                         print (self.messages)
@@ -166,7 +166,7 @@ struct ChatView: View {
                                     ForEach(messages.indices, id: \.self) { index in
                                         let message = messages[index]
                                         
-                                        if(index != 0) {
+//                                        if(index != 0) {
                                             
                                             HStack {
                                                 
@@ -184,22 +184,23 @@ struct ChatView: View {
                                                         .cornerRadius(10)
                                                     Spacer()
                                                 }
-                                            }.id(message.id)
+                                            }.id(message.id) .rotationEffect(.degrees(180))
                                         }
-                                    }
+//                                    }
                                 }
+                                .rotationEffect(.degrees(180))
                                 .listStyle(PlainListStyle())
                                 
-                                .onChange(of: messages.count) { _ in
-                                    
-                                    withAnimation {
-                                       
-                                        proxy.scrollTo(messages.last?.id, anchor: .bottom)
-                                        
-                                        print( "scroll id " , messages.last?.id)
-                                    }
-                                    
-                                }
+//                                .onChange(of: messages.count) { _ in
+//                                    
+//                                    withAnimation {
+//                                       
+//                                        proxy.scrollTo(messages.last?.id, anchor: .bottom)
+//                                        
+//                                        print( "scroll id " , messages.last?.id)
+//                                    }
+//                                    
+//                                }
                                 .onChange(of: webSocketManager.messages.count) { _ in
                            
                                     let message = webSocketManager.messages.last
@@ -215,7 +216,7 @@ struct ChatView: View {
                                         
                                       DispatchQueue.main.async {
 
-                                                messages.append(newMessage);
+                                          messages.insert(newMessage , at : 0);
          
                                        }
                                     }
@@ -263,10 +264,10 @@ struct ChatView: View {
                                 self.webSocketManager.joinChat(chatId: self.chat?.id ?? "")
                             }
                             
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                
-                                messages.insert( Chat.Message( sender: "", text: "", timestamp: Date.now), at: 0)  // Insert at the start of the array
-                            }
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+//                                
+//                                messages.insert( Chat.Message( sender: "", text: "", timestamp: Date.now), at: 0)  // Insert at the start of the array
+//                            }
                             
                             
                         }
