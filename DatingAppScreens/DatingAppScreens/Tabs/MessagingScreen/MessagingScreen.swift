@@ -127,6 +127,8 @@ struct ChatView: View {
                         self.messages = chat.messages.reversed()
                         self.isLoading = false
                         
+                        
+                        
                         print (self.messages)
                     }
                 } catch {
@@ -144,9 +146,31 @@ struct ChatView: View {
         }
         
     }
-    
-    var body: some View {
+    // Group messages by Year, Month, Weekday
+    func groupMessagesByDate(_ messages: [Chat.Message]) -> [String: [String: [String: [Chat.Message]]]] {
+            let dateFormatter = DateFormatter()
+
+            return Dictionary(grouping: messages) { message -> String in
+                dateFormatter.dateFormat = "yyyy"
+                return dateFormatter.string(from: message.timestamp)
+            }.mapValues { yearGroup in
+                Dictionary(grouping: yearGroup) { message -> String in
+                    dateFormatter.dateFormat = "MMMM" // Full month name
+                    return dateFormatter.string(from: message.timestamp)
+                }.mapValues { monthGroup in
+                    Dictionary(grouping: monthGroup) { message -> String in
+                        dateFormatter.dateFormat = "EEEE" // Weekday name
+                        return dateFormatter.string(from: message.timestamp)
+                    }
+                }
+            }
         
+           
+        }
+
+    var body: some View {
+        let groupedMessages = groupMessagesByDate(messages)
+       
         NavigationView {
             VStack {
                 
@@ -162,34 +186,52 @@ struct ChatView: View {
                         } else {
                             ScrollViewReader { proxy in
                                 List {
-                                    
-                                    ForEach(messages.indices, id: \.self) { index in
-                                        let message = messages[index]
-                                        
-//                                        if(index != 0) {
-                                            
-                                            HStack {
-                                                
-                                                
-                                                if message.sender == tokenManger.userId {
-                                                    Spacer()
-                                                    Text(message.text)
-                                                        .padding()
-                                                        .background(Color.blue.opacity(0.2))
-                                                        .cornerRadius(10)
-                                                } else {
-                                                    Text(message.text)
-                                                        .padding()
-                                                        .background(Color.gray.opacity(0.2))
-                                                        .cornerRadius(10)
-                                                    Spacer()
-                                                }
-                                            }.id(message.id) .rotationEffect(.degrees(180))
-                                        }
-//                                    }
-                                }
-                                .rotationEffect(.degrees(180))
-                                .listStyle(PlainListStyle())
+                                           // Iterate through Year groups
+                                           ForEach(groupedMessages.keys.sorted(), id: \.self) { year in
+                                               
+                                               VStack {
+                                                   Section(header: Text(year).font(.largeTitle)) {
+                                                       // Iterate through Month groups
+                                                       ForEach(groupedMessages[year]?.keys.sorted() ?? [], id: \.self) { month in
+                                                           VStack {
+                                                               Section(header: Text(month).font(.title2)) {
+                                                                   // Iterate through Weekday groups
+                                                                   ForEach(groupedMessages[year]?[month]?.keys.sorted() ?? [], id: \.self) { weekday in
+                                                                       Section(header: Text(weekday).font(.headline)) {
+                                                                           // Safely unwrap and reverse messages
+                                                                           if let messages = groupedMessages[year]?[month]?[weekday] {
+                                                                               ForEach(messages.reversed(), id: \.id) { message in
+                                                                                   HStack {
+                                                                                       if message.sender == tokenManger.userId {
+                                                                                           Spacer()
+                                                                                           Text(message.text)
+                                                                                               .padding()
+                                                                                               .background(Color.blue.opacity(0.2))
+                                                                                               .cornerRadius(10)
+                                                                                       } else {
+                                                                                           Text(message.text)
+                                                                                               .padding()
+                                                                                               .background(Color.gray.opacity(0.2))
+                                                                                               .cornerRadius(10)
+                                                                                           Spacer()
+                                                                                       }
+                                                                                   }
+                                                                                   .id(message.id) // Ensure stability
+                                                                               }
+                                                                           }
+                                                                       }
+                                                                   }
+                                                               }
+                                                           }
+                                                           
+                                                       }
+                                                   }
+                                                   
+                                               }.rotationEffect(.degrees(180)) // Rotate the entire List
+                                           }
+                                       }
+                                       .rotationEffect(.degrees(180)) // Rotate the entire List
+                                       .listStyle(PlainListStyle())
                                 
 //                                .onChange(of: messages.count) { _ in
 //                                    
@@ -258,7 +300,7 @@ struct ChatView: View {
                             
                             await fetchChats()
                             
-                            
+                            print ( groupedMessages)
                             print ("chat id", chat?.id)
                             if ( chat?.id != "" ) {
                                 self.webSocketManager.joinChat(chatId: self.chat?.id ?? "")
