@@ -28,26 +28,33 @@ struct Chat: Identifiable, Decodable {
         }
         
         private enum CodingKeys: String, CodingKey {
-                case id, sender, text, timestamp
-            }
+            case id, sender, text, timestamp
+        }
+        
+        // Custom date decoding
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.id = try container.decode(String.self, forKey: .id)
+            self.sender = try container.decode(String.self, forKey: .sender)
+            self.text = try container.decode(String.self, forKey: .text)
             
-            // Custom date decoding
-            init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                self.id = try container.decode(String.self, forKey: .id)
-                self.sender = try container.decode(String.self, forKey: .sender)
-                self.text = try container.decode(String.self, forKey: .text)
-                
-                let timestampString = try container.decode(String.self, forKey: .timestamp)
-                
-                let formatter = ISO8601DateFormatter()
-                if let timestampDate = formatter.date(from: timestampString) {
-                    self.timestamp = timestampDate
-                } else if let timestampDouble = Double(timestampString) {
-                    self.timestamp = Date(timeIntervalSince1970: timestampDouble)
-                } else {
-                    self.timestamp = Date() // Use current date if parsing fails
-                }
+            let timestampString = try container.decode(String.self, forKey: .timestamp)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+            
+            if let timestampDate = dateFormatter.date(from: timestampString) {
+                self.timestamp = timestampDate
+            } else if let timestampDouble = Double(timestampString) {
+                self.timestamp = Date(timeIntervalSince1970: timestampDouble)
+            } else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .timestamp,
+                    in: container,
+                    debugDescription: "Invalid timestamp format: \(timestampString)"
+                )
             }
+        }
     }
+    
 }

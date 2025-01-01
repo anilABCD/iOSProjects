@@ -148,26 +148,39 @@ struct ChatView: View {
     }
     // Group messages by Year, Month, Weekday
     func groupMessagesByDate(_ messages: [Chat.Message]) -> [String: [String: [String: [Chat.Message]]]] {
-            let dateFormatter = DateFormatter()
-
-            return Dictionary(grouping: messages) { message -> String in
-                dateFormatter.dateFormat = "yyyy"
-                return dateFormatter.string(from: message.timestamp)
-            }.mapValues { yearGroup in
-                Dictionary(grouping: yearGroup) { message -> String in
-                    dateFormatter.dateFormat = "MMMM" // Full month name
-                    return dateFormatter.string(from: message.timestamp)
-                }.mapValues { monthGroup in
-                    Dictionary(grouping: monthGroup) { message -> String in
-                        dateFormatter.dateFormat = "EEEE" // Weekday name
-                        return dateFormatter.string(from: message.timestamp)
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date()) // Start of the current day
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today)! // Start of yesterday
+           
+        return Dictionary(grouping: messages) { message -> String in
+            let yearFormatter = DateFormatter()
+            yearFormatter.dateFormat = "yyyy"
+            return yearFormatter.string(from: message.timestamp)
+        }.mapValues { yearGroup in
+            Dictionary(grouping: yearGroup) { message -> String in
+                let monthFormatter = DateFormatter()
+                monthFormatter.dateFormat = "MMMM" // Full month name
+                return monthFormatter.string(from: message.timestamp)
+            }.mapValues { monthGroup in
+                Dictionary(grouping: monthGroup) { message -> String in
+                    let weekdayFormatter = DateFormatter()
+                    weekdayFormatter.dateFormat = "EEEE" // Weekday name
+                    
+                    // Check if the message is from today
+                    if calendar.isDate(message.timestamp, inSameDayAs: today) {
+                        return "Today"
                     }
+                    // Check if the message is from yesterday
+                    if calendar.isDate(message.timestamp, inSameDayAs: yesterday) {
+                        return "Yesterday"
+                    }
+                                  
+                    // Otherwise, return the weekday name
+                    return weekdayFormatter.string(from: message.timestamp)
                 }
             }
-        
-           
         }
-
+    }
     var body: some View {
         let groupedMessages = groupMessagesByDate(messages)
        
@@ -187,7 +200,7 @@ struct ChatView: View {
                             ScrollViewReader { proxy in
                                 List {
                                            // Iterate through Year groups
-                                           ForEach(groupedMessages.keys.sorted(), id: \.self) { year in
+                                           ForEach(groupedMessages.keys.sorted(by: >), id: \.self) { year in
                                                
                                                VStack {
                                                    Section(header: Text(year).font(.largeTitle)) {
