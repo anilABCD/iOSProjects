@@ -72,32 +72,68 @@ struct MatchedScreenView: View {
                       
                           HStack {
                           
-                              ForEach(items) { item in
+                              ForEach(matched) { match in
                              
-                              
-                                  VStack {
-                                  
-                                      Image("splashscreenlogo")
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 50, height: 50)
-                                            .clipShape(Circle())
-                                            .overlay(Circle().stroke(Color.white, lineWidth: 2)) // Optional: Adding a border
-                                            .overlay(
-                                                           Circle()
-                                                               .fill(Color.green)
-                                                               .frame(width: 14, height: 14)
-                                                               .overlay(
-                                                                   Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
-                                                               )
-                                                               .offset(x: -1, y: -1), // Adjusting position to be near the circle
-                                                           alignment: .bottomTrailing
-                                                       )
                                   
                                   
-                                      Text(item.name)
-                                      .font(.headline)
-                              }.frame(maxWidth:.infinity).padding(.horizontal, 10)
+                                  // Determine which profile to display
+                                  let onlineProfile = (match.userOne?.id == tokenManger.userId) ? match.userTwo : match.userOne
+                                  
+                                  let photoUrl = URL(string: "\(tokenManger.localhost)/images/\("resized-")\(onlineProfile?.photo ?? "" )" )
+                                  
+                                  
+                                  if (( onlineProfile?.isOnline ) != nil &&
+                                  
+                                      onlineProfile?.isOnline == true
+                                   ) {
+                                  
+                                      
+                                      NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", webSocketManager: webSocketManager) ) {
+                                          
+                                          VStack {
+                                              
+                                              AsyncImage(url: photoUrl) { phase in
+                                                  switch phase {
+                                                  case .empty:
+                                                      ProgressView()
+                                                          .frame(width: 50, height: 50)
+                                                  case .success(let image):
+                                                      image
+                                                          .resizable()
+                                                          .aspectRatio(contentMode: .fill)
+                                                          .frame(width: 50, height: 50)
+                                                          .clipShape(Circle())
+                                                  case .failure:
+                                                      Image(systemName: "person.crop.circle.badge.exclamationmark")
+                                                          .resizable()
+                                                          .aspectRatio(contentMode: .fill)
+                                                          .frame(width: 50, height: 50)
+                                                          .clipShape(Circle())
+                                                  @unknown default:
+                                                      EmptyView()
+                                                  }
+                                              }
+                                              .padding(.trailing, 8)
+                                              .overlay(
+                                                Circle()
+                                                    .fill(Color.green)
+                                                    .frame(width: 14, height: 14)
+                                                    .overlay(
+                                                        Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
+                                                    )
+                                                    .offset(x: -1, y: -1), // Adjusting position to be near the circle
+                                                alignment: .bottomTrailing
+                                              )
+                                              
+                                              
+                                              Text(onlineProfile?.name ?? "" )
+                                                  .font(.headline)
+                                          }.frame(maxWidth:.infinity).padding(.horizontal, 10)
+                                          
+                                      }
+                                      
+                                      
+                                  }
                               
                           }
                       }
