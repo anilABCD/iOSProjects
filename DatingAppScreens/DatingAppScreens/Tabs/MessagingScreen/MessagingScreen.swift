@@ -96,8 +96,20 @@ struct ChatView: View {
     
     @ObservedObject var webSocketManager : WebSocketManager ;
     
-    
-    
+    // Function to remove any pattern like "( number )"
+     func removeNumberInParentheses(from text: String) -> String {
+         // Use regular expression to match "( number )" with optional spaces
+         let regex = try! NSRegularExpression(pattern: "\\(\\s*\\d+\\s*\\)", options: [])
+         
+         // Use NSRange for the entire string
+         let range = NSRange(location: 0, length: text.utf16.count)
+         
+         // Replace the pattern with an empty string
+         let result = regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "")
+         
+         return result
+     }
+     
     func fetchChats () async
     {
         
@@ -160,7 +172,8 @@ struct ChatView: View {
             Dictionary(grouping: yearGroup) { message -> String in
                 let monthFormatter = DateFormatter()
                 monthFormatter.dateFormat = "MMMM" // Full month name
-                return monthFormatter.string(from: message.timestamp)
+                return "( \(Calendar.current.component(.month, from: message.timestamp ) ) ) \(monthFormatter.string(from: message.timestamp)) "
+              
             }.mapValues { monthGroup in
                 Dictionary(grouping: monthGroup) { message -> String in
                     let weekdayFormatter = DateFormatter()
@@ -168,15 +181,15 @@ struct ChatView: View {
                     
                     // Check if the message is from today
                     if calendar.isDate(message.timestamp, inSameDayAs: today) {
-                        return "Today"
+                        return "( \(Calendar.current.component(.day, from: message.timestamp)) ) Today"
                     }
                     // Check if the message is from yesterday
                     if calendar.isDate(message.timestamp, inSameDayAs: yesterday) {
-                        return "Yesterday"
+                        return "( \(Calendar.current.component(.day, from: message.timestamp)) ) Yesterday"
                     }
                                   
                     // Otherwise, return the weekday name
-                    return weekdayFormatter.string(from: message.timestamp)
+                    return "( \(Calendar.current.component(.day, from: message.timestamp)) ) \(weekdayFormatter.string(from: message.timestamp)) "
                 }
             }
         }
@@ -203,14 +216,14 @@ struct ChatView: View {
                                            ForEach(groupedMessages.keys.sorted(by: >), id: \.self) { year in
                                                
                                                VStack {
-                                                   Section(header: Text(year).font(.largeTitle)) {
+                                                   Section(header: Text(removeNumberInParentheses(from : year)).font(.largeTitle)) {
                                                        // Iterate through Month groups
                                                        ForEach(groupedMessages[year]?.keys.sorted() ?? [], id: \.self) { month in
                                                            VStack {
-                                                               Section(header: Text(month).font(.title2)) {
+                                                               Section(header: Text(removeNumberInParentheses(from : month)).font(.title2)) {
                                                                    // Iterate through Weekday groups
                                                                    ForEach(groupedMessages[year]?[month]?.keys.sorted() ?? [], id: \.self) { weekday in
-                                                                       Section(header: Text(weekday).font(.headline)) {
+                                                                       Section(header: Text(removeNumberInParentheses(from : weekday)).font(.headline)) {
                                                                            // Safely unwrap and reverse messages
                                                                            if let messages = groupedMessages[year]?[month]?[weekday] {
                                                                                ForEach(messages.reversed(), id: \.id) { message in

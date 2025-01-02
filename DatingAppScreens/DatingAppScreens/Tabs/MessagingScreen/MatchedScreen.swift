@@ -13,7 +13,7 @@ struct Item: Identifiable {
 
 struct MatchedScreenView: View {
     
-    @State var matched : [MatchedResponse] = []
+    @State var matched : [Chat] = []
     @EnvironmentObject private var tokenManger : TokenManager
     
     @State private var webSocketManager = WebSocketManager(token: "" , userId: "")
@@ -32,9 +32,11 @@ struct MatchedScreenView: View {
         
         let data:MatchedEncodable? = nil;
         
-        let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/", accessToken: tokenManger.accessToken , data: data, parameters: nil )
+        print("Fetching Matches")
         
-        let matchedResponse : [MatchedResponse] = try await fetchDataArray(from: urlRequest)
+        let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/fromMessages", accessToken: tokenManger.accessToken , data: data, parameters: nil )
+        
+        let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
         
         matched = matchedResponse;
         
@@ -47,7 +49,7 @@ struct MatchedScreenView: View {
         
         let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/search-matched-users", accessToken: tokenManger.accessToken , data: data, parameters: ["isOnlineQuery" : "true"] )
         
-        let matchedResponse : [MatchedResponse] = try await fetchDataArray(from: urlRequest)
+        let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
         
         matched = matchedResponse;
         
@@ -77,7 +79,7 @@ struct MatchedScreenView: View {
                                   
                                   
                                   // Determine which profile to display
-                                  let onlineProfile = (match.userOne?.id == tokenManger.userId) ? match.userTwo : match.userOne
+                                  let onlineProfile = match.participants.first
                                   
                                   let photoUrl = URL(string: "\(tokenManger.localhost)/images/\("resized-")\(onlineProfile?.photo ?? "" )" )
                                   
@@ -145,7 +147,7 @@ struct MatchedScreenView: View {
                           ForEach(matched) { match in  // Iterate over likes directly
                               
                               // Determine which profile to display
-                              let matchProfile = (match.userOne?.id == tokenManger.userId) ? match.userTwo : match.userOne
+                              let matchProfile = match.participants.first
                               
                               NavigationLink(destination: ChatView(profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", webSocketManager: webSocketManager) ) {
                                   MatchedItemView(profile : matchProfile ?? nil, photoURL: "\(tokenManger.localhost)/images")
