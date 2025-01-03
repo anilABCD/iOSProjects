@@ -10,6 +10,7 @@
 		78CEFF87C8E2721C4600B03C /* Pods_DatingAppScreens.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45C106533F3EF006834329C /* Pods_DatingAppScreens.framework */; };
 		7CEA455E2C42630100524FB3 /* MatchedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA455D2C42630100524FB3 /* MatchedScreen.swift */; };
 		7CEA45602C42645C00524FB3 /* MatchedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA455F2C42645C00524FB3 /* MatchedModel.swift */; };
+		B7103F562D279D290044F414 /* PersistentCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */; };
 		B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */; };
 		B71184AA2C0F7686004FC55C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71184A92C0F7686004FC55C /* Request.swift */; };
 		B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CBEC22D1DBDA400E81103 /* Chat.swift */; };
@@ -81,6 +82,7 @@
 		738F65CA6333EA3F03AADC47 /* Pods-DatingAppScreens.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreens.debug.xcconfig"; path = "Target Support Files/Pods-DatingAppScreens/Pods-DatingAppScreens.debug.xcconfig"; sourceTree = "<group>"; };
 		7CEA455D2C42630100524FB3 /* MatchedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedScreen.swift; sourceTree = "<group>"; };
 		7CEA455F2C42645C00524FB3 /* MatchedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedModel.swift; sourceTree = "<group>"; };
+		B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentCacheManager.swift; sourceTree = "<group>"; };
 		B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTechnologyView.swift; sourceTree = "<group>"; };
 		B71184A92C0F7686004FC55C /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		B71CBEC22D1DBDA400E81103 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 		B71184A82C0F7674004FC55C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */,
 				B77B2F0A2D0C510700C7EDDF /* LocationPermissionManager.swift */,
 				B71184A92C0F7686004FC55C /* Request.swift */,
 				B7661FFF2C107B1100C3D548 /* LocationManager.swift */,
@@ -670,6 +673,7 @@
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
 				B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */,
+				B7103F562D279D290044F414 /* PersistentCacheManager.swift in Sources */,
 				B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */,
 				B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
