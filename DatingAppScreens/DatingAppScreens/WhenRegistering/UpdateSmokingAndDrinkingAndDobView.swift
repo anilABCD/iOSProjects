@@ -179,7 +179,7 @@ struct ProfileEditorView: View {
                             .edgesIgnoringSafeArea(.all) // Ignore safe area for full-screen effect
                         }
                         
-                        .background(Color(.systemGray6))
+//                        .background(Color(.systemGray6))
                     }
                     
                     Section("Habbits") {

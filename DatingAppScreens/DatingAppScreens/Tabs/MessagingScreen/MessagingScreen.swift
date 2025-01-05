@@ -109,6 +109,19 @@ struct ChatView: View {
          
          return result
      }
+    
+    // Function to mark messages as delivered
+    func markMessagesAsDelivered(upTo givenTimestamp: Date) {
+        messages = messages.map { message in
+            if message.timestamp <= givenTimestamp {
+                var updatedMessage = message
+                updatedMessage.delivered = true
+                return updatedMessage
+            }
+            return message
+        }
+    }
+
      
     func fetchChats () async
     {
@@ -318,28 +331,41 @@ struct ChatView: View {
 //                                    }
 //                                    
 //                                }
-                                .onChange(of: webSocketManager.messages.count) { _ in
-                           
-                                    let message = webSocketManager.messages.last
-                                    if let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"] {
-                                      
-                                        let dateFormatter = DateFormatter()
-                                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" // Adjust the format to match your string
-                                        let timestampNew = dateFormatter.date(from: timeStamp as! String)
-                                        
-                                        
-                                        let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timestampNew as! Date )
-
-                                        
-                                      DispatchQueue.main.async {
-
-                                          messages.insert(newMessage , at : 0);
-         
+                                       .onChange(of: webSocketManager.messages.count) { _ in
+                                           
+                                           let message = webSocketManager.messages.last
+                                           if let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"] {
+                                               
+                                               let dateFormatter = DateFormatter()
+                                               dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" // Adjust the format to match your string
+                                               let timestampNew = dateFormatter.date(from: timeStamp as! String)
+                                               
+                                               
+                                               let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timestampNew as! Date )
+                                               
+                                               
+                                               DispatchQueue.main.async {
+                                                   
+                                                   messages.insert(newMessage , at : 0);
+                                                   
+                                               }
+                                           }
                                        }
-                                    }
-                                   
-                                }
-                               
+//                                       .onReceive(webSocketManager.$deliverdUserIdAndTimeStamp) { deliverdUserIdAndTimeStamp in
+//                                           // Safely extract values from the dictionary
+//                                           guard
+//                                               let receiverId = deliverdUserIdAndTimeStamp["receiverByUserId"] as? String,
+//                                               receiverId == profile?.id,
+//                                               let timestamp = deliverdUserIdAndTimeStamp["timestamp"] as? Date
+//                                           else {
+//                                               return // Return early if the required values are missing or invalid
+//                                           }
+//
+//                                           // If conditions pass, update the UI on the main thread
+//                                           DispatchQueue.main.async {
+//                                               markMessagesAsDelivered(upTo: timestamp)
+//                                           }
+//                                       }
                             }
                             
 //                            ForEach(webSocketManager.messages.indices, id: \.self) { index in
@@ -369,7 +395,7 @@ struct ChatView: View {
                      
                     }
                     .onAppear(){
-                        webSocketManager.userId = profile?.objectId.value ?? "" ;
+                        webSocketManager.otherUserId = profile?.objectId.value ?? "" ;
                         
                         Task {
                             

@@ -13,16 +13,19 @@ class WebSocketManager: ObservableObject {
     @Published var messages: [[String: Any]] = []
     @Published private var manager: SocketManager?
     @Published var token : String = ""
+    @Published var deliverdUserIdAndTimeStamp : [String:Any] = [:]
+    
     private var socket: SocketIOClient!
     
-    @Published var userId : String = ""
+    @Published var otherUserId : String = ""
+    @Published var userId : String = "" ;
     
     @Published var loclhost : String = "" ;
     
     init(token:String , userId:String) {
        
         self.token = token;
-        self.userId = userId
+        self.otherUserId = userId
     }
     
     func connect () {
@@ -44,13 +47,41 @@ class WebSocketManager: ObservableObject {
         socket.on(clientEvent: .connect) { _, _ in
             print("WebSocket connected")
             
-            self.registerUser(userId: self.userId)
+            self.registerUser(userId: self.otherUserId)
         }
         
        
         
         socket.connect()
         
+        socket.on("deliverd") { data, _ in
+            
+            print ("message from socket" , data)
+            
+            if let messageData = data as? [[String: Any]] {
+                for item in messageData {
+                    if let receiver = item["receiverId"] as? String,
+                        let timestampString = item["timestamp"] {
+                        
+                        var timestamp : Date;
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+                        
+                        if let timestampDate = dateFormatter.date(from: timestampString as! String) {
+                            timestamp = timestampDate
+                        } else if let timestampDouble = Double(timestampString as! Substring) {
+                            timestamp = Date(timeIntervalSince1970: timestampDouble)
+                        }else{
+                            timestamp = Date.now
+                        }
+                        
+                        self.deliverdUserIdAndTimeStamp["receiverByUserId"] = receiver;
+                        self.deliverdUserIdAndTimeStamp["timestamp"] = timestamp as Date;
+                    }
+                }
+                
+            }
+        }
         
         socket.on("newMessage") { data, _ in
             
@@ -62,8 +93,27 @@ class WebSocketManager: ObservableObject {
                               let text = item["text"] as? String  , let timestampString = item["timestamp"] as? String{
                                DispatchQueue.main.async {
                                    self.messages.append(["sender": sender, "text": text , "timestamp" : timestampString ])
+                                  
+                                  
+                                   
                                    print(self.messages)
                                }
+                               
+                               if( sender != self.userId ) {
+                                  
+                                   print("received : \(sender) \(self.otherUserId)")
+                                   let messageData: [String: Any] = [
+                                        "sender": sender,
+                                        "timestamp" :  item["timestamp"] ?? ""
+                                   ]
+                                   
+                                   
+                                   self.socket.emit("receieved", messageData );
+                                   
+                                 
+                               }
+                               
+                             
                            }
                        }
                    }
@@ -76,7 +126,7 @@ class WebSocketManager: ObservableObject {
     }
     
     func registerUser( userId: String ) {
-        socket.emit("registerUser", self.userId )
+        socket.emit("registerUser", self.otherUserId )
     }
     
     func joinChat( chatId: String ) {

@@ -57,6 +57,7 @@ struct Chat: Identifiable, Decodable {
         var text: String
         var timestamp: Date
         var readBy: [String] // Array of user IDs who have read the message
+        var delivered: Bool
         
         // Computed property to check if the other person has read the message
           func isRead(by userID: String) -> Bool {
@@ -64,16 +65,17 @@ struct Chat: Identifiable, Decodable {
           }
 
         // Provide a default initializer for `id`
-        init(sender: String, text: String, timestamp: Date , readBy : [String] = []) {
+        init(sender: String, text: String, timestamp: Date , delivered : Bool = false , readBy : [String] = []) {
             self.id = UUID().uuidString // Generate a unique ID
             self.sender = sender
             self.text = text
             self.readBy = readBy
+            self.delivered = delivered
             self.timestamp = timestamp
         }
         
         private enum CodingKeys: String, CodingKey {
-            case id, sender, text, readBy , timestamp
+            case id, sender, text, readBy , delivered , timestamp
         }
         
         // Custom date decoding
@@ -82,6 +84,7 @@ struct Chat: Identifiable, Decodable {
             self.id = try container.decode(String.self, forKey: .id)
             self.sender = try container.decode(String.self, forKey: .sender)
             self.text = try container.decode(String.self, forKey: .text)
+            self.delivered = try container.decode( Bool.self , forKey: .delivered)
             self.readBy = try container.decode([String].self, forKey: .readBy)
             let timestampString = try container.decode(String.self, forKey: .timestamp)
             

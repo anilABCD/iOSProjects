@@ -185,6 +185,9 @@ struct MatchedScreenView: View {
                     try await fetchMatched()
                     
                     webSocketManager.token = tokenManger.accessToken;
+                       
+                    webSocketManager.userId = tokenManger.userId;
+                       
                     webSocketManager.connect()
                     
                  }
