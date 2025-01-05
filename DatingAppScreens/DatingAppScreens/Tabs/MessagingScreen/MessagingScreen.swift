@@ -228,17 +228,66 @@ struct ChatView: View {
                                                                            if let messages = groupedMessages[year]?[month]?[weekday] {
                                                                                ForEach(messages.reversed(), id: \.id) { message in
                                                                                    HStack {
+                                                                                    
                                                                                        if message.sender == tokenManger.userId {
                                                                                            Spacer()
-                                                                                           Text(message.text)
-                                                                                               .padding()
-                                                                                               .background(Color.blue.opacity(0.2))
-                                                                                               .cornerRadius(10)
+                                                                                           
+                                                                                           VStack {
+                                                                                               
+                                                                                               HStack {
+                                                                                                   Spacer() // Push the message to the right
+                                                                                                   Text(message.text)
+                                                                                                       .padding()
+                                                                                                       .background(Color.blue.opacity(0.2))
+                                                                                                       .cornerRadius(10)
+                                                                                                   
+                                                                                                   // Show read status for messages sent by the current user
+                                                                                               }
+                                                                                               HStack(spacing: 5) {
+                                                                                                   
+                                                                                                   Spacer() // Push the message to the right
+                                                                                                   Text(message.isRead(by: profile?.id ?? "" ) ? "✓✓" : "✓")
+                                                                                                       .font(.caption2)
+                                                                                                       .foregroundColor(message.isRead(by: profile?.id ?? "") ? .green : .gray)
+                                                                                                   
+                                                                                                   // Optionally, show a timestamp or other info here
+                                                                                                   Text(message.timestamp, style: .time)
+                                                                                                       .font(.caption2)
+                                                                                                       .foregroundColor(.gray)
+                                                                                               }
+                                                                                           }.frame(maxWidth: .infinity, alignment: .trailing) // Align the text to the right
+                                                                                       
+                                                                                                            
+                                                                                           
                                                                                        } else {
-                                                                                           Text(message.text)
-                                                                                               .padding()
-                                                                                               .background(Color.gray.opacity(0.2))
-                                                                                               .cornerRadius(10)
+                                                                                           
+                                                                                           VStack {
+                                                                                               
+                                                                                               HStack {
+                                                                                                
+                                                                                                   Text(message.text)
+                                                                                                       .padding()
+                                                                                                       .background(Color.gray.opacity(0.2))
+                                                                                                       .cornerRadius(10)
+                                                                                                   
+                                                                                                   Spacer() // Push the message to the left
+                                                                                                   
+                                                                                               }
+                                                                                               
+                                                                                               HStack{
+                                                                                                  
+                                                                                                   // Optionally, show a timestamp or other info here
+                                                                                                   Text(message.timestamp, style: .time)
+                                                                                                       .font(.caption2)
+                                                                                                       .foregroundColor(.gray)
+                                                                                                   
+                                                                                                   
+                                                                                                   Spacer() // Push the message to the left
+                                                                                               }
+                                                                                              
+                                                                                           }
+                                                                                       
+                                                                                           
                                                                                            Spacer()
                                                                                        }
                                                                                    }
