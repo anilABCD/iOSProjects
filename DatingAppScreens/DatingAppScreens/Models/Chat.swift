@@ -22,7 +22,7 @@ struct LastMessage: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.text = try container.decode(String.self, forKey: .text)
-        self.image = try container.decode(String.self, forKey: .image)
+        self.image = try container.decode(String?.self, forKey: .image)
         self.sender = try container.decode(String.self, forKey: .sender)
         
         let timestampString = try container.decode(String.self, forKey: .timestamp)
@@ -49,7 +49,7 @@ struct Chat: Identifiable, Decodable {
     var participants: [Profile] // User IDs of participants
     var messages: [Message] // Array of messages
     var lastMessage : LastMessage?
-    let unreadCounts: [String: Int]? // User ID to unread count mapping
+    var unreadCounts: [String: Int]? // User ID to unread count mapping
     
     struct Message: Identifiable, Decodable {
         var id: String
@@ -60,19 +60,58 @@ struct Chat: Identifiable, Decodable {
         var delivered: Bool
         
         // Computed property to check if the other person has read the message
-          func isRead(by userID: String) -> Bool {
-              return readBy.contains(userID)
-          }
-
+        func isRead(by userID: String) -> Bool {
+            return readBy.contains(userID)
+        }
+        
+     
         // Provide a default initializer for `id`
-        init(sender: String, text: String, timestamp: Date , delivered : Bool = false , readBy : [String] = []) {
+        init(sender: String, text: String, timestamp: String? , delivered : Bool = false , readBy : [String] = []) {
             self.id = UUID().uuidString // Generate a unique ID
             self.sender = sender
             self.text = text
             self.readBy = readBy
             self.delivered = delivered
-            self.timestamp = timestamp
+            
+            let timestampString = timestamp?.isEmpty == false ? timestamp ?? getCurrentUTCTime() : getCurrentUTCTime()
+
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+            dateFormatter.timeZone = TimeZone.current
+            
+            if let timestampDate = dateFormatter.date(from: timestampString ?? "" ) {
+                self.timestamp = timestampDate
+            } else if let timestampDouble = Double(timestampString ?? "") {
+                self.timestamp = Date(timeIntervalSince1970: timestampDouble)
+            }
+            else{
+                self.timestamp = Date.now
+            }
         }
+        
+//        // Provide a default initializer for `id`
+//        init(sender: String, text: String, timestampString: String , delivered : Bool = false , readBy : [String] = []) {
+//            self.id = UUID().uuidString // Generate a unique ID
+//            self.sender = sender
+//            self.text = text
+//            self.readBy = readBy
+//            self.delivered = delivered
+//            
+//            
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+//            dateFormatter.timeZone = TimeZone.current
+//            
+//            if let timestampDate = dateFormatter.date(from: timestampString) {
+//                self.timestamp = timestampDate
+//            } else if let timestampDouble = Double(timestampString) {
+//                self.timestamp = Date(timeIntervalSince1970: timestampDouble)
+//            }
+//            else{
+//                self.timestamp = Date.now
+//            }
+//        }
+//    
         
         private enum CodingKeys: String, CodingKey {
             case id, sender, text, readBy , delivered , timestamp
@@ -90,6 +129,7 @@ struct Chat: Identifiable, Decodable {
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+            dateFormatter.timeZone = TimeZone.current
             
             if let timestampDate = dateFormatter.date(from: timestampString) {
                 self.timestamp = timestampDate

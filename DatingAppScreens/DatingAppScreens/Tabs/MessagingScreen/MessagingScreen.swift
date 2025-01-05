@@ -85,7 +85,8 @@ struct ChatView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     let profile: Profile?
     let photoUrl : String
-    
+    var onBackAction: () -> Void
+
     @State var chat: Chat? // The chat data
     @State var messages: [Chat.Message] = [] // The messages to displ
     
@@ -334,14 +335,9 @@ struct ChatView: View {
                                        .onChange(of: webSocketManager.messages.count) { _ in
                                            
                                            let message = webSocketManager.messages.last
-                                           if let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"] {
-                                               
-                                               let dateFormatter = DateFormatter()
-                                               dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" // Adjust the format to match your string
-                                               let timestampNew = dateFormatter.date(from: timeStamp as! String)
-                                               
-                                               
-                                               let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timestampNew as! Date )
+                                           if let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"]  as? String {
+                                              
+                                               let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp )
                                                
                                                
                                                DispatchQueue.main.async {
@@ -419,6 +415,8 @@ struct ChatView: View {
                         
                     }
                    
+                }.onDisappear(){
+                    onBackAction()
                 }
                 
                 Spacer()
@@ -456,7 +454,7 @@ struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
        
     static var previews: some View {
-        ChatView(profile: nil, photoUrl: "", webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
+        ChatView(profile: nil, photoUrl: "", onBackAction: {}, webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
     }
 }
 

@@ -90,7 +90,15 @@ struct MatchedScreenView: View {
                                    ) {
                                   
                                       
-                                      NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", webSocketManager: webSocketManager) ) {
+                                      NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", onBackAction: {
+                                          Task {
+                                              do {
+                                                  try await fetchMatched()
+                                              }catch{
+                                                  
+                                              }
+                                          }
+                                      }, webSocketManager: webSocketManager) ) {
                                           
                                           VStack {
                                               
@@ -149,8 +157,16 @@ struct MatchedScreenView: View {
                               // Determine which profile to display
                               let matchProfile = match.participants.first
                               
-                              NavigationLink(destination: ChatView(profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", webSocketManager: webSocketManager) ) {
-                                  MatchedItemView(profile : matchProfile ?? nil, photoURL: "\(tokenManger.localhost)/images")
+                              NavigationLink(destination: ChatView(profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", onBackAction: {
+                                  Task {
+                                      do {
+                                          try await fetchMatched()
+                                      }catch{
+                                          
+                                      }
+                                  }
+                              }, webSocketManager: webSocketManager) ) {
+                                  MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.localhost)/images", lastMessage : match.lastMessage  )
                                       .onAppear {
                                           if let index = matched.firstIndex(where: { $0.id == match.id }), index == matched.count - 5 {
                                               //                                              loadMoreItems()
@@ -176,6 +192,7 @@ struct MatchedScreenView: View {
 //                   }
                   
                }
+              
              
            
        .onAppear()
@@ -212,6 +229,15 @@ struct MatchedScreenView: View {
 struct MatchedItemView: View {
     let profile: Profile?
     let photoURL : String;
+    let lastMessage : LastMessage?
+    
+    
+    // Function to format the time from a timestamp
+        func formatTime(from date: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "hh:mm a" // 12-hour format with AM/PM
+            return formatter.string(from: date)
+        }
     
     var body: some View {
         HStack {
@@ -241,13 +267,35 @@ struct MatchedItemView: View {
                                .padding(.trailing, 8)
             }
             VStack(alignment: .leading) {
-                Text(profile?.name ?? "Unknown")
-                    .font(.headline)
-                if let technologies = profile?.technologies {
-                    Text(technologies.joined(separator: ", "))
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                
+                HStack {
+                    Text(profile?.name ?? "Unknown")
+                        .font(.headline)
+//                    if let technologies = profile?.technologies {
+//                        Text(" ( \(technologies.joined(separator: ", ")) )")
+//                            .font(.subheadline)
+//                            .foregroundColor(.secondary)
+//                    }
                 }
+                
+                if let text = lastMessage?.text , let timestamp = lastMessage?.timestamp {
+                    HStack {
+                        Text(text)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        
+                        
+                        Text(timestamp, style: .time)
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                        
+                        
+                    }
+                }
+                
             }
         }
         .padding(.vertical, 4)

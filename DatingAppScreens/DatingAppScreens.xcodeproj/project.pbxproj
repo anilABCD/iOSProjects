@@ -17,6 +17,7 @@
 		B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */; };
 		B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */; };
 		B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */; };
+		B73C5B672D2B00320030F136 /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73C5B662D2B002E0030F136 /* DateUtilities.swift */; };
 		B7453FCC8150D871474A0CFE /* libPods-DatingAppScreensTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24CE1DBB042EB1905708F0EA /* libPods-DatingAppScreensTests.a */; };
 		B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74E89A92C197E1B005DD13C /* LoginSocialView.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
@@ -89,6 +90,7 @@
 		B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendUserDeviceNotificationToken.swift; sourceTree = "<group>"; };
 		B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouMatches.swift; sourceTree = "<group>"; };
+		B73C5B662D2B002E0030F136 /* DateUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		B74E89A92C197E1B005DD13C /* LoginSocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialView.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
 		B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachesScreen.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 		B71184A82C0F7674004FC55C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B73C5B662D2B002E0030F136 /* DateUtilities.swift */,
 				B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */,
 				B77B2F0A2D0C510700C7EDDF /* LocationPermissionManager.swift */,
 				B71184A92C0F7686004FC55C /* Request.swift */,
@@ -686,6 +689,7 @@
 				B7F4CE792D1BB43700F92EDB /* UpdateJobRoleView.swift in Sources */,
 				B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */,
 				B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */,
+				B73C5B672D2B00320030F136 /* DateUtilities.swift in Sources */,
 				B71184AA2C0F7686004FC55C /* Request.swift in Sources */,
 				B7E6C9492C174BFD00F321A9 /* ObjectId.swift in Sources */,
 				B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */,
