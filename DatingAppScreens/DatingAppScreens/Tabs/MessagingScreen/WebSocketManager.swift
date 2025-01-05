@@ -54,7 +54,7 @@ class WebSocketManager: ObservableObject {
         
         socket.connect()
         
-        socket.on("deliverd") { data, _ in
+        socket.on("messageDelivered") { data, _ in
             
             print ("message from socket" , data)
             
@@ -108,7 +108,7 @@ class WebSocketManager: ObservableObject {
                                    ]
                                    
                                    
-                                   self.socket.emit("receieved", messageData );
+                                   self.socket.emit("messageReceieved", messageData );
                                    
                                  
                                }
