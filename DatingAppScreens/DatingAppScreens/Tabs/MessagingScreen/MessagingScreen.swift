@@ -246,15 +246,15 @@ struct ChatView: View {
                                                                                                HStack(spacing: 5) {
                                                                                                    
                                                                                                    Spacer() // Push the message to the right
-                                                                                                   Text(message.isRead(by: profile?.id ?? "" ) ? "✓✓" : "✓")
+                                                                                                   Text(message.timestamp, style: .time)
+                                                                                                       .font(.caption2)
+                                                                                                       .foregroundColor(.gray)
+                                                                                                    Text(message.isRead(by: profile?.id ?? "" ) ? "✓✓" : "✓")
                                                                                                        .font(.caption2)
                                                                                                        .foregroundColor(message.isRead(by: profile?.id ?? "") ? .green : .gray)
                                                                                                    
                                                                                                    // Optionally, show a timestamp or other info here
-                                                                                                   Text(message.timestamp, style: .time)
-                                                                                                       .font(.caption2)
-                                                                                                       .foregroundColor(.gray)
-                                                                                               }
+                                                                                                                                        }
                                                                                            }.frame(maxWidth: .infinity, alignment: .trailing) // Align the text to the right
                                                                                        
                                                                                                             
@@ -267,7 +267,7 @@ struct ChatView: View {
                                                                                                 
                                                                                                    Text(message.text)
                                                                                                        .padding()
-                                                                                                       .background(Color.gray.opacity(0.2))
+                                                                                                       .background(Color.gray.opacity(0.1))
                                                                                                        .cornerRadius(10)
                                                                                                    
                                                                                                    Spacer() // Push the message to the left
