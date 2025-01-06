@@ -172,6 +172,18 @@ struct ChatView: View {
         }
         
     }
+    
+    
+    private func messageStatus( otherUserId : String , message : Chat.Message) -> String {
+        if !message.delivered { // Replace with actual delivery check logic
+            return "✓" // Not Delivered
+        } else if message.isRead(by: otherUserId) {
+            return "✓✓" // Delivered and Read
+        } else {
+            return "✓✓" // Delivered but Not Read
+        }
+    }
+    
     // Group messages by Year, Month, Weekday
     func groupMessagesByDate(_ messages: [Chat.Message]) -> [String: [String: [String: [Chat.Message]]]] {
         let calendar = Calendar.current
@@ -263,7 +275,7 @@ struct ChatView: View {
                                                                                                    Text(message.timestamp, style: .time)
                                                                                                        .font(.caption2)
                                                                                                        .foregroundColor(.gray)
-                                                                                                    Text(message.isRead(by: profile?.id ?? "" ) ? "✓✓" : "✓")
+                                                                                                   Text( messageStatus(otherUserId: profile?.id ?? "" , message: message) )
                                                                                                        .font(.caption2)
                                                                                                        .foregroundColor(message.isRead(by: profile?.id ?? "") ? .green : .gray)
                                                                                                    
@@ -430,7 +442,7 @@ struct ChatView: View {
                         
                         print("sending message", self.newMessage)
                         
-                        self.webSocketManager.sendMessage(  self.newMessage , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId )
+                        self.webSocketManager.sendMessage(  self.newMessage , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId , user2: profile?.id ?? "" )
                         self.newMessage = ""
                     }) {
                         Text("Send")

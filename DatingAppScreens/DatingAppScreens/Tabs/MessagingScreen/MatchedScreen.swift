@@ -40,23 +40,23 @@ struct MatchedScreenView: View {
         
         matched = matchedResponse;
         
-        print(matchedResponse)
+        print("matches current" , matchedResponse)
     }
     
-    func fetchMatchedOnline() async throws {
-        
-        let data:MatchedEncodable? = nil;
-        
-        let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/search-matched-users", accessToken: tokenManger.accessToken , data: data, parameters: ["isOnlineQuery" : "true"] )
-        
-        let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
-        
-        matched = matchedResponse;
-        
-        print(matchedResponse)
-    }
-    
-    
+//    func fetchMatchedOnline() async throws {
+//        
+//        let data:MatchedEncodable? = nil;
+//        
+//        let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/search-matched-users", accessToken: tokenManger.accessToken , data: data, parameters: ["isOnlineQuery" : "true"] )
+//        
+//        let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
+//        
+//        matched = matchedResponse;
+//        
+//        print(matchedResponse)
+//    }
+//    
+//    
     var body: some View {
               NavigationView {
                   
@@ -166,7 +166,7 @@ struct MatchedScreenView: View {
                                       }
                                   }
                               }, webSocketManager: webSocketManager) ) {
-                                  MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.localhost)/images", lastMessage : match.lastMessage  )
+                                  MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.localhost)/images", lastMessage : match.lastMessage , unreadCounts: match.unreadCounts , userId: tokenManger.userId )
                                       .onAppear {
                                           if let index = matched.firstIndex(where: { $0.id == match.id }), index == matched.count - 5 {
                                               //                                              loadMoreItems()
@@ -176,7 +176,7 @@ struct MatchedScreenView: View {
                                       }
                               }
                               
-                              
+//                              Text("\(match.unreadCounts)")
                           }
                       }
                       
@@ -230,7 +230,8 @@ struct MatchedItemView: View {
     let profile: Profile?
     let photoURL : String;
     let lastMessage : LastMessage?
-    
+    let unreadCounts : [String:Int]?
+    let userId : String
     
     // Function to format the time from a timestamp
         func formatTime(from date: Date) -> String {
@@ -276,6 +277,23 @@ struct MatchedItemView: View {
 //                            .font(.subheadline)
 //                            .foregroundColor(.secondary)
 //                    }
+                    
+                    Spacer()
+                    
+//                    Text("unread count number \(unreadCounts?[ userId])")
+                     
+                    if let unreadCount = unreadCounts?[ userId ] , unreadCount > 0 {
+                        Text("\(unreadCount)")
+                            
+                            .font(.caption2) // Small font size for badge
+                            .foregroundColor(.white) // White text color
+                            .padding(6) // Small padding for a compact circle
+                            .background(Circle().fill(Color.blue)) // Blue circle background
+                            .frame(minWidth: 20, minHeight: 20) // Ensure consistent circular shape
+                            .offset(y: 5)
+                    }
+                    
+//                    Text(unreadCounts?[profile?.id ?? ""] ?? 0 > 0 ? "\(unreadCounts?[profile?.id ?? ""]!)" : "")
                 }
                 
                 if let text = lastMessage?.text , let timestamp = lastMessage?.timestamp {

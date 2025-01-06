@@ -135,7 +135,7 @@ class WebSocketManager: ObservableObject {
         socket.emit("joinChat", chatId )
     }
     
-    func sendMessage(_ newMessageText: String , chatId : String , senderId : String) {
+    func sendMessage(_ newMessageText: String , chatId : String , senderId : String , user2 : String) {
 //        socket.emit("sendMessage", message )
       
                guard !newMessageText.isEmpty else { return }
@@ -143,7 +143,8 @@ class WebSocketManager: ObservableObject {
                let messageData: [String: Any] = [
                    "chatId": chatId,
                    "sender": senderId,
-                   "text": newMessageText
+                   "text": newMessageText,
+                   "user2" : user2
                ]
 
         socket.emit( "sendMessage", messageData)

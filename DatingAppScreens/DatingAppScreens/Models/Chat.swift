@@ -80,11 +80,15 @@ struct Chat: Identifiable, Decodable {
             dateFormatter.timeZone = TimeZone.current
             
             if let timestampDate = dateFormatter.date(from: timestampString ?? "" ) {
+                
                 self.timestamp = timestampDate
+                
             } else if let timestampDouble = Double(timestampString ?? "") {
+                
                 self.timestamp = Date(timeIntervalSince1970: timestampDouble)
             }
             else{
+                
                 self.timestamp = Date.now
             }
         }
@@ -125,6 +129,7 @@ struct Chat: Identifiable, Decodable {
             self.text = try container.decode(String.self, forKey: .text)
             self.delivered = try container.decode( Bool.self , forKey: .delivered)
             self.readBy = try container.decode([String].self, forKey: .readBy)
+          
             let timestampString = try container.decode(String.self, forKey: .timestamp)
             
             let dateFormatter = DateFormatter()
