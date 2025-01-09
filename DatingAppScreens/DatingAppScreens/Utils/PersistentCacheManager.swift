@@ -1,11 +1,5 @@
-//
-//  PersistentCacheManager.swift
-//  DatingAppScreens
-//
-//  Created by Anil Kumar Potlapally on 03/01/25.
-//
-
 import Foundation
+import UIKit
 
 class PersistentCacheManager {
     static let shared = PersistentCacheManager()
@@ -17,6 +11,7 @@ class PersistentCacheManager {
         return directory.appendingPathComponent(key)
     }
 
+    // MARK: - JSON Caching
     func saveJSON<T: Encodable>(_ object: T, forKey key: String) {
         let filePath = getFilePath(forKey: key)
         do {
@@ -40,6 +35,32 @@ class PersistentCacheManager {
         }
     }
 
+    // MARK: - Image Caching
+    func saveImage(_ image: UIImage, forKey key: String) {
+        let filePath = getFilePath(forKey: key)
+        do {
+            if let data = image.jpegData(compressionQuality: 1.0) {
+                try data.write(to: filePath)
+                print("Image saved successfully at \(filePath)")
+            } else {
+                print("Error: Unable to convert UIImage to JPEG data.")
+            }
+        } catch {
+            print("Error saving image: \(error)")
+        }
+    }
+
+    func loadImage(forKey key: String) -> UIImage? {
+        let filePath = getFilePath(forKey: key)
+        do {
+            let data = try Data(contentsOf: filePath)
+            return UIImage(data: data)
+        } catch {
+            print("Error loading image: \(error)")
+            return nil
+        }
+    }
+
     func deleteData(forKey key: String) {
         let filePath = getFilePath(forKey: key)
         do {
@@ -51,99 +72,7 @@ class PersistentCacheManager {
     }
 
     func isDataCached(forKey key: String) -> Bool {
-        let filePath = getFilePath( forKey: key)
+        let filePath = getFilePath(forKey: key)
         return FileManager.default.fileExists(atPath: filePath.path)
     }
 }
-
-
-
-
-
-
-/*
- 
-  Example : 
-
-import SwiftUI
-
-
-struct Userx: Codable, Identifiable {
-    let id: Int
-    let name: String
-    let email: String
-}
-
-class APIService {
-    static let shared = APIService()
-
-    private init() {}
-
-    func getUsers() async -> [Userx] {
-        let cacheKey = "usersCacheKey"
-
-        // Check if cached data exists
-        if let cachedUsers = PersistentCacheManager.shared.loadJSON(forKey: cacheKey, as: [Userx].self) {
-            print("Loaded users from cache.")
-            return cachedUsers
-        }
-
-        // Fetch from API
-        print("Fetching users from API...")
-        guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else {
-            return []
-        }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let users = try JSONDecoder().decode([Userx].self, from: data)
-
-            // Cache the fetched data
-            PersistentCacheManager.shared.saveJSON(users, forKey: cacheKey)
-
-            return users
-        } catch {
-            print("Error fetching or decoding users: \(error)")
-            return []
-        }
-    }
-}
- 
-struct UserListView: View {
-    @State private var users: [Userx] = []
-    @State private var isLoading: Bool = true
-
-    var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView("Loading users...")
-            } else if users.isEmpty {
-                Text("No users found.")
-            } else {
-                List(users) { user in
-                    VStack(alignment: .leading) {
-                        Text(user.name).font(.headline)
-                        Text(user.email).font(.subheadline).foregroundColor(.gray)
-                    }
-                }
-            }
-        }
-        .onAppear {
-            Task {
-                await loadUsers()
-            }
-        }
-    }
-
-    private func loadUsers() async {
-        self.isLoading = true
-        self.users = await APIService.shared.getUsers()
-        self.isLoading = false
-    }
-}
-
-
- */
-
-
-

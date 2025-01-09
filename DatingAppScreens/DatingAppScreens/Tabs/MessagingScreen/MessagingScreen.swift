@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import PhotosUI
 
 
 struct CustomBackButton: View {
@@ -97,6 +98,9 @@ struct ChatView: View {
     
     @ObservedObject var webSocketManager : WebSocketManager ;
     
+    @State private var selectedItem: PhotosPickerItem? = nil
+      @State private var selectedImage: UIImage? = nil
+
     // Function to remove any pattern like "( number )"
      func removeNumberInParentheses(from text: String) -> String {
          // Use regular expression to match "( number )" with optional spaces
@@ -434,26 +438,129 @@ struct ChatView: View {
                 Spacer()
                 
                 HStack {
-                    TextField("Type a message...", text: $newMessage)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
+                     
                     
-                    Button(action: {
-                        
-                        print("sending message", self.newMessage)
-                        
-                        self.webSocketManager.sendMessage(  self.newMessage , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId , user2: profile?.id ?? "" )
-                        self.newMessage = ""
-                    }) {
-                        Text("Send")
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 10)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
+                    if let selectedImageeee = selectedImage {
+              
+                        PhotosPicker(
+                            selection: $selectedItem,
+                            matching: .images,
+                            photoLibrary: .shared()
+                        ) {
+                            Image(systemName: "photo.on.rectangle")
+                                .font(.system(size: 24))
+                                .padding()
+                        }
+                        .onChange(of: selectedItem) { newItem in
+                            Task {
+                                if let data = try? await newItem?.loadTransferable(type: Data.self),
+                                   let uiImage = UIImage(data: data) {
+                                    selectedImage = uiImage
+                                    //                                               let newMessage = ChatMessage(id: UUID(), text: "", image: uiImage)
+                                    //                                               messages.append(newMessage)
+                                }
+                            }
+                            
+                        }
                     }
-                    .padding(.trailing)
+                    
+                    
+                    if let selectedImage = selectedImage {
+                        
+                        HStack {
+                            Image(uiImage: selectedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200, height: 200)
+                                .padding()
+                            
+                            
+                            Button(action: {
+                                
+                                self.selectedImage = nil
+                                self.selectedItem = nil
+                                
+                            }) {
+                                Text("X")
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 10)
+                                    .background(Color.red)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
+                            }
+                          
+                            
+                        }
+                    }
+                    
+                   
                 }
+                
+                
+                HStack {
+                    
+                    if let selectedImage = selectedImage {
+                    }
+                    else {
+                        PhotosPicker(
+                            selection: $selectedItem,
+                            matching: .images,
+                            photoLibrary: .shared()
+                        ) {
+                            Image(systemName: "photo.on.rectangle")
+                                .font(.system(size: 24))
+                                .padding()
+                        }
+                        .onChange(of: selectedItem) { newItem in
+                            Task {
+                                if let data = try? await newItem?.loadTransferable(type: Data.self),
+                                   let uiImage = UIImage(data: data) {
+                                    selectedImage = uiImage
+                                    //                                               let newMessage = ChatMessage(id: UUID(), text: "", image: uiImage)
+                                    //                                               messages.append(newMessage)
+                                }
+                            }
+                        }
+                    }
+                        
+                        VStack {
+                         
+                            HStack {
+                                
+                                if let selectedImage = selectedImage {
+                                  
+                                }
+                                else{
+                                    TextField("Type a message...", text: $newMessage)
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .padding(.horizontal)
+                                }
+                                
+                                Button(action: {
+                                    
+                                    print("sending message", self.newMessage)
+                                    
+                                    self.webSocketManager.sendMessage(  self.newMessage , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId , user2: profile?.id ?? "" )
+                                    self.newMessage = ""
+                                    
+                                    self.selectedImage = nil
+                                    self.selectedItem = nil
+                                    
+                                }) {
+                                    Text("Send")
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 10)
+                                        .background(Color.blue)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(8)
+                                }
+                                .padding(.trailing)
+                                
+                            }
+                        }
+                    
+                }
+                
                 .padding()
                 
             }
