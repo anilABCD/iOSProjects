@@ -90,9 +90,9 @@ class WebSocketManager: ObservableObject {
             if let messageData = data as? [[String: Any]] {
                        for item in messageData {
                            if let sender = item["sender"] as? String,
-                              let text = item["text"] as? String  , let timestampString = item["timestamp"] as? String{
+                              let text = item["text"] as? String , let image = item["image"] , let timestampString = item["timestamp"] as? String{
                                DispatchQueue.main.async {
-                                   self.messages.append(["sender": sender, "text": text , "timestamp" : timestampString ])
+                                   self.messages.append(["sender": sender, "text": text , "image" : image, "timestamp" : timestampString ])
                                   
                                   
                                    
@@ -135,17 +135,23 @@ class WebSocketManager: ObservableObject {
         socket.emit("joinChat", chatId )
     }
     
-    func sendMessage(_ newMessageText: String , chatId : String , senderId : String , user2 : String) {
+    func sendMessage(_ newMessageText: String , imageBase64 : String , chatId : String , senderId : String , user2 : String) {
 //        socket.emit("sendMessage", message )
       
-               guard !newMessageText.isEmpty else { return }
+        guard !newMessageText.isEmpty || !imageBase64.isEmpty else { return }
+        
+        print("send message base " , imageBase64)
 
                let messageData: [String: Any] = [
                    "chatId": chatId,
                    "sender": senderId,
                    "text": newMessageText,
+                   "imageBase64" : imageBase64 ,
                    "user2" : user2
                ]
+        
+        
+        print( "image base 64" , imageBase64 )
 
         socket.emit( "sendMessage", messageData)
               

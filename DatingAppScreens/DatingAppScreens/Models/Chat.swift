@@ -21,7 +21,7 @@ struct LastMessage: Decodable {
     // Custom date decoding
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.text = try container.decode(String.self, forKey: .text)
+        self.text = try container.decode(String?.self, forKey: .text)
         self.image = try container.decode(String?.self, forKey: .image)
         self.sender = try container.decode(String.self, forKey: .sender)
         
@@ -51,10 +51,14 @@ struct Chat: Identifiable, Decodable {
     var lastMessage : LastMessage?
     var unreadCounts: [String: Int]? // User ID to unread count mapping
     
+      private enum CodingKeys: String, CodingKey {
+          case id, participants, messages, lastMessage, unreadCounts
+      }
     struct Message: Identifiable, Decodable {
         var id: String
         var sender: String
         var text: String
+        var image : String?
         var timestamp: Date
         var readBy: [String] // Array of user IDs who have read the message
         var delivered: Bool
@@ -66,13 +70,13 @@ struct Chat: Identifiable, Decodable {
         
      
         // Provide a default initializer for `id`
-        init(sender: String, text: String, timestamp: String? , delivered : Bool = false , readBy : [String] = []) {
+        init(sender: String, text: String, timestamp: String? , image : String? = nil, delivered : Bool = false ,  readBy : [String] = []) {
             self.id = UUID().uuidString // Generate a unique ID
             self.sender = sender
             self.text = text
             self.readBy = readBy
             self.delivered = delivered
-            
+            self.image = image
             let timestampString = timestamp?.isEmpty == false ? timestamp ?? getCurrentUTCTime() : getCurrentUTCTime()
 
             let dateFormatter = DateFormatter()
@@ -118,7 +122,7 @@ struct Chat: Identifiable, Decodable {
 //    
         
         private enum CodingKeys: String, CodingKey {
-            case id, sender, text, readBy , delivered , timestamp
+            case id, sender, text, readBy , image , delivered , timestamp
         }
         
         // Custom date decoding
@@ -127,6 +131,7 @@ struct Chat: Identifiable, Decodable {
             self.id = try container.decode(String.self, forKey: .id)
             self.sender = try container.decode(String.self, forKey: .sender)
             self.text = try container.decode(String.self, forKey: .text)
+            self.image = try container.decode(String?.self, forKey: .image)
             self.delivered = try container.decode( Bool.self , forKey: .delivered)
             self.readBy = try container.decode([String].self, forKey: .readBy)
           
@@ -151,3 +156,14 @@ struct Chat: Identifiable, Decodable {
     }
     
 }
+//// Extension to handle MongoDB ObjectId as string
+//extension String {
+//    // Convert the ObjectId-like string to a plain string if needed
+//    static func fromObjectId(objectIdString: String) -> String {
+//        if objectIdString.hasPrefix("new ObjectId(") {
+//            let id = objectIdString.replacingOccurrences(of: "new ObjectId(\"", with: "").replacingOccurrences(of: "\")", with: "")
+//            return id
+//        }
+//        return objectIdString
+//    }
+//}

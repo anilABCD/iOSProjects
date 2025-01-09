@@ -65,6 +65,7 @@ func fetchData<T: Identifiable & Decodable>(from request: URLRequest) async thro
 
 // Async function to perform the network request with generic response type
 func fetchDataArray<T: Identifiable & Decodable>(from request: URLRequest) async throws -> [T] {
+    
   let (data, response) = try await URLSession.shared.data(for: request)
 
   guard let httpResponse = response as? HTTPURLResponse else {
@@ -74,7 +75,14 @@ func fetchDataArray<T: Identifiable & Decodable>(from request: URLRequest) async
   if httpResponse.statusCode >= 400 {
     throw StringError(message: "\(httpResponse.statusCode )")
   }
-
+    // Assuming `data` is your raw data (for example, from a network response)
+    if let jsonString = String(data: data, encoding: .utf8) {
+        print("Raw JSON Data: \(jsonString)")
+    } else {
+        print("Failed to convert data to string.")
+    }
+    print ( try JSONDecoder().decode([T].self, from: data))
+    
   let decodedResponse = try JSONDecoder().decode([T].self, from: data)
   return decodedResponse
 }

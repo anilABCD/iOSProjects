@@ -202,24 +202,27 @@ struct ChatView: View {
             Dictionary(grouping: yearGroup) { message -> String in
                 let monthFormatter = DateFormatter()
                 monthFormatter.dateFormat = "MMMM" // Full month name
-                return "( \(Calendar.current.component(.month, from: message.timestamp ) ) ) \(monthFormatter.string(from: message.timestamp)) "
+                
+                let paddedNumber = String(format: "%02d", Calendar.current.component(.month, from: message.timestamp ))
+                
+                return "( \(paddedNumber) ) \(monthFormatter.string(from: message.timestamp)) "
               
             }.mapValues { monthGroup in
                 Dictionary(grouping: monthGroup) { message -> String in
                     let weekdayFormatter = DateFormatter()
                     weekdayFormatter.dateFormat = "EEEE" // Weekday name
-                    
+                    let paddedNumber = String(format: "%02d", Calendar.current.component(.day, from: message.timestamp))
                     // Check if the message is from today
                     if calendar.isDate(message.timestamp, inSameDayAs: today) {
-                        return "( \(Calendar.current.component(.day, from: message.timestamp)) ) Today"
+                        return "( \(paddedNumber) ) Today"
                     }
                     // Check if the message is from yesterday
                     if calendar.isDate(message.timestamp, inSameDayAs: yesterday) {
-                        return "( \(Calendar.current.component(.day, from: message.timestamp)) ) Yesterday"
+                        return "( \(paddedNumber) ) Yesterday"
                     }
-                                  
+                   
                     // Otherwise, return the weekday name
-                    return "( \(Calendar.current.component(.day, from: message.timestamp)) ) \(weekdayFormatter.string(from: message.timestamp)) "
+                    return "( \(paddedNumber) ) \(weekdayFormatter.string(from: message.timestamp)) "
                 }
             }
         }
@@ -266,11 +269,38 @@ struct ChatView: View {
                                                                                                
                                                                                                HStack {
                                                                                                    Spacer() // Push the message to the right
-                                                                                                   Text(message.text)
-                                                                                                       .padding()
-                                                                                                       .background(Color.blue.opacity(0.2))
-                                                                                                       .cornerRadius(10)
-                                                                                                   
+                                                                                                  
+//                                                                                                   
+                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManger.localhost)/images/\(imageUrl)") {
+                                                                                                                  AsyncImage(url: url) { phase in
+                                                                                                                      switch phase {
+                                                                                                                      case .empty:
+                                                                                                                          ProgressView()
+                                                                                                                              .progressViewStyle(CircularProgressViewStyle())
+                                                                                                                              .frame(width: 50, height: 50)
+                                                                                                                      case .success(let img):
+                                                                                                                          img
+                                                                                                                              .resizable()
+//                                                                                                                              .scaledToFit()
+                                                                                                                              .frame(width: 150, height: 150)
+                                                                                                                             
+                                                                                                                      case .failure:
+                                                                                                                          Text("Failed to load image")
+                                                                                                                              .foregroundColor(.red)
+                                                                                                                      @unknown default:
+                                                                                                                          EmptyView()
+                                                                                                                      }
+                                                                                                                  }
+                                                                                                              }
+                                                                                                          
+                                                                                                   else {
+                                                                                                       Text(message.text)
+                                                                                                           .padding()
+                                                                                                           .background(Color.blue.opacity(0.2))
+                                                                                                           .cornerRadius(10)
+                                                                                                   }
+//                                                                                                   
+                                                                                                 
                                                                                                    // Show read status for messages sent by the current user
                                                                                                }
                                                                                                HStack(spacing: 5) {
@@ -294,11 +324,34 @@ struct ChatView: View {
                                                                                            VStack {
                                                                                                
                                                                                                HStack {
-                                                                                                
-                                                                                                   Text(message.text)
-                                                                                                       .padding()
-                                                                                                       .background(Color.gray.opacity(0.1))
-                                                                                                       .cornerRadius(10)
+                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManger.localhost)/images/\(imageUrl)") {
+                                                                                                                  AsyncImage(url: url) { phase in
+                                                                                                                      switch phase {
+                                                                                                                      case .empty:
+                                                                                                                          ProgressView()
+                                                                                                                              .progressViewStyle(CircularProgressViewStyle())
+                                                                                                                              .frame(width: 50, height: 50)
+                                                                                                                      case .success(let img):
+                                                                                                                          img
+                                                                                                                              .resizable()
+                                                                                                                              .scaledToFit()
+                                                                                                                              .frame(width: 200, height: 200)
+                                                                                                                             
+                                                                                                                      case .failure:
+                                                                                                                          Text("Failed to load image")
+                                                                                                                              .foregroundColor(.red)
+                                                                                                                      @unknown default:
+                                                                                                                          EmptyView()
+                                                                                                                      }
+                                                                                                                  }
+                                                                                                              }
+                                                                                                          
+                                                                                                   else {
+                                                                                                       Text(message.text)
+                                                                                                           .padding()
+                                                                                                           .background(Color.blue.opacity(0.2))
+                                                                                                           .cornerRadius(10)
+                                                                                                   }
                                                                                                    
                                                                                                    Spacer() // Push the message to the left
                                                                                                    
@@ -352,8 +405,10 @@ struct ChatView: View {
                                            
                                            let message = webSocketManager.messages.last
                                            if let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"]  as? String {
-                                              
-                                               let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp )
+                                               // Handle image, it could be null
+                                                     let image = message?["image"] as? String // If image is null, this will be nil
+                                                     
+                                               let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp , image : image )
                                                
                                                
                                                DispatchQueue.main.async {
@@ -476,7 +531,7 @@ struct ChatView: View {
                             
                             
                             Button(action: {
-                                
+                            
                                 self.selectedImage = nil
                                 self.selectedItem = nil
                                 
@@ -538,13 +593,22 @@ struct ChatView: View {
                                 
                                 Button(action: {
                                     
-                                    print("sending message", self.newMessage)
-                                    
-                                    self.webSocketManager.sendMessage(  self.newMessage , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId , user2: profile?.id ?? "" )
-                                    self.newMessage = ""
-                                    
-                                    self.selectedImage = nil
-                                    self.selectedItem = nil
+                                    DispatchQueue.main.async {
+                                        print("sending message", self.newMessage)
+                                        print ( "image base 64" )
+                                        print ( "image base 64" , self.selectedImage?.toBase64() ?? "")
+                                        
+                                        self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId , user2: profile?.id ?? "" )
+
+                                        
+                                        print(" basex " , self.selectedImage?.toBase64() ?? "")
+
+
+                                        self.newMessage = ""
+                                        
+                                        self.selectedImage = nil
+                                        self.selectedItem = nil
+                                    }
                                     
                                 }) {
                                     Text("Send")

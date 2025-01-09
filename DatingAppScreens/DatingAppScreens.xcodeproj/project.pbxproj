@@ -13,6 +13,7 @@
 		B7103F562D279D290044F414 /* PersistentCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */; };
 		B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */; };
 		B71184AA2C0F7686004FC55C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71184A92C0F7686004FC55C /* Request.swift */; };
+		B717AAAC2D3032FD007BA6B0 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717AAAB2D3032F3007BA6B0 /* UIImageExtension.swift */; };
 		B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CBEC22D1DBDA400E81103 /* Chat.swift */; };
 		B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */; };
 		B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */; };
@@ -86,6 +87,7 @@
 		B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentCacheManager.swift; sourceTree = "<group>"; };
 		B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTechnologyView.swift; sourceTree = "<group>"; };
 		B71184A92C0F7686004FC55C /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		B717AAAB2D3032F3007BA6B0 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		B71CBEC22D1DBDA400E81103 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendUserDeviceNotificationToken.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		B71184A82C0F7674004FC55C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B717AAAB2D3032F3007BA6B0 /* UIImageExtension.swift */,
 				B73C5B662D2B002E0030F136 /* DateUtilities.swift */,
 				B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */,
 				B77B2F0A2D0C510700C7EDDF /* LocationPermissionManager.swift */,
@@ -676,6 +679,7 @@
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
 				B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */,
+				B717AAAC2D3032FD007BA6B0 /* UIImageExtension.swift in Sources */,
 				B7103F562D279D290044F414 /* PersistentCacheManager.swift in Sources */,
 				B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */,
 				B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */,

@@ -36,11 +36,21 @@ struct MatchedScreenView: View {
         
         let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/fromMessages", accessToken: tokenManger.accessToken , data: data, parameters: nil )
         
-        let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
+        do {
+            
+            
+            let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
+            
+            matched = matchedResponse;
+            
+            print("matches current" , matchedResponse)
+            
+        }catch{
+            // If decoding fails, print the error message
+                print("Decoding failed with error: \(error)")
+        }
         
-        matched = matchedResponse;
-        
-        print("matches current" , matchedResponse)
+       
     }
     
 //    func fetchMatchedOnline() async throws {
@@ -301,6 +311,25 @@ struct MatchedItemView: View {
                         Text(text)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        
+                        
+                        Text(timestamp, style: .time)
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                        
+                        
+                    }
+                }
+                
+                if let imageUrl = lastMessage?.image , let timestamp = lastMessage?.timestamp {
+                    HStack {
+                        Text("An Image")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            
                         
                         Spacer()
                         
