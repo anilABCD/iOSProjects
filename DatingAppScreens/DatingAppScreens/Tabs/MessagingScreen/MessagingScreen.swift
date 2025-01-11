@@ -504,7 +504,7 @@ struct ChatView: View {
                         ) {
                             Image(systemName: "photo.on.rectangle")
                                 .font(.system(size: 24))
-                                .padding()
+                                .padding(.leading)
                         }
                         .onChange(of: selectedItem) { newItem in
                             Task {
@@ -525,10 +525,8 @@ struct ChatView: View {
                         HStack {
                             Image(uiImage: selectedImage)
                                 .resizable()
-                                .scaledToFit()
-                                .frame(width: 200, height: 200)
-                                .padding()
-                            
+                                .frame(width: 150, height: 150)
+                              
                             
                             Button(action: {
                             
@@ -564,7 +562,8 @@ struct ChatView: View {
                         ) {
                             Image(systemName: "photo.on.rectangle")
                                 .font(.system(size: 24))
-                                .padding()
+                                .padding(.leading)
+                              
                         }
                         .onChange(of: selectedItem) { newItem in
                             Task {
@@ -588,7 +587,6 @@ struct ChatView: View {
                                 else{
                                     TextField("Type a message...", text: $newMessage)
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        .padding(.horizontal)
                                 }
                                 
                                 Button(action: {
@@ -625,7 +623,7 @@ struct ChatView: View {
                     
                 }
                 
-                .padding()
+                .padding(.bottom)
                 
             }
             
