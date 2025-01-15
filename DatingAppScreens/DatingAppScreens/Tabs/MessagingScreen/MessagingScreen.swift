@@ -165,6 +165,8 @@ struct ChatView: View {
                     DispatchQueue.main.async {
                         self.error = "Failed to fetch chat: \(error)"
                         self.isLoading = false
+                        
+                        
                     }
                 }
                 
@@ -334,8 +336,7 @@ struct ChatView: View {
                                                                                                                       case .success(let img):
                                                                                                                           img
                                                                                                                               .resizable()
-                                                                                                                              .scaledToFit()
-                                                                                                                              .frame(width: 200, height: 200)
+                                                                                                                              .frame(width: 150, height: 150)
                                                                                                                              
                                                                                                                       case .failure:
                                                                                                                           Text("Failed to load image")
