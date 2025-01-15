@@ -7,6 +7,23 @@
 
 import SwiftUI
 
+// MARK: - Custom Environment Key
+private struct HideTabBarKey: EnvironmentKey {
+    static let defaultValue: Bool = false
+}
+
+extension EnvironmentValues {
+    var hideTabBar: Bool {
+        get { self[HideTabBarKey.self] }
+        set { self[HideTabBarKey.self] = newValue }
+    }
+}
+
+extension View {
+    func hideTabBar(_ hide: Bool) -> some View {
+        environment(\.hideTabBar, hide)
+    }
+}
 
 
 class DataFetcher: ObservableObject {
@@ -80,7 +97,7 @@ struct ContentView: View {
     
     @Binding  var deepLinkData: DeepLinkData?
     
-    
+    @State private var hideTabBar = false;
     var isHome = false
     
     @State private var isTabBarHidden = true
@@ -276,6 +293,10 @@ struct ContentView: View {
                             }
                             
                             VStack {
+                                
+                                
+                               
+                                
                                 TabView(selection: $selectedTab) {
                                     
                                     HomeView().onAppear(){
@@ -298,7 +319,7 @@ struct ContentView: View {
                                     //                                }
                                     //                                .tag(2)
                                     
-                                    MatchedScreenView()
+                                    MatchedScreenView( hideTabBar : $hideTabBar)
 //                                        .tabItem {
 //                                            Label("", systemImage: "message").background(.black)
 //                                        }
@@ -310,43 +331,46 @@ struct ContentView: View {
 //                                        }
                                     .tag(3)
                                     
-                                }   .id(selectedTab)     .padding(.bottom , 5)
+                                }.id(selectedTab)     .padding(.bottom , 5)
                                     .toolbar(.hidden, for: .tabBar)
-                                 
-                                    .overlay(alignment: .bottom) {
+                                    .padding(.bottom, -100) // Adjust bottom padding to compensate for space occupied by the tab bar
+                                    .overlay(alignment: .bottom ) {
 
-                                        // Custom tab bar
-                                                   HStack {
-                                                       Spacer()
-                                                       TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
-                                                           .onTapGesture {
-                                                               selectedTab = 0
-                                                               print("Selected tab: \(selectedTab)")
-                                                           }
-                                                       TabBarItem(imageName: "heart", title: "", isSelected: selectedTab == 1)
-                                                           .onTapGesture {
-                                                               selectedTab = 1
-                                                               print("Selected tab: \(selectedTab)")
-                                                           }
-                                                       TabBarItem(imageName: "message", title: "", isSelected: selectedTab == 2)
-                                                           .onTapGesture {
-                                                               selectedTab = 2
-                                                               print("Selected tab: \(selectedTab)")
-                                                           }
-                                                       TabBarItem(imageName: "person", title: "", isSelected: selectedTab == 3)
-                                                           .onTapGesture {
-                                                               selectedTab = 3
-                                                               print("Selected tab: \(selectedTab)")
-                                                           }
-                                                       
-                                                       Spacer()
-                                                   }
-                                                  
-                                                   .padding()
-                                                   .background(Color.white)
-                                                   .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
-                                        
-                                                   .frame(height: 100) .frame(  maxWidth: UIScreen.main.bounds.width)
+                                        if( !hideTabBar) {
+                                            // Custom tab bar
+                                            HStack {
+                                                Spacer()
+                                                TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
+                                                    .onTapGesture {
+                                                        selectedTab = 0
+                                                        print("Selected tab: \(selectedTab)")
+                                                    }
+                                                TabBarItem(imageName: "heart", title: "", isSelected: selectedTab == 1)
+                                                    .onTapGesture {
+                                                        selectedTab = 1
+                                                        print("Selected tab: \(selectedTab)")
+                                                    }
+                                                TabBarItem(imageName: "message", title: "", isSelected: selectedTab == 2)
+                                                    .onTapGesture {
+                                                        selectedTab = 2
+                                                        print("Selected tab: \(selectedTab)")
+                                                    }
+                                                TabBarItem(imageName: "person", title: "", isSelected: selectedTab == 3)
+                                                    .onTapGesture {
+                                                        selectedTab = 3
+                                                        print("Selected tab: \(selectedTab)")
+                                                    }
+                                                
+                                                Spacer()
+                                            }
+                                            
+                                            .padding()
+                                            .background(Color.white)
+                                            .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
+                                            
+                                            .frame(height: 100) .frame(  maxWidth: UIScreen.main.bounds.width)
+                                        }
+                                                   
                                     }
                                    
                                 
@@ -791,6 +815,7 @@ struct View2: View {
     }
 }
 
+ 
 
 
 struct TabBarItem: View {

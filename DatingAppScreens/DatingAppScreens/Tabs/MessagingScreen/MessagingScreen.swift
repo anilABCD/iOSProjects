@@ -13,15 +13,17 @@ import PhotosUI
 struct CustomBackButton: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject private var tokenManger : TokenManager
-    
+    @EnvironmentObject private var tokenManger : TokenManager;
+  
     let profile: Profile?
     let photoUrl : String
-    
+    @Binding var hideTabBar : Bool;
     let imageSize = 45.0
     
     var body: some View {
         Button(action: {
+            
+            hideTabBar = false ;
             self.presentationMode.wrappedValue.dismiss()
             
             
@@ -29,6 +31,14 @@ struct CustomBackButton: View {
             HStack {
                 
                 HStack {
+                    
+                    // Back arrow
+                                  Image(systemName: "chevron.left")
+                                      .resizable()
+                                      .aspectRatio(contentMode: .fit)
+                                      .frame(width: 21.0, height: 21.0)
+                                      .padding(.trailing, 10) // Space between arrow and profile name
+                                  
                     
                     if let photo = profile?.photo {
                         let photoURLString = "resized-\(photo)"
@@ -87,7 +97,7 @@ struct ChatView: View {
     let profile: Profile?
     let photoUrl : String
     var onBackAction: () -> Void
-
+    @Binding var hideTabBar : Bool ;
     @State var chat: Chat? // The chat data
     @State var messages: [Chat.Message] = [] // The messages to displ
     
@@ -493,97 +503,98 @@ struct ChatView: View {
                 
                 Spacer()
                 
-                HStack {
-                     
-                    
-                    if let selectedImageeee = selectedImage {
-              
-                        PhotosPicker(
-                            selection: $selectedItem,
-                            matching: .images,
-                            photoLibrary: .shared()
-                        ) {
-                            Image(systemName: "photo.on.rectangle")
-                                .font(.system(size: 24))
-                                .padding(.leading)
-                        }
-                        .onChange(of: selectedItem) { newItem in
-                            Task {
-                                if let data = try? await newItem?.loadTransferable(type: Data.self),
-                                   let uiImage = UIImage(data: data) {
-                                    selectedImage = uiImage
-                                    //                                               let newMessage = ChatMessage(id: UUID(), text: "", image: uiImage)
-                                    //                                               messages.append(newMessage)
-                                }
-                            }
-                            
-                        }
-                    }
-                    
-                    
-                    if let selectedImage = selectedImage {
+                VStack {
+                    HStack {
                         
-                        HStack {
-                            Image(uiImage: selectedImage)
-                                .resizable()
-                                .frame(width: 150, height: 150)
-                              
+                        
+                        if let selectedImageeee = selectedImage {
                             
-                            Button(action: {
-                            
-                                self.selectedImage = nil
-                                self.selectedItem = nil
-                                
-                            }) {
-                                Text("X")
-                                    .padding(.horizontal, 20)
-                                    .padding(.vertical, 10)
-                                    .background(Color.red)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(8)
+                            PhotosPicker(
+                                selection: $selectedItem,
+                                matching: .images,
+                                photoLibrary: .shared()
+                            ) {
+                                Image(systemName: "photo.on.rectangle")
+                                    .font(.system(size: 24))
+                                    .padding(.leading)
                             }
-                          
+                            .onChange(of: selectedItem) { newItem in
+                                Task {
+                                    if let data = try? await newItem?.loadTransferable(type: Data.self),
+                                       let uiImage = UIImage(data: data) {
+                                        selectedImage = uiImage
+                                        //                                               let newMessage = ChatMessage(id: UUID(), text: "", image: uiImage)
+                                        //                                               messages.append(newMessage)
+                                    }
+                                }
+                                
+                            }
+                        }
+                        
+                        
+                        if let selectedImage = selectedImage {
                             
+                            HStack {
+                                Image(uiImage: selectedImage)
+                                    .resizable()
+                                    .frame(width: 150, height: 150)
+                                
+                                
+                                Button(action: {
+                                    
+                                    self.selectedImage = nil
+                                    self.selectedItem = nil
+                                    
+                                }) {
+                                    Text("X")
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 10)
+                                        .background(Color.red)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(8)
+                                }
+                                
+                                
+                            }
                         }
+                        
+                        
                     }
                     
-                   
-                }
-                
-                
-                HStack {
                     
-                    if let selectedImage = selectedImage {
-                    }
-                    else {
-                        PhotosPicker(
-                            selection: $selectedItem,
-                            matching: .images,
-                            photoLibrary: .shared()
-                        ) {
-                            Image(systemName: "photo.on.rectangle")
-                                .font(.system(size: 24))
-                                .padding(.leading)
-                              
+                    HStack {
+                        
+                        if let selectedImage = selectedImage {
                         }
-                        .onChange(of: selectedItem) { newItem in
-                            Task {
-                                if let data = try? await newItem?.loadTransferable(type: Data.self),
-                                   let uiImage = UIImage(data: data) {
-                                    selectedImage = uiImage
-                                    //                                               let newMessage = ChatMessage(id: UUID(), text: "", image: uiImage)
-                                    //                                               messages.append(newMessage)
+                        else {
+                            PhotosPicker(
+                                selection: $selectedItem,
+                                matching: .images,
+                                photoLibrary: .shared()
+                            ) {
+                                Image(systemName: "photo.on.rectangle")
+                                    .font(.system(size: 24))
+                                    .padding(.leading)
+                                
+                            }
+                            .onChange(of: selectedItem) { newItem in
+                                Task {
+                                    if let data = try? await newItem?.loadTransferable(type: Data.self),
+                                       let uiImage = UIImage(data: data) {
+                                        selectedImage = uiImage
+                                        //                                               let newMessage = ChatMessage(id: UUID(), text: "", image: uiImage)
+                                        //                                               messages.append(newMessage)
+                                    }
                                 }
                             }
                         }
-                    }
                         
                         VStack {
-                         
+                            
                             HStack {
                                 
                                 if let selectedImage = selectedImage {
-                                  
+                                    
                                 }
                                 else{
                                     TextField("Type a message...", text: $newMessage)
@@ -598,11 +609,11 @@ struct ChatView: View {
                                         print ( "image base 64" , self.selectedImage?.toBase64() ?? "")
                                         
                                         self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId , user2: profile?.id ?? "" )
-
+                                        
                                         
                                         print(" basex " , self.selectedImage?.toBase64() ?? "")
-
-
+                                        
+                                        
                                         self.newMessage = ""
                                         
                                         self.selectedImage = nil
@@ -621,22 +632,28 @@ struct ChatView: View {
                                 
                             }
                         }
-                    
+                        
+                    }
                 }
                 
-                .padding(.bottom)
+                .padding(.bottom , 58)
                 
             }
+            .onAppear(){
+                hideTabBar = true
+            }
+          
             
-        } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile, photoUrl: photoUrl )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
+        } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl, hideTabBar: $hideTabBar  )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
     }
 }
 
 struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
-       
+    @State static var hideTabBar: Bool = false // Dummy state variable for preview
+
     static var previews: some View {
-        ChatView(profile: nil, photoUrl: "", onBackAction: {}, webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
+        ChatView(profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
     }
 }
 

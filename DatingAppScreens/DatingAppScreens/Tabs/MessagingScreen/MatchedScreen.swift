@@ -15,7 +15,7 @@ struct MatchedScreenView: View {
     
     @State var matched : [Chat] = []
     @EnvironmentObject private var tokenManger : TokenManager
-    
+    @Binding var hideTabBar : Bool ;
     @State private var webSocketManager = WebSocketManager(token: "" , userId: "")
     
     var items = [
@@ -100,7 +100,7 @@ struct MatchedScreenView: View {
                                    ) {
                                   
                                       
-                                      NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", onBackAction: {
+                                      NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images" , onBackAction: {
                                           Task {
                                               do {
                                                   try await fetchMatched()
@@ -108,7 +108,9 @@ struct MatchedScreenView: View {
                                                   
                                               }
                                           }
-                                      }, webSocketManager: webSocketManager) ) {
+                                      }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) // Hides the back button in ChatView
+                                      
+                                      ) {
                                           
                                           VStack {
                                               
@@ -175,7 +177,9 @@ struct MatchedScreenView: View {
                                           
                                       }
                                   }
-                              }, webSocketManager: webSocketManager) ) {
+                              }, hideTabBar: $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) // Hides the back button in ChatView
+                              
+                              ) {
                                   MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.localhost)/images", lastMessage : match.lastMessage , unreadCounts: match.unreadCounts , userId: tokenManger.userId )
                                       .onAppear {
                                           if let index = matched.firstIndex(where: { $0.id == match.id }), index == matched.count - 5 {
@@ -190,8 +194,7 @@ struct MatchedScreenView: View {
                           }
                       }
                       
-                  }.navigationTitle("")
-                   .navigationBarHidden(true) // Hides the navigation bar
+                  }
                   
                   
 //                           .onAppear {
@@ -201,7 +204,9 @@ struct MatchedScreenView: View {
 //                           }
 //                   }
                   
-               }
+               } .navigationTitle("")
+            .navigationBarHidden(true) // Hides the navigation bar
+            .navigationBarBackButtonHidden(true)
               
              
            
@@ -352,9 +357,9 @@ struct MatchedItemView: View {
 
 struct MatchedScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
-       
+    @State static var hideTabBar :Bool = false;
     static var previews: some View {
-        MatchedScreenView().environmentObject(TokenManager())
+        MatchedScreenView( hideTabBar : $hideTabBar).environmentObject(TokenManager())
     }
 }
 
