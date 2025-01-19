@@ -18,6 +18,8 @@ struct MatchedScreenView: View {
     @Binding var hideTabBar : Bool ;
     @State private var webSocketManager = WebSocketManager(token: "" , userId: "")
     
+    @State private var selectedMatch: Chat?
+       
     var items = [
         Item(name: "Item 1", description: "Description for Item 1"),
         Item(name: "Item 2", description: "Description for Item 2"),
@@ -108,8 +110,10 @@ struct MatchedScreenView: View {
                                                   
                                               }
                                           }
-                                      }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) // Hides the back button in ChatView
-                                      
+                                      }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) ,// Hides the back button in ChatView
+                                     
+                                        tag: match,
+                                        selection: $selectedMatch
                                       ) {
                                           
                                           VStack {
@@ -204,7 +208,7 @@ struct MatchedScreenView: View {
 //                           }
 //                   }
                   
-               } .navigationTitle("")
+              }.navigationBarTitle( "" , displayMode: .inline)
             .navigationBarHidden(true) // Hides the navigation bar
             .navigationBarBackButtonHidden(true)
               

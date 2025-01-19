@@ -44,7 +44,7 @@ struct LastMessage: Decodable {
     }
 }
 
-struct Chat: Identifiable, Decodable {
+struct Chat: Identifiable, Decodable , Hashable {
     var id: String // Chat ID
     var participants: [Profile] // User IDs of participants
     var messages: [Message] // Array of messages
@@ -54,6 +54,16 @@ struct Chat: Identifiable, Decodable {
       private enum CodingKeys: String, CodingKey {
           case id, participants, messages, lastMessage, unreadCounts
       }
+    
+    // Conformance to Hashable
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id) // Use the unique ID for hashing
+        }
+    
+    static func == (lhs: Chat, rhs: Chat) -> Bool {
+            return lhs.id == rhs.id
+        }
+    
     struct Message: Identifiable, Decodable {
         var id: String
         var sender: String
@@ -63,6 +73,7 @@ struct Chat: Identifiable, Decodable {
         var readBy: [String] // Array of user IDs who have read the message
         var delivered: Bool
         
+        var monthTemp : String?
         // Computed property to check if the other person has read the message
         func isRead(by userID: String) -> Bool {
             return readBy.contains(userID)

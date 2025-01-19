@@ -110,19 +110,58 @@ struct ChatView: View {
     
     @State private var selectedItem: PhotosPickerItem? = nil
       @State private var selectedImage: UIImage? = nil
-
+    
+    
+    
+    func removeNumberInParenthesesFromMonth(from text: String) -> String {
+     
+        let regex = try! NSRegularExpression(pattern: "\\(\\s*\\d+\\s*\\)", options: [])
+        
+        // Use NSRange for the entire string
+        let range = NSRange(location: 0, length: text.utf16.count)
+        
+        // Replace the pattern with an empty string
+        let result = regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "")
+        
+        return result
+        
+    }
+    
     // Function to remove any pattern like "( number )"
      func removeNumberInParentheses(from text: String) -> String {
          // Use regular expression to match "( number )" with optional spaces
-         let regex = try! NSRegularExpression(pattern: "\\(\\s*\\d+\\s*\\)", options: [])
          
-         // Use NSRange for the entire string
-         let range = NSRange(location: 0, length: text.utf16.count)
+         // Array of keywords to check
+             let keywords = ["Today", "Yesterday"]
+             
+             // Check if the text contains any of the keywords
+             if keywords.contains(where: { text.contains($0) }) {
+      
+             let regex = try! NSRegularExpression(pattern: "\\(\\s*\\d+\\s*\\)", options: [])
+             
+             // Use NSRange for the entire string
+             let range = NSRange(location: 0, length: text.utf16.count)
+             
+             // Replace the pattern with an empty string
+             let result = regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "")
+             
+             return result
          
-         // Replace the pattern with an empty string
-         let result = regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "")
+             
+          }
+         else{
+             
+             
+                // Regex pattern to match ( 0 followed by anything ) and capture the first 0
+                  let regex = try! NSRegularExpression(pattern: "\\(\\s*0(\\d*)\\s*\\)", options: [])
+             // Replace the match, keeping the rest of the number intact
+                 let range = NSRange(location: 0, length: text.utf16.count)
+                 let result = regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "( $1 )")
+                 
+                 return result.trimmingCharacters(in: .whitespacesAndNewlines) // Clean up extra spaces
          
-         return result
+          
+         }
      }
     
     // Function to mark messages as delivered
@@ -265,7 +304,7 @@ struct ChatView: View {
                                                        // Iterate through Month groups
                                                        ForEach(groupedMessages[year]?.keys.sorted() ?? [], id: \.self) { month in
                                                            VStack {
-                                                               Section(header: Text(removeNumberInParentheses(from : month)).font(.title2)) {
+                                                               Section(header: Text(removeNumberInParenthesesFromMonth(from : month)).font(.title2)) {
                                                                    // Iterate through Weekday groups
                                                                    ForEach(groupedMessages[year]?[month]?.keys.sorted() ?? [], id: \.self) { weekday in
                                                                        Section(header: Text(removeNumberInParentheses(from : weekday)).font(.headline)) {
