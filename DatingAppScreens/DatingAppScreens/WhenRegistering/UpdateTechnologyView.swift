@@ -12,7 +12,7 @@ struct SelectableItem: Identifiable {
 
 struct UpdateTechnologyNewView: View {
    
-    @Binding var path :[MyNavigation<String>]
+//    @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
     @Environment(\.presentationMode) var presentationMode
     
@@ -22,6 +22,9 @@ struct UpdateTechnologyNewView: View {
     
     @State var IsNoItemsSelected = false;
   
+    var showNextButton : Bool = false ;
+    
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -135,14 +138,23 @@ struct UpdateTechnologyNewView: View {
     var body: some View {
         
         VStack {
+            
+            HStack {
+                
+                Text("Technologies")
+                    .font(.title) // Use .subheadline or .callout for smaller text
+                    .foregroundColor(.primary)
+             
+                Spacer();
+                
+            }.padding()
+            
             ScrollView {
-                
-                Spacer()
-                
-                Text("")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
+//              
+//                Text("")
+//                    .font(.largeTitle)
+//                    .fontWeight(.bold)
+//                    .padding()
 //
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(items) { item in
@@ -152,13 +164,13 @@ struct UpdateTechnologyNewView: View {
                             }
                     }
                 }
-                .padding()
+              
                 .alert(isPresented: $IsNoItemsSelected) {
                     Alert(title: Text("Required"), message: Text("Please Select Atleast One Technology"), dismissButton: .default(Text("OK")))
                 }
                 
                
-            }.padding().onAppear(){
+            }.onAppear(){
                 // Assuming tokenManager.technologies is a string containing comma-separated values
                 
                 if tokenManger.technologies == "" {
@@ -182,7 +194,7 @@ struct UpdateTechnologyNewView: View {
             Button(action: {
                 submitSelections( authToken: tokenManger.accessToken)
             }) {
-                Text("Submit")
+                Text( showNextButton ? "Next" : "Submit")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -197,7 +209,7 @@ struct UpdateTechnologyNewView: View {
                     .foregroundColor(.green)
                     .padding()
             }
-        }.navigationTitle("Technologies")
+        }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline) // Keeps the back button // Conditionally add padding.navigationBarTitle("", displayMode: .inline) // Keeps the back button
     }
 }
 
@@ -218,8 +230,8 @@ struct ItemView: View {
 }
 
 struct UpdateTechnologyView_Previews: PreviewProvider {
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+//    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
     static var previews: some View {
-        UpdateTechnologyNewView(path: $path).environmentObject(TokenManager())
+        UpdateTechnologyNewView( ).environmentObject(TokenManager())
     }
 }

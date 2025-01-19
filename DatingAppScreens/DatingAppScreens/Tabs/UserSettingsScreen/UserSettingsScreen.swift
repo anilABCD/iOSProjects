@@ -26,10 +26,10 @@ struct UserSettingsView : View {
                    
                 Form {
                     Section(header: Text("User Profile")) {
-                        NavigationLink(destination: UploadYourPhotoView(path:$path)) {
+                        NavigationLink(destination: UploadYourPhotoView()) {
                             Text("Photo")
-                        }
-                        NavigationLink(destination: UpdateTechnologyNewView(path:$path)) {
+                        } 
+                        NavigationLink(destination: UpdateTechnologyNewView()) {
                             Text("Technologies")
                         }
                         NavigationLink(destination: UpdateHobbiesView(path:$path)) {

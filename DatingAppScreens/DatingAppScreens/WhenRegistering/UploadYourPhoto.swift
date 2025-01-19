@@ -5,7 +5,7 @@ import PhotosUI
 
 struct UploadYourPhotoView: View {
     
-    @Binding var path :[MyNavigation<String>]
+//    @Binding var path :[MyNavigation<String>]
     
     
     @State private var image : UIImage?
@@ -17,7 +17,12 @@ struct UploadYourPhotoView: View {
     @State private var isUploading : Bool?
     
     @State private var photoPickerItem : PhotosPickerItem?;
+    @Environment(\.presentationMode) var presentationMode // For dismissing the view
+       
+    var showNextButton : Bool = false ;
     
+    @State private var showAlert = false; // Alert visibility state
+
     var body: some View {
         
         VStack{
@@ -26,6 +31,16 @@ struct UploadYourPhotoView: View {
             
         
             VStack{
+                
+                HStack {
+                
+                    Text("Upload Your Photo")
+                        .font(.title) // Use .subheadline or .callout for smaller text
+                        .foregroundColor(.primary)
+                    
+                    Spacer();
+                    
+                }.padding()
                 
                 Spacer()
                 
@@ -40,7 +55,7 @@ struct UploadYourPhotoView: View {
                 else if ( tokenManger.photo != "")
                 {
                     AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo)")
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/).frame(width: 200, height: 200)
+                        .clipShape(Circle()).frame(width: 200, height: 200)
                 }
                 else{
                     
@@ -66,9 +81,40 @@ struct UploadYourPhotoView: View {
                 
                 Spacer()
                 
+                if showNextButton {
+                
+                    Button(action: {
+                        
+                        if image == nil && tokenManger.photo == "" {
+                            
+                            // Show alert if no image is selected
+                            showAlert = true
+                        }
+                        else {
+                            
+                            tokenManger.nextButtonWhenRegistrationProcess = UUID();
+                        }
+                    }) {
+                        Text("Next")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, maxHeight: 50)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+                    .padding()
+                    .alert(isPresented: $showAlert) {
+                                        Alert(
+                                            title: Text("Image Missing"),
+                                            message: Text("Please select or upload an image before proceeding."),
+                                            dismissButton: .default(Text("OK"))
+                                        )
+                                    }
+                }
+                
             }.frame(maxWidth: .infinity).background(.white)
             
-        }.frame(maxWidth: .infinity).navigationTitle("Upload Your Photo")
+        }.frame(maxWidth: .infinity)
+           
             .onChange(of: photoPickerItem) { newValue in
                 Task {
                     if let photoPickerItem = newValue {
@@ -92,7 +138,7 @@ struct UploadYourPhotoView: View {
                    
                     photoPickerItem = nil
                 }
-            }
+            } .navigationBarTitle("", displayMode: .inline) // Keeps the back button
     }
     
     
@@ -214,10 +260,10 @@ struct UploadYourPhotoView: View {
 
 struct UploadPhotoView_Previews: PreviewProvider {
 
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+//    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
 
     static var previews: some View {
-        UploadYourPhotoView(path: $path).environmentObject(TokenManager())
+        UploadYourPhotoView( ).environmentObject(TokenManager())
 //        UploadYourPhotoView()
     }
 }

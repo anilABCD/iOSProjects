@@ -21,8 +21,9 @@ struct RegisterView: View {
     
     @EnvironmentObject private var tokenManger : TokenManager
     
-    @Binding var path :[MyNavigation<String>]
-    
+//    @Binding var path :[MyNavigation<String>]
+    @Environment(\.dismiss) private var dismiss // Access the dismiss function
+
     @State private var name: String = "asdf"
     @State private var email: String = "Anil@gmail.com"
     @State private var password: String = "Password@123"
@@ -136,9 +137,9 @@ struct RegisterView: View {
                         Text("Submit")
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .frame(height: 50)
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .font(.system(size: 18, weight: .bold))
-                            .background(Color.orange)
+                            .background(Color.blue)
                             .cornerRadius(50)
                     }
                   
@@ -190,19 +191,19 @@ struct RegisterView: View {
 //                                    }
                                 }
                                
-                                
-                                // Additional Options
-                                HStack {
-                                    Text("Already have an account?")
-                                    Button(action: {
-                                        path.removeLast()
-                                    }) {
-                                        Text("Sign In")
-                                            .foregroundColor(.blue)
-                                    }
-                                }
-                                .padding(.top, 20)
-                                
+                              
+                    // Additional Options
+                           HStack {
+                               Text("Already have an account?")
+                               Button(action: {
+                                   dismiss() // Dismiss the current view
+                               }) {
+                                   Text("Sign In")
+                                       .foregroundColor(.blue)
+                               }
+                           }
+                           .padding(.top, 20)
+
                                 Spacer()
                 }.frame(alignment: .topLeading )
                 .padding()
@@ -211,7 +212,7 @@ struct RegisterView: View {
             
                 Spacer()
             }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-        }.background(.orange).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+        }.background(.blue).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
           
 //
 // Code for skeleton View :
@@ -458,10 +459,10 @@ struct RegisterView: View {
 }
 
 struct RegisterView_Previews: PreviewProvider {
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+//    @State static var path: [MyNavigation<String>] = []  Define path as a static state variable
        
     static var previews: some View {
-        RegisterView(path: $path)
+        RegisterView( )
     }
 }
 

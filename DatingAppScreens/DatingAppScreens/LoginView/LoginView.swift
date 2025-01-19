@@ -7,7 +7,7 @@ import GoogleSignIn
 
 struct LoginView: View {
     
-    @Binding var path :[MyNavigation<String>]
+//    @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
   
     @State private var email: String = "Anil@gmail.com"
@@ -56,111 +56,111 @@ struct LoginView: View {
     
     var body: some View {
         
-        
-        VStack {
-            
-            if(UIScreen.main.bounds.height < 800 ) {
-                
-                Spacer().frame(height: 100)
-            }
-            else{
-                Spacer().frame(height: 200)
-            }
-            
-            
-//            SkeletonLoadingExampleView Testing Example ...
-//            SkeletonLoadingExampleView()
-//            This is sepeare example ... 
-
+        NavigationView {
             VStack {
                 
-                // Title
-                Text("Sign In")
-                
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.vertical)
-                
-                Spacer().frame(height: 40)
-                
-                // Input Fields
-                VStack(spacing: 20) {
+                if(UIScreen.main.bounds.height < 800 ) {
                     
-                    CustomTextField(placeholder: "Email", text: $email, isAlert: $isShowingEmailError ,iconName: "envelope.fill" , title: "Invalid Email" , message: "Please enter a valid email address.")
-                    CustomTextField(placeholder: "Password", text: $password, isAlert: $isShowingPasswordError, iconName: "lock.fill", isSecure: true , title: "Invalid Password" , message: "Please Enter Password.")
-                    
-                    
-                } .padding(.horizontal, 30)
+                    Spacer().frame(height: 100)
+                }
+                else{
+                    Spacer().frame(height: 200)
+                }
                 
-                VStack{
-                    Button(action: {
-                        // Handle signup button action here
+                
+                //            SkeletonLoadingExampleView Testing Example ...
+                //            SkeletonLoadingExampleView()
+                //            This is sepeare example ...
+                
+                VStack {
+                    
+                    // Title
+                    Text("Sign In")
+                    
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding(.vertical)
+                    
+                    Spacer().frame(height: 40)
+                    
+                    // Input Fields
+                    VStack(spacing: 20) {
                         
-                        validateInput()
+                        CustomTextField(placeholder: "Email", text: $email, isAlert: $isShowingEmailError ,iconName: "envelope.fill" , title: "Invalid Email" , message: "Please enter a valid email address.")
+                        CustomTextField(placeholder: "Password", text: $password, isAlert: $isShowingPasswordError, iconName: "lock.fill", isSecure: true , title: "Invalid Password" , message: "Please Enter Password.")
                         
-                        //                let signUpData = SignUpData(name: name, email: email, password: password, passwordConfirm: confirmPassword, technology: ["#Swift UI"])
-                        //                signUp(signUpData)
-                    }) {
-                        Text("Submit")
-                            .frame(minWidth: 0, maxWidth: .infinity)
-                            .frame(height: 50)
-                            .foregroundColor(.black)
-                            .font(.system(size: 18, weight: .bold))
-                            .background(Color.orange)
-                            .cornerRadius(50)
-                    }
-                    .padding(.horizontal, 20)
-                    .alert(isPresented: $showAlert) {
-                        Alert(title: Text(""), message: Text("Incorrect email or password."), dismissButton: .default(Text("OK")))
-                    }
+                        
+                    } .padding(.horizontal, 30)
                     
-                    
-                    // Social Sign-In
-                    HStack(spacing: 20) {
+                    VStack{
                         Button(action: {
-                            handleSignInButton()
+                            // Handle signup button action here
+                            
+                            validateInput()
+                            
+                            //                let signUpData = SignUpData(name: name, email: email, password: password, passwordConfirm: confirmPassword, technology: ["#Swift UI"])
+                            //                signUp(signUpData)
                         }) {
-                            Image( "googleIcon") // Replace with your Google icon image
-                                .resizable()
-                                .frame(width: 40, height: 40)
+                            Text("Submit")
+                                .frame(minWidth: 0, maxWidth: .infinity)
+                                .frame(height: 50)
+                                .foregroundColor(.white)
+                                .font(.system(size: 18, weight: .bold))
+                                .background(Color.blue)
+                                .cornerRadius(50)
+                        }
+                        .padding(.horizontal, 20)
+                        .alert(isPresented: $showAlert) {
+                            Alert(title: Text(""), message: Text("Incorrect email or password."), dismissButton: .default(Text("OK")))
                         }
                         
-                        //                                    // Social Sign-In
-                        //                                              GoogleSignInButton(action: handleSignInButton)
                         
-                        
-                        //                                    Button(action: {
-                        //                                        // Handle Facebook sign-in action here
-                        //                                    }) {
-                        //                                        Image("facebookIcon") // Replace with your Facebook icon image
-                        //                                            .resizable()
-                        //                                            .frame(width: 35, height: 35)
-                        //                                    }
-                    }
-                    
-                    
-                    // Additional Options
-                    HStack {
-                        Text("Create A New Account")
-                        Button(action: {
-                            path.append(MyNavigation<String>(appView: .signUp, params: Params<String>(data: "")))
-                        }) {
-                            Text("Sign Up")
-                                .foregroundColor(.blue)
+                        // Social Sign-In
+                        HStack(spacing: 20) {
+                            Button(action: {
+                                handleSignInButton()
+                            }) {
+                                Image( "googleIcon") // Replace with your Google icon image
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                            }
+                            
+                            //                                    // Social Sign-In
+                            //                                              GoogleSignInButton(action: handleSignInButton)
+                            
+                            
+                            //                                    Button(action: {
+                            //                                        // Handle Facebook sign-in action here
+                            //                                    }) {
+                            //                                        Image("facebookIcon") // Replace with your Facebook icon image
+                            //                                            .resizable()
+                            //                                            .frame(width: 35, height: 35)
+                            //                                    }
                         }
-                    }
-                    .padding(.top, 20)
+                        
+                        
+                        // Additional Options
+                        HStack {
+                            Text("Create A New Account")
+                            NavigationLink(destination: RegisterView()) {
+                                Text("Sign Up")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        .padding(.top, 20)
+
+                        
+                        Spacer()
+                    }.frame(alignment: .topLeading )
+                        .padding()
                     
-                    Spacer()
-                }.frame(alignment: .topLeading )
-                    .padding()
-                
-                
-                
-                
-                Spacer( )
-            }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.orange)
-        }.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.orange)
+                    
+                    
+                    
+                    Spacer( )
+                }.background(.white).cornerRadius(40, corners: [.topLeft, .topRight]).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.blue)
+            }.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/).background(.blue)
+        }
     }
 
     
@@ -364,10 +364,10 @@ struct LoginView: View {
 }
 
 struct SignInView_Previews: PreviewProvider {
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+//    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
        
     static var previews: some View {
-        LoginView(path: $path)
+        LoginView()
     }
 }
 
