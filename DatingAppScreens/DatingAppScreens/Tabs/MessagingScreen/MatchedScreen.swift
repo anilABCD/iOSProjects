@@ -74,96 +74,106 @@ struct MatchedScreenView: View {
                   
            
                   
-                  VStack {
+                  VStack( spacing: 0) {
                  
                       HStack{
                           Text("Messages").bold().font(.largeTitle)
                           Spacer()
                       }.padding(.horizontal).frame(height: 45)
                       
-                  
-                      ScrollView(.horizontal, showsIndicators: false) {
-                      
-                          HStack {
-                          
-                              ForEach(matched) { match in
-                             
+                      VStack {
+                          ScrollView(.horizontal, showsIndicators: false) {
+                              
+                              HStack(alignment: .top, spacing: 16) { // Add spacing between items if needed
                                   
-                                  
-                                  // Determine which profile to display
-                                  let onlineProfile = match.participants.first
-                                  
-                                  let photoUrl = URL(string: "\(tokenManger.localhost)/images/\("resized-")\(onlineProfile?.photo ?? "" )" )
-                                  
-                                  
-                                  if (( onlineProfile?.isOnline ) != nil &&
-                                  
-                                      onlineProfile?.isOnline == true
-                                   ) {
-                                  
+                                  ForEach(matched) { match in
                                       
-                                      NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images" , onBackAction: {
-                                          Task {
-                                              do {
-                                                  try await fetchMatched()
-                                              }catch{
-                                                  
-                                              }
-                                          }
-                                      }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) ,// Hides the back button in ChatView
-                                     
-                                        tag: match,
-                                        selection: $selectedMatch
+                                      
+                                      
+                                      // Determine which profile to display
+                                      let onlineProfile = match.participants.first
+                                      
+                                      let photoUrl = URL(string: "\(tokenManger.localhost)/images/\("resized-")\(onlineProfile?.photo ?? "" )" )
+                                      
+                                      
+                                      if (( onlineProfile?.isOnline ) != nil &&
+                                          
+                                          onlineProfile?.isOnline == true
                                       ) {
                                           
-                                          VStack {
-                                              
-                                              AsyncImage(url: photoUrl) { phase in
-                                                  switch phase {
-                                                  case .empty:
-                                                      ProgressView()
-                                                          .frame(width: 50, height: 50)
-                                                  case .success(let image):
-                                                      image
-                                                          .resizable()
-                                                          .aspectRatio(contentMode: .fill)
-                                                          .frame(width: 50, height: 50)
-                                                          .clipShape(Circle())
-                                                  case .failure:
-                                                      Image(systemName: "person.crop.circle.badge.exclamationmark")
-                                                          .resizable()
-                                                          .aspectRatio(contentMode: .fill)
-                                                          .frame(width: 50, height: 50)
-                                                          .clipShape(Circle())
-                                                  @unknown default:
-                                                      EmptyView()
+                                          
+                                          NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images" , onBackAction: {
+                                              Task {
+                                                  do {
+                                                      try await fetchMatched()
+                                                  }catch{
+                                                      
                                                   }
                                               }
-                                              .padding(.trailing, 8)
-                                              .overlay(
-                                                Circle()
-                                                    .fill(Color.green)
-                                                    .frame(width: 14, height: 14)
-                                                    .overlay(
-                                                        Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
-                                                    )
-                                                    .offset(x: -1, y: -1), // Adjusting position to be near the circle
-                                                alignment: .bottomTrailing
-                                              )
+                                          }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) ,// Hides the back button in ChatView
+                                                         
+                                                         tag: match,
+                                                         selection: $selectedMatch
+                                          ) {
                                               
+                                              VStack {
+                                                  
+                                                  AsyncImage(url: photoUrl) { phase in
+                                                      switch phase {
+                                                      case .empty:
+                                                          ProgressView()
+                                                              .frame(width: 50, height: 50)
+                                                      case .success(let image):
+                                                          image
+                                                              .resizable()
+                                                              .aspectRatio(contentMode: .fill)
+                                                              .frame(width: 50, height: 50)
+                                                              .clipShape(Circle())
+                                                      case .failure:
+                                                          Image(systemName: "person.crop.circle.badge.exclamationmark")
+                                                              .resizable()
+                                                              .aspectRatio(contentMode: .fill)
+                                                              .frame(width: 50, height: 50)
+                                                              .clipShape(Circle())
+                                                      @unknown default:
+                                                          EmptyView()
+                                                      }
+                                                  }
+                                                  .padding(.trailing, 8)
+                                                  .overlay(
+                                                    Circle()
+                                                        .fill(Color.green)
+                                                        .frame(width: 14, height: 14)
+                                                        .overlay(
+                                                            Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
+                                                        )
+                                                        .offset(x: -1, y: -1), // Adjusting position to be near the circle
+                                                    alignment: .bottomTrailing
+                                                  )
+                                                  
+                                                  
+                                                  Text(onlineProfile?.name ?? "" )
+                                                      .font(.headline)
+                                              }.frame(maxWidth:.infinity).padding(.horizontal, 10)
                                               
-                                              Text(onlineProfile?.name ?? "" )
-                                                  .font(.headline)
-                                          }.frame(maxWidth:.infinity).padding(.horizontal, 10)
+                                          }
+                                          
                                           
                                       }
                                       
-                                      
                                   }
+                              }
                               
                           }
-                      }
-                  }.frame(maxWidth:.infinity ) .padding(.horizontal)
+                          
+                          
+                              Divider()// Full-width divider
+                              .frame(height: 1) // Adds a blue border with a width of 2 // Adjust height as needed
+                                  
+                          
+                          
+                      }.frame(maxWidth:.infinity ) .padding(.horizontal)// Adds a blue border with a width of 2
+                         
 //                   List(likes) { like in
 //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
                        
@@ -197,6 +207,7 @@ struct MatchedScreenView: View {
 //                              Text("\(match.unreadCounts)")
                           }
                       }
+                      .listStyle(PlainListStyle())
                       
                   }
                   
@@ -354,7 +365,7 @@ struct MatchedItemView: View {
                 
             }
         }
-        .padding(.vertical, 4)
+        
     }
 }
 
