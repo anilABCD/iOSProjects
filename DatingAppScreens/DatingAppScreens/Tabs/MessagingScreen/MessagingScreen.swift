@@ -132,10 +132,10 @@ struct ChatView: View {
          // Use regular expression to match "( number )" with optional spaces
          
          // Array of keywords to check
-             let keywords = ["Today", "Yesterday"]
-             
-             // Check if the text contains any of the keywords
-             if keywords.contains(where: { text.contains($0) }) {
+//             let keywords = ["Today", "Yesterday"]
+//             
+//             // Check if the text contains any of the keywords
+//             if keywords.contains(where: { text.contains($0) }) {
       
              let regex = try! NSRegularExpression(pattern: "\\(\\s*\\d+\\s*\\)", options: [])
              
@@ -148,20 +148,20 @@ struct ChatView: View {
              return result
          
              
-          }
-         else{
-             
-             
-                // Regex pattern to match ( 0 followed by anything ) and capture the first 0
-                  let regex = try! NSRegularExpression(pattern: "\\(\\s*0(\\d*)\\s*\\)", options: [])
-             // Replace the match, keeping the rest of the number intact
-                 let range = NSRange(location: 0, length: text.utf16.count)
-                 let result = regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "( $1 )")
-                 
-                 return result.trimmingCharacters(in: .whitespacesAndNewlines) // Clean up extra spaces
-         
-          
-         }
+//          }
+//         else{
+//             
+//             
+//                // Regex pattern to match ( 0 followed by anything ) and capture the first 0
+//                  let regex = try! NSRegularExpression(pattern: "\\(\\s*0(\\d*)\\s*\\)", options: [])
+//             // Replace the match, keeping the rest of the number intact
+//                 let range = NSRange(location: 0, length: text.utf16.count)
+//                 let result = regex.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "( $1 )")
+//                 
+//                 return result.trimmingCharacters(in: .whitespacesAndNewlines) // Clean up extra spaces
+//         
+//          
+//         }
      }
     
     // Function to mark messages as delivered
@@ -261,7 +261,11 @@ struct ChatView: View {
             }.mapValues { monthGroup in
                 Dictionary(grouping: monthGroup) { message -> String in
                     let weekdayFormatter = DateFormatter()
-                    weekdayFormatter.dateFormat = "EEEE" // Weekday name
+                            
+                    weekdayFormatter.dateFormat = "E, d MMM" // Short weekday, day, and month
+                    
+                    let formattedDate = weekdayFormatter.string(from: message.timestamp)
+                                  
                     let paddedNumber = String(format: "%02d", Calendar.current.component(.day, from: message.timestamp))
                     // Check if the message is from today
                     if calendar.isDate(message.timestamp, inSameDayAs: today) {
