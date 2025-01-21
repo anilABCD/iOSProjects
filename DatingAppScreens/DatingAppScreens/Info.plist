@@ -4,25 +4,40 @@
 <dict>
 	<key>CFBundleURLTypes</key>
 	<array>
-		<dict>
+		
+        <dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln</string>
+				<string>fb2176052856159826</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>devosDatingApp</string>
-			</array>
-		</dict>
+		
+        <dict/>
+        
+        <!-- Add the URL Scheme for Google Sign-In -->
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln</string>
+            </array>
+        </dict>
+        
 	</array>
+	<key>FacebookAppID</key>
+	<string>2176052856159826</string>
+	<key>FacebookClientToken</key>
+	<string>fac4fba1c5f87d9c76eee72baee9f0f2</string>
+	<key>FacebookDisplayName</key>
+	<string>DatingAppScreens</string>
 	<key>GIDClientID</key>
 	<string>346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln.apps.googleusercontent.com</string>
 	<key>GIDServerClientID</key>
 	<string>346488674498-473kab7r2k8e5j5fcqmh7js4dfvgr6j6.apps.googleusercontent.com</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

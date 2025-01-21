@@ -4,6 +4,84 @@ import SwiftUI
 import GoogleSignInSwift
 
 import GoogleSignIn
+import FacebookLogin
+
+struct FacebookLoginButton: UIViewRepresentable {
+    func makeUIView(context: Context) -> FBLoginButton {
+        let loginButton = FBLoginButton()
+        loginButton.permissions = ["public_profile", "email"] // Request necessary permissions
+        loginButton.delegate = context.coordinator // Set the delegate to the Coordinator
+        return loginButton
+    }
+
+    func updateUIView(_ uiView: FBLoginButton, context: Context) {
+        // Update the UI if needed
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator()
+    }
+
+    class Coordinator: NSObject, LoginButtonDelegate {
+        func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+            if let error = error {
+                print("Login failed with error: \(error.localizedDescription)")
+                return
+            }
+
+            if let result = result, !result.isCancelled {
+                if let token = result.token?.tokenString {
+                    print("Facebook Access Token: \(token)")
+                } else {
+                    print("Login successful but no token received.")
+                }
+            } else {
+                print("Login cancelled by the user.")
+            }
+        }
+
+        func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+            print("User logged out.")
+        }
+    }
+}
+ 
+struct FacebookCustomLoginButton: View {
+    var body: some View {
+            Button(action: {
+                loginWithFacebook()
+            }) {
+                Image("facebookLogin") // Reference the name of the image in your Assets
+                               .resizable()
+                               .foregroundColor(Color.blue) // This will only work if the image is a template
+                               .frame(width: 40, height: 40) // Adjust size as needed
+                               .padding()
+            }
+            .buttonStyle(PlainButtonStyle()) // Removes default button styling
+        }
+
+    func loginWithFacebook() {
+        let loginManager = LoginManager()
+        loginManager.logIn(permissions: ["public_profile", "email"], from: nil) { result, error in
+            if let error = error {
+                print("Facebook login failed: \(error.localizedDescription)")
+                return
+            }
+
+            guard let result = result, !result.isCancelled else {
+                print("Facebook login cancelled.")
+                return
+            }
+
+            if let token = result.token?.tokenString {
+                print("Facebook Access Token: \(token)")
+            } else {
+                print("No token received.")
+            }
+        }
+    }
+}
+
 
 struct LoginView: View {
     
@@ -124,6 +202,12 @@ struct LoginView: View {
                                     .resizable()
                                     .frame(width: 40, height: 40)
                             }
+                            
+//                            FacebookLoginButton()
+//                                           .frame(height: 50)
+//                                           .padding()
+                            
+                            FacebookCustomLoginButton()
                             
                             //                                    // Social Sign-In
                             //                                              GoogleSignInButton(action: handleSignInButton)
