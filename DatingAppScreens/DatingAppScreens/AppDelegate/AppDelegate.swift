@@ -22,17 +22,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Set the notification center delegate
         UNUserNotificationCenter.current().delegate = self
 
-        // Request permission to show notifications
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            print("Permission granted: \(granted)")
-            if granted {
-                DispatchQueue.main.async {
-                    application.registerForRemoteNotifications()
-                }
-            } else if let error = error {
-                print("Request authorization failed: \(error.localizedDescription)")
-            }
-        }
+//        // Request permission to show notifications
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+//            print("Permission granted: \(granted)")
+//            if granted {
+//                DispatchQueue.main.async {
+//                    application.registerForRemoteNotifications()
+//                }
+//            } else if let error = error {
+//                print("Request authorization failed: \(error.localizedDescription)")
+//            }
+//        }
 
         return true
     }

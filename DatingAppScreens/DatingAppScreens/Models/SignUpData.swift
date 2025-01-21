@@ -16,7 +16,7 @@ struct SignInData: Codable {
     let password: String
 }
 
-struct SignInWithGoogleData : Codable {
+struct SignInWithSocialLoginData : Codable {
     let token: String
 }
 

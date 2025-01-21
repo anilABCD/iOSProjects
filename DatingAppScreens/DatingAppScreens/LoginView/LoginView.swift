@@ -47,6 +47,9 @@ struct FacebookLoginButton: UIViewRepresentable {
 }
  
 struct FacebookCustomLoginButton: View {
+   
+    @Binding var facebookToken : String?
+    
     var body: some View {
             Button(action: {
                 loginWithFacebook()
@@ -74,6 +77,9 @@ struct FacebookCustomLoginButton: View {
             }
 
             if let token = result.token?.tokenString {
+                
+                self.facebookToken = token;
+                
                 print("Facebook Access Token: \(token)")
             } else {
                 print("No token received.")
@@ -98,7 +104,7 @@ struct LoginView: View {
     @State private var isShowingEmailError:Bool=false;
     @State private var isShowingPasswordError:Bool=false;
 
-
+    @State var facebookToken : String? ;
    
     func handleSignInButton() {
         guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
@@ -124,9 +130,9 @@ struct LoginView: View {
                 
                 
                 if let googleToken = idToken {
-                    let signInWithGoogleData = SignInWithGoogleData(token: googleToken )
+                    let signInWithGoogleData = SignInWithSocialLoginData(token: googleToken )
                     
-                    signInWithGoogle(signInWithGoogleData)
+                    signInWithSocialLogin(signInWithGoogleData , socialLoginName: "google");
                 }
             }
     }
@@ -207,7 +213,16 @@ struct LoginView: View {
 //                                           .frame(height: 50)
 //                                           .padding()
                             
-                            FacebookCustomLoginButton()
+                            FacebookCustomLoginButton( facebookToken: $facebookToken).onChange(of: facebookToken ) { token in
+                                
+                                
+                                if let faceBooktoken = token {
+                                    let signInWithGoogleData = SignInWithSocialLoginData(token: faceBooktoken )
+                                    
+                                    signInWithSocialLogin(signInWithGoogleData , socialLoginName: "facebook");
+                                }
+                                
+                            }
                             
                             //                                    // Social Sign-In
                             //                                              GoogleSignInButton(action: handleSignInButton)
@@ -366,9 +381,9 @@ struct LoginView: View {
     }
     
     
-    func signInWithGoogle(_ data: SignInWithGoogleData) {
+    func signInWithSocialLogin(_ data: SignInWithSocialLoginData , socialLoginName : String) {
         Task {
-            guard let url = URL(string: "\(tokenManger.localhost)/google") else {
+            guard let url = URL(string: "\(tokenManger.localhost)/\(socialLoginName)") else {
                 print("Invalid URL")
                 return
             }

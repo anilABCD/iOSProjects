@@ -67,7 +67,7 @@ struct RegisterView: View {
                    
                    
                    if let googleToken = idToken {
-                       let signInWithGoogleData = SignInWithGoogleData(token: googleToken )
+                       let signInWithGoogleData = SignInWithSocialLoginData(token: googleToken )
                        
                        signInWithGoogle(signInWithGoogleData)
                    }
@@ -388,7 +388,7 @@ struct RegisterView: View {
     }
 
     
-    func signInWithGoogle(_ data: SignInWithGoogleData) {
+    func signInWithGoogle(_ data: SignInWithSocialLoginData) {
         Task {
             guard let url = URL(string: "\(tokenManger.localhost)/google") else {
                 print("Invalid URL")
