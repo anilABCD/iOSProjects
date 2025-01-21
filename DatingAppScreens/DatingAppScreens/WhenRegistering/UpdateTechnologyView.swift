@@ -15,7 +15,7 @@ struct UpdateTechnologyNewView: View {
 //    @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
     @Environment(\.presentationMode) var presentationMode
-    
+   
     @State var isFirstTimeUpdatingProfile = false;
     
     @State private var birthDate = Date()
@@ -119,15 +119,21 @@ struct UpdateTechnologyNewView: View {
                     self.status = responseMessage.status;
                     
                     if( self.status == "success" ) {
-                        if ( !isFirstTimeUpdatingProfile ) {
+                        if ( !isFirstTimeUpdatingProfile && showNextButton == false) {
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
+                    
+                  
                     
                     print(self.status ?? "")
                     print (responseMessage.data?.user?.technologies ?? "" )
                     
                     self.tokenManger.technologies =  selectedItems.joined(separator: ",");
+                    
+                    if ( !self.tokenManger.technologies.isEmpty ) {
+                        tokenManger.nextButtonWhenRegistrationProcess = UUID();
+                    }
                 }
             } else {
                 print("Failed to decode response")

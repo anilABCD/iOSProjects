@@ -37,7 +37,7 @@ class ProfileEditorViewModel: ObservableObject {
 }
 
 // Main View
-struct ProfileEditorView: View {
+struct UpdateSmokingAndDrinkingAndDOBView: View {
     
     @StateObject private var viewModel = ProfileEditorViewModel()
     @State private var showAlert = false
@@ -46,7 +46,8 @@ struct ProfileEditorView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @Binding var path :[MyNavigation<String>]
+    var showNextButton: Bool = false
+   
     
      @State var status : String = ""
     
@@ -91,13 +92,16 @@ struct ProfileEditorView: View {
                   
                     if self.status == "success" {
                         showAlert = true;
-                        if ( !isFirstTimeUpdatingProfile ) {
+                        if ( !isFirstTimeUpdatingProfile && showNextButton == false ) {
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
                     
                     self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: convertToString(from: viewModel.selectedDOB ) , drinking: viewModel.selectedDrinking.name , smoking: viewModel.selectedSmoking.name )
-       
+                    
+                    
+                    self.tokenManger.nextButtonWhenRegistrationProcess = UUID() ;
+//
                     print ( formattedDOB(date: viewModel.selectedDOB ))
                     
                 }
@@ -111,7 +115,7 @@ struct ProfileEditorView: View {
     var body: some View {
         VStack(spacing: 0){
             
-            Form {
+            VStack {
                 List {
                     
                     
@@ -227,7 +231,7 @@ struct ProfileEditorView: View {
                     //                Text("Selected Smoking: \(viewModel.selectedSmoking.name)")
                     //                    .padding()
                     //
-                }
+                }.listStyle(PlainListStyle())
             }.onAppear(){
                 // Update viewModel with tokenManager's values
                 
@@ -260,7 +264,7 @@ struct ProfileEditorView: View {
             Button(action: {
                 submitSelections( authToken: tokenManger.accessToken)
             }) {
-                Text("Submit")
+                Text(showNextButton ? "Next" : "Submit")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -281,7 +285,7 @@ struct ProfileEditorView: View {
 //            }
             
             Spacer()
-        } .navigationBarTitle("Profile Settings")
+        }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline)
         
     }
     
@@ -309,10 +313,10 @@ struct ProfileEditorView: View {
 }
 
 struct ProfileEditorView_Previews: PreviewProvider {
-    @State static var path :[MyNavigation<String>] = []
+    var showNextButton: Bool = false
     
     static var previews: some View {
-        ProfileEditorView(path:$path).environmentObject(TokenManager())
+        UpdateSmokingAndDrinkingAndDOBView( showNextButton : true ).environmentObject(TokenManager())
     }
 }
 

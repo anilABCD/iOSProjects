@@ -6,7 +6,8 @@ struct UpdateDescribeYourselfView : View {
     @State private var showError: Bool = false
     private let maxLetters = 200
     @EnvironmentObject private var tokenManger : TokenManager
-    @Binding var path :[MyNavigation<String>]
+    
+    var showNextButton : Bool = false
     
     @State var isFirstTimeUpdatingBio = false;
     @Environment(\.presentationMode) var presentationMode
@@ -55,7 +56,7 @@ struct UpdateDescribeYourselfView : View {
                         await submitDetails()
                     }
                 }) {
-                    Text("Submit")
+                    Text( showNextButton ? "Next" : "Submit" )
                         .font(.headline)
                         .foregroundColor(.white)
                         .padding()
@@ -73,9 +74,8 @@ struct UpdateDescribeYourselfView : View {
                 }
 
                
-            }
-            .padding()
-            .navigationTitle("Describe Yourself")
+            } .padding(.horizontal)
+            .padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline)
         }.onAppear(){
             // Assuming tokenManager.technologies is a string containing comma-separated values
             if tokenManger.bio == "" {
@@ -110,8 +110,14 @@ struct UpdateDescribeYourselfView : View {
                 DispatchQueue.main.async {
                     showSuccessMessage = true
                     tokenManger.bio = bio
-                    if ( !isFirstTimeUpdatingBio ) {
+                    if ( !isFirstTimeUpdatingBio && showNextButton == false ) {
+                        print("dismiss called in bio")
                         presentationMode.wrappedValue.dismiss()
+                       
+                    }
+                    
+                    if( !tokenManger.bio.isEmpty ) {
+                        tokenManger.nextButtonWhenRegistrationProcess = UUID()
                     }
                 }
             } else {
@@ -158,8 +164,8 @@ struct UpdateDescribeYourselfView : View {
 //}
 
 struct UpdateDescribeYourselfView_Previews: PreviewProvider {
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+  
     static var previews: some View {
-        UpdateDescribeYourselfView(path: $path).environmentObject(TokenManager())
+        UpdateDescribeYourselfView(showNextButton: true).environmentObject(TokenManager())
     }
 }

@@ -311,7 +311,16 @@ struct MatchedItemView: View {
                     Spacer()
                     
 //                    Text("unread count number \(unreadCounts?[ userId])")
-                     
+
+//                    Text("\(unreadCounts?[ userId ] ?? 0 )")
+//
+//                        .font(.caption2) // Small font size for badge
+//                        .foregroundColor(.white) // White text color
+//                        .padding(6) // Small padding for a compact circle
+//                        .background(Circle().fill(Color.blue)) // Blue circle background
+//                        .frame(minWidth: 20, minHeight: 20) // Ensure consistent circular shape
+//                        .offset(y: 5)
+                    
                     if let unreadCount = unreadCounts?[ userId ] , unreadCount > 0 {
                         Text("\(unreadCount)")
                             

@@ -32,19 +32,20 @@ struct UserSettingsView : View {
                         NavigationLink(destination: UpdateTechnologyNewView()) {
                             Text("Technologies")
                         }
-                        NavigationLink(destination: UpdateHobbiesView(path:$path)) {
+                        
+                        NavigationLink(destination: UpdateHobbiesView()) {
                             Text("Hobbies")
                         }
                         
-                        NavigationLink(destination: ProfileEditorView(path : $path)) {
+                        NavigationLink(destination: UpdateSmokingAndDrinkingAndDOBView()) {
                             Text("Dob , Habbits")
                         }
                         
-                        NavigationLink(destination: UpdateDescribeYourselfView (path : $path)) {
+                        NavigationLink(destination: UpdateDescribeYourselfView ()) {
                             Text("Bio")
                         }
                         
-                        NavigationLink(destination: UpdateJobRoleView (path : $path)) {
+                        NavigationLink(destination: UpdateJobRoleView ()) {
                             Text("Job Role")
                         }
                     }

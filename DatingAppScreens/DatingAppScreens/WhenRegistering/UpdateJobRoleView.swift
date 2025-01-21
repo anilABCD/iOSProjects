@@ -16,7 +16,8 @@ struct UpdateJobRoleView: View {
         "Chief Operating Officer (COO)", "Chief Executive Officer (CEO)"
     ]
     @EnvironmentObject private var tokenManger : TokenManager
-    @Binding var path :[MyNavigation<String>]
+   
+    var showNextButton : Bool = false;
     
     // State variables
     @State private var selectedJobRole = "Junior Level"  // Default job role stored
@@ -69,24 +70,28 @@ struct UpdateJobRoleView: View {
             
             Spacer()
 
-            // Button to update the job role
-            Button(action: {
-                Task {
-                    await updateJobRole()
+            HStack {
+                // Button to update the job role
+                Button(action: {
+                    Task {
+                        await updateJobRole()
+                    }
+                }) {
+                    Text( showNextButton ? "Next" : "Update Job Role")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(8)
                 }
-            }) {
-                Text("Update Job Role")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+               
             }
-            .padding()
 
            
            
-        }
-        .padding().onAppear(){
+        }.padding(.top).padding(.horizontal)
+        .padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline).onAppear(){
             // Assuming tokenManager.technologies is a string containing comma-separated values
             if tokenManger.jobRole == "" {
                 isFirstTimeUpdatingBio = true;
@@ -123,9 +128,11 @@ struct UpdateJobRoleView: View {
                             
                             tokenManger.jobRole = selectedJobRole;
                             
-                            if ( !isFirstTimeUpdatingBio ) {
+                            if ( !isFirstTimeUpdatingBio && showNextButton == false) {
                                 presentationMode.wrappedValue.dismiss()
                             }
+                            
+                            tokenManger.nextButtonWhenRegistrationProcess = UUID()
                             
                         } catch {
                             responseMessage = "Failed to decode response: \(error.localizedDescription)"
@@ -144,9 +151,8 @@ struct UpdateJobRoleView: View {
 }
 
 struct UpdateJobRoleView_Previews: PreviewProvider {
- 
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+  
     static var previews: some View {
-        UpdateJobRoleView(path: $path).environmentObject(TokenManager())
+        UpdateJobRoleView(showNextButton : true).environmentObject(TokenManager())
     }
 }

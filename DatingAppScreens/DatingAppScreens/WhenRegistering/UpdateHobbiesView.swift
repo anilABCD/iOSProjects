@@ -5,13 +5,15 @@ import Combine
 
 struct UpdateHobbiesView: View {
    
-    @Binding var path :[MyNavigation<String>]
+   
     @EnvironmentObject private var tokenManger : TokenManager
     @Environment(\.presentationMode) var presentationMode
     @State var isFirstTimeUpdatingProfile = false;
     
     @State private var birthDate = Date()
-
+    
+    var showNextButton : Bool = false ;
+    
     
     @State var IsNoItemsSelected = false;
   
@@ -97,6 +99,12 @@ struct UpdateHobbiesView: View {
                     }
                     
                     self.tokenManger.hobbies =  selectedItems.joined(separator: ",");
+                    
+                    if( !self.tokenManger.hobbies.isEmpty ) {
+                        
+                        tokenManger.nextButtonWhenRegistrationProcess = UUID();
+                    }
+                    
                 }
             } else {
                 print("Failed to decode response")
@@ -106,27 +114,40 @@ struct UpdateHobbiesView: View {
     
     var body: some View {
         
-        VStack {
+        VStack (spacing: 0 ) {
+            
+            
+            HStack {
+                
+                Text("Hobbies")
+                    .font(.title) // Use .subheadline or .callout for smaller text
+                    .foregroundColor(.primary)
+             
+                Spacer();
+                
+            }.padding()
+            
+            
             ScrollView {
-                
-                Spacer()
-//                VStack {
-//                    Text("Select your date of birth")
-//                        .font(.headline)
-//                    
-//                    DatePicker("Date of Birth", selection: $birthDate, in: ...Date(), displayedComponents: .date)
-//                        .datePickerStyle(WheelDatePickerStyle())
-//                        .labelsHidden()
-//                    
-//                    Text("Selected Date: \(formattedDate(date: birthDate))")
-//                        .padding()
-//                }.padding(0)
-                
 //                
-                Text("")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
+//                Spacer()
+////                VStack {
+////                    Text("Select your date of birth")
+////                        .font(.headline)
+////                    
+////                    DatePicker("Date of Birth", selection: $birthDate, in: ...Date(), displayedComponents: .date)
+////                        .datePickerStyle(WheelDatePickerStyle())
+////                        .labelsHidden()
+////                    
+////                    Text("Selected Date: \(formattedDate(date: birthDate))")
+////                        .padding()
+////                }.padding(0)
+//                
+////                
+//                Text("")
+//                    .font(.largeTitle)
+//                    .fontWeight(.bold)
+//                    .padding()
                 
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(items) { item in
@@ -142,7 +163,7 @@ struct UpdateHobbiesView: View {
                 }
                 
                
-            }.padding().onAppear(){
+            }.onAppear(){
                 // Assuming tokenManager.technologies is a string containing comma-separated values
                 
                 
@@ -167,7 +188,7 @@ struct UpdateHobbiesView: View {
             Button(action: {
                 submitSelections( authToken: tokenManger.accessToken)
             }) {
-                Text("Submit")
+                Text( showNextButton ? "Next" : "Submit" )
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -182,14 +203,15 @@ struct UpdateHobbiesView: View {
                     .foregroundColor(.green)
                     .padding()
             }
-        }.navigationTitle("Hobbies")
+        }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline)
     }
 }
 
 
 struct UpdateHobbiesView_Previews: PreviewProvider {
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
+    var showNextButton : Bool = false ;
+    
     static var previews: some View {
-        UpdateHobbiesView(path: $path).environmentObject(TokenManager())
+        UpdateHobbiesView( showNextButton : true ).environmentObject(TokenManager())
     }
 }

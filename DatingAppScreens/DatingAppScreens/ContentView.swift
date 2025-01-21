@@ -122,6 +122,9 @@ struct ContentView: View {
          case stepOne = 1
          case stepTwo
          case stepThree
+         case stepFour
+         case stepFive
+         case stepSix
      }
 
     @State private var currentStep: Step = .stepOne
@@ -239,7 +242,7 @@ struct ContentView: View {
                                            
                                            // Step progress bar
                                            HStack(spacing: 8) {
-                                               ForEach(1...5, id: \.self) { step in
+                                               ForEach(1...6, id: \.self) { step in
                                                    Rectangle()
                                                        .fill(currentStep.rawValue >= step ? Color.blue : Color.gray.opacity(0.5)) // Blue if completed, gray otherwise
                                                        .frame(height: 10)
@@ -254,7 +257,19 @@ struct ContentView: View {
                                                    UploadYourPhotoView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                } else if currentStep == .stepTwo {
-                                                   UpdateTechnologyNewView( showNextButton : true)
+                                                   UpdateTechnologyNewView( showNextButton : true )
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               } else if currentStep == .stepThree {
+                                                   UpdateHobbiesView(showNextButton: true)
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               } else if currentStep ==  .stepFour  {
+                                                   UpdateSmokingAndDrinkingAndDOBView(showNextButton: true)
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               } else if currentStep ==  .stepFive  {
+                                                   UpdateDescribeYourselfView(showNextButton: true)
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               } else if currentStep ==  .stepSix {
+                                                   UpdateJobRoleView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                }
                                            }  .animation(hasLoaded ? .easeInOut : nil, value: currentStep) // Apply animation only after the first load
@@ -287,37 +302,36 @@ struct ContentView: View {
                                    }  
                                    .onChange(of: tokenManager.photo ) { newValue in
                                        
-                                       goToNextStep()
+//                                       goToNextStep()
                                    }
                                    .onChange(of: tokenManager.technologies ) { newValue in
                                        
-                                       handleNavigation()
+//                                       goToNextStep()
                                        
                                    }
                                    .onChange(of: tokenManager.hobbies ) { newValue in
                                        
-                                       handleNavigation()
-                                       
+//                                       goToNextStep()
                                        
                                    }
                                    .onChange(of: tokenManager.dob ) { newValue in
                                        
-                                       handleNavigation()
+//                                       goToNextStep()
                                        
                                    }
                                    .onChange(of: tokenManager.drinking ) { newValue in
                                        
-                                       handleNavigation()
+//                                       handleNavigation()
                                        
                                    }
                                    .onChange(of: tokenManager.smoking ) { newValue in
                                        
-                                       handleNavigation()
+//                                       handleNavigation()
                                        
                                    }
                                    .onChange(of: tokenManager.bio ) { newValue in
                                        
-                                       handleNavigation()
+//                                       handleNavigation()
                                        
                                    }
                                    .onChange(of: tokenManager.jobRole ) { newValue in
@@ -680,28 +694,46 @@ struct ContentView: View {
             self.currentStep = .stepOne ;
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-        } else if !tokenManager.technologies.isEmpty {
+        } else if tokenManager.technologies.isEmpty {
             print("technologies  empty ")
             self.currentStep = .stepTwo
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page2, params: Params<String>(data: "")))
         }
         else if tokenManager.hobbies.isEmpty {
+            
+            self.currentStep = .stepThree
+            
             print("hobbies  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page3, params: Params<String>(data: "")))
         } 
         else if tokenManager.isProfileDobSmokingDrinkingEmpty() {
+            
+            
+            self.currentStep = .stepFour
+            
+            
             print("hobbies  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page4, params: Params<String>(data: "")))
         }
         else if tokenManager.bio.isEmpty {
+            
+            
+            self.currentStep = .stepFive
+            
+            
             print("bio  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page5, params: Params<String>(data: "")))
         }
         else if tokenManager.jobRole.isEmpty {
+            
+            
+            self.currentStep = .stepSix
+            
+            
             print("jobRole  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page6, params: Params<String>(data: "")))
