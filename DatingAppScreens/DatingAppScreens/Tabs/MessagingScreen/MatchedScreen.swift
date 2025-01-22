@@ -75,16 +75,17 @@ struct MatchedScreenView: View {
            
                   
                   VStack( spacing: 0) {
-                 
-                      HStack{
-                          Text("Messages").bold().font(.largeTitle)
-                          Spacer()
-                      }.padding(.horizontal).frame(height: 45)
+//                 
+//                      HStack{
+//                          Text("Messages").bold().font(.largeTitle)
+//                          Spacer()
+//                      }.padding(.horizontal).frame(height: 45)
+//
                       
                       VStack {
                           ScrollView(.horizontal, showsIndicators: false) {
                               
-                              HStack(alignment: .top, spacing: 16) { // Add spacing between items if needed
+                              HStack(alignment: .top, spacing: 4) { // Add spacing between items if needed
                                   
                                   ForEach(matched) { match in
                                       
@@ -154,7 +155,7 @@ struct MatchedScreenView: View {
                                                   
                                                   Text(onlineProfile?.name?.prefix(10) ?? "" )
                                                       .font(.headline)
-                                              }.frame(maxWidth:.infinity).padding(.horizontal, 10)
+                                              }.frame(maxWidth:.infinity)
                                               
                                           }
                                           
@@ -209,7 +210,7 @@ struct MatchedScreenView: View {
                       }
                       .listStyle(PlainListStyle())
                       
-                  }
+                  } .navigationBarTitle("Messages" , displayMode: .inline)
                   
                   
 //                           .onAppear {

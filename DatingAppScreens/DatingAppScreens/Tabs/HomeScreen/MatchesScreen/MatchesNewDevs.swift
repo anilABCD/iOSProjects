@@ -25,11 +25,11 @@ struct MatchesNewDevsView: View {
     
     @State private var profiles : [Profile] = [Profile(objectId: ObjectId(from:"hello"), name: "")];
     
-    func likeTheProfile(currentIndex : Int) async throws {
-        
-        let user2_id = profiles[currentIndex].id
-        
-        print(currentIndex, user2_id)
+    func likeTheProfile(user2_id : String) async throws {
+//
+//        let user2_id = profiles[currentIndex].id
+//        
+//        print(currentIndex, user2_id)
         
         let matches = Matches(user2_id: user2_id )
     
@@ -126,6 +126,8 @@ struct MatchesNewDevsView: View {
     var body: some View {
         
         ZStack {
+            
+            
                    if isLoading {
                        ProgressView("Loading...")
                            .scaleEffect(1.5)
@@ -136,11 +138,48 @@ struct MatchesNewDevsView: View {
                                if index == profiles.count - 1 { // Show topmost item
                                                    SwipeableView(
                                                     item: profiles[index],
-                                                       onSwipe: {
-                                                           withAnimation {
-                                                               removeProfile(at: index)
-                                                           }
-                                                       }
+                                                       onSwipeRight: {
+                                                           
+                                                           
+                                                           // Start an asynchronous task for the network request
+                                                                                     Task {
+                                                                                         do {
+                                                                                             // Call the asynchronous function with the local copy
+                                                                                             try await likeTheProfile(user2_id: profiles[index].id)
+                                                                                         } catch {
+                                                                                             // Handle any errors here
+                                                                                             print("Failed to like the profile: \(error)")
+                                                                                         }
+                                                                                         
+                                                                                         withAnimation {
+                                                                                             removeProfile(at: index)
+                                                                                         }
+                                                                                     }
+                                                           
+                                                        
+                                                            
+                                                       } ,
+                                                    onSwipeLeft: {
+                                                        
+//                                                        
+//                                                        // Start an asynchronous task for the network request
+//                                                                                  Task {
+//                                                                                      do {
+//                                                                                          // Call the asynchronous function with the local copy
+//                                                                                          try await likeTheProfile(user2_id: profiles[index].id)
+//                                                                                      } catch {
+//                                                                                          // Handle any errors here
+//                                                                                          print("Failed to like the profile: \(error)")
+//                                                                                      }
+//                                                                                      
+//
+//                                                                                  }
+//                                                        
+//                                                       withAnimation {
+                                                        removeProfile(at: index)
+                                                    
+                                                         
+                                                    }
                            
                                 )
                                }
@@ -302,160 +341,173 @@ struct ChatPopupView: View {
 
 struct SwipeableView: View {
     let item: Profile
-    let onSwipe: () -> Void
-    
+    let onSwipeRight: () -> Void
+    let onSwipeLeft: () -> Void
     @State private var offset: CGSize = .zero
     @State private var isHidden: Bool = false
     @EnvironmentObject private var tokenManger : TokenManager
     @State private var initialDragPosition: CGPoint = .zero
     var body: some View {
         
-        ScrollView {
-            VStack {
+        VStack {
+            ScrollView {
                 VStack {
-                ZStack(alignment: .bottomLeading) {
-                    // Use AsyncImage to load remote images
-                    
-                   
-                        AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(item.photo ?? "image.jpg")")) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                   
-                                    .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
-                                   
-                                    .offset(x: offset.width, y: 0)
-                                    .cornerRadius(20) // Add corner radius here
-                                    .rotationEffect(.degrees(Double(offset.width / 20)))
-                                
-                                //                                           .gesture(
-                                //                                            DragGesture()
-                                //                                                                                      .onChanged { gesture in
-                                //                                                                                          // Track the initial position of the drag
-                                //                                                                                          if initialDragPosition == .zero {
-                                //                                                                                              initialDragPosition = gesture.startLocation
-                                //                                                                                          }
-                                //
-                                //                                                                                          // Update the offset with both x and y translations
-                                //                                                                                          offset = gesture.translation
-                                //                                                                                      }
-                                //                                                                                      .onEnded { gesture in
-                                //                                                                                          let swipeThreshold: CGFloat = 50 // Threshold to detect swipe
-                                //
-                                //                                                                                          // Handle horizontal swipe (left or right)
-                                //                                                                                          if abs(gesture.translation.width) > swipeThreshold {
-                                //                                                                                              if gesture.translation.width > 0 {
-                                //                                                                                                  swipeRight() // Swipe Right
-                                //                                                                                              } else {
-                                //                                                                                                  swipeLeft() // Swipe Left
-                                //                                                                                              }
-                                //                                                                                          }
-                                //                                                                                          // Handle vertical swipe (up or down)
-                                //                                                                                          else if abs(gesture.translation.height) > swipeThreshold {
-                                //                                                                                              if gesture.translation.height < 0 {
-                                //                                                                                                  swipeUp() // Swipe Up
-                                //                                                                                              } else {
-                                //                                                                                                  swipeDown() // Swipe Down
-                                //                                                                                              }
-                                //                                                                                          } else {
-                                //                                                                                              // If it's not a meaningful swipe, reset the offset
-                                //                                                                                              withAnimation {
-                                //                                                                                                  offset = .zero
-                                //                                                                                              }
-                                //                                                                                          }
-                                //                                                                                      }
-                                //                                   )
-                            case .failure:
-                                Color.gray // Fallback for failed loading
+                    VStack {
+                        ZStack(alignment: .bottomLeading) {
+                            // Use AsyncImage to load remote images
+                            
+                            
+                            AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(item.photo ?? "image.jpg")")) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                                case .success(let image):
+                                    image
+                                        .resizable()
                                     
-                                    .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
-                                   
-                                    .offset(x: offset.width, y: 0)
-                                    .cornerRadius(20) // Add corner radius here
-                                    .rotationEffect(.degrees(Double(offset.width / 20)))
-                            @unknown default:
-                                EmptyView()
+                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
+                                    
+                                        .offset(x: offset.width, y: 0)
+                                        .cornerRadius(20) // Add corner radius here
+                                        .rotationEffect(.degrees(Double(offset.width / 20)))
+                                    
+                                    //                                           .gesture(
+                                    //                                            DragGesture()
+                                    //                                                                                      .onChanged { gesture in
+                                    //                                                                                          // Track the initial position of the drag
+                                    //                                                                                          if initialDragPosition == .zero {
+                                    //                                                                                              initialDragPosition = gesture.startLocation
+                                    //                                                                                          }
+                                    //
+                                    //                                                                                          // Update the offset with both x and y translations
+                                    //                                                                                          offset = gesture.translation
+                                    //                                                                                      }
+                                    //                                                                                      .onEnded { gesture in
+                                    //                                                                                          let swipeThreshold: CGFloat = 50 // Threshold to detect swipe
+                                    //
+                                    //                                                                                          // Handle horizontal swipe (left or right)
+                                    //                                                                                          if abs(gesture.translation.width) > swipeThreshold {
+                                    //                                                                                              if gesture.translation.width > 0 {
+                                    //                                                                                                  swipeRight() // Swipe Right
+                                    //                                                                                              } else {
+                                    //                                                                                                  swipeLeft() // Swipe Left
+                                    //                                                                                              }
+                                    //                                                                                          }
+                                    //                                                                                          // Handle vertical swipe (up or down)
+                                    //                                                                                          else if abs(gesture.translation.height) > swipeThreshold {
+                                    //                                                                                              if gesture.translation.height < 0 {
+                                    //                                                                                                  swipeUp() // Swipe Up
+                                    //                                                                                              } else {
+                                    //                                                                                                  swipeDown() // Swipe Down
+                                    //                                                                                              }
+                                    //                                                                                          } else {
+                                    //                                                                                              // If it's not a meaningful swipe, reset the offset
+                                    //                                                                                              withAnimation {
+                                    //                                                                                                  offset = .zero
+                                    //                                                                                              }
+                                    //                                                                                          }
+                                    //                                                                                      }
+                                    //                                   )
+                                case .failure:
+                                    Color.gray // Fallback for failed loading
+                                    
+                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
+                                    
+                                        .offset(x: offset.width, y: 0)
+                                        .cornerRadius(20) // Add corner radius here
+                                        .rotationEffect(.degrees(Double(offset.width / 20)))
+                                @unknown default:
+                                    EmptyView()
+                                }
                             }
-                        }
-                        
-                        // Text overlay on the image
-                        VStack(alignment: .leading, spacing: 8) {
                             
-                            Text(item.name ?? "Unknown Name")
-                                .font(.title)
-                                .bold()
-                                .foregroundColor(.white)
-                            
-                            Text("Experience: \(item.experience ?? 0) years")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                            
-                            Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
-                                .font(.subheadline)
-                                .frame(width:  UIScreen.main.bounds.width - 40.0 ,alignment: .leading) // Align text to the leading edge )
-                                .foregroundColor(.white).lineLimit(nil) // Allow multiple lines
-                                .fixedSize(horizontal: false, vertical: true) // Ensure it wraps vertically
+                            // Text overlay on the image
+                            VStack(alignment: .leading, spacing: 8) {
                                 
+                                Text(item.name ?? "Unknown Name")
+                                    .font(.title)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                
+                                Text("Experience: \(item.experience ?? 0) years")
+                                    .font(.subheadline)
+                                    .foregroundColor(.white)
+                                
+                                Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
+                                    .font(.subheadline)
+                                    .frame(width:  UIScreen.main.bounds.width - 40.0 ,alignment: .leading) // Align text to the leading edge )
+                                    .foregroundColor(.white).lineLimit(nil) // Allow multiple lines
+                                    .fixedSize(horizontal: false, vertical: true) // Ensure it wraps vertically
+                                
+                            }
+                            .padding(8)
+                            
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.black.opacity(0.7), Color.clear]),
+                                    startPoint: .bottom,
+                                    endPoint: .top
+                                )
+                            ) .cornerRadius(20) // Add corner radius here
                         }
-                        .padding(8)
-                       
-                        .background(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color.black.opacity(0.7), Color.clear]),
-                                startPoint: .bottom,
-                                endPoint: .top
-                            )
-                        ) .cornerRadius(20) // Add corner radius here
+                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                        .opacity(isHidden ? 0 : 1).padding(8)
+                        
                     }
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
-                    .opacity(isHidden ? 0 : 1).padding(8)
+                    
+                    
+                    
+                    
+                    Text("Profile Bio:")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fontWeight(.bold)
+                        .padding()
+                    
+                    Text( item.bio ?? "")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .lineLimit(nil)
+                    
+                    
+                    
                     
                 }
                 
-                HStack {
-                    Button(action: swipeLeft) {
-                        Text("Reject")
-                            .bold()
-                            .frame(width: 100, height: 50)
-                            .background(Color.red)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    }
-                    .padding()
-                    
-                    Button(action: swipeRight) {
-                        Text("Accept")
-                            .bold()
-                            .frame(width: 100, height: 50)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                    }
-                    .padding()
+                
+                // Temporary height element at the bottom (100 height)
+                Color.clear
+                    .frame(height: 120) // This will push the content up and allow scrolling
+                
+            }.padding()
+            
+            HStack {
+                Button(action: swipeLeft) {
+                    Text("Reject")
+                        .bold()
+                        .frame(width: 100, height: 50)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
                 }
+                .padding()
                 
-                
-                
-                Text("Profile Bio:")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .fontWeight(.bold)
-                    .padding()
-                
-                Text( item.bio ?? "")
-                               .font(.subheadline)
-                               .foregroundColor(.secondary)
-                               .lineLimit(nil)
-                
-              
-                
-                Spacer()
-            }
-                
-        }.padding()
+                Button(action: swipeRight) {
+                    Text("Accept")
+                        .bold()
+                        .frame(width: 100, height: 50)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                  
+                    
+                }
+                .padding()
+            }.frame(height:20).padding(.bottom , 10)
+            
+            Color.clear
+                .frame(height: 100)
+        }
        
     }
  
@@ -464,7 +516,7 @@ struct SwipeableView: View {
            withAnimation(.easeIn(duration: 0.5)) {
                offset = CGSize(width: -UIScreen.main.bounds.width, height: 0)
                isHidden = true
-               onSwipe()
+               onSwipeLeft()
            }
        }
 
@@ -472,7 +524,7 @@ struct SwipeableView: View {
            withAnimation(.easeIn(duration: 0.5)) {
                offset = CGSize(width: UIScreen.main.bounds.width, height: 0)
                isHidden = true
-               onSwipe()
+               onSwipeRight()
            }
        }
     

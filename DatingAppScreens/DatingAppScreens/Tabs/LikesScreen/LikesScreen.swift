@@ -29,24 +29,24 @@ struct LikesScreenView: View {
 //                   List(likes) { like in
 //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
                        
-                  List {
-                      ForEach(likes) { like in  // Iterate over likes directly
-                          
-                          NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil , photoUrl: "\(tokenManger.localhost)/images")) {
-                              LikeItemView(like: like, photoURL: "\(tokenManger.localhost)/images")
-                                  .onAppear {
-                                      if let index = likes.firstIndex(where: { $0.id == like.id }), index == likes.count - 5 {
-                                          //                                              loadMoreItems()
-                                          print ("load more")
-                                      }
-                                      
-                                  }
-                          }
-                          
-                          
-                      }
-                      
-                  }.navigationBarTitle("Likes").navigationTitle("Likes") // Ensure title is within NavigationStack
+            List {
+                ForEach(likes) { like in  // Iterate over likes directly
+                    
+                    NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil , photoUrl: "\(tokenManger.localhost)/images")) {
+                        LikeItemView(like: like, photoURL: "\(tokenManger.localhost)/images")
+                            .onAppear {
+                                if let index = likes.firstIndex(where: { $0.id == like.id }), index == likes.count - 5 {
+                                    //                                              loadMoreItems()
+                                    print ("load more")
+                                }
+                                
+                            }
+                    }
+                    
+                    
+                }
+                
+            }.listStyle(PlainListStyle()).navigationBarTitle("Likes" , displayMode: .inline)  // Ensure title is within NavigationStack
 //                           .onAppear {
 //                               if index == likes.count - 5 {
 //                                  loadMoreItems()
@@ -54,7 +54,7 @@ struct LikesScreenView: View {
 //                           }
 //                   }
                   
-        }.navigationBarTitle("Likes").navigationTitle("Likes")
+        }
         .onAppear(){
             Task {
                 do {

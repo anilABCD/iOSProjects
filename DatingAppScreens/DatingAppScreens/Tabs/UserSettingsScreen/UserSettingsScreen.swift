@@ -59,7 +59,7 @@ struct UserSettingsView : View {
                     //                              }
                     //                          }
                 }
-            }.navigationBarTitle("Profile Settings").onAppear(){
+            }.navigationBarTitle("Profile Settings" , displayMode: .inline).onAppear(){
                 
                 
                 tokenManger.isMenuView = true;
