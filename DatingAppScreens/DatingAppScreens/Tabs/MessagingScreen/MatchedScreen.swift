@@ -70,7 +70,7 @@ struct MatchedScreenView: View {
 //    
 //    
     var body: some View {
-              NavigationView {
+        NavigationStack {
                   
            
                   
@@ -152,7 +152,7 @@ struct MatchedScreenView: View {
                                                   )
                                                   
                                                   
-                                                  Text(onlineProfile?.name ?? "" )
+                                                  Text(onlineProfile?.name?.prefix(10) ?? "" )
                                                       .font(.headline)
                                               }.frame(maxWidth:.infinity).padding(.horizontal, 10)
                                               
@@ -191,7 +191,7 @@ struct MatchedScreenView: View {
                                           
                                       }
                                   }
-                              }, hideTabBar: $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) // Hides the back button in ChatView
+                              }, hideTabBar: $hideTabBar, webSocketManager: webSocketManager)  // Hides the back button in ChatView
                               
                               ) {
                                   MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.localhost)/images", lastMessage : match.lastMessage , unreadCounts: match.unreadCounts , userId: tokenManger.userId )
@@ -219,10 +219,8 @@ struct MatchedScreenView: View {
 //                           }
 //                   }
                   
-              }.navigationBarTitle( "" , displayMode: .inline)
-            .navigationBarHidden(true) // Hides the navigation bar
-            .navigationBarBackButtonHidden(true)
-              
+              }
+           
              
            
        .onAppear()
@@ -312,14 +310,14 @@ struct MatchedItemView: View {
                     
 //                    Text("unread count number \(unreadCounts?[ userId])")
 
-//                    Text("\(unreadCounts?[ userId ] ?? 0 )")
-//
-//                        .font(.caption2) // Small font size for badge
-//                        .foregroundColor(.white) // White text color
-//                        .padding(6) // Small padding for a compact circle
-//                        .background(Circle().fill(Color.blue)) // Blue circle background
-//                        .frame(minWidth: 20, minHeight: 20) // Ensure consistent circular shape
-//                        .offset(y: 5)
+                    Text("\(unreadCounts?[ userId ] ?? 0 )")
+
+                        .font(.caption2) // Small font size for badge
+                        .foregroundColor(.white) // White text color
+                        .padding(6) // Small padding for a compact circle
+                        .background(Circle().fill(Color.blue)) // Blue circle background
+                        .frame(minWidth: 20, minHeight: 20) // Ensure consistent circular shape
+                        .offset(y: 5)
                     
                     if let unreadCount = unreadCounts?[ userId ] , unreadCount > 0 {
                         Text("\(unreadCount)")

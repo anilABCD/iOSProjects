@@ -156,7 +156,7 @@ struct ContentView: View {
     
     var body: some View {
         
-        NavigationView {
+        NavigationStack {
             ZStack {
                 
                 
@@ -342,65 +342,65 @@ struct ContentView: View {
                         
                     } else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" || tokenManager.jobRole == "" ) ) {
                         
-                        VStack {
-                            
-                            NavigationStack(path: $path) {
-                                
-                                //                            Group {
-                                //
-                                //
-                                ////                                if tokenManager.accessToken.isEmpty {
-                                ////
-                                ////                                    LoginView(path: $path)
-                                ////                                } else
-                                ////                                if tokenManager.photo.isEmpty {
-                                ////
-                                ////                                    UploadYourPhotoView(path:$path)
-                                ////
-                                ////                                } else if tokenManager.technologies.isEmpty {
-                                ////                                    UpdateTechnologyView(path: $path)
-                                ////                                } else {
-                                ////                                    LoginView(path: $path)
-                                ////                                }
-                                //                            }
-                                
-                                //                                LoginView(path: $path).navigationDestination(for: MyNavigation<String>.self) { view in
-                                //                                    switch view.appView {
-                                //                                    case .signIn:
-                                //                                        LoginSocialView(path:$path)
-                                //                                    case .signUp:
-                                //                                        RegisterView(path:$path)
-                                //                                    case .page1:
-                                //                                        UploadYourPhotoView(path: $path)
-                                //                                    case .page2:
-                                //                                        UpdateTechnologyNewView(path: $path)
-                                //                                    case .page3:
-                                //                                        UpdateHobbiesView(path : $path)
-                                //                                    case .page4:
-                                //                                        ProfileEditorView(path : $path)
-                                //                                    case .page5 :
-                                //                                        UpdateDescribeYourselfView(path : $path)
-                                //                                    case .notificationPermissionPage :
-                                //                                        Text("Notifications Settings")
-                                //                                    case .home:
-                                //                                        Text("Technologies")
-                                //                                    case .page6:
-                                //                                        UpdateJobRoleView(path : $path)
-                                //                                    }
-                                //                                }
-                            }
-                            
-                            
-                        }.frame( maxWidth:.infinity)
-                            .navigationBarTitle("", displayMode: .inline)
-                            .onAppear(){
-                                
-                                //                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
-                                
-                                handleNavigation()
-                                //                                                }
-                                
-                            }
+//                        VStack {
+//                            
+//                            NavigationStack(path: $path) {
+//                                
+//                                //                            Group {
+//                                //
+//                                //
+//                                ////                                if tokenManager.accessToken.isEmpty {
+//                                ////
+//                                ////                                    LoginView(path: $path)
+//                                ////                                } else
+//                                ////                                if tokenManager.photo.isEmpty {
+//                                ////
+//                                ////                                    UploadYourPhotoView(path:$path)
+//                                ////
+//                                ////                                } else if tokenManager.technologies.isEmpty {
+//                                ////                                    UpdateTechnologyView(path: $path)
+//                                ////                                } else {
+//                                ////                                    LoginView(path: $path)
+//                                ////                                }
+//                                //                            }
+//                                
+//                                //                                LoginView(path: $path).navigationDestination(for: MyNavigation<String>.self) { view in
+//                                //                                    switch view.appView {
+//                                //                                    case .signIn:
+//                                //                                        LoginSocialView(path:$path)
+//                                //                                    case .signUp:
+//                                //                                        RegisterView(path:$path)
+//                                //                                    case .page1:
+//                                //                                        UploadYourPhotoView(path: $path)
+//                                //                                    case .page2:
+//                                //                                        UpdateTechnologyNewView(path: $path)
+//                                //                                    case .page3:
+//                                //                                        UpdateHobbiesView(path : $path)
+//                                //                                    case .page4:
+//                                //                                        ProfileEditorView(path : $path)
+//                                //                                    case .page5 :
+//                                //                                        UpdateDescribeYourselfView(path : $path)
+//                                //                                    case .notificationPermissionPage :
+//                                //                                        Text("Notifications Settings")
+//                                //                                    case .home:
+//                                //                                        Text("Technologies")
+//                                //                                    case .page6:
+//                                //                                        UpdateJobRoleView(path : $path)
+//                                //                                    }
+//                                //                                }
+//                            }
+//                            
+//                            
+//                        }.frame( maxWidth:.infinity)
+//                            .navigationBarTitle("", displayMode: .inline)
+//                            .onAppear(){
+//                                
+//                                //                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
+//                                
+//                                handleNavigation()
+//                                //                                                }
+//                                
+//                            }
                         
                         
                     }

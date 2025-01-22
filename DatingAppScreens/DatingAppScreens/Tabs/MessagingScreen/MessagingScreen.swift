@@ -687,7 +687,7 @@ struct ChatView: View {
             }
           
             
-        } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl, hideTabBar: $hideTabBar  )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading)
+        } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl, hideTabBar: $hideTabBar  )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading).navigationBarBackButtonHidden(true)
     }
 }
 

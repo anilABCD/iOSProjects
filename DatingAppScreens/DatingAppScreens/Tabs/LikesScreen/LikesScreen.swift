@@ -25,7 +25,7 @@ struct LikesScreenView: View {
     
     
     var body: some View {
-              NavigationView {
+        NavigationStack {
 //                   List(likes) { like in
 //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
                        
@@ -46,7 +46,7 @@ struct LikesScreenView: View {
                           
                       }
                       
-                  }.navigationTitle("Likes")
+                  }.navigationBarTitle("Likes").navigationTitle("Likes") // Ensure title is within NavigationStack
 //                           .onAppear {
 //                               if index == likes.count - 5 {
 //                                  loadMoreItems()
@@ -54,7 +54,7 @@ struct LikesScreenView: View {
 //                           }
 //                   }
                   
-               }
+        }.navigationBarTitle("Likes").navigationTitle("Likes")
         .onAppear(){
             Task {
                 do {
