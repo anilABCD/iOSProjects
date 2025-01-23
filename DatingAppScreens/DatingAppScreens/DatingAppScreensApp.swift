@@ -155,6 +155,10 @@ class TokenManager: ObservableObject {
     
     @Published var isMenuView : Bool = false;
     
+    
+    @Published var isKeyboardOpen : Bool = false;
+    
+    
     @Published var gotToNotificationsPage : Bool = false;
  
 //    @Published  var localhost : String = "http://169.254.23.107:8000"

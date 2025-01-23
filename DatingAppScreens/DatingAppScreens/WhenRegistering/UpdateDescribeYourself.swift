@@ -20,7 +20,8 @@ struct UpdateDescribeYourselfView : View {
               
                 VStack(alignment: .leading) {
                     
-                   
+                    Spacer()
+                    
                     Text("Your Bio")
                         .font(.headline)
                         .foregroundColor(.gray)
@@ -73,10 +74,12 @@ struct UpdateDescribeYourselfView : View {
                     Alert(title: Text("Error"), message: Text("Failed to submit details. Please try again."), dismissButton: .default(Text("OK")))
                 }
 
+//                Text("\(tokenManger.isKeyboardOpen)")
                
             } .padding(.horizontal)
-            .padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline)
-        }.onAppear(){
+                .padding(.bottom, showNextButton ? 0 : ( tokenManger.isKeyboardOpen ? 4 : 110 ) ).navigationBarTitle("", displayMode: .inline)
+        }
+        .onAppear(){
             // Assuming tokenManager.technologies is a string containing comma-separated values
             if tokenManger.bio == "" {
                 isFirstTimeUpdatingBio = true;

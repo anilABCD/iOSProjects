@@ -152,6 +152,39 @@ struct ContentView: View {
         }
     
     @State private var hasLoaded: Bool = false // Track if it's the first load
+    
+    
+    // Add observers for keyboard events
+       private func addKeyboardListeners() {
+           NotificationCenter.default.addObserver(
+               forName: UIResponder.keyboardWillShowNotification,
+               object: nil,
+               queue: .main
+           ) { _ in
+               tokenManager.isKeyboardOpen = true
+               runYourCodeOnKeyboardOpen()
+           }
+
+           NotificationCenter.default.addObserver(
+               forName: UIResponder.keyboardWillHideNotification,
+               object: nil,
+               queue: .main
+           ) { _ in
+               tokenManager.isKeyboardOpen = false
+           }
+       }
+
+       // Remove observers when the view disappears
+       private func removeKeyboardListeners() {
+           NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+           NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+       }
+
+       // Custom code to run when the keyboard opens
+       private func runYourCodeOnKeyboardOpen() {
+           print("Keyboard is now open. Running custom code.")
+           // Add your custom logic here
+       }
 
     
     var body: some View {
@@ -469,7 +502,9 @@ struct ContentView: View {
                                         //                                    }
                                         .tag(0)
                                         .background(Color.white) // Set background color of the first tab
-                                        LikesScreenView()
+                                        LikesScreenView().onAppear(){
+                                            tokenManager.isMenuView = true
+                                        }
                                         //                                        .tabItem {
                                         //                                            Label("", systemImage: "heart").background(.black)
                                         //                                        }
@@ -481,13 +516,17 @@ struct ContentView: View {
                                         //                                }
                                         //                                .tag(2)
                                         
-                                        MatchedScreenView( hideTabBar : $hideTabBar)
+                                        MatchedScreenView( hideTabBar : $hideTabBar).onAppear(){
+                                            tokenManager.isMenuView = true
+                                        }
                                         //                                        .tabItem {
                                         //                                            Label("", systemImage: "message").background(.black)
                                         //                                        }
                                             .tag(2)
                                         
-                                        UserSettingsView(path: $path)
+                                        UserSettingsView(path: $path).onAppear(){
+                                            tokenManager.isMenuView = true
+                                        }
                                         //                                        .tabItem {
                                         //                                            Label("", systemImage: "person").background(.black)
                                         //                                        }
@@ -626,6 +665,9 @@ struct ContentView: View {
             .onAppear {
                 dataFetcher.startPolling()
                 
+                // adding keyboardlisteners .
+                addKeyboardListeners() ;
+                
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // App became active
                 let userId = tokenManager.userId // Replace with actual user ID
@@ -655,10 +697,13 @@ struct ContentView: View {
                 }
                 
                 
-                
+               
             }
             .onDisappear {
-                dataFetcher.stopPolling()
+                dataFetcher.stopPolling();
+                
+                // removing keyboardlisteners .
+                removeKeyboardListeners();
             }
         }
 }
