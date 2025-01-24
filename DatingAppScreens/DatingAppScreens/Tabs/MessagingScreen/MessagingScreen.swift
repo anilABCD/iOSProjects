@@ -408,16 +408,8 @@ struct ChatView: View {
                                                                                                                               .resizable()
                                                                                                                               .frame(width: 150, height: 150)
                                                                                                                               .onTapGesture {
-                                                                                                                                  // Update the selected image URL
-                                                                                                                                 print( "\(url)" )
-                                                                                                                                  print( "\(url)" )
-                                                                                                                                  self.showImageViewer = true // Show image viewer
-                                                                                                                              
-                                                                                                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                                                                                                     
-                                                                                                                                          selectedImageURL = url // Set new URL
-                                                                                                                                     
-                                                                                                                                  }
+                                                                                                                                  selectedImageURL = url // Set new URL
+                                                                                                                                  
                                                                                                                               }
                                                                                                                       case .failure:
                                                                                                                           Text("Failed to load image")
@@ -483,6 +475,14 @@ struct ChatView: View {
 //                                    }
 //                                    
 //                                }
+                                       .onChange(of: selectedImageURL ) { newValue in
+                                           
+                                           if let imageURL = newValue {
+                                               
+                                               showImageViewer = true;
+                                           }
+                                           
+                                       }
                                        .onChange(of: webSocketManager.messages.count) { _ in
                                            
                                            let message = webSocketManager.messages.last
@@ -517,14 +517,14 @@ struct ChatView: View {
 //                                       }
                             } .sheet(isPresented: $showImageViewer) {
                                 
-                                if let selectedImageURL = selectedImageURL {
+                                 
                                     AsyncImageViewer(imageURL: $selectedImageURL).id(refreshID) .onAppear {
                                         print("Sheet appeared with URL: \(String(describing: selectedImageURL))")
                                     }
                                     .onDisappear {
                                         print("Sheet disappeared")
                                     } // Use refreshID to force re-render
-                                }
+                               
                                
                             }
                             
@@ -776,8 +776,8 @@ struct AsyncImageViewer: View {
                                    }
                 .padding()
         }.onDisappear(){
-                imageURL = nil
-            }
+            imageURL = nil
+        }
        
     }
 }
