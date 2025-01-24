@@ -32,6 +32,7 @@
 		B772800F2C19D62200446085 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772800E2C19D62200446085 /* Utils.swift */; };
 		B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A36F32BF863D00051ACF1 /* RegisterView.swift */; };
 		B77B2F0B2D0C511000C7EDDF /* LocationPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77B2F0A2D0C510700C7EDDF /* LocationPermissionManager.swift */; };
+		B77B92FA2D432CCC007B3A37 /* ClosingKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77B92F92D432CC5007B3A37 /* ClosingKeyboard.swift */; };
 		B77C2D052C1A85880026E36E /* Chips.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C2D042C1A85880026E36E /* Chips.swift */; };
 		B78180892C039A550040FADB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78180882C039A550040FADB /* ProfileView.swift */; };
 		B784EDF22C19ECD000FF97C3 /* UpdateHobbiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */; };
@@ -106,6 +107,7 @@
 		B772800E2C19D62200446085 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		B77A36F32BF863D00051ACF1 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		B77B2F0A2D0C510700C7EDDF /* LocationPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionManager.swift; sourceTree = "<group>"; };
+		B77B92F92D432CC5007B3A37 /* ClosingKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosingKeyboard.swift; sourceTree = "<group>"; };
 		B77C2D042C1A85880026E36E /* Chips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips.swift; sourceTree = "<group>"; };
 		B78180882C039A550040FADB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHobbiesView.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 		B71184A82C0F7674004FC55C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B77B92F92D432CC5007B3A37 /* ClosingKeyboard.swift */,
 				B717AAAB2D3032F3007BA6B0 /* UIImageExtension.swift */,
 				B73C5B662D2B002E0030F136 /* DateUtilities.swift */,
 				B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */,
@@ -687,6 +690,7 @@
 				B77B2F0B2D0C511000C7EDDF /* LocationPermissionManager.swift in Sources */,
 				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
 				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
+				B77B92FA2D432CCC007B3A37 /* ClosingKeyboard.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
 				B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */,

@@ -111,8 +111,11 @@ struct ChatView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
       @State private var selectedImage: UIImage? = nil
     
-    
-    
+    @State private var selectedImageURL: URL? = nil
+    @State private var refreshID = UUID() // Unique ID to force the update
+
+    @State private var showImageViewer: Bool = false
+  
     func removeNumberInParenthesesFromMonth(from text: String) -> String {
      
         let regex = try! NSRegularExpression(pattern: "\\(\\s*\\d+\\s*\\)", options: [])
@@ -338,6 +341,20 @@ struct ChatView: View {
                                                                                                                               .resizable()
 //                                                                                                                              .scaledToFit()
                                                                                                                               .frame(width: 150, height: 150)
+                                                                                                                              .onTapGesture {
+                                                                                                                                  // Update the selected image URL
+                                                                                                                                 print( "\(url)" )
+                                                                                                                                  print( "\(url)" )
+                                                                                                                                  self.showImageViewer = true // Show image viewer
+                                                                                                                              
+                                                                                                                          
+                                                                                                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                                                                                                      
+                                                                                                                                      
+                                                                                                                                          selectedImageURL = url // Set new URL
+                                                                                                                                     
+                                                                                                                                  }
+                                                                                                                              }
                                                                                                                              
                                                                                                                       case .failure:
                                                                                                                           Text("Failed to load image")
@@ -390,7 +407,18 @@ struct ChatView: View {
                                                                                                                           img
                                                                                                                               .resizable()
                                                                                                                               .frame(width: 150, height: 150)
-                                                                                                                             
+                                                                                                                              .onTapGesture {
+                                                                                                                                  // Update the selected image URL
+                                                                                                                                 print( "\(url)" )
+                                                                                                                                  print( "\(url)" )
+                                                                                                                                  self.showImageViewer = true // Show image viewer
+                                                                                                                              
+                                                                                                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                                                                                                     
+                                                                                                                                          selectedImageURL = url // Set new URL
+                                                                                                                                     
+                                                                                                                                  }
+                                                                                                                              }
                                                                                                                       case .failure:
                                                                                                                           Text("Failed to load image")
                                                                                                                               .foregroundColor(.red)
@@ -487,6 +515,17 @@ struct ChatView: View {
 //                                               markMessagesAsDelivered(upTo: timestamp)
 //                                           }
 //                                       }
+                            } .sheet(isPresented: $showImageViewer) {
+                                
+                                if let selectedImageURL = selectedImageURL {
+                                    AsyncImageViewer(imageURL: $selectedImageURL).id(refreshID) .onAppear {
+                                        print("Sheet appeared with URL: \(String(describing: selectedImageURL))")
+                                    }
+                                    .onDisappear {
+                                        print("Sheet disappeared")
+                                    } // Use refreshID to force re-render
+                                }
+                               
                             }
                             
 //                            ForEach(webSocketManager.messages.indices, id: \.self) { index in
@@ -540,6 +579,8 @@ struct ChatView: View {
                         
                     }
                    
+                }.onTapGesture {
+                    UIApplication.shared.dismissKeyboard()
                 }.onDisappear(){
                     onBackAction()
                 }
@@ -679,7 +720,7 @@ struct ChatView: View {
                     }
                 }
                 
-                .padding(.bottom , 58)
+                .padding(.bottom , tokenManger.isKeyboardOpen ? 4 : 45)
                 
             }
             .onAppear(){
@@ -688,6 +729,56 @@ struct ChatView: View {
           
             
         } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl, hideTabBar: $hideTabBar  )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading).navigationBarBackButtonHidden(true)
+    }
+}
+
+
+struct AsyncImageViewer: View {
+    @Binding var imageURL: URL?
+    @Environment(\.dismiss) var dismiss
+       
+    var body: some View {
+       
+        ZStack {
+                
+                AsyncImage(url: imageURL) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            
+                    case .failure:
+                        Text("Failed to load image")
+                            .foregroundColor(.red)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+                
+            // Close Button
+                                   VStack {
+                                       HStack {
+                                           Spacer()
+                                           Button(action: {
+                                               dismiss()
+                                           }) {
+                                               Image(systemName: "xmark.circle.fill")
+                                                   .resizable()
+                                                   .frame(width: 40, height: 40)
+                                                   .foregroundColor(.red)
+                                                   .padding()
+                                           }
+                                       }
+                                       Spacer()
+                                   }
+                .padding()
+        }.onDisappear(){
+                imageURL = nil
+            }
+       
     }
 }
 
