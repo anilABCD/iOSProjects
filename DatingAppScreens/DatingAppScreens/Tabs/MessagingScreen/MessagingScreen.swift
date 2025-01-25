@@ -769,7 +769,11 @@ struct AsyncImageViewer: View {
                                                    .resizable()
                                                    .frame(width: 40, height: 40)
                                                    .foregroundColor(.red)
-                                                   .padding()
+                                                   .background(Color.white.opacity(0.9)) // Optional for better contrast
+                                                                  .clipShape(Circle())
+                                                                  .shadow(color: .gray.opacity(0.4), radius: 3, x: 0, y: 2) // Optional shadow
+                                                     
+                                                  
                                            }
                                        }
                                        Spacer()
