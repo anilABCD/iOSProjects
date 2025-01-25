@@ -41,11 +41,52 @@ struct MatchedScreenView: View {
         do {
             
             
+            
+            
             let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
             
-            matched = matchedResponse;
+//            // Update the `id` for each match and modify the lastMessage text, keeping previous message content intact
+//            let updatedMatches = matchedResponse.map { match -> Chat in
+//                var updatedMatch = match
+//                // Keep the previous message text and append new text
+//                if var lastMessage = updatedMatch.lastMessage {
+//                    lastMessage.text = "\(lastMessage.text ?? "") Updated Text" // Appending "Updated Text" to the previous text
+//                    updatedMatch.lastMessage = lastMessage
+//                }
+//                
+//                // Modify the `id` (appending a new suffix or generating a new unique ID)
+//                updatedMatch.id = "\(match.id)-updated-\(UUID())" // Example: appending "-updated" and a UUID
+//                
+//                return updatedMatch
+//            }
             
-            print("matches current" , matchedResponse)
+            
+            func updateMatches() {
+                for index in self.matched.indices {
+                    var updatedMatch = self.matched[index]  // Create a mutable copy
+                    
+                    // Update the last message without modifying the match's ID
+                    if var lastMessage = updatedMatch.lastMessage {
+                        lastMessage.text = "\(lastMessage.text ?? "") Updated Text"  // Appending new text
+                        updatedMatch.lastMessage = lastMessage
+                    }
+                    
+                    // Assign the updated match back to the array
+                    self.matched[index] = updatedMatch  // This updates the struct in the array
+                }
+            }
+            
+            DispatchQueue.main.async {
+                
+                self.matched = matchedResponse;
+
+//                updateMatches() ;
+                
+                print("matches current" ,    self.matched )
+                
+            }
+            
+           
             
         }catch{
             // If decoding fails, print the error message
@@ -87,7 +128,7 @@ struct MatchedScreenView: View {
                               
                               HStack(alignment: .top, spacing: 4) { // Add spacing between items if needed
                                   
-                                  ForEach(matched) { match in
+                                  ForEach(self.matched, id: \.id) { match in
                                       
                                       
                                       

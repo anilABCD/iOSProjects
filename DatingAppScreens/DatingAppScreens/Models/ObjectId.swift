@@ -6,20 +6,20 @@
 //
 
 import Foundation
-
-struct ObjectId:  Decodable, Hashable {
-    let value: String
-    
-    init(from string: String) {
-          self.value = string
-      }
-      
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let objectIdString = try container.decode(String.self)
-        self.value = objectIdString
-    }
-}
-
+//
+//struct ObjectId:  Decodable, Hashable {
+//    let value: String
+//    
+//    init(from string: String) {
+//          self.value = string
+//      }
+//      
+//    
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.singleValueContainer()
+//        let objectIdString = try container.decode(String.self)
+//        self.value = objectIdString
+//    }
+//}
+//
 

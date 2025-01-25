@@ -23,7 +23,7 @@ struct MatchesNewDevsView: View {
     }
     
     
-    @State private var profiles : [Profile] = [Profile(objectId: ObjectId(from:"hello"), name: "")];
+    @State private var profiles : [Profile] = [ ];
     
     func likeTheProfile(user2_id : String) async throws {
 //
