@@ -15,6 +15,8 @@ class WebSocketManager: ObservableObject {
     @Published var token : String = ""
     @Published var deliverdUserIdAndTimeStamp : [String:Any] = [:]
     
+    @Published var isOnChatScreen : Bool = false;
+    
     private var socket: SocketIOClient!
     
     @Published var otherUserId : String = ""
@@ -85,43 +87,45 @@ class WebSocketManager: ObservableObject {
         
         socket.on("newMessage") { data, _ in
             
-            print ("message from socket" , data)
             
-            if let messageData = data as? [[String: Any]] {
-                       for item in messageData {
-                           if let sender = item["sender"] as? String,
-                              let text = item["text"] as? String , let image = item["image"] , let timestampString = item["timestamp"] as? String{
-                               DispatchQueue.main.async {
-                                   self.messages.append(["sender": sender, "text": text , "image" : image, "timestamp" : timestampString ])
-                                  
-                                  
-                                   
-                                   print(self.messages)
-                               }
-                               
-                               if( sender != self.userId ) {
-                                  
-                                   print("received : \(sender) \(self.otherUserId)")
-                                   let messageData: [String: Any] = [
-                                        "sender": sender,
-                                        "timestamp" :  item["timestamp"] ?? ""
-                                   ]
-                                   
-                                   
-                                   self.socket.emit("messageReceieved", messageData );
-                                   
-                                 
-                               }
-                               
-                             
-                           }
-                       }
-                   }
-            else{
-                print("no message")
+            if ( self.isOnChatScreen ) {
+                
+                print ("message from socket" , data)
+                
+                if let messageData = data as? [[String: Any]] {
+                    for item in messageData {
+                        if let sender = item["sender"] as? String,
+                           let text = item["text"] as? String , let image = item["image"] , let timestampString = item["timestamp"] as? String{
+                            DispatchQueue.main.async {
+                                self.messages.append(["sender": sender, "text": text , "image" : image, "timestamp" : timestampString ])
+                                
+                                
+                                print(self.messages)
+                            }
+                            
+                            if( sender != self.userId ) {
+                                
+                                print("received : \(sender) \(self.otherUserId)")
+                                let messageData: [String: Any] = [
+                                    "sender": sender,
+                                    "timestamp" :  item["timestamp"] ?? ""
+                                ]
+                                
+                                
+                                self.socket.emit("messageReceieved", messageData );
+                                
+                                
+                            }
+                            
+                            
+                        }
+                    }
+                }
+                else{
+                    print("no message")
+                }
+                
             }
-            
-            
         }
     }
     

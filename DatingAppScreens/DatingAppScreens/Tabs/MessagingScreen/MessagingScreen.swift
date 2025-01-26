@@ -724,7 +724,11 @@ struct ChatView: View {
                 
             }
             .onAppear(){
+                webSocketManager.isOnChatScreen = true;
                 hideTabBar = true
+            }
+            .onDisappear(){
+                webSocketManager.isOnChatScreen = false;
             }
           
             
