@@ -107,6 +107,7 @@ class WebSocketManager: ObservableObject {
                                 
                                 print("received : \(sender) \(self.otherUserId)")
                                 let messageData: [String: Any] = [
+                                    "receiverByUserId" : self.userId ,
                                     "sender": sender,
                                     "timestamp" :  item["timestamp"] ?? ""
                                 ]
