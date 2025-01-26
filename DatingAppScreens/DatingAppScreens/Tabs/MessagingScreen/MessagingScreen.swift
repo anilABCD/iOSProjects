@@ -94,6 +94,8 @@ struct CustomBackButton: View {
 struct ChatView: View {
     
     @EnvironmentObject private var tokenManger : TokenManager
+    
+
     let profile: Profile?
     let photoUrl : String
     var onBackAction: () -> Void
@@ -486,19 +488,27 @@ struct ChatView: View {
                                        .onChange(of: webSocketManager.messages.count) { _ in
                                            
                                            let message = webSocketManager.messages.last
-                                           if let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"]  as? String {
-                                               // Handle image, it could be null
-                                                     let image = message?["image"] as? String // If image is null, this will be nil
-                                                     
-                                               let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp , image : image )
+                                           
+//                                           if ( message?["chatId"] == self.chatId ) {
                                                
-                                               
-                                               DispatchQueue.main.async {
+                                               if  let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"]  as? String , let chatId = message?["chatId"] as? String,
+                                                   chatId == self.chat?.id {
                                                    
-                                                   messages.insert(newMessage , at : 0);
+                                                   print( "chatid " , chatId , self.chat?.id ?? "" )
                                                    
+                                                   // Handle image, it could be null
+                                                   let image = message?["image"] as? String // If image is null, this will be nil
+                                                   
+                                                   let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp , image : image )
+                                                   
+                                                   
+                                                   DispatchQueue.main.async {
+                                                       
+                                                       messages.insert(newMessage , at : 0);
+                                                       
+                                                   }
                                                }
-                                           }
+//                                           }
                                        }
 //                                       .onReceive(webSocketManager.$deliverdUserIdAndTimeStamp) { deliverdUserIdAndTimeStamp in
 //                                           // Safely extract values from the dictionary
@@ -795,7 +805,7 @@ struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var hideTabBar: Bool = false // Dummy state variable for preview
 
     static var previews: some View {
-        ChatView(profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
+        ChatView(  profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
     }
 }
 

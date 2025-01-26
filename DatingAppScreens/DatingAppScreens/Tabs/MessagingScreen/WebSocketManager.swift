@@ -94,10 +94,13 @@ class WebSocketManager: ObservableObject {
                 
                 if let messageData = data as? [[String: Any]] {
                     for item in messageData {
-                        if let sender = item["sender"] as? String,
-                           let text = item["text"] as? String , let image = item["image"] , let timestampString = item["timestamp"] as? String{
+                        if let chatId = item["chatId"] as? String ,
+                           let sender = item["sender"] as? String,
+                           let text = item["text"] as? String ,
+                           let image = item["image"] ,
+                           let timestampString = item["timestamp"] as? String {
                             DispatchQueue.main.async {
-                                self.messages.append(["sender": sender, "text": text , "image" : image, "timestamp" : timestampString ])
+                                self.messages.append([ "chatId" : chatId , "sender": sender, "text": text , "image" : image, "timestamp" : timestampString ])
                                 
                                 
                                 print(self.messages)
