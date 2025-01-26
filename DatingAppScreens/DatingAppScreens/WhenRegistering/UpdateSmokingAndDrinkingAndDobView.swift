@@ -32,7 +32,7 @@ class ProfileEditorViewModel: ObservableObject {
         // Default selections
         self.selectedDrinking = drinkingOptions.first!
         self.selectedSmoking = smokingOptions.first!
-        self.selectedDOB = Date()
+        self.selectedDOB = Calendar.current.date(byAdding: .year, value: -15, to: Date()) ?? Date()
     }
 }
 
@@ -48,17 +48,73 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
     
     var showNextButton: Bool = false
    
-    
+    enum AlertType : Identifiable{
+        case ageLessThan15
+        case ageGreaterThan60
+        
+        var id: Self { self }
+    }
+
      @State var status : String = ""
     
+    @State private var alertType: AlertType? = nil
+
     @EnvironmentObject private var tokenManger : TokenManager
     
+    @State private var isAgeLessThan15YearsAge : Bool = false
+    @State private var isAgeGreaterThan60Years : Bool = false
+    
+    private func checkIfDOBIsGreaterThan15YearsAge(date: Date) -> Bool {
+        
+        let calendar = Calendar.current
+            let startOfDay = calendar.startOfDay(for:)
+ 
+        // Calculate 15 years ago, at the end of the day (23:59:59.999...)
+        let fifteenYearsAgoEndOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: calendar.startOfDay(for: calendar.date(byAdding: .year, value: -15, to: Date()) ?? Date())) ?? Date()
+
+        return date <= fifteenYearsAgoEndOfDay // Checks if the date is older than 15 years
+    }
+    
+    
+    private func checkIfDOBIsLessThan60YearsAge(date: Date) -> Bool {
+        
+        let calendar = Calendar.current
+            let startOfDay = calendar.startOfDay(for:)
+
+        // Calculate 60 years ago
+        let sixtyYearsAgo = calendar.startOfDay(for: calendar.date(byAdding: .year, value: -60, to: Date()) ?? Date())
+        
+        // Check if the date is older than 15 years but not older than 60 years
+        return date >= sixtyYearsAgo
+    }
+    
+    func validateAge(date: Date) -> Bool {
+        
+        if ( !checkIfDOBIsGreaterThan15YearsAge(date: date) )
+        {
+            alertType = .ageLessThan15
+            
+            return false ;
+        }
+        else
+        if ( !checkIfDOBIsLessThan60YearsAge(date: date) ) {
+            
+            alertType = .ageGreaterThan60
+            
+            return false ;
+        }
+        else {
+            return true ;
+        }
+    }
     
      func submitSelections( authToken : String ) {
        
         guard let url = URL(string: "\(tokenManger.localhost)/profiles/smoking-drinking-dob") else { return }
         
-       
+        guard validateAge(date: viewModel.selectedDOB) else { return }
+      
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -68,6 +124,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
         print (token)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
+         
         
         
          let body = ["drinking": viewModel.selectedDrinking.name , "smoking" : viewModel.selectedSmoking.name , "dob" : convertToString(from : viewModel.selectedDOB) ] as [String : String]
@@ -181,11 +238,32 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                 )
                             }
                             .edgesIgnoringSafeArea(.all) // Ignore safe area for full-screen effect
+                           
                         }
                         
+                        
 //                        .background(Color(.systemGray6))
+                    }.alert(item: $alertType) { alertType in
+                        
+                        switch alertType {
+                                case .ageLessThan15:
+                                    return Alert(
+                                        title: Text("Alert"),
+                                        message: Text("Your date of birth should be greater than 15 years."),
+                                        dismissButton: .default(Text("OK"))
+                                    )
+                                case .ageGreaterThan60:
+                                    return Alert(
+                                        title: Text("Alert"),
+                                        message: Text("Your date of birth should be less than 60 years."),
+                                        dismissButton: .default(Text("OK"))
+                                    )
+                                }
+                        
+                        
                     }
-                    
+                  
+                   
                     Section("Habbits") {
                         // Smoking Picker
                         HStack() {
@@ -311,6 +389,31 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
         return formatter.string(from: date)
     }
 }
+
+
+//
+//struct DateAlertView: View {
+//    var body: some View {
+//        VStack(spacing: 20) {
+//            Text("Alert")
+//                .font(.title)
+//                .bold()
+//            
+//            Text("The selected date is greater than 15 years ago.")
+//                           .font(.body)
+//
+//            Button("Close") {
+//                // Dismiss sheet using environment
+//                dismiss()
+//            }
+//            .buttonStyle(.borderedProminent)
+//        }
+//        .padding()
+//    }
+//
+//    // Helper function to dismiss the sheet
+//    @Environment(\.dismiss) private var dismiss
+//}
 
 struct ProfileEditorView_Previews: PreviewProvider {
     var showNextButton: Bool = false
