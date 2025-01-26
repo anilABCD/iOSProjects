@@ -61,9 +61,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
 
     @EnvironmentObject private var tokenManger : TokenManager
     
-    @State private var isAgeLessThan15YearsAge : Bool = false
-    @State private var isAgeGreaterThan60Years : Bool = false
-    
+ 
     private func checkIfDOBIsGreaterThan15YearsAge(date: Date) -> Bool {
         
         let calendar = Calendar.current
