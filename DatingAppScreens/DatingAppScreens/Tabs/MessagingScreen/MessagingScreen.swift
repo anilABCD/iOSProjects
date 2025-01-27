@@ -740,7 +740,7 @@ struct ChatView: View {
             }.onChange(of: webSocketManager.deliveredMessageData) { newValue in
                 
                 // Logic to find the matching message
-                if let index = messages.firstIndex(where: { $0.timestamp == newValue.timestamp }) {
+                if let index = messages.firstIndex(where: { $0.timestamp == newValue.timestamp }) , newValue.chatId == chat?.id {
                     messages[index].delivered = true
                     if let currentUserID = profile?.id {
                         if !messages[index].readBy.contains(currentUserID) {
