@@ -9,11 +9,32 @@ import Foundation
 
 import SocketIO
 
+class DeliveredData: ObservableObject, Equatable  {
+    @Published var chatId: String
+    @Published var receiverUserId: String
+    @Published var timestamp: Date
+
+    init(chatId: String, receiverUserId: String, timestamp: Date) {
+        
+        self.chatId = chatId
+        self.receiverUserId = receiverUserId
+        self.timestamp = timestamp
+        
+    }
+    
+    // Implementing Equatable to compare all fields
+        static func == (lhs: DeliveredData, rhs: DeliveredData) -> Bool {
+            return lhs.chatId == rhs.chatId &&
+                   lhs.receiverUserId == rhs.receiverUserId &&
+                   lhs.timestamp == rhs.timestamp
+        }
+}
+
 class WebSocketManager: ObservableObject {
     @Published var messages: [[String: Any]] = []
     @Published private var manager: SocketManager?
     @Published var token : String = ""
-    @Published var deliverdUserIdAndTimeStamp : [String:Any] = [:]
+    @Published var deliveredMessageData : DeliveredData = DeliveredData(chatId : "" , receiverUserId: "", timestamp: Date())
     
     @Published var isOnChatScreen : Bool = false;
     
@@ -62,8 +83,9 @@ class WebSocketManager: ObservableObject {
             
             if let messageData = data as? [[String: Any]] {
                 for item in messageData {
-                    if let receiver = item["receiverId"] as? String,
-                        let timestampString = item["timestamp"] {
+                    if let receiverUserId = item["receiverUserId"] as? String,
+                        let timestampString = item["timestamp"] ,
+                        let chatId = item["chatId"] as? String {
                         
                         var timestamp : Date;
                         let dateFormatter = DateFormatter()
@@ -77,8 +99,7 @@ class WebSocketManager: ObservableObject {
                             timestamp = Date.now
                         }
                         
-                        self.deliverdUserIdAndTimeStamp["receiverByUserId"] = receiver;
-                        self.deliverdUserIdAndTimeStamp["timestamp"] = timestamp as Date;
+                        self.deliveredMessageData =  DeliveredData(chatId : chatId , receiverUserId: receiverUserId , timestamp: timestamp as Date)
                     }
                 }
                 

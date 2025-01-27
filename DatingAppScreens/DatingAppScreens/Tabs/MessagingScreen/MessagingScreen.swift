@@ -510,6 +510,7 @@ struct ChatView: View {
                                                }
 //                                           }
                                        }
+                                  
 //                                       .onReceive(webSocketManager.$deliverdUserIdAndTimeStamp) { deliverdUserIdAndTimeStamp in
 //                                           // Safely extract values from the dictionary
 //                                           guard
@@ -736,13 +737,27 @@ struct ChatView: View {
             .onAppear(){
                 webSocketManager.isOnChatScreen = true;
                 hideTabBar = true
+            }.onChange(of: webSocketManager.deliveredMessageData) { newValue in
+                
+                // Logic to find the matching message
+                if let index = messages.firstIndex(where: { $0.timestamp == newValue.timestamp }) {
+                    messages[index].delivered = true
+                    if let currentUserID = profile?.id {
+                        if !messages[index].readBy.contains(currentUserID) {
+                            messages[index].readBy.append(currentUserID)
+                        }
+                    }
+                }
             }
             .onDisappear(){
                 webSocketManager.isOnChatScreen = false;
             }
-          
+            
             
         } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl, hideTabBar: $hideTabBar  )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading).navigationBarBackButtonHidden(true)
+            
+           
+     
     }
 }
 
