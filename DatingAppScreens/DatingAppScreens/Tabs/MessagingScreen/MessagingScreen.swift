@@ -107,6 +107,7 @@ struct ChatView: View {
     @State var error: String?
     
     @State private var newMessage: String = ""
+    @State private var groupedMessages: [String: [String: [String: [Chat.Message]]]] = [:]
     
     @ObservedObject var webSocketManager : WebSocketManager ;
     
@@ -141,6 +142,8 @@ struct ChatView: View {
 //             
 //             // Check if the text contains any of the keywords
 //             if keywords.contains(where: { text.contains($0) }) {
+         
+//         return text;
       
              let regex = try! NSRegularExpression(pattern: "\\(\\s*\\d+\\s*\\)", options: [])
              
@@ -211,7 +214,8 @@ struct ChatView: View {
                         self.messages = chat.messages.reversed()
                         self.isLoading = false
                         
-                        
+                        // Initial grouping when the view appears
+                                   groupedMessages = groupMessagesByDate(messages)
                         
                         print (self.messages)
                     }
@@ -261,7 +265,7 @@ struct ChatView: View {
                 
                 let paddedNumber = String(format: "%02d", Calendar.current.component(.month, from: message.timestamp ))
                 
-                return "( \(paddedNumber) ) \(monthFormatter.string(from: message.timestamp)) "
+                return "( \(paddedNumber) ) \(monthFormatter.string(from: message.timestamp))"
               
             }.mapValues { monthGroup in
                 Dictionary(grouping: monthGroup) { message -> String in
@@ -282,13 +286,62 @@ struct ChatView: View {
                     }
                    
                     // Otherwise, return the weekday name
-                    return "( \(paddedNumber) ) \(weekdayFormatter.string(from: message.timestamp)) "
+                    return "( \(paddedNumber) ) \(weekdayFormatter.string(from: message.timestamp))"
                 }
             }
         }
     }
+    
+    func updateGroupedMessages(
+        existingGroupedMessages: inout [String: [String: [String: [Chat.Message]]]],
+        newMessages: [Chat.Message]
+    ) {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+        
+        let yearFormatter = DateFormatter()
+        yearFormatter.dateFormat = "yyyy"
+        
+        let monthFormatter = DateFormatter()
+        monthFormatter.dateFormat = "MMMM"
+        
+        let weekdayFormatter = DateFormatter()
+        weekdayFormatter.dateFormat = "E, d MMM"
+        
+        for message in newMessages {
+            let yearKey = yearFormatter.string(from: message.timestamp)
+            let monthNumber = String(format: "%02d", calendar.component(.month, from: message.timestamp))
+            let monthKey = "( \(monthNumber) ) \(monthFormatter.string(from: message.timestamp))"
+            let dayNumber = String(format: "%02d", calendar.component(.day, from: message.timestamp))
+            
+            let dayKey: String
+            if calendar.isDate(message.timestamp, inSameDayAs: today) {
+                dayKey = "( \(dayNumber) ) Today"
+            } else if calendar.isDate(message.timestamp, inSameDayAs: yesterday) {
+                dayKey = "( \(dayNumber) ) Yesterday"
+            } else {
+                dayKey = "( \(dayNumber) ) \(weekdayFormatter.string(from: message.timestamp))"
+            }
+            
+            // Ensure the structure exists
+            if existingGroupedMessages[yearKey] == nil {
+                existingGroupedMessages[yearKey] = [:]
+            }
+            if existingGroupedMessages[yearKey]?[monthKey] == nil {
+                existingGroupedMessages[yearKey]?[monthKey] = [:]
+            }
+            if existingGroupedMessages[yearKey]?[monthKey]?[dayKey] == nil {
+                existingGroupedMessages[yearKey]?[monthKey]?[dayKey] = []
+            }
+            
+            // Insert the new message at the start of the correct location
+            existingGroupedMessages[yearKey]?[monthKey]?[dayKey]?.insert( message, at: 0)
+        }
+    }
+
+  
     var body: some View {
-        let groupedMessages = groupMessagesByDate(messages)
        
         NavigationView {
             VStack {
@@ -386,7 +439,11 @@ struct ChatView: View {
                                                                                                    Text( messageStatus(otherUserId: profile?.id ?? "" , message: message) )
                                                                                                        .font(.caption2)
                                                                                                        .foregroundColor(message.isRead(by: profile?.id ?? "") ? .green : .gray)
+
                                                                                                    
+                                                                                                   
+                                                                                                   
+                                                                                                   // Text("\(self.webSocketManager.isOnChatScreen )")
                                                                                                    // Optionally, show a timestamp or other info here
                                                                                                                                         }
                                                                                            }.frame(maxWidth: .infinity, alignment: .trailing) // Align the text to the right
@@ -509,6 +566,9 @@ struct ChatView: View {
                                                    }
                                                }
 //                                           }
+                                       }  .onChange(of: messages) { newMessages in
+                                           guard let lastMessage = newMessages.first else { return } // Get only the last message
+                                           updateGroupedMessages(existingGroupedMessages: &groupedMessages, newMessages: [lastMessage])
                                        }
                                   
 //                                       .onReceive(webSocketManager.$deliverdUserIdAndTimeStamp) { deliverdUserIdAndTimeStamp in
