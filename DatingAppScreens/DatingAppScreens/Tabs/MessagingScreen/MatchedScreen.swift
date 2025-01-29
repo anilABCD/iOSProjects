@@ -16,7 +16,7 @@ struct MatchedScreenView: View {
     @State var matched : [Chat] = []
     @EnvironmentObject private var tokenManger : TokenManager
     @Binding var hideTabBar : Bool ;
-    @StateObject  var webSocketManager = WebSocketManager(token: "" , userId: "")
+    @StateObject  var webSocketManager = WebSocketManager(token: "" , otherUserId: "")
     
     @State private var selectedMatch: Chat?
        
@@ -275,7 +275,9 @@ struct MatchedScreenView: View {
                        
                     webSocketManager.userId = tokenManger.userId;
                        
-                    webSocketManager.connect()
+                       DispatchQueue.main.async {
+                           webSocketManager.connect()
+                       }
                     
                  }
                  catch{

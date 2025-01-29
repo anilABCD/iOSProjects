@@ -345,7 +345,8 @@ struct ChatView: View {
         in groupedMessages: inout [String: [String: [String: [Chat.Message]]]],
         newValue: Chat.Message,
         profile: Profile?,
-        chat: Chat?
+        chat: Chat? ,
+        isRead :Bool
     ) {
         guard let chatID = chat?.id, let currentUserID = profile?.id else { return }
 
@@ -361,14 +362,17 @@ struct ChatView: View {
                             // Update `delivered` status
                             dayMessages[groupedIndex].delivered = true
 
-                            // Safely unwrap and update `readBy`
-                            var message = dayMessages[groupedIndex]  // Create a mutable copy
-                            if !message.readBy.contains(currentUserID) {
-                                message.readBy.append(currentUserID)
+                            if ( isRead) {
+                                // Safely unwrap and update `readBy`
+                                var message = dayMessages[groupedIndex]  // Create a mutable copy
+                                if !message.readBy.contains(currentUserID) {
+                                    message.readBy.append(currentUserID)
+                                }
+                                
+                                // Save back the updated message
+                                dayMessages[groupedIndex] = message
                             }
                             
-                            // Save back the updated message
-                            dayMessages[groupedIndex] = message
                             groupedMessages[yearKey]?[monthKey]?[dayKey] = dayMessages
                             
                             return // Exit once the message is found and updated
@@ -377,6 +381,40 @@ struct ChatView: View {
                 }
             }
     }
+    
+    func updateMessageStatusByReadBy(
+        in groupedMessages: inout [String: [String: [String: [Chat.Message]]]],
+        profile: Profile?
+    ) {
+        guard let currentUserID = profile?.id else { return }
+
+        for (yearKey, months) in groupedMessages {
+            for (monthKey, days) in months {
+                for (dayKey, dayMessages) in days {
+                    for (index, message) in dayMessages.enumerated() {
+                        
+                        
+                        // Update `delivered` status
+                         var updatedMessage = message
+                        updatedMessage.delivered = true ;
+
+                        
+                        // Ensure `readBy` does not already contain `currentUserID`
+                        if !message.readBy.contains(currentUserID) {
+                          
+                            updatedMessage.readBy.append(currentUserID)
+
+                           
+                        }
+                        
+                        // Save back the updated message
+                        groupedMessages[yearKey]?[monthKey]?[dayKey]?[index] = updatedMessage
+                    }
+                }
+            }
+        }
+    }
+
   
     var body: some View {
        
@@ -831,10 +869,7 @@ struct ChatView: View {
                 .padding(.bottom , tokenManger.isKeyboardOpen ? 4 : 45)
                 
             }
-            .onAppear(){
-                webSocketManager.isOnChatScreen = true;
-                hideTabBar = true
-            }.onChange(of: webSocketManager.deliveredMessageData) { newValue in
+           .onChange(of: webSocketManager.deliveredMessageData) { newValue in
                 
                 // Ensure chat is available
                     guard let currentChat = chat else { return }
@@ -846,18 +881,46 @@ struct ChatView: View {
                     if let index = messages.firstIndex(where: { $0.timestamp == newValue.timestamp }) {
                         messages[index].delivered = true
                         
-                        if let currentUserID = profile?.id {
-                            if !messages[index].readBy.contains(currentUserID) {
-                                messages[index].readBy.append(currentUserID)
-                            }
-                        }
+//                        if let currentUserID = profile?.id {
+//                            if !messages[index].readBy.contains(currentUserID) {
+//                                messages[index].readBy.append(currentUserID)
+//                            }
+//                        }
                         
                         // Update groupedMessages
-                        updateMessageStatus(in: &groupedMessages, newValue: messages[index], profile: profile, chat: currentChat)
+                        updateMessageStatus(in: &groupedMessages, newValue: messages[index], profile: profile, chat: currentChat , isRead : newValue.isRead)
                     }
             }
+            .onChange(of: webSocketManager.readByData) { newValue in
+                
+                // Ensure chat is available
+                    guard let currentChat = chat else { return }
+                    
+                    // Ensure newValue belongs to the correct chat
+                    guard newValue.chatId == currentChat.id else { return }
+                
+                print ( currentChat.id , profile?.id)
+                    
+                if ( newValue.readBy == profile?.id ) {
+                    
+                    print("Read By to update enterd")
+                    
+                        updateMessageStatusByReadBy(in: &groupedMessages, profile: profile)
+                    
+                }
+            }
+            .onAppear(){
+                webSocketManager.onJoinChatUser(user2Id: profile?.id ?? "" )
+                
+                hideTabBar = true
+                
+                webSocketManager.isOnChatScreen = true;
+            }
             .onDisappear(){
+                
+                webSocketManager.onLeaveChatUser(user2Id: profile?.id ?? "" )
                 webSocketManager.isOnChatScreen = false;
+                
             }
             
             
@@ -927,7 +990,7 @@ struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var hideTabBar: Bool = false // Dummy state variable for preview
 
     static var previews: some View {
-        ChatView(  profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", userId: "")).environmentObject(TokenManager())
+        ChatView(  profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", otherUserId: "")).environmentObject(TokenManager())
     }
 }
 

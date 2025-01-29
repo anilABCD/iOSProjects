@@ -9,16 +9,21 @@ import Foundation
 
 import SocketIO
 
-class DeliveredData: ObservableObject, Equatable  {
-    @Published var chatId: String
-    @Published var receiverUserId: String
-    @Published var timestamp: Date
+struct DeliveredData: Equatable  {
+  var chatId: String
+    var receiverUserId: String
+     var timestamp: Date
 
-    init(chatId: String, receiverUserId: String, timestamp: Date) {
+    var isRead: Bool;
+    
+    
+
+    init(chatId: String, receiverUserId: String, timestamp: Date , isRead :Bool ) {
         
         self.chatId = chatId
         self.receiverUserId = receiverUserId
         self.timestamp = timestamp
+        self.isRead = isRead
         
     }
     
@@ -26,15 +31,40 @@ class DeliveredData: ObservableObject, Equatable  {
         static func == (lhs: DeliveredData, rhs: DeliveredData) -> Bool {
             return lhs.chatId == rhs.chatId &&
                    lhs.receiverUserId == rhs.receiverUserId &&
-                   lhs.timestamp == rhs.timestamp
+                   lhs.timestamp == rhs.timestamp &&
+                   lhs.isRead == rhs.isRead
         }
 }
+
+struct ReadByData: Equatable  {
+     var chatId: String
+     var readBy: String
+    var id : UUID
+    
+    init( chatId: String, readBy: String ) {
+        self.id = UUID()
+        self.chatId = chatId
+        self.readBy = readBy
+        
+    }
+    
+    // Implementing Equatable to compare all fields
+        static func == (lhs: ReadByData, rhs: ReadByData) -> Bool {
+            return lhs.chatId == rhs.chatId &&
+            lhs.readBy == rhs.readBy &&
+            lhs.id == rhs.id
+                  
+        }
+}
+
 
 class WebSocketManager: ObservableObject {
     @Published var messages: [[String: Any]] = []
     @Published private var manager: SocketManager?
     @Published var token : String = ""
-    @Published var deliveredMessageData : DeliveredData = DeliveredData(chatId : "" , receiverUserId: "", timestamp: Date())
+    @Published var deliveredMessageData : DeliveredData = DeliveredData(chatId : "" , receiverUserId: "", timestamp: Date() , isRead: false)
+    
+    @Published var readByData : ReadByData = ReadByData(chatId : "" , readBy: "");
     
     @Published var isOnChatScreen : Bool = false;
     
@@ -45,17 +75,17 @@ class WebSocketManager: ObservableObject {
     
     @Published var loclhost : String = "" ;
     
-    init(token:String , userId:String) {
-       
+    init(token:String , otherUserId:String) {
+        
         self.token = token;
-        self.otherUserId = userId
+        self.otherUserId = otherUserId
     }
     
     func connect () {
         guard let url = URL(string: "\(Constants.localhost)/peerjs/") else { return }
-                // Corrected to use SocketIOClientOption for connectParams
+        // Corrected to use SocketIOClientOption for connectParams
         var config: SocketIOClientConfiguration = [.log(true), .compress]
-       
+        
         
         config.insert(.extraHeaders(["Authorization": "Bearer \(token)"]))
         
@@ -63,29 +93,30 @@ class WebSocketManager: ObservableObject {
         
         
         
-
+        
         
         socket = manager?.defaultSocket
         
         socket.on(clientEvent: .connect) { _, _ in
             print("WebSocket connected")
             
-            self.registerUser(userId: self.otherUserId)
+            self.registerUser(userId: self.userId)
         }
         
-       
+        
         
         socket.connect()
         
         socket.on("messageDelivered") { data, _ in
             
-            print ("message from socket" , data)
+            print ("message from socket messageDelivered" , data)
             
             if let messageData = data as? [[String: Any]] {
                 for item in messageData {
                     if let receiverUserId = item["receiverUserId"] as? String,
-                        let timestampString = item["timestamp"] ,
-                        let chatId = item["chatId"] as? String {
+                       let timestampString = item["timestamp"] ,
+                       let chatId = item["chatId"] as? String ,
+                       let isRead = item["isRead"] as? Bool {
                         
                         var timestamp : Date;
                         let dateFormatter = DateFormatter()
@@ -99,17 +130,35 @@ class WebSocketManager: ObservableObject {
                             timestamp = Date.now
                         }
                         
-                        self.deliveredMessageData =  DeliveredData(chatId : chatId , receiverUserId: receiverUserId , timestamp: timestamp as Date)
+                        self.deliveredMessageData =  DeliveredData(chatId : chatId , receiverUserId: receiverUserId , timestamp: timestamp as Date , isRead: isRead)
                     }
                 }
                 
             }
         }
         
+        socket.on("hasRead") { data, _ in
+            
+            print ( "hasRead executed ")
+            if let messageData = data as? [[String: Any]] {
+                for item in messageData {
+                    if let chatId = item["chatId"] as? String ,
+                       let readBy = item["readBy"] as? String {
+                        
+                        self.readByData =  ReadByData(chatId : chatId , readBy : readBy )
+                          
+                    }
+                }
+            }
+    
+        }
+    
+
+        
         socket.on("newMessage") { data, _ in
             
             
-            if ( self.isOnChatScreen ) {
+//            if ( self.isOnChatScreen ) {
                 
                 print ("message from socket" , data)
                 
@@ -145,23 +194,34 @@ class WebSocketManager: ObservableObject {
                             
                         }
                     }
-                }
-                else{
-                    print("no message")
-                }
+//                }
+//                else{
+//                    print("no message")
+//                }
                 
             }
         }
     }
     
     func registerUser( userId: String ) {
-        socket.emit("registerUser", self.otherUserId )
+        socket.emit("registerUser", userId )
     }
     
     func joinChat( chatId: String ) {
         
         print ("join chat" , chatId)
         socket.emit("joinChat", chatId )
+    }
+
+    func onJoinChatUser( user2Id: String ) {
+        
+        print ("join chat with user " , user2Id)
+        socket.emit("onJoinChatUser", user2Id )
+    }
+    
+    func onLeaveChatUser( user2Id: String ) {
+        print ("on leave chat with user " , user2Id ) ;
+        socket.emit("onLeaveChatUser" , user2Id)
     }
     
     func sendMessage(_ newMessageText: String , imageBase64 : String , chatId : String , senderId : String , user2 : String) {
