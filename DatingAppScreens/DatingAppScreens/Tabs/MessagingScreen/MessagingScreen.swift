@@ -340,6 +340,43 @@ struct ChatView: View {
         }
     }
 
+    
+    func updateMessageStatus(
+        in groupedMessages: inout [String: [String: [String: [Chat.Message]]]],
+        newValue: Chat.Message,
+        profile: Profile?,
+        chat: Chat?
+    ) {
+        guard let chatID = chat?.id, let currentUserID = profile?.id else { return }
+
+        guard let currentUserID = profile?.id else { return }
+
+            for (yearKey, months) in groupedMessages {
+                for (monthKey, days) in months {
+                    for (dayKey, _) in days {
+                        // Safely access the message list
+                        if var dayMessages = groupedMessages[yearKey]?[monthKey]?[dayKey],
+                           let groupedIndex = dayMessages.firstIndex(where: { $0.timestamp == newValue.timestamp }) {
+                            
+                            // Update `delivered` status
+                            dayMessages[groupedIndex].delivered = true
+
+                            // Safely unwrap and update `readBy`
+                            var message = dayMessages[groupedIndex]  // Create a mutable copy
+                            if !message.readBy.contains(currentUserID) {
+                                message.readBy.append(currentUserID)
+                            }
+                            
+                            // Save back the updated message
+                            dayMessages[groupedIndex] = message
+                            groupedMessages[yearKey]?[monthKey]?[dayKey] = dayMessages
+                            
+                            return // Exit once the message is found and updated
+                        }
+                    }
+                }
+            }
+    }
   
     var body: some View {
        
@@ -566,8 +603,8 @@ struct ChatView: View {
                                                    }
                                                }
 //                                           }
-                                       }  .onChange(of: messages) { newMessages in
-                                           guard let lastMessage = newMessages.first else { return } // Get only the last message
+                                       }  .onChange(of: messages.count ) { newCount in
+                                           guard let lastMessage = messages.first else { return } // Get only the last message
                                            updateGroupedMessages(existingGroupedMessages: &groupedMessages, newMessages: [lastMessage])
                                        }
                                   
@@ -799,15 +836,25 @@ struct ChatView: View {
                 hideTabBar = true
             }.onChange(of: webSocketManager.deliveredMessageData) { newValue in
                 
-                // Logic to find the matching message
-                if let index = messages.firstIndex(where: { $0.timestamp == newValue.timestamp }) , newValue.chatId == chat?.id {
-                    messages[index].delivered = true
-                    if let currentUserID = profile?.id {
-                        if !messages[index].readBy.contains(currentUserID) {
-                            messages[index].readBy.append(currentUserID)
+                // Ensure chat is available
+                    guard let currentChat = chat else { return }
+                    
+                    // Ensure newValue belongs to the correct chat
+                    guard newValue.chatId == currentChat.id else { return }
+                    
+                    // Find and update the message in `messages`
+                    if let index = messages.firstIndex(where: { $0.timestamp == newValue.timestamp }) {
+                        messages[index].delivered = true
+                        
+                        if let currentUserID = profile?.id {
+                            if !messages[index].readBy.contains(currentUserID) {
+                                messages[index].readBy.append(currentUserID)
+                            }
                         }
+                        
+                        // Update groupedMessages
+                        updateMessageStatus(in: &groupedMessages, newValue: messages[index], profile: profile, chat: currentChat)
                     }
-                }
             }
             .onDisappear(){
                 webSocketManager.isOnChatScreen = false;
