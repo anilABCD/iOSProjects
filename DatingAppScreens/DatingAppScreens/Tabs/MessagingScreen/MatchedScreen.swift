@@ -261,11 +261,18 @@ struct MatchedScreenView: View {
 //                           }
 //                   }
                   
-              }
-           
-             
-           
-       .onAppear()
+        }.onChange(of: webSocketManager.refreshChatList ) { value in
+            
+            Task {
+                do {
+                    try await fetchMatched()
+                }
+                catch{
+                   
+                }
+            }
+            
+        }.onAppear()
         {
                 Task {
                    do {

@@ -68,6 +68,8 @@ class WebSocketManager: ObservableObject {
     
     @Published var isOnChatScreen : Bool = false;
     
+    @Published var refreshChatList : UUID = UUID();
+    
     private var socket: SocketIOClient!
     
     @Published var otherUserId : String = ""
@@ -159,7 +161,7 @@ class WebSocketManager: ObservableObject {
             
             
 //            if ( self.isOnChatScreen ) {
-                
+           
                 print ("message from socket" , data)
                 
                 if let messageData = data as? [[String: Any]] {
@@ -198,8 +200,17 @@ class WebSocketManager: ObservableObject {
 //                else{
 //                    print("no message")
 //                }
+                    
+                   
                 
             }
+            
+            
+            if ( !self.isOnChatScreen ) {
+                
+                self.refreshChatList = UUID();
+            }
+               
         }
     }
     
