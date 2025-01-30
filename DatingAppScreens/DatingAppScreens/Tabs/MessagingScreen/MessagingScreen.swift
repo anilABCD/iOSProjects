@@ -93,7 +93,7 @@ struct CustomBackButton: View {
 
 struct ChatView: View {
     
-    @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var tokenManager : TokenManager
     
 
     let profile: Profile?
@@ -191,9 +191,9 @@ struct ChatView: View {
         self.isLoading = true
         self.error = nil
         
-        let baseURL = "\(tokenManger.localhost)/messages/chats"
-        let accessToken = tokenManger.accessToken
-        let parameters :  [ String:String]? = ["user1": tokenManger.userId , "user2": profile?.objectId.value ?? ""]
+        let baseURL = "\(tokenManager.localhost)/messages/chats"
+        let accessToken = tokenManager.accessToken
+        let parameters :  [ String:String]? = ["user1": tokenManager.userId , "user2": profile?.objectId.value ?? ""]
         
         do {
             let request = try createURLRequest(
@@ -450,7 +450,7 @@ struct ChatView: View {
                                                                                ForEach(messages.reversed(), id: \.id) { message in
                                                                                    HStack {
                                                                                     
-                                                                                       if message.sender == tokenManger.userId {
+                                                                                       if message.sender == tokenManager.userId {
                                                                                            Spacer()
                                                                                            
                                                                                            VStack {
@@ -459,7 +459,7 @@ struct ChatView: View {
                                                                                                    Spacer() // Push the message to the right
                                                                                                   
 //                                                                                                   
-                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManger.localhost)/images/\(imageUrl)") {
+                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManager.localhost)/images/\(imageUrl)") {
                                                                                                                   AsyncImage(url: url) { phase in
                                                                                                                       switch phase {
                                                                                                                       case .empty:
@@ -530,7 +530,7 @@ struct ChatView: View {
                                                                                            VStack {
                                                                                                
                                                                                                HStack {
-                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManger.localhost)/images/\(imageUrl)") {
+                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManager.localhost)/images/\(imageUrl)") {
                                                                                                                   AsyncImage(url: url) { phase in
                                                                                                                       switch phase {
                                                                                                                       case .empty:
@@ -838,7 +838,7 @@ struct ChatView: View {
                                         print ( "image base 64" )
                                         print ( "image base 64" , self.selectedImage?.toBase64() ?? "")
                                         
-                                        self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManger.userId , user2: profile?.id ?? "" )
+                                        self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManager.userId , user2: profile?.id ?? "" )
                                         
                                         
                                         print(" basex " , self.selectedImage?.toBase64() ?? "")
@@ -866,7 +866,7 @@ struct ChatView: View {
                     }
                 }
                 
-                .padding(.bottom , tokenManger.isKeyboardOpen ? 4 : 45)
+                .padding(.bottom , tokenManager.isKeyboardOpen ? 4 : 45)
                 
             }
            .onChange(of: webSocketManager.deliveredMessageData) { newValue in
@@ -915,12 +915,14 @@ struct ChatView: View {
                 hideTabBar = true
                 
                 webSocketManager.isOnChatScreen = true;
+                
+               
             }
             .onDisappear(){
                 
                 webSocketManager.onLeaveChatUser(user2Id: profile?.id ?? "" )
                 webSocketManager.isOnChatScreen = false;
-                
+                self.tokenManager.shouldRefecthUnreadCount = UUID();
             }
             
             

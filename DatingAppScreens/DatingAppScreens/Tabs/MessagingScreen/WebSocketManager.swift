@@ -59,6 +59,8 @@ struct ReadByData: Equatable  {
 
 
 class WebSocketManager: ObservableObject {
+    
+   
     @Published var messages: [[String: Any]] = []
     @Published private var manager: SocketManager?
     @Published var token : String = ""
@@ -68,7 +70,10 @@ class WebSocketManager: ObservableObject {
     
     @Published var isOnChatScreen : Bool = false;
     
+    @Published var newMessage : UUID = UUID();
     @Published var refreshChatList : UUID = UUID();
+    
+    
     
     private var socket: SocketIOClient!
     
@@ -163,6 +168,8 @@ class WebSocketManager: ObservableObject {
 //            if ( self.isOnChatScreen ) {
            
                 print ("message from socket" , data)
+            
+           
                 
                 if let messageData = data as? [[String: Any]] {
                     for item in messageData {
@@ -205,6 +212,7 @@ class WebSocketManager: ObservableObject {
                 
             }
             
+            self.newMessage = UUID();
             
             if ( !self.isOnChatScreen ) {
                 

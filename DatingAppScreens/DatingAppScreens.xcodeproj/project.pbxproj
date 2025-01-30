@@ -13,6 +13,7 @@
 		B7103F562D279D290044F414 /* PersistentCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */; };
 		B710DDD12C070CD800285C1A /* UpdateTechnologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */; };
 		B71184AA2C0F7686004FC55C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71184A92C0F7686004FC55C /* Request.swift */; };
+		B71753732D4B4B2B00834FD3 /* UnreadChatCountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71753722D4B4B1F00834FD3 /* UnreadChatCountResponse.swift */; };
 		B717AAAC2D3032FD007BA6B0 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717AAAB2D3032F3007BA6B0 /* UIImageExtension.swift */; };
 		B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CBEC22D1DBDA400E81103 /* Chat.swift */; };
 		B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */; };
@@ -89,6 +90,7 @@
 		B7103F552D279D1A0044F414 /* PersistentCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentCacheManager.swift; sourceTree = "<group>"; };
 		B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTechnologyView.swift; sourceTree = "<group>"; };
 		B71184A92C0F7686004FC55C /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		B71753722D4B4B1F00834FD3 /* UnreadChatCountResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadChatCountResponse.swift; sourceTree = "<group>"; };
 		B717AAAB2D3032F3007BA6B0 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		B71CBEC22D1DBDA400E81103 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		B72A3F312C1DA0BE00771B4A /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 		B7E2A8382C170167008ADE0E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B71753722D4B4B1F00834FD3 /* UnreadChatCountResponse.swift */,
 				B71CBEC22D1DBDA400E81103 /* Chat.swift */,
 				B7E6C9482C174BFD00F321A9 /* ObjectId.swift */,
 				B793200E2BF49AEF00FE954A /* SignUpData.swift */,
@@ -681,6 +684,7 @@
 				B75F69B12C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift in Sources */,
 				B7DB2C392D19A97A000DF909 /* UpdateDescribeYourself.swift in Sources */,
 				B772800F2C19D62200446085 /* Utils.swift in Sources */,
+				B71753732D4B4B2B00834FD3 /* UnreadChatCountResponse.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
 				B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */,

@@ -104,6 +104,7 @@ struct ContentView: View {
     
     @State private var isTabBarHidden = true
     
+    @State private var unreadChatCount = 0 ;
     
     @State var path :[MyNavigation<String>] = []
     
@@ -185,6 +186,42 @@ struct ContentView: View {
            print("Keyboard is now open. Running custom code.")
            // Add your custom logic here
        }
+    
+    
+    func countChatsWithUnreadMessages () async
+    {
+        
+      
+        let baseURL = "\(tokenManager.localhost)/messages/countChatsWithUnreadMessages"
+        let accessToken = tokenManager.accessToken
+        
+        do {
+            let request = try createURLRequest(
+                method: "GET",
+                baseURL: baseURL,
+                accessToken: accessToken,
+                data: Optional<Data>.none, // No body data for GET request
+                parameters: [:]
+            )
+            
+
+                do {
+                    let unreadChatCount: UnreadChatCountResponse = try await fetchData(from: request)
+                    
+                    print ("Unread chat count : \(unreadChatCount.count)")
+                    DispatchQueue.main.async {
+                       
+                        self.unreadChatCount = unreadChatCount.count;
+                         
+                    }
+                } catch {
+                    
+                }
+        } catch {
+            
+        }
+        
+    }
 
     
     var body: some View {
@@ -551,7 +588,7 @@ struct ContentView: View {
                                                             selectedTab = 1
                                                             print("Selected tab: \(selectedTab)")
                                                         }
-                                                    TabBarItem(imageName: "message", title: "", isSelected: selectedTab == 2)
+                                                    TabBarMessageItem(imageName: "message", title: "", isSelected: selectedTab == 2 , notificationCount: unreadChatCount )
                                                         .onTapGesture {
                                                             selectedTab = 2
                                                             print("Selected tab: \(selectedTab)")
@@ -662,8 +699,18 @@ struct ContentView: View {
             .onChange(of: deepLinkData) { newDeepLinkData in
                 handleDeepLink()
             }
+            .onChange(of : tokenManager.shouldRefecthUnreadCount) { newValue in
+                
+                Task {
+                    await countChatsWithUnreadMessages();
+                }
+            }
             .onAppear {
                 dataFetcher.startPolling()
+                
+                Task {
+                    await countChatsWithUnreadMessages();
+                }
                 
                 // adding keyboardlisteners .
                 addKeyboardListeners() ;
@@ -1063,4 +1110,42 @@ struct TabBarItem: View {
                 .foregroundColor(isSelected ? .blue : .gray)
         }.frame( maxWidth:.infinity )
     }
+}
+
+
+
+struct TabBarMessageItem: View {
+   let imageName: String
+   let title: String
+   let isSelected: Bool
+   let notificationCount: Int // Number to display in the notification bubble
+   
+   var body: some View {
+       VStack {
+           // Icon with notification bubble
+           ZStack(alignment: .topTrailing) {
+               Image(systemName: imageName)
+                   .foregroundColor(isSelected ? .blue : .gray)
+                   .frame(width: 40, height: 40)
+                   .font(.system(size: 20))
+               
+               // Notification bubble
+               if notificationCount > 0 {
+                   Text("\(notificationCount)")
+                       .font(.system(size: 12, weight: .bold))
+                       .foregroundColor(.white)
+                       .padding(5)
+                       .background(Color.red)
+                       .clipShape(Circle())
+                       .offset(x: 10, y: -10) // Adjust the position of the bubble
+               }
+           }
+           
+           // Title
+           Text(title)
+               .font(.caption)
+               .foregroundColor(isSelected ? .blue : .gray)
+       }
+       .frame(maxWidth: .infinity)
+   }
 }

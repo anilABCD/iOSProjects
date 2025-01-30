@@ -135,6 +135,7 @@ class TokenManager: ObservableObject {
      @AppStorage("bio") var bio: String = ""
      @AppStorage("jobRole") var jobRole : String = ""
     
+  
     @AppStorage("notificationsSettings") var notificationSettings : String = ""
     @AppStorage("locationSettings") var locationSettings : String = ""
 
@@ -144,8 +145,8 @@ class TokenManager: ObservableObject {
     @AppStorage("dob") var dob: String = ""
     
     
-    
     @Published var homeTabView : HomeTabEnumViews? = nil;
+    @Published var shouldRefecthUnreadCount : UUID = UUID();
     
     
     @Published var nextButtonWhenRegistrationProcess : UUID = UUID();

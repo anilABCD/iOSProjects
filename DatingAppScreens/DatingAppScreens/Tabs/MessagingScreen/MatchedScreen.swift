@@ -272,11 +272,17 @@ struct MatchedScreenView: View {
                 }
             }
             
+        }.onChange(of: webSocketManager.newMessage ) { value in
+            
+            tokenManger.shouldRefecthUnreadCount = UUID();
+            
         }.onAppear()
         {
                 Task {
                    do {
                     try await fetchMatched()
+                       
+                     tokenManger.shouldRefecthUnreadCount = UUID();
                     
                     webSocketManager.token = tokenManger.accessToken;
                        
