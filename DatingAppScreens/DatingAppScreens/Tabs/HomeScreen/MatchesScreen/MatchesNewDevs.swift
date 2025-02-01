@@ -96,8 +96,20 @@ struct MatchesNewDevsView: View {
                 let decodedResponse = try JSONDecoder().decode([Profile].self, from: data)
                 
                 print ("decode ended")
-
+                
+                
+                
+                if( tokenManger.isFirstTimeLoading == true ){
+                    
+                    tokenManger.isFirstTimeLoading = false;
+                }
+                else {
+                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
+                }
+                
                 DispatchQueue.main.async {
+                    
+                  
                     
                     self.profiles = decodedResponse
                     
@@ -199,15 +211,7 @@ struct MatchesNewDevsView: View {
             Task {
                 do {
                     
-                    if( tokenManger.isFirstTimeLoading == true ){
-                        
-                        tokenManger.isFirstTimeLoading = false;
-                    }
-                    else {
-                        try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
-                        
-                    }
-                    
+                  
                     
                     try await fetchProfiles()
                     
@@ -468,19 +472,21 @@ struct SwipeableView: View {
                         
                     }
                     
+                  
+                    BioCardView(bio: item.bio ?? "" )
                     
+                    TechnologiesCardView(technologies: item.technologies ?? [])
                     
-                    
-                    Text("Profile Bio:")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fontWeight(.bold)
-                        .padding()
-                    
-                    Text( item.bio ?? "")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .lineLimit(nil)
-                    
+//                    Text("Profile Bio:")
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        .fontWeight(.bold)
+//                        .padding()
+//                    
+//                    Text( item.bio ?? "")
+//                        .font(.subheadline)
+//                        .foregroundColor(.secondary)
+//                        .lineLimit(nil)
+//                    
                     
                     
                     
@@ -555,6 +561,112 @@ struct SwipeableView: View {
          }
      }
 }
+
+
+struct BioCardView: View {
+    var bio: String = ""
+    
+    var body: some View {
+        
+        VStack {
+            VStack(alignment: .leading, spacing: 4) { // Reduce spacing
+                Text("About Me")
+                               .font(.headline)
+                               .fontWeight(.bold)
+                               .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                               .padding(.horizontal, 10)
+                               .padding(.top, 10)
+                               .frame(maxWidth: .infinity, alignment: .leading)
+                           
+                           Text(bio)
+                               .font(.subheadline)
+                               .foregroundColor(Color.white.opacity(0.85))
+                               .lineLimit(nil)
+                               .padding(.horizontal, 10)
+                               .padding(.bottom, 10)
+            }
+            .padding(8) // Reduce padding
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                    )
+        }.padding(.horizontal, 25)
+    }
+    
+}
+
+struct TechnologiesCardView: View {
+    var technologies: [String] = ["Swift", "UI/UX Design", "Cloud Computing", "SwiftUI", "iOS Development", "React", "Machine Learning", "DevOps", "Xcode", "Firebase"]
+    
+    let columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Technologies")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white.opacity(0.9))
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                LazyVGrid(columns: columns, spacing: 15) {
+                    ForEach(technologies, id: \.self) { tech in
+                        Text(tech.dropFirst())
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 15)
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.blue, Color.purple]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .cornerRadius(12)
+                            .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                            )
+                    }
+                }
+                .padding(.horizontal, 10).padding(.vertical, 10)
+            }
+            
+            .padding(8) // Reduce padding
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }.padding(.horizontal, 25)
+    }
+}
+
+
 
 //
 //Vstack 

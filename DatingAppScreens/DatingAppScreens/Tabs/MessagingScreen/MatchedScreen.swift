@@ -231,7 +231,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                       
                       
                       HStack {
-                                  TextField("Search ...", text: $searchText)
+                                  TextField("Search User...", text: $searchText)
                                       .padding(10)
                                       .padding(.leading, 35) // Space for icon
                                       .background(Color(.systemGray6))
@@ -252,16 +252,16 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                           }
                                       )
                                   
-                                  Button(action: {
-//                                      performSearch()
-                                  }) {
-                                      Image(systemName: "arrow.right.circle.fill")
-                                          .resizable()
-                                          .frame(width: 30, height: 30)
-                                          .foregroundColor(.blue)
-                                  }
-                                  .padding(.leading, 5)
-                                  .shadow(radius: 3)
+//                                  Button(action: {
+////                                      performSearch()
+//                                  }) {
+//                                      Image(systemName: "arrow.right.circle.fill")
+//                                          .resizable()
+//                                          .frame(width: 30, height: 30)
+//                                          .foregroundColor(.blue)
+//                                  }
+//                                  .padding(.leading, 5)
+//                                  .shadow(radius: 3)
                               }
                       .padding()
                       
