@@ -93,12 +93,14 @@ struct ContentView: View {
     @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab = 0
+    @State private var selectedTabForIndicator = 0
     @EnvironmentObject private var tokenManager: TokenManager
     
     @Binding  var deepLinkData: DeepLinkData?
     
     @State private var hideTabBar = false;
-    
+    @Namespace private var animationNamespace
+
     // for previewes in XCode .
     var isHome = false
     
@@ -578,30 +580,86 @@ struct ContentView: View {
                                                 // Custom tab bar
                                                 HStack {
                                                     Spacer()
-                                                    TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
-                                                        .onTapGesture {
-                                                           
-                                                            selectedTab = 0
-                                                            print("Selected tab: \(selectedTab)")
+                                                    
+                                                    VStack {
+                                                        TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
+                                                            .onTapGesture {
+                                                                selectedTab = 0
+                                                                withAnimation(.spring()) {
+                                                                    selectedTabForIndicator = 0
+                                                                                           }
+                                                                print("Selected tab: \(selectedTab)")
+                                                            }
+                                                        
+                                                        if selectedTabForIndicator == 0 {
+                                                            RoundedRectangle(cornerRadius: 2)
+                                                                .fill(Color.blue)
+                                                                .frame(width: 40, height: 4)
+                                                                .matchedGeometryEffect(id: "indicator", in: animationNamespace)
+                                                        } else {
+                                                            Spacer().frame(height: 4)  // Keeps layout stable
                                                         }
-                                                    TabBarItem(imageName: "heart", title: "", isSelected: selectedTab == 1)
-                                                        .onTapGesture {
-                                                            
-                                                            selectedTab = 1
-                                                            print("Selected tab: \(selectedTab)")
+                                                    }
+                                                    
+                                                    VStack {
+                                                        TabBarItem(imageName: "heart", title: "", isSelected: selectedTab == 1)
+                                                            .onTapGesture {
+                                                                selectedTab = 1
+                                                                withAnimation(.spring()) {
+                                                                    selectedTabForIndicator = 1
+                                                                                           }
+                                                                print("Selected tab: \(selectedTab)")
+                                                            }
+                                                        if selectedTabForIndicator == 1 {
+                                                            RoundedRectangle(cornerRadius: 2)
+                                                                .fill(Color.blue)
+                                                                .frame(width: 40, height: 4)
+                                                                .matchedGeometryEffect(id: "indicator", in: animationNamespace)
+                                                        } else {
+                                                            Spacer().frame(height: 4)  // Keeps layout stable
                                                         }
+                                                    }
+                                                    
+                                                    VStack {
                                                     TabBarMessageItem(imageName: "message", title: "", isSelected: selectedTab == 2 , notificationCount: unreadChatCount )
                                                         .onTapGesture {
-                                                            
                                                             selectedTab = 2
+                                                            withAnimation(.spring()) {
+                                                                selectedTabForIndicator = 2
+                                                                                       }
                                                             print("Selected tab: \(selectedTab)")
                                                         }
+                                                    
+                                                        if selectedTabForIndicator == 2 {
+                                                            RoundedRectangle(cornerRadius: 2)
+                                                                .fill(Color.blue)
+                                                                .frame(width: 40, height: 4)
+                                                                .matchedGeometryEffect(id: "indicator", in: animationNamespace)
+                                                        } else {
+                                                            Spacer().frame(height: 4)  // Keeps layout stable
+                                                        }
+                                                    }
+                                                    
+                                                    VStack {
                                                     TabBarItem(imageName: "person", title: "", isSelected: selectedTab == 3)
                                                         .onTapGesture {
-                                                            
                                                             selectedTab = 3
+                                                            withAnimation(.spring()) {
+                                                                selectedTabForIndicator = 3
+                                                                                       }
                                                             print("Selected tab: \(selectedTab)")
                                                         }
+                                                        
+                                                        if selectedTabForIndicator == 3 {
+                                                            RoundedRectangle(cornerRadius: 2)
+                                                                .fill(Color.blue)
+                                                                .frame(width: 40, height: 4)
+                                                                .matchedGeometryEffect(id: "indicator", in: animationNamespace)
+                                                        } else {
+                                                            Spacer().frame(height: 4)  // Keeps layout stable
+                                                        }
+                                                    }
+                                                    
                                                     
                                                     Spacer()
                                                 }

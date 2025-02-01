@@ -198,9 +198,10 @@ struct MatchesNewDevsView: View {
         .onAppear {
             Task {
                 do {
-                    try await fetchProfiles()
+                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
+                          try await fetchProfiles()
                 } catch {
-                    // Handle the error
+                    print("Failed to fetch profiles: \(error)")
                 }
             }
         }
