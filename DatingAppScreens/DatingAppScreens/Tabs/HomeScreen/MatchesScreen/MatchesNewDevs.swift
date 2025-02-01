@@ -198,8 +198,19 @@ struct MatchesNewDevsView: View {
         .onAppear {
             Task {
                 do {
-                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
-                          try await fetchProfiles()
+                    
+                    if( tokenManger.isFirstTimeLoading == true ){
+                        
+                        tokenManger.isFirstTimeLoading = false;
+                    }
+                    else {
+                        try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
+                        
+                    }
+                    
+                    
+                    try await fetchProfiles()
+                    
                 } catch {
                     print("Failed to fetch profiles: \(error)")
                 }
