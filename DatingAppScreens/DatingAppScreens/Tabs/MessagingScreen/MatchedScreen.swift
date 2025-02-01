@@ -11,15 +11,17 @@ struct Item: Identifiable {
 }
 
 
-struct MatchedScreenView: View {
+struct MatchedProfilesForMessagingListScreenView: View {
     
     @State var matched : [Chat] = []
     @EnvironmentObject private var tokenManger : TokenManager
     @Binding var hideTabBar : Bool ;
     @StateObject  var webSocketManager = WebSocketManager(token: "" , otherUserId: "")
     
+    @State private var searchText = ""
     @State private var selectedMatch: Chat?
-       
+    
+
     var items = [
         Item(name: "Item 1", description: "Description for Item 1"),
         Item(name: "Item 2", description: "Description for Item 2"),
@@ -79,7 +81,8 @@ struct MatchedScreenView: View {
             DispatchQueue.main.async {
                 
                 self.matched = matchedResponse;
-
+                
+              
 //                updateMatches() ;
                 
                 print("matches current" ,    self.matched )
@@ -121,12 +124,20 @@ struct MatchedScreenView: View {
 //                          Text("Messages").bold().font(.largeTitle)
 //                          Spacer()
 //                      }.padding(.horizontal).frame(height: 45)
+                      
+                      
+                      
+                      
+                      
 //
                       
                       VStack {
                           ScrollView(.horizontal, showsIndicators: false) {
                               
                               HStack(alignment: .top, spacing: 4) { // Add spacing between items if needed
+                                  
+                                  
+                                  
                                   
                                   ForEach(self.matched, id: \.id) { match in
                                       
@@ -215,6 +226,46 @@ struct MatchedScreenView: View {
                           
                           
                       }.frame(maxWidth:.infinity ) .padding(.horizontal)// Adds a blue border with a width of 2
+                      
+                      
+                      
+                      
+                      HStack {
+                                  TextField("Search ...", text: $searchText)
+                                      .padding(10)
+                                      .padding(.leading, 35) // Space for icon
+                                      .background(Color(.systemGray6))
+                                      .cornerRadius(20)
+                                      .overlay(
+                                          HStack {
+                                              Image(systemName: "magnifyingglass")
+                                                  .foregroundColor(.gray)
+                                                  .padding(.leading, 10)
+                                              Spacer()
+                                              if !searchText.isEmpty {
+                                                  Button(action: { searchText = "" }) {
+                                                      Image(systemName: "xmark.circle.fill")
+                                                          .foregroundColor(.gray)
+                                                  }
+                                                  .padding(.trailing, 10)
+                                              }
+                                          }
+                                      )
+                                  
+                                  Button(action: {
+//                                      performSearch()
+                                  }) {
+                                      Image(systemName: "arrow.right.circle.fill")
+                                          .resizable()
+                                          .frame(width: 30, height: 30)
+                                          .foregroundColor(.blue)
+                                  }
+                                  .padding(.leading, 5)
+                                  .shadow(radius: 3)
+                              }
+                      .padding()
+                      
+                      
                          
 //                   List(likes) { like in
 //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
@@ -436,7 +487,7 @@ struct MatchedScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
     @State static var hideTabBar :Bool = false;
     static var previews: some View {
-        MatchedScreenView( hideTabBar : $hideTabBar).environmentObject(TokenManager())
+        MatchedProfilesForMessagingListScreenView( hideTabBar : $hideTabBar).environmentObject(TokenManager())
     }
 }
 

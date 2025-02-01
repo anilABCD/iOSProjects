@@ -222,7 +222,7 @@ struct ContentView: View {
         }
         
     }
-
+    
     
     var body: some View {
         
@@ -553,7 +553,7 @@ struct ContentView: View {
                                         //                                }
                                         //                                .tag(2)
                                         
-                                        MatchedScreenView( hideTabBar : $hideTabBar).onAppear(){
+                                        MatchedProfilesForMessagingListScreenView( hideTabBar : $hideTabBar).onAppear(){
                                             tokenManager.isMenuView = true
                                         }
                                         //                                        .tabItem {
@@ -580,21 +580,25 @@ struct ContentView: View {
                                                     Spacer()
                                                     TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
                                                         .onTapGesture {
+                                                           
                                                             selectedTab = 0
                                                             print("Selected tab: \(selectedTab)")
                                                         }
                                                     TabBarItem(imageName: "heart", title: "", isSelected: selectedTab == 1)
                                                         .onTapGesture {
+                                                            
                                                             selectedTab = 1
                                                             print("Selected tab: \(selectedTab)")
                                                         }
                                                     TabBarMessageItem(imageName: "message", title: "", isSelected: selectedTab == 2 , notificationCount: unreadChatCount )
                                                         .onTapGesture {
+                                                            
                                                             selectedTab = 2
                                                             print("Selected tab: \(selectedTab)")
                                                         }
                                                     TabBarItem(imageName: "person", title: "", isSelected: selectedTab == 3)
                                                         .onTapGesture {
+                                                            
                                                             selectedTab = 3
                                                             print("Selected tab: \(selectedTab)")
                                                         }
@@ -605,7 +609,23 @@ struct ContentView: View {
                                                 .padding()
                                                 .background(Color.white)
                                                 .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
-                                                
+//                                                .overlay(
+//                                          
+//                                                        GeometryReader { geo in
+//                                                                      RoundedRectangle(cornerRadius: 3)
+//                                                                          .frame(width: 40, height: 3) // Fixed width to align with icons
+//                                                                          .foregroundColor(.blue)
+//                                                                          .offset(
+//                                                                            x: (CGFloat(selectedTab) * ( geo.size.width - 44.0 ) / CGFloat(4)) + (geo.size.width / CGFloat(4) / 2) - 0.0,
+//                                                                                          y: 12 // Adjust the vertical position if needed
+//                                                                                      )
+//                                                                          .animation(.spring(), value: selectedTab) // Apply animation directly here
+//                                                                  }
+//                                                                   .frame(height: 3)
+//                                                                   
+//                                                               )
+//
+                                              
                                                 .frame(height: 100) .frame(  maxWidth: UIScreen.main.bounds.width)
                                             }
                                             
@@ -1101,10 +1121,12 @@ struct TabBarItem: View {
     
     var body: some View {
         VStack {
-            Image(systemName: imageName)
+            Image(systemName: isSelected ? "\(imageName).fill" : imageName)
                 .foregroundColor(isSelected ? .blue : .gray)
                 .frame(width: 40, height: 40) // Standard size for the icon
                 .font(.system(size: 20)) // Adjust the icon size within the frame
+//                .shadow(color: isSelected ? Color.blue : Color.clear, radius: isSelected ? 6 : 0, x: 0, y: 2) // Shadow effect when selected
+                               
             Text("")
                 .font(.caption)
                 .foregroundColor(isSelected ? .blue : .gray)
@@ -1124,10 +1146,12 @@ struct TabBarMessageItem: View {
        VStack {
            // Icon with notification bubble
            ZStack(alignment: .topTrailing) {
-               Image(systemName: imageName)
+               Image(systemName: isSelected ? "\(imageName).fill" : imageName)
                    .foregroundColor(isSelected ? .blue : .gray)
                    .frame(width: 40, height: 40)
                    .font(.system(size: 20))
+//                   .shadow(color: isSelected ? Color.blue : Color.clear, radius: isSelected ? 6 : 0, x: 0, y: 2) // Shadow effect when selected
+               
                
                // Notification bubble
                if notificationCount > 0 {
