@@ -131,6 +131,12 @@ class TokenManager: ObservableObject {
      @AppStorage("technologies") var technologies: String = ""
      @AppStorage("experience") var experience: String = ""
      @AppStorage("photo") var photo: String = ""
+    
+     @AppStorage("photo1") var photo1: String = ""
+     @AppStorage("photo2") var photo2: String = ""
+     @AppStorage("photo3") var photo3: String = ""
+     @AppStorage("photo4") var photo4: String = ""
+    
      @AppStorage("hobbies") var hobbies: String = ""
      @AppStorage("bio") var bio: String = ""
      @AppStorage("jobRole") var jobRole : String = ""
@@ -204,6 +210,23 @@ class TokenManager: ObservableObject {
     func updatePhoto ( photo : String){
         self.photo = photo;
     }
+    
+    func updatePhoto1 ( photo : String){
+        self.photo1 = photo;
+    }
+    
+    func updatePhoto2 ( photo : String){
+        self.photo2 = photo;
+    }
+    
+    func updatePhoto3 ( photo : String){
+        self.photo3 = photo;
+    }
+    
+    func updatePhoto4 ( photo : String){
+        self.photo4 = photo;
+    }
+    
     
     func resetAccessToken () {
         self.accessToken = ""

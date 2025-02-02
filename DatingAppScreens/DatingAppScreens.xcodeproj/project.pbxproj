@@ -23,6 +23,7 @@
 		B74484CD2D3F6E6500FC4119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */; };
 		B7453FCC8150D871474A0CFE /* libPods-DatingAppScreensTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24CE1DBB042EB1905708F0EA /* libPods-DatingAppScreensTests.a */; };
 		B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74E89A92C197E1B005DD13C /* LoginSocialView.swift */; };
+		B750772F2D4FA98C00EC676D /* UploadYourAdditionalPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
 		B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */; };
 		B75F69B12C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75F69B02C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift */; };
@@ -99,6 +100,7 @@
 		B73C5B662D2B002E0030F136 /* DateUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B74E89A92C197E1B005DD13C /* LoginSocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialView.swift; sourceTree = "<group>"; };
+		B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadYourAdditionalPhotos.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
 		B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachesScreen.swift; sourceTree = "<group>"; };
 		B75F69B02C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSmokingAndDrinkingAndDobView.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 		B7E2A83A2C170192008ADE0E /* WhenRegistering */ = {
 			isa = PBXGroup;
 			children = (
+				B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */,
 				B7F4CE782D1BB42E00F92EDB /* UpdateJobRoleView.swift */,
 				B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */,
 				B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */,
@@ -697,6 +700,7 @@
 				B77B92FA2D432CCC007B3A37 /* ClosingKeyboard.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
+				B750772F2D4FA98C00EC676D /* UploadYourAdditionalPhotos.swift in Sources */,
 				B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */,
 				B717AAAC2D3032FD007BA6B0 /* UIImageExtension.swift in Sources */,
 				B7103F562D279D290044F414 /* PersistentCacheManager.swift in Sources */,
