@@ -477,6 +477,14 @@ struct SwipeableView: View {
                     
                     TechnologiesCardView(technologies: item.technologies ?? [])
                     
+                    JobRoleCardView(jobRole: item.jobRole ?? "")
+                    
+                    HobbiesCardView(hobbies: item.hobbies ?? [])
+                    
+                    SmokingCardView(smoking: item.smoking ?? "" )
+                    
+                    DrinkingCardView(drinking: item.drinking ?? "" )
+                    
 //                    Text("Profile Bio:")
 //                        .frame(maxWidth: .infinity, alignment: .leading)
 //                        .fontWeight(.bold)
@@ -666,6 +674,324 @@ struct TechnologiesCardView: View {
     }
 }
 
+struct HobbiesCardView: View {
+    var hobbies: [String] = []
+    
+    let columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Hobbies")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white.opacity(0.9))
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                LazyVGrid(columns: columns, spacing: 15) {
+                    ForEach(hobbies, id: \.self) { hobby in
+                        Text(hobby.dropFirst())
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 15)
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.green, Color.blue]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .cornerRadius(12)
+                            .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                            )
+                    }
+                }
+                .padding(.horizontal, 10).padding(.vertical, 10)
+            }
+            
+            .padding(8)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }.padding(.horizontal, 25)
+    }
+}
+
+struct SmokingCardView: View {
+    var smoking: String = ""
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading, spacing: 4) { // Reduce spacing
+                Text("Smoking")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                HStack {
+                    
+                    Spacer()
+                    
+                    Text(smoking.isEmpty ? "Not Specified" : smoking)
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 15)
+                        .background(getGradient(for: smoking)) // Dynamic background
+                        .cornerRadius(12)
+                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                        )
+                    
+                    Spacer()
+                }.padding(.vertical, 10)
+            }
+            .padding(8) // Reduce padding
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }.padding(.horizontal, 25)
+    }
+    
+    /// Function to determine background gradient based on smoking status
+    private func getGradient(for smoking: String) -> LinearGradient {
+        switch smoking {
+        case "Never":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.green, Color.teal]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case "Occasionally":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.orange, Color.yellow]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case "Regularly":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.red, Color.orange]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case "Trying to Quit":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.purple, Color.blue]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        default:
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.gray, Color.black.opacity(0.8)]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
+    }
+}
+
+struct DrinkingCardView: View {
+    var drinking: String = ""
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading, spacing: 4) { // Reduce spacing
+                Text("Drinking")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                HStack {
+                    Spacer()
+               
+                Text(drinking.isEmpty ? "Not Specified" : drinking)
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 15)
+                    .background(getGradient(for: drinking)) // Dynamic background
+                    .cornerRadius(12)
+                    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                    )
+                    
+                    Spacer()
+                }.padding(.vertical, 10)
+            }
+            .padding(8) // Reduce padding
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }.padding(.horizontal, 25)
+    }
+    
+    /// Function to determine background gradient based on drinking status
+    private func getGradient(for drinking: String) -> LinearGradient {
+        switch drinking {
+        case "Never":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.green, Color.teal]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case "Socially":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.blue, Color.purple]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case "Occasionally":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.orange, Color.yellow]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case "Frequently":
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.red, Color.pink]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        default:
+            return LinearGradient(
+                gradient: Gradient(colors: [Color.gray, Color.black.opacity(0.8)]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
+    }
+}
+
+
+struct JobRoleCardView: View {
+    var jobRole: String = ""
+
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Job Role")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white.opacity(0.9))
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                
+                HStack {
+                    
+                    Spacer()
+                    
+                    Text(jobRole.isEmpty ? "Not Specified" : jobRole)
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 15)
+                        .background(getGradient(for: jobRole)) // Dynamic gradient based on job level
+                        .cornerRadius(12)
+                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                        )
+                    
+                    Spacer()
+                }
+            }
+            .padding(8) // Reduce padding
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }.padding(.horizontal, 25)
+    }
+
+    /// Function to determine background gradient based on job level
+    private func getGradient(for jobRole: String) -> LinearGradient {
+        switch jobRole.lowercased() {
+        case "intern":
+            return LinearGradient(gradient: Gradient(colors: [Color.green, Color.teal]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "junior level":
+            return LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "mid level":
+            return LinearGradient(gradient: Gradient(colors: [Color.orange, Color.pink]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "senior level":
+            return LinearGradient(gradient: Gradient(colors: [Color.indigo, Color.cyan]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "lead level":
+            return LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.orange]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "manager":
+            return LinearGradient(gradient: Gradient(colors: [Color.red, Color.orange]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "director":
+            return LinearGradient(gradient: Gradient(colors: [Color.purple, Color.pink]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "vice president":
+            return LinearGradient(gradient: Gradient(colors: [Color.blue, Color.teal]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "chief technology officer (cto)", "chief information officer (cio)", "chief product officer (cpo)", "chief operating officer (coo)":
+            return LinearGradient(gradient: Gradient(colors: [Color.gray, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        case "chief executive officer (ceo)":
+            return LinearGradient(gradient: Gradient(colors: [Color.black, Color.gray]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        default:
+            return LinearGradient(gradient: Gradient(colors: [Color.gray.opacity(0.6), Color.gray.opacity(0.9)]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
+    }
+}
 
 
 //

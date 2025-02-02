@@ -48,13 +48,18 @@ struct OthersProfileView: View {
                 .font(.largeTitle)
                 .padding()
 
-            if let technologies = profile?.technologies {
-                Text(technologies.joined(separator: ", "))
-                    .font(.body)
-                    .padding()
-            }
+            BioCardView(bio: profile?.bio ?? "")
+            JobRoleCardView(jobRole: profile?.jobRole ?? "")
+            TechnologiesCardView(technologies: profile?.technologies ?? [])
+            HobbiesCardView(hobbies: profile?.hobbies ?? [])
+            SmokingCardView(smoking: profile?.smoking ?? "")
+            DrinkingCardView(drinking: profile?.drinking ?? "" )
 
             Spacer()
+            
+            // Temporary height element at the bottom (100 height)
+            Color.clear
+                .frame(height: 120) // This will push the content up and allow scrolling
         }
         .navigationTitle("Profile")
         .padding()

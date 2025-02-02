@@ -48,6 +48,12 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     var photo: String?
     var experience: Int?
     var technologies: [String]?
+    
+    var hobbies: [String]?
+    var drinking: String?
+    var smoking : String?
+    var jobRole : String?
+    
     var bio: String?
     var isOnline: Bool?
     
@@ -64,6 +70,12 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         case photo
         case experience
         case technologies
+        
+        case hobbies
+        case drinking
+        case smoking
+        case jobRole
+        
         case bio
         case isOnline
     }
@@ -76,6 +88,13 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
                lhs.photo == rhs.photo &&
                lhs.experience == rhs.experience &&
                lhs.technologies == rhs.technologies &&
+        
+                lhs.hobbies == rhs.hobbies &&
+                lhs.drinking == rhs.drinking &&
+                lhs.smoking == rhs.smoking &&
+                lhs.jobRole == rhs.jobRole &&
+        
+        
                lhs.bio == rhs.bio &&
                lhs.isOnline == rhs.isOnline
     }
@@ -88,6 +107,12 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
            hasher.combine(photo)
            hasher.combine(experience)
            hasher.combine(technologies)
+           
+           hasher.combine(hobbies)
+           hasher.combine(drinking)
+           hasher.combine(smoking)
+           hasher.combine(jobRole)
+           
            hasher.combine(bio)
            hasher.combine(isOnline)
        }
