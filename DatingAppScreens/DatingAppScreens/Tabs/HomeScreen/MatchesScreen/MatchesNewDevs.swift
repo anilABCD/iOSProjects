@@ -509,27 +509,28 @@ struct SwipeableView: View {
             
             HStack {
                 Button(action: swipeLeft) {
-                    Text("Reject")
-                        .bold()
-                        .frame(width: 100, height: 50)
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
+                    Image(systemName: "xmark")
+                                       .foregroundColor(.gray) // Grey color for the X icon
+                                       .font(.system(size: 23)) // Adjust size of the icon
+                                       .frame(width: 60, height: 60) // Standard button size
+                                       .background(Color.white) // Same background for consistency
+                                       .cornerRadius(30) // Same rounded corners
+                                       .shadow(radius: 5) // Same shadow for both buttons
                 }
                 .padding()
                 
                 Button(action: swipeRight) {
-                    Text("Accept")
-                        .bold()
-                        .frame(width: 100, height: 50)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                  
+                    Image(systemName: "heart.fill")
+                                       .foregroundColor(.red)
+                                       .font(.system(size: 23)) // Adjust size of the icon
+                                       .frame(width: 60, height: 60) // Standard button size
+                                       .background(Color.white)
+                                       .cornerRadius(30) // Rounded corners
+                                       .shadow(radius: 5)
                     
                 }
                 .padding()
-            }.frame(height:20).padding(.bottom , 10)
+            }.frame(height:30).padding(.bottom , 10)
             
             Color.clear
                 .frame(height: 100)
@@ -542,16 +543,18 @@ struct SwipeableView: View {
            withAnimation(.easeIn(duration: 0.5)) {
                offset = CGSize(width: -UIScreen.main.bounds.width, height: 0)
                isHidden = true
-               onSwipeLeft()
+               
            }
+          onSwipeLeft()
        }
 
        private func swipeRight() {
            withAnimation(.easeIn(duration: 0.5)) {
                offset = CGSize(width: UIScreen.main.bounds.width, height: 0)
                isHidden = true
-               onSwipeRight()
+              
            }
+           onSwipeRight()
        }
     
     

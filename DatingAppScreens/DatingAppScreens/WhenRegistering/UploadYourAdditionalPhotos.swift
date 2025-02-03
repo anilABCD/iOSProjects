@@ -39,13 +39,13 @@ struct ImageUploaderView: View {
                     .font(.title)
                     .foregroundColor(.primary)
                 Spacer()
-            }.padding()
+            }.padding(.horizontal)
             
             if let image = image {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 200, height: 200)
+                    .frame(width: 100, height: 100)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.gray, lineWidth: 1))
             }
@@ -58,19 +58,19 @@ struct ImageUploaderView: View {
                 
                 switch imageNumber {
                 case 1 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo1)")
-                        .clipShape(Circle()).frame(width: 200, height: 200)
+                        .clipShape(Circle()).frame(width: 100, height: 100)
                 case 2 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo2)")
-                        .clipShape(Circle()).frame(width: 200, height: 200)
+                        .clipShape(Circle()).frame(width: 100, height: 100)
                 case 3 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo3)")
-                        .clipShape(Circle()).frame(width: 200, height: 200)
+                        .clipShape(Circle()).frame(width: 100, height: 100)
                 case 4 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo4)")
-                        .clipShape(Circle()).frame(width: 200, height: 200)
+                        .clipShape(Circle()).frame(width: 100, height: 100)
                 default:
                     Image(systemName: "person.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .foregroundColor(.black)
-                        .frame(width: 200, height: 200)
+                        .frame(width: 100, height: 100)
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                 }
@@ -81,7 +81,7 @@ struct ImageUploaderView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .foregroundColor(.black)
-                    .frame(width: 200, height: 200)
+                    .frame(width: 100, height: 100)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.gray, lineWidth: 1))
             }
@@ -220,7 +220,10 @@ struct UploadYourAdditionalPhotosView: View {
 //    @Binding var path :[MyNavigation<String>]
     
     
-    @State private var image : UIImage?
+    @State private var image1 : UIImage?
+    @State private var image2 : UIImage?
+    @State private var image3 : UIImage?
+    @State private var image4 : UIImage?
     
     @EnvironmentObject private var tokenManger : TokenManager
     
@@ -234,16 +237,27 @@ struct UploadYourAdditionalPhotosView: View {
     var showNextButton : Bool = false ;
     
     @State private var showAlert = false; // Alert visibility state
-
+    
+    let columns = [
+          GridItem(.flexible()),
+          GridItem(.flexible()) // Two flexible columns
+      ]
+      
     var body: some View {
         
         VStack{
-            
-            ImageUploaderView(imageNumber: 1, image: $image, title: "Upload Your First Photo")
-//            ImageUploaderView(imageNumber: 2, image: $image, title: "Upload Your First Photo")
-//            ImageUploaderView(imageNumber: 3, image: $image, title: "Upload Your First Photo")
-//            ImageUploaderView(imageNumber: 4, image: $image, title: "Upload Your First Photo")
-            
+           
+            HStack {
+                Text("Addtional Photos to attract more users").font(.subheadline).padding()
+                Spacer()
+            }
+            LazyVGrid(columns: columns, spacing: 16) {
+                            ImageUploaderView(imageNumber: 1, image: $image1, title: "Photo 1")
+                            ImageUploaderView(imageNumber: 2, image: $image2, title: "Photo 2")
+                            ImageUploaderView(imageNumber: 3, image: $image3, title: "Photo 3")
+                            ImageUploaderView(imageNumber: 4, image: $image4, title: "Photo 4")
+                        }
+            .padding()
         
 //            VStack{
                 
@@ -295,19 +309,26 @@ struct UploadYourAdditionalPhotosView: View {
 //                
 //                
 //                Spacer()
-//                
+//
+            
+            Spacer()
                 if showNextButton {
                 
                     Button(action: {
                         
-                        if image == nil && tokenManger.photo == "" {
+                        if tokenManger.photo1 == "" || tokenManger.photo2 == "" || tokenManger.photo3 == "" ||   tokenManger.photo4 == "" {
                             
                             // Show alert if no image is selected
                             showAlert = true
                         }
                         else {
                             
+                            
+                            tokenManger.isAdditionalPhotosAdded = true ;
+                            
                             tokenManger.nextButtonWhenRegistrationProcess = UUID();
+                            
+                            
                         }
                     }) {
                         Text("Next")
@@ -320,7 +341,7 @@ struct UploadYourAdditionalPhotosView: View {
                     .alert(isPresented: $showAlert) {
                                         Alert(
                                             title: Text("Image Missing"),
-                                            message: Text("Please select or upload an image before proceeding."),
+                                            message: Text("Please select or upload all images before proceeding."),
                                             dismissButton: .default(Text("OK"))
                                         )
                                     }
