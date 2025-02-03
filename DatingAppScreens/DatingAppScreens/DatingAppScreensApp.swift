@@ -150,6 +150,7 @@ class TokenManager: ObservableObject {
     @AppStorage("drinking") var drinking: String = ""
     @AppStorage("dob") var dob: String = ""
     
+    @AppStorage("isAdditionalPhotosAdded") var isAdditionalPhotosAdded: Bool = false
     
     @Published var homeTabView : HomeTabEnumViews? = nil;
     @Published var shouldRefecthUnreadCount : UUID = UUID();
@@ -225,6 +226,12 @@ class TokenManager: ObservableObject {
     
     func updatePhoto4 ( photo : String){
         self.photo4 = photo;
+    }
+    
+  
+    func setIsAdditionalPhotosAdded ()  {
+        
+        self.isAdditionalPhotosAdded = true ;
     }
     
     

@@ -122,7 +122,8 @@ struct ContentView: View {
     
     // Define the steps
      enum Step: Int {
-         case stepOne = 1
+         case stepZero = 0
+         case stepOne
          case stepTwo
          case stepThree
          case stepFour
@@ -130,7 +131,7 @@ struct ContentView: View {
          case stepSix
      }
 
-    @State private var currentStep: Step = .stepOne
+    @State private var currentStep: Step = .stepZero
       @State private var transitionDirection: Edge = .trailing // Default transition direction
 
     
@@ -255,7 +256,7 @@ struct ContentView: View {
                         LoginView()
                         
                     }
-                    else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" || tokenManager.jobRole == "" ) ) {
+                    else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || ( tokenManager.isAdditionalPhotosAdded == false ) || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" || tokenManager.jobRole == "" ) ) {
                         
                          
                         // Display the view for the current step
@@ -263,7 +264,7 @@ struct ContentView: View {
                                        
                                        VStack {
                                            // Custom top "Previous" button
-                                           if( currentStep != .stepOne ) {
+                                           if( currentStep != .stepZero ) {
                                                HStack {
                                                    
                                                    
@@ -273,9 +274,9 @@ struct ContentView: View {
                                                            Text("Previous")
                                                        }
                                                        .font(.body)
-                                                       .foregroundColor(currentStep == .stepOne ? .gray : .blue) // Disable look
+                                                       .foregroundColor(currentStep == .stepZero ? .gray : .blue) // Disable look
                                                    }
-                                                   .disabled(currentStep == .stepOne) // Disable the button on the first step
+                                                   .disabled(currentStep == .stepZero) // Disable the button on the first step
                                                    
                                                    Spacer() // Push to the left
                                                }
@@ -297,9 +298,9 @@ struct ContentView: View {
                                                            Text("Previous")
                                                        }
                                                        .font(.body)
-                                                       .foregroundColor(currentStep == .stepOne ? .gray : .blue) // Disable look
+                                                       .foregroundColor(currentStep == .stepZero ? .gray : .blue) // Disable look
                                                    }
-                                                   .disabled(currentStep == .stepOne) // Disable the button on the first step
+                                                   .disabled(currentStep == .stepZero) // Disable the button on the first step
                                                    
                                                    Spacer() // Push to the left
                                                }
@@ -314,7 +315,7 @@ struct ContentView: View {
                                            
                                            // Step progress bar
                                            HStack(spacing: 8) {
-                                               ForEach(1...6, id: \.self) { step in
+                                               ForEach(0...6, id: \.self) { step in
                                                    Rectangle()
                                                        .fill(currentStep.rawValue >= step ? Color.blue : Color.gray.opacity(0.5)) // Blue if completed, gray otherwise
                                                        .frame(height: 10)
@@ -325,8 +326,11 @@ struct ContentView: View {
                                            
                                            
                                            VStack {
-                                               if currentStep == .stepOne {
+                                               if currentStep == .stepZero {
                                                    UploadYourPhotoView(showNextButton: true)
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               } else if currentStep == .stepOne {
+                                                   UploadYourAdditionalPhotosView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                } else if currentStep == .stepTwo {
                                                    UpdateTechnologyNewView( showNextButton : true )
@@ -861,10 +865,18 @@ struct ContentView: View {
         } else if tokenManager.photo.isEmpty {
             print("photo  empty ")
             
-            self.currentStep = .stepOne ;
+            self.currentStep = .stepZero ;
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
-        } else if tokenManager.technologies.isEmpty {
+        }
+        else if tokenManager.isAdditionalPhotosAdded == false {
+           print("photo  empty ")
+           
+            self.currentStep = .stepOne ;
+           path.removeAll()
+           path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
+       }
+        else if tokenManager.technologies.isEmpty {
             print("technologies  empty ")
             self.currentStep = .stepTwo
             path.removeAll()

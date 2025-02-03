@@ -50,9 +50,9 @@ struct ImageUploaderView: View {
                     .overlay(Circle().stroke(Color.gray, lineWidth: 1))
             }
             else if (
-                ( imageNumber == 1 && tokenManger.photo1 != "" ) &&
-                ( imageNumber == 2 && tokenManger.photo2 != "" ) &&
-                ( imageNumber == 3 && tokenManger.photo3 != "" ) &&
+                ( imageNumber == 1 && tokenManger.photo1 != "" ) ||
+                ( imageNumber == 2 && tokenManger.photo2 != "" ) ||
+                ( imageNumber == 3 && tokenManger.photo3 != "" ) ||
                 ( imageNumber == 4 && tokenManger.photo4 != "" )
             ) {
                 
@@ -114,7 +114,7 @@ struct ImageUploaderView: View {
                return
            }
 
-           guard let url = URL(string: "\(tokenManger.localhost)/user/uploadImage\(imageNumber)") else {
+           guard let url = URL(string: "\(tokenManger.localhost)/user/uploadPhotosAdditional") else {
                print("Invalid URL.")
                return
            }
@@ -128,7 +128,8 @@ struct ImageUploaderView: View {
         let token = tokenManger.accessToken;
            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
+        
+        request.setValue("\(imageNumber)", forHTTPHeaderField: "X-Image-Number")
 
            var body = Data()
         
@@ -146,6 +147,7 @@ struct ImageUploaderView: View {
         
       
            do {
+               
                isUploading = true
                
                defer {
@@ -176,6 +178,7 @@ struct ImageUploaderView: View {
                                    case 2 : tokenManger.updatePhoto2(photo: photo)
                                    case 3 : tokenManger.updatePhoto3(photo: photo)
                                    case 4 : tokenManger.updatePhoto4(photo: photo)
+                                       
                                    default:
                                        break
                                    }
@@ -325,7 +328,7 @@ struct UploadYourAdditionalPhotosView: View {
                 
 //            }.frame(maxWidth: .infinity).background(.white)
             
-        }
+        }.frame( maxHeight: .infinity )
         
         
 //        .frame(maxWidth: .infinity)
@@ -356,100 +359,6 @@ struct UploadYourAdditionalPhotosView: View {
 //            } .navigationBarTitle("", displayMode: .inline) // Keeps the back button
     }
     
-    
-    func uploadImage() async {
-        
-        
-           guard let image = image,
-                 let imageData = image.jpegData(compressionQuality: 1.0) else {
-               print("No image or failed to convert image to data.")
-               return
-           }
-
-           guard let url = URL(string: "\(tokenManger.localhost)/user/uploadImage") else {
-               print("Invalid URL.")
-               return
-           }
-
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
-
-           let boundary = UUID().uuidString
-           let fieldName = "myImage"
-           let fileName = "image.jpg"
-        let token = tokenManger.accessToken;
-           request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
-
-           var body = Data()
-        
-           body.append("--\(boundary)\r\n".data(using: .utf8)!)
-           body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
-           body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-           body.append(imageData)
-           body.append("\r\n".data(using: .utf8)!)
-   
-           body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-    
-
-           request.httpBody = body
-        
-      
-           do {
-               isUploading = true
-               
-               defer {
-                   isUploading = false
-               }
-               
-               let (data, response) = try await URLSession.shared.data(for: request)
-               if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                   print("Image uploaded successfully!")
-                   
-                   // Print the raw data for debugging
-                   if let rawDataString = String(data: data, encoding: .utf8) {
-                       print("Raw response data: \(rawDataString)")
-                   }
-                   
-                   do {
-                       let decodedResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
-                           // Save token locally
-                           print ("image decoded successfully")
-                           if let photo = decodedResponse.data?.user?.photo {
-                               
-                               DispatchQueue.main.async {
-                                   
-                                   tokenManger.updatePhoto(photo: photo)
-                                   print("Photo: \(photo)")
-                                   
-                               }
-                           } else {
-                               print("No Token")
-                           }
-                           
-                           
-                       
-                       
-                   }
-                   catch {
-                       print("Failed to decode response: \(error)")
-                   }
-                   
-//                   uploadResult = "Image uploaded successfully!"
-               } else {
-                   print("Failed to upload image.")
-//                   uploadResult = "Failed to upload image."
-               }
-               
-             
-               
-           } catch {
-               print("Error uploading image: \(error)")
-//               uploadResult = "Error uploading image: \(error.localizedDescription)"
-           }
-       }
     
     //    Button(action: {
     //   //                         requestPhotoLibraryPermission()
