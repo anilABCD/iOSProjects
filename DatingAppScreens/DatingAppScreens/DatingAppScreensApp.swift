@@ -163,9 +163,7 @@ class TokenManager: ObservableObject {
     
     @Published var isMenuView : Bool = false;
     
-    @Published var isFirstTimeLoading : Bool = true;
-    
-    
+ 
     @Published var isKeyboardOpen : Bool = false;
     
     

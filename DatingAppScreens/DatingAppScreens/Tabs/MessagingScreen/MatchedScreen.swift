@@ -459,10 +459,7 @@ struct MatchedItemView: View {
                 
                 if let imageUrl = lastMessage?.image , let timestamp = lastMessage?.timestamp {
                     HStack {
-                        Text("An Image")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            
+                        Image( systemName: "camera.fill").font(.subheadline)
                         
                         Spacer()
                         

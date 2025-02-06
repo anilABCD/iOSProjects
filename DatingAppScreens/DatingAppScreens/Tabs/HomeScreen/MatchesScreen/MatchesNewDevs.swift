@@ -100,14 +100,15 @@ struct MatchesNewDevsView: View {
                 print ("decode ended")
                 
                 
-                
-                if( tokenManger.isFirstTimeLoading == true ){
-                    
-                    tokenManger.isFirstTimeLoading = false;
-                }
-                else {
-                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
-                }
+//                added to display animating bar under tabs
+//                if( tokenManger.isFirstTimeLoading == true ){
+//                    
+//                    tokenManger.isFirstTimeLoading = false;
+//                }
+//                else {
+//                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
+//                }
+//
                 
                 DispatchQueue.main.async {
                     
@@ -213,9 +214,9 @@ struct MatchesNewDevsView: View {
                                    Image(systemName: "xmark")
                                                       .foregroundColor(.gray) // Grey color for the X icon
                                                       .font(.system(size: 23)) // Adjust size of the icon
-                                                      .frame(width: 60, height: 60) // Standard button size
+                                                      .frame(width: 50, height: 50) // Standard button size
                                                       .background(Color.white) // Same background for consistency
-                                                      .cornerRadius(30) // Same rounded corners
+                                                      .cornerRadius(25) // Same rounded corners
                                                       .shadow(radius: 5) // Same shadow for both buttons
                                }
                                .padding()
@@ -224,9 +225,9 @@ struct MatchesNewDevsView: View {
                                    Image(systemName: "heart.fill")
                                                       .foregroundColor(.red)
                                                       .font(.system(size: 23)) // Adjust size of the icon
-                                                      .frame(width: 60, height: 60) // Standard button size
+                                                      .frame(width: 50, height: 50) // Standard button size
                                                       .background(Color.white)
-                                                      .cornerRadius(30) // Rounded corners
+                                                      .cornerRadius(25) // Rounded corners
                                                       .shadow(radius: 5)
                                    
                                }
@@ -234,7 +235,7 @@ struct MatchesNewDevsView: View {
                            }.frame(height: 28).padding(5).padding(.bottom , 28).background(Color.clear) // Transparent background
                            
                            
-                           Color.clear.frame(height: 80)
+                           Color.clear.frame(height: 90)
                            
 //                           // Temporary height element at the bottom (100 height)
 //                           Color.clear
