@@ -16,6 +16,8 @@ struct MatchesNewDevsView: View {
     @State var isPopupPresented = false // 1
     @State private var selectedPerson: String = "John Doe"
     
+    
+  
     @EnvironmentObject private var tokenManger : TokenManager
     
     init(){
@@ -144,58 +146,99 @@ struct MatchesNewDevsView: View {
                        ProgressView("Loading...")
                            .scaleEffect(1.5)
                    } else if !profiles.isEmpty {
-                       ZStack {
-                           ForEach(profiles.indices , id: \.self ) { index in
-                               
-                               if index == profiles.count - 1 { // Show topmost item
-                                                   SwipeableView(
-                                                    item: profiles[index],
-                                                       onSwipeRight: {
-                                                           
-                                                           
-                                                           // Start an asynchronous task for the network request
-                                                                                     Task {
-                                                                                         do {
-                                                                                             // Call the asynchronous function with the local copy
-                                                                                             try await likeTheProfile(user2_id: profiles[index].id)
-                                                                                         } catch {
-                                                                                             // Handle any errors here
-                                                                                             print("Failed to like the profile: \(error)")
-                                                                                         }
-                                                                                         
-                                                                                         withAnimation {
-                                                                                             removeProfile(at: index)
-                                                                                         }
-                                                                                     }
-                                                           
-                                                        
-                                                            
-                                                       } ,
-                                                    onSwipeLeft: {
-                                                        
-//                                                        
-//                                                        // Start an asynchronous task for the network request
-//                                                                                  Task {
-//                                                                                      do {
-//                                                                                          // Call the asynchronous function with the local copy
-//                                                                                          try await likeTheProfile(user2_id: profiles[index].id)
-//                                                                                      } catch {
-//                                                                                          // Handle any errors here
-//                                                                                          print("Failed to like the profile: \(error)")
-//                                                                                      }
-//                                                                                      
-//
-//                                                                                  }
-//                                                        
-//                                                       withAnimation {
-                                                        removeProfile(at: index)
-                                                    
-                                                         
-                                                    }
+                       
+                       VStack (spacing: 0 ) {
                            
-                                )
+                           
+                           ZStack {
+                               
+                               ForEach(profiles.indices , id: \.self ) { index in
+                                   
+                                   if index == profiles.count - 1 { // Show topmost item
+                                       
+                                       
+                                       
+                                       SwipeableView(
+                                        item: $profiles[index],
+                                        onSwipeRight: {
+                                            
+                                            
+                                            // Start an asynchronous task for the network request
+                                            Task {
+                                                do {
+                                                    // Call the asynchronous function with the local copy
+                                                    try await likeTheProfile(user2_id: profiles[index].id)
+                                                } catch {
+                                                    // Handle any errors here
+                                                    print("Failed to like the profile: \(error)")
+                                                }
+                                                
+                                                withAnimation {
+                                                    removeProfile(at: index)
+                                                }
+                                            }
+                                            
+                                            
+                                            
+                                        } ,
+                                        onSwipeLeft: {
+                                            
+                                            //
+                                            //                                                        // Start an asynchronous task for the network request
+                                            //                                                                                  Task {
+                                            //                                                                                      do {
+                                            //                                                                                          // Call the asynchronous function with the local copy
+                                            //                                                                                          try await likeTheProfile(user2_id: profiles[index].id)
+                                            //                                                                                      } catch {
+                                            //                                                                                          // Handle any errors here
+                                            //                                                                                          print("Failed to like the profile: \(error)")
+                                            //                                                                                      }
+                                            //
+                                            //
+                                            //                                                                                  }
+                                            //
+                                            //                                                       withAnimation {
+                                            removeProfile(at: index)
+                                            
+                                            
+                                        }
+                                        
+                                       )
+                                   }
                                }
-                           }
+                           }.frame(maxHeight:.infinity)
+                           
+                           HStack {
+                               Button(action: swipeLeft) {
+                                   Image(systemName: "xmark")
+                                                      .foregroundColor(.gray) // Grey color for the X icon
+                                                      .font(.system(size: 23)) // Adjust size of the icon
+                                                      .frame(width: 60, height: 60) // Standard button size
+                                                      .background(Color.white) // Same background for consistency
+                                                      .cornerRadius(30) // Same rounded corners
+                                                      .shadow(radius: 5) // Same shadow for both buttons
+                               }
+                               .padding()
+                               
+                               Button(action: swipeRight) {
+                                   Image(systemName: "heart.fill")
+                                                      .foregroundColor(.red)
+                                                      .font(.system(size: 23)) // Adjust size of the icon
+                                                      .frame(width: 60, height: 60) // Standard button size
+                                                      .background(Color.white)
+                                                      .cornerRadius(30) // Rounded corners
+                                                      .shadow(radius: 5)
+                                   
+                               }
+                               .padding()
+                           }.frame(height: 28).padding(5).padding(.bottom , 28).background(Color.clear) // Transparent background
+                           
+                           
+                           Color.clear.frame(height: 80)
+                           
+//                           // Temporary height element at the bottom (100 height)
+//                           Color.clear
+//                               .frame(height: 120) // This will push the content up and allow scrolling
                        }
                    } else {
                        Text("No items to display.")
@@ -221,6 +264,20 @@ struct MatchesNewDevsView: View {
             }
         }
       
+    }
+    
+    private func swipeLeft () {
+        
+        if(!profiles.isEmpty) {
+         profiles[self.profiles.count-1].leftSwipe = UUID();
+       }
+    }
+    
+    private func swipeRight () {
+        
+        if(!profiles.isEmpty) {
+            profiles[self.profiles.count-1].rightSwipe = UUID();
+        }
     }
     
     private func removeProfile(at index: Int) {
@@ -356,7 +413,7 @@ struct ChatPopupView: View {
 
 
 struct SwipeableView: View {
-    let item: Profile
+    @Binding var item: Profile
     let onSwipeRight: () -> Void
     let onSwipeLeft: () -> Void
     @State private var offset: CGSize = .zero
@@ -506,34 +563,46 @@ struct SwipeableView: View {
                     .frame(height: 120) // This will push the content up and allow scrolling
                 
             }.padding()
-            
-            HStack {
-                Button(action: swipeLeft) {
-                    Image(systemName: "xmark")
-                                       .foregroundColor(.gray) // Grey color for the X icon
-                                       .font(.system(size: 23)) // Adjust size of the icon
-                                       .frame(width: 60, height: 60) // Standard button size
-                                       .background(Color.white) // Same background for consistency
-                                       .cornerRadius(30) // Same rounded corners
-                                       .shadow(radius: 5) // Same shadow for both buttons
-                }
-                .padding()
-                
-                Button(action: swipeRight) {
-                    Image(systemName: "heart.fill")
-                                       .foregroundColor(.red)
-                                       .font(.system(size: 23)) // Adjust size of the icon
-                                       .frame(width: 60, height: 60) // Standard button size
-                                       .background(Color.white)
-                                       .cornerRadius(30) // Rounded corners
-                                       .shadow(radius: 5)
+                .onChange(of: item.leftSwipe ) { _ in
+                    
+                    self.swipeLeft();
+                    
                     
                 }
-                .padding()
-            }.frame(height:30).padding(.bottom , 10)
+                .onChange(of: item.rightSwipe ) { _ in
+                    
+                    self.swipeRight();
+                    
+
+                }
             
-            Color.clear
-                .frame(height: 100)
+//            HStack {
+//                Button(action: swipeLeft) {
+//                    Image(systemName: "xmark")
+//                                       .foregroundColor(.gray) // Grey color for the X icon
+//                                       .font(.system(size: 23)) // Adjust size of the icon
+//                                       .frame(width: 60, height: 60) // Standard button size
+//                                       .background(Color.white) // Same background for consistency
+//                                       .cornerRadius(30) // Same rounded corners
+//                                       .shadow(radius: 5) // Same shadow for both buttons
+//                }
+//                .padding()
+//                
+//                Button(action: swipeRight) {
+//                    Image(systemName: "heart.fill")
+//                                       .foregroundColor(.red)
+//                                       .font(.system(size: 23)) // Adjust size of the icon
+//                                       .frame(width: 60, height: 60) // Standard button size
+//                                       .background(Color.white)
+//                                       .cornerRadius(30) // Rounded corners
+//                                       .shadow(radius: 5)
+//                    
+//                }
+//                .padding()
+//            }.frame(height:30).padding(.bottom , 10)
+            
+//            Color.clear
+//                .frame(height: 100)
         }
        
     }

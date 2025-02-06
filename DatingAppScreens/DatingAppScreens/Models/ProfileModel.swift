@@ -57,6 +57,9 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     var bio: String?
     var isOnline: Bool?
     
+    var leftSwipe : UUID = UUID()
+    var rightSwipe : UUID = UUID() 
+    
     // Computed property for Identifiable protocol
     var id: String {
         return objectId.value
@@ -94,6 +97,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
                 lhs.smoking == rhs.smoking &&
                 lhs.jobRole == rhs.jobRole &&
         
+        lhs.leftSwipe == rhs.leftSwipe &&
+        lhs.rightSwipe == rhs.rightSwipe &&
         
                lhs.bio == rhs.bio &&
                lhs.isOnline == rhs.isOnline
@@ -112,6 +117,10 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
            hasher.combine(drinking)
            hasher.combine(smoking)
            hasher.combine(jobRole)
+           
+           
+           hasher.combine(leftSwipe)
+           hasher.combine(rightSwipe)
            
            hasher.combine(bio)
            hasher.combine(isOnline)
