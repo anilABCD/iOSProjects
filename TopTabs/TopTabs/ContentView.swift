@@ -13,31 +13,64 @@ struct MatchedGeometrySlidingTabs: View {
     @State private var previousTab = 0  // To track direction
     @GestureState private var dragOffset: CGFloat = 0
     
+    @State var barBottomTab = false;
+    @State var tabTitleBackgroundHighlighter = true ;
+    
+    
     var body: some View {
         VStack {
             // Tab Bar (Static, No Offset)
-            HStack(spacing: 20) {
+            HStack(spacing: 10) {
                 ForEach(0..<tabs.count, id: \.self) { index in
-                    ZStack {
-                        if selectedTab == index {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.blue.opacity(0.2))
-                                .frame(height: 40)
-                                .matchedGeometryEffect(id: "tabBackground", in: animationNamespace)
-                        }
+                    
+                    VStack(alignment: .leading, spacing: 0) {  // Set spacing to 0
 
-                        Text(tabs[index])
-                            .foregroundColor(selectedTab == index ? .blue : .gray)
-                            .fontWeight(selectedTab == index ? .bold : .regular)
-                            .padding(.horizontal, 10)
-                            .matchedGeometryEffect(id: "tabText\(index)", in: animationNamespace)
-                    }
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            previousTab = selectedTab  // Store previous tab index
-                            selectedTab = index
+                        
+                        
+                        ZStack {
+                            
+                            if tabTitleBackgroundHighlighter {
+                                if selectedTab == index {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.blue.opacity(0.2))
+                                        .frame( width:80 ,height: 40 ).padding(0)
+                                        .matchedGeometryEffect(id: "tabBackground", in: animationNamespace).padding(0)
+                                }
+                            }
+                            
+                            Text(tabs[index])
+                                .foregroundColor(selectedTab == index ? .blue : .gray)
+                                .fontWeight(selectedTab == index ? .bold : .regular)
+                                .padding(0)
+                                .frame( width:80 ,height: 40 ).padding(0)
+                            //                            .matchedGeometryEffect(id: "tabText\(index)", in: animationNamespace)
+                        }.frame(height: 40)  // Ensures it doesn’t expand beyond text height
+                           
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                previousTab = selectedTab  // Store previous tab index
+                                selectedTab = index
+                            }
                         }
-                    }
+                        
+                        if barBottomTab {
+                            if selectedTab == index {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.blue.opacity(0.5))
+                                    .frame( width:80 ,height: 4 ).padding(0)
+                                    .matchedGeometryEffect(id: "tabBackground", in: animationNamespace).background(Color.clear).padding(0)
+                            }
+                            else {
+                                
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.clear)
+                                    .frame( width:80 ,height: 4 ).padding(0)
+                                
+                                
+                            }
+                        }
+                        
+                    }.frame(alignment: .top).padding(0)
                 }
             }
             .padding(.top, 20)
@@ -115,10 +148,13 @@ struct MatchedGeometrySlidingTabs: View {
     // Function to handle swipe gestures
     private func moveTab(forward: Bool) {
         previousTab = selectedTab
-        if forward {
-            selectedTab = (selectedTab + 1) % tabs.count // Move forward, wrap around
-        } else {
-            selectedTab = (selectedTab - 1 + tabs.count) % tabs.count // Move backward, wrap around
+        
+        withAnimation {
+            if forward {
+                selectedTab = (selectedTab + 1) % tabs.count // Move forward, wrap around
+            } else {
+                selectedTab = (selectedTab - 1 + tabs.count) % tabs.count // Move backward, wrap around
+            }
         }
     }
     
