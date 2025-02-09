@@ -29,6 +29,23 @@
 		B7FBBB042D58ECF6006FA831 /* ComponentsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComponentsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B7109DCD2D59030100208673 /* Exceptions for "ComponentsUITests" folder in "Components" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				building.jpg,
+			);
+			target = B7FBBAE92D58ECF5006FA831 /* Components */;
+		};
+		B7109DCE2D59030100208673 /* Exceptions for "ComponentsUITests" folder in "ComponentsUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				building.jpg,
+			);
+			target = B7FBBB032D58ECF6006FA831 /* ComponentsUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B7FBBAEC2D58ECF5006FA831 /* Components */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -42,6 +59,10 @@
 		};
 		B7FBBB072D58ECF6006FA831 /* ComponentsUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B7109DCD2D59030100208673 /* Exceptions for "ComponentsUITests" folder in "Components" target */,
+				B7109DCE2D59030100208673 /* Exceptions for "ComponentsUITests" folder in "ComponentsUITests" target */,
+			);
 			path = ComponentsUITests;
 			sourceTree = "<group>";
 		};
