@@ -37,9 +37,9 @@ struct UpdateJobRoleView: View {
             
             // Job Role Picker similar to Smoking Picker example
                        HStack {
-                           Text("Job Role")
-                               .foregroundColor(.primary)
-                               .padding(.leading)
+                           Image(systemName: "briefcase.fill")
+                                              .foregroundColor(.blue)
+                                              .padding(.leading)
                            
                            Picker("", selection: $selectedJobRole) {
                                ForEach(jobRoles, id: \.self) { role in

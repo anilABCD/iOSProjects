@@ -243,7 +243,7 @@ class WebSocketManager: ObservableObject {
         socket.emit("onLeaveChatUser" , user2Id)
     }
     
-    func sendMessage(_ newMessageText: String , imageBase64 : String , chatId : String , senderId : String , user2 : String) {
+    func sendMessage(_ newMessageText: String , imageBase64 : String , chatId : String , senderId : String , user2 : String , timestamp : TimeInterval ) {
 //        socket.emit("sendMessage", message )
       
         guard !newMessageText.isEmpty || !imageBase64.isEmpty else { return }
@@ -255,7 +255,8 @@ class WebSocketManager: ObservableObject {
                    "sender": senderId,
                    "text": newMessageText,
                    "imageBase64" : imageBase64 ,
-                   "user2" : user2
+                   "user2" : user2,
+                   
                ]
         
         

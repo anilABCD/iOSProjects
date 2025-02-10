@@ -239,6 +239,11 @@ struct ChatView: View {
     
     
     private func messageStatus( otherUserId : String , message : Chat.Message) -> String {
+        
+        if( !message.isSent){
+            return ""
+        }
+        
         if !message.delivered { // Replace with actual delivery check logic
             return "✓" // Not Delivered
         } else if message.isRead(by: otherUserId) {
@@ -382,6 +387,51 @@ struct ChatView: View {
             }
     }
     
+    
+    
+    func updateMessageStatusWithSenderId(
+        in groupedMessages: inout [String: [String: [String: [Chat.Message]]]],
+        newValue: Chat.Message,
+        profile: Profile?,
+        chat: Chat? ,
+        isSent : Bool
+    ) {
+        guard let chatID = chat?.id, let currentUserID = profile?.id else { return }
+
+        guard let currentUserID = profile?.id else { return }
+
+            for (yearKey, months) in groupedMessages {
+                for (monthKey, days) in months {
+                    for (dayKey, _) in days {
+                        // Safely access the message list
+                        if var dayMessages = groupedMessages[yearKey]?[monthKey]?[dayKey],
+                           let groupedIndex = dayMessages.firstIndex(where: { $0.sender == tokenManager.userId && $0.timestamp == newValue.timestamp }) {
+                            
+                            // Update `delivered` status
+//                            dayMessages[groupedIndex].delivered = true
+                            
+                            dayMessages[groupedIndex].isSent = isSent
+//
+//                            if ( isRead) {
+//                                // Safely unwrap and update `readBy`
+//                                var message = dayMessages[groupedIndex]  // Create a mutable copy
+//                                if !message.readBy.contains(currentUserID) {
+//                                    message.readBy.append(currentUserID)
+//                                }
+//                                
+//                                // Save back the updated message
+//                                dayMessages[groupedIndex] = message
+//                            }
+                            
+                            groupedMessages[yearKey]?[monthKey]?[dayKey] = dayMessages
+                            
+                            return // Exit once the message is found and updated
+                        }
+                    }
+                }
+            }
+    }
+    
     func updateMessageStatusByReadBy(
         in groupedMessages: inout [String: [String: [String: [Chat.Message]]]],
         profile: Profile?
@@ -515,7 +565,13 @@ struct ChatView: View {
                                                                                                        .font(.caption2)
                                                                                                        .foregroundColor(message.isRead(by: profile?.id ?? "") ? .green : .gray)
 
-                                                                                                   
+                                                                                                   if ( !message.isSent ){
+                                                                                                       Image(systemName: "clock")
+                                                                                                                           .foregroundColor(.gray)
+                                                                                                                           .font(.system(size: 10))
+                                                                                                                           .padding(.leading, 5)
+
+                                                                                                   }
                                                                                                    
                                                                                                    
                                                                                                    // Text("\(self.webSocketManager.isOnChatScreen )")
@@ -626,18 +682,60 @@ struct ChatView: View {
                                                if  let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"]  as? String , let chatId = message?["chatId"] as? String,
                                                    chatId == self.chat?.id {
                                                    
-                                                   print( "chatid " , chatId , self.chat?.id ?? "" )
+                                                   let dateFormatter = DateFormatter()
+                                                   dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+                                                   dateFormatter.timeZone = TimeZone.current
                                                    
-                                                   // Handle image, it could be null
-                                                   let image = message?["image"] as? String // If image is null, this will be nil
-                                                   
-                                                   let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp , image : image )
-                                                   
-                                                   
-                                                   DispatchQueue.main.async {
+                                                   print ("messageTime : \(timeStamp)")
+                                                   if let messageTime = dateFormatter.date(from: timeStamp) {
                                                        
-                                                       messages.insert(newMessage , at : 0);
                                                        
+                                                       
+                                                           if let index = self.messages.firstIndex(where: {
+                                                               $0.sender == tokenManager.userId && Int($0.timestamp.timeIntervalSince1970) == Int(messageTime.timeIntervalSince1970)
+                                                           }) {
+                                                               // ✅ Modify the struct by creating a new instance
+                                                                   var updatedMessage = self.messages[index]
+//                                                                   updatedMessage.text = "hero"
+                                                                     updatedMessage.isSent = true;
+                                                                   
+                                                                   // ✅ Reassign the struct in the array
+                                                               
+                                                                   self.messages[index] = updatedMessage  // ✅ Triggers UI update
+                                                              
+                                                               
+                                                             
+                                                                   guard let currentChat = chat else { return }
+                                                                   
+                                                                   // Update groupedMessages
+                                                                   updateMessageStatusWithSenderId(in: &groupedMessages, newValue: self.messages[index ], profile: profile, chat: currentChat , isSent : true)
+                                                           
+                                                               
+                                                              
+                                                               
+                                                               print ("index : "  , index)
+                                                           }
+                                                       
+                                                       
+                                                       print ("messageTime : \(messageTime)" , tokenManager.userId , (messageTime ) )
+                                                       
+                                                       
+                                                       print("\(messages.first)")
+                                                       
+                                                       print( "chatid " , chatId , self.chat?.id ?? "" )
+                                                       
+                                                       // Handle image, it could be null
+                                                       let image = message?["image"] as? String // If image is null, this will be nil
+                                                       
+                                                       let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp , image : image )
+                                                       
+                                                       
+//                                                       
+//                                                       DispatchQueue.main.async {
+//                                                           
+//                                                           messages.insert(newMessage , at : 0);
+//                                                           
+//                                                       }
                                                    }
                                                }
 //                                           }
@@ -645,7 +743,7 @@ struct ChatView: View {
                                            guard let lastMessage = messages.first else { return } // Get only the last message
                                            updateGroupedMessages(existingGroupedMessages: &groupedMessages, newMessages: [lastMessage])
                                        }
-                                  
+                                      
 //                                       .onReceive(webSocketManager.$deliverdUserIdAndTimeStamp) { deliverdUserIdAndTimeStamp in
 //                                           // Safely extract values from the dictionary
 //                                           guard
@@ -838,7 +936,26 @@ struct ChatView: View {
                                         print ( "image base 64" )
                                         print ( "image base 64" , self.selectedImage?.toBase64() ?? "")
                                         
-                                        self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManager.userId , user2: profile?.id ?? "" )
+                                        let now = Date()
+                                        
+                                        self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManager.userId , user2: profile?.id ?? "" , timestamp: now.timeIntervalSince1970  )
+                                        
+                                        
+                                        let dateFormatter = DateFormatter()
+                                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+                                        dateFormatter.timeZone = TimeZone.current
+                                        
+                                        let timestampString = dateFormatter.string(from: now)
+
+                                        
+                                        let newMessage = Chat.Message( sender: tokenManager.userId , text: self.newMessage , timestamp: timestampString , image :  self.selectedImage?.toBase64() ?? nil , isSent: false )
+                                        
+                                        
+                                        DispatchQueue.main.async {
+                                            
+                                            messages.insert(newMessage , at : 0);
+                                            
+                                        }
                                         
                                         
                                         print(" basex " , self.selectedImage?.toBase64() ?? "")
