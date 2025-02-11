@@ -15,6 +15,7 @@ struct MatchesScreenView : View {
 
     @State private var currentIndex = -1 ;
     @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var themeManager : ThemeManager
     
     @Binding var path :[MyNavigation<String>]
     
@@ -207,7 +208,7 @@ struct MatchesScreenView : View {
 //                   
 //                }
 
-            }
+            }.background(themeManager.currentTheme.backgroundColor)
       
             
             

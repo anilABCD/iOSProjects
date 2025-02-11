@@ -185,18 +185,20 @@ struct UpdateHobbiesView: View {
                 }
             }
             
-            Button(action: {
+            Button(showNextButton ? "Next" : "Submit" , action: {
                 submitSelections( authToken: tokenManger.accessToken)
-            }) {
-                Text( showNextButton ? "Next" : "Submit" )
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-            }
+            }).buttonStyle(ThemedButtonStyle()).padding(.horizontal)
+            
+//            {
+//                Text(  )
+//                    .font(.headline)
+//                    .foregroundColor(.white)
+//                    .padding()
+//                    .frame(maxWidth: .infinity)
+//                    .background(Color.blue)
+//                    .cornerRadius(10)
+//                    .padding(.horizontal)
+//            }
             
             if let status = status , status == "suceess"  {
                 Text(status)

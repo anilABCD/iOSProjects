@@ -12,6 +12,8 @@ struct UploadYourPhotoView: View {
     
     @EnvironmentObject private var tokenManger : TokenManager
     
+    @EnvironmentObject private var themeManager : ThemeManager
+    
     @State private var isFirstTimeUpdating = false;
   
     @State private var isUploading : Bool?
@@ -33,11 +35,11 @@ struct UploadYourPhotoView: View {
             VStack{
                 
                 HStack {
-                
+                    
                     Text("Upload Your Photo")
                         .font(.title) // Use .subheadline or .callout for smaller text
                         .foregroundColor(.primary)
-                    
+                 
                     Spacer();
                     
                 }.padding()
@@ -73,17 +75,17 @@ struct UploadYourPhotoView: View {
                     PhotosPicker(selection: $photoPickerItem , matching: .images)
                     {
                         
-                        Text ("Upload Photo").padding().foregroundColor(.white).background(.blue).cornerRadius(8)
+                        Text ("Upload Photo").padding().foregroundColor(.white).background(themeManager.currentTheme.buttonColor).cornerRadius(8)
                         
                     }
                 }
                 
-                
+                Spacer()
                 Spacer()
                 
                 if showNextButton {
                 
-                    Button(action: {
+                    Button("Next" , action: {
                         
                         if image == nil && tokenManger.photo == "" {
                             
@@ -94,13 +96,15 @@ struct UploadYourPhotoView: View {
                             
                             tokenManger.nextButtonWhenRegistrationProcess = UUID();
                         }
-                    }) {
-                        Text("Next")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, maxHeight: 50)
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
+                    }).buttonStyle(ThemedButtonStyle()).padding(.horizontal)
+                    
+//                    {
+//                        Text("Next")
+//                            .foregroundColor(.white)
+//                            .frame(maxWidth: .infinity, maxHeight: 50)
+//                            .background(Color.blue)
+//                            .cornerRadius(10)
+//                    }
                     .padding()
                     .alert(isPresented: $showAlert) {
                                         Alert(

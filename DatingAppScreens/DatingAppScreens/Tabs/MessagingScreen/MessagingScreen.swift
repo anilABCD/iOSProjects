@@ -563,7 +563,7 @@ struct ChatView: View {
                                                                                                        .foregroundColor(.gray)
                                                                                                    Text( messageStatus(otherUserId: profile?.id ?? "" , message: message) )
                                                                                                        .font(.caption2)
-                                                                                                       .foregroundColor(message.isRead(by: profile?.id ?? "") ? .green : .gray)
+                                                                                                       .foregroundColor(message.isRead(by: profile?.id ?? "") ? .blue : .gray)
 
                                                                                                    if ( !message.isSent ){
                                                                                                        Image(systemName: "clock")

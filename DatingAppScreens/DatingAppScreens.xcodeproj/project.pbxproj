@@ -50,6 +50,10 @@
 		B79D44ED2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */; };
 		B79FF56B2C258E9B007E77DC /* MessagingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */; };
 		B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */; };
+		B7C5236E2D5ACA38002412E6 /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C5236D2D5ACA38002412E6 /* Themes.swift */; };
+		B7C523712D5ACCDA002412E6 /* ThemedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C523702D5ACCDA002412E6 /* ThemedButtonStyle.swift */; };
+		B7C523742D5AD744002412E6 /* ThemedTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C523732D5AD744002412E6 /* ThemedTextModifier.swift */; };
+		B7C523772D5AD80F002412E6 /* ThemeToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C523762D5AD80D002412E6 /* ThemeToggleButton.swift */; };
 		B7DB2C392D19A97A000DF909 /* UpdateDescribeYourself.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */; };
 		B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9462C174A6E00F321A9 /* LikesModel.swift */; };
 		B7E6C9492C174BFD00F321A9 /* ObjectId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9482C174BFD00F321A9 /* ObjectId.swift */; };
@@ -131,6 +135,10 @@
 		B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingScreen.swift; sourceTree = "<group>"; };
 		B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		B7C5236D2D5ACA38002412E6 /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
+		B7C523702D5ACCDA002412E6 /* ThemedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedButtonStyle.swift; sourceTree = "<group>"; };
+		B7C523732D5AD744002412E6 /* ThemedTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedTextModifier.swift; sourceTree = "<group>"; };
+		B7C523762D5AD80D002412E6 /* ThemeToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeToggleButton.swift; sourceTree = "<group>"; };
 		B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDescribeYourself.swift; sourceTree = "<group>"; };
 		B7E6C9462C174A6E00F321A9 /* LikesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesModel.swift; sourceTree = "<group>"; };
 		B7E6C9482C174BFD00F321A9 /* ObjectId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectId.swift; sourceTree = "<group>"; };
@@ -282,6 +290,9 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B7C523722D5AD73E002412E6 /* Text */,
+				B7C5236F2D5ACCD2002412E6 /* Button */,
+				B7C5236C2D5ACA30002412E6 /* Themes */,
 				B74484CB2D3F6E5800FC4119 /* AppDelegate */,
 				B733B3932C2155A000DE9B09 /* Notifications */,
 				B72A3F302C1DA0A600771B4A /* SplashScreen */,
@@ -337,6 +348,39 @@
 				7CEA455D2C42630100524FB3 /* MatchedScreen.swift */,
 			);
 			path = MessagingScreen;
+			sourceTree = "<group>";
+		};
+		B7C5236C2D5ACA30002412E6 /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				B7C5236D2D5ACA38002412E6 /* Themes.swift */,
+				B7C523752D5AD7F4002412E6 /* ThemeToggleButton */,
+			);
+			path = Themes;
+			sourceTree = "<group>";
+		};
+		B7C5236F2D5ACCD2002412E6 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				B7C523702D5ACCDA002412E6 /* ThemedButtonStyle.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		B7C523722D5AD73E002412E6 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				B7C523732D5AD744002412E6 /* ThemedTextModifier.swift */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		B7C523752D5AD7F4002412E6 /* ThemeToggleButton */ = {
+			isa = PBXGroup;
+			children = (
+				B7C523762D5AD80D002412E6 /* ThemeToggleButton.swift */,
+			);
+			path = ThemeToggleButton;
 			sourceTree = "<group>";
 		};
 		B7E2A8362C1700D6008ADE0E /* RegisterView */ = {
@@ -682,12 +726,15 @@
 				B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */,
 				B79D44D22BEF1F2B00F0AA8B /* ContentView.swift in Sources */,
 				B79FF56B2C258E9B007E77DC /* MessagingScreen.swift in Sources */,
+				B7C523772D5AD80F002412E6 /* ThemeToggleButton.swift in Sources */,
 				B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */,
 				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
 				B75F69B12C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift in Sources */,
 				B7DB2C392D19A97A000DF909 /* UpdateDescribeYourself.swift in Sources */,
 				B772800F2C19D62200446085 /* Utils.swift in Sources */,
 				B71753732D4B4B2B00834FD3 /* UnreadChatCountResponse.swift in Sources */,
+				B7C523742D5AD744002412E6 /* ThemedTextModifier.swift in Sources */,
+				B7C5236E2D5ACA38002412E6 /* Themes.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
 				B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */,
@@ -697,6 +744,7 @@
 				B77B2F0B2D0C511000C7EDDF /* LocationPermissionManager.swift in Sources */,
 				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
 				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
+				B7C523712D5ACCDA002412E6 /* ThemedButtonStyle.swift in Sources */,
 				B77B92FA2D432CCC007B3A37 /* ClosingKeyboard.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,

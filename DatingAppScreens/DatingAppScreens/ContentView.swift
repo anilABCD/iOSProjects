@@ -96,6 +96,8 @@ struct ContentView: View {
     @State private var selectedTabForIndicator = 0
     @EnvironmentObject private var tokenManager: TokenManager
     
+    @EnvironmentObject private var themeManager: ThemeManager
+    
     @Binding  var deepLinkData: DeepLinkData?
     
     @State private var hideTabBar = false;
@@ -509,10 +511,15 @@ struct ContentView: View {
                                         
                                         Spacer()
                                         
-                                        Text("Devo").fontWeight(.bold)
-                                        
+                                        Text("Devo")
+                                            .modifier(ThemedTextModifier()) // ✅ Corrected method
+                                            .fontWeight(.bold) // ✅ Apply font weight correctly
                                         
                                         Spacer()
+                                        
+                                        ThemeToggleButton()
+                                        
+                                       
                                         
                                         Image("filter").resizable().frame(width: 25, height: 25)
                                             .font(.title)
@@ -544,10 +551,10 @@ struct ContentView: View {
                                         //                                        Label("", systemImage: "rectangle.stack")
                                         //                                    }
                                         .tag(0)
-                                        .background(Color.white) // Set background color of the first tab
+                                        .background(themeManager.currentTheme.backgroundColor) // Set background color of the first tab
                                         LikesScreenView().onAppear(){
                                             tokenManager.isMenuView = true
-                                        }
+                                        } .background(themeManager.currentTheme.backgroundColor) // Set background color of the first tab
                                         //                                        .tabItem {
                                         //                                            Label("", systemImage: "heart").background(.black)
                                         //                                        }
@@ -561,7 +568,7 @@ struct ContentView: View {
                                         
                                         MatchedProfilesForMessagingListScreenView( hideTabBar : $hideTabBar).onAppear(){
                                             tokenManager.isMenuView = true
-                                        }
+                                        } .background(themeManager.currentTheme.backgroundColor) // Set background color of the first tab
                                         //                                        .tabItem {
                                         //                                            Label("", systemImage: "message").background(.black)
                                         //                                        }
@@ -569,7 +576,7 @@ struct ContentView: View {
                                         
                                         UserSettingsView(path: $path).onAppear(){
                                             tokenManager.isMenuView = true
-                                        }
+                                        } .background(themeManager.currentTheme.backgroundColor) // Set background color of the first tab
                                         //                                        .tabItem {
                                         //                                            Label("", systemImage: "person").background(.black)
                                         //                                        }
@@ -669,8 +676,8 @@ struct ContentView: View {
                                                 }
                                                 
                                                 .padding()
-                                                .background(Color.white)
-                                                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
+                                                .background(themeManager.currentTheme.backgroundColor)
+                                                .shadow(color: themeManager.currentTheme.primaryColor.opacity(0.1), radius: 10, x: 0, y: -5)
 //                                                .overlay(
 //                                          
 //                                                        GeometryReader { geo in
@@ -834,7 +841,7 @@ struct ContentView: View {
                 // removing keyboardlisteners .
                 removeKeyboardListeners();
             }
-        }
+        }.background(themeManager.currentTheme.backgroundColor)
 }
     
     func handleDeepLink () {
@@ -1189,17 +1196,19 @@ struct TabBarItem: View {
     let title: String
     let isSelected: Bool
     
+    @EnvironmentObject private var themeManager : ThemeManager
+    
     var body: some View {
         VStack {
             Image(systemName: isSelected ? "\(imageName).fill" : imageName)
-                .foregroundColor(isSelected ? .blue : .gray)
+                .foregroundColor(isSelected ? themeManager.currentTheme.primaryColor : .gray)
                 .frame(width: 40, height: 40) // Standard size for the icon
                 .font(.system(size: 20)) // Adjust the icon size within the frame
 //                .shadow(color: isSelected ? Color.blue : Color.clear, radius: isSelected ? 6 : 0, x: 0, y: 2) // Shadow effect when selected
                                
             Text("")
                 .font(.caption)
-                .foregroundColor(isSelected ? .blue : .gray)
+                .foregroundColor(isSelected ? themeManager.currentTheme.primaryColor : .gray)
         }.frame( maxWidth:.infinity )
     }
 }
@@ -1212,12 +1221,14 @@ struct TabBarMessageItem: View {
    let isSelected: Bool
    let notificationCount: Int // Number to display in the notification bubble
    
+   @EnvironmentObject private var themeManager : ThemeManager
+    
    var body: some View {
        VStack {
            // Icon with notification bubble
            ZStack(alignment: .topTrailing) {
                Image(systemName: isSelected ? "\(imageName).fill" : imageName)
-                   .foregroundColor(isSelected ? .blue : .gray)
+                   .foregroundColor(isSelected ? themeManager.currentTheme.primaryColor : .gray)
                    .frame(width: 40, height: 40)
                    .font(.system(size: 20))
 //                   .shadow(color: isSelected ? Color.blue : Color.clear, radius: isSelected ? 6 : 0, x: 0, y: 2) // Shadow effect when selected

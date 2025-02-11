@@ -159,7 +159,7 @@ class TokenManager: ObservableObject {
     @Published var nextButtonWhenRegistrationProcess : UUID = UUID();
     @Published var backButtonWhenRegistrationProcess : UUID = UUID();
     
-    
+
     
     @Published var isMenuView : Bool = false;
     
@@ -268,6 +268,11 @@ struct DatingAppScreensApp: App {
     @State private var deepLinkData: DeepLinkData?
 
     @StateObject private var tokenManager = TokenManager()
+    
+    @StateObject private var themeManager = ThemeManager()
+
+    
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var showSplashScreen = true
     
@@ -291,7 +296,7 @@ struct DatingAppScreensApp: App {
                 else
                 {
                 
-                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher)
+                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher).environmentObject(themeManager)
                         .onOpenURL { url in
                                            // First, try to handle Google Sign-In URL
                                            if GIDSignIn.sharedInstance.handle(url) {

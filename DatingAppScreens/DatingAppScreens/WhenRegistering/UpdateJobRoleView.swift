@@ -27,18 +27,26 @@ struct UpdateJobRoleView: View {
     @State var isFirstTimeUpdatingBio = false;
     @Environment(\.presentationMode) var presentationMode
     
-
+    @EnvironmentObject private var themeManager : ThemeManager
+    
     var body: some View {
         VStack {
-            Text("Job Role")
-                .font(.largeTitle)
-                .padding()
+            
+            HStack {
+                
+                Text("Job Role")
+                    .font(.title) // Use .subheadline or .callout for smaller text
+                    .foregroundColor(.primary)
+             
+                Spacer();
+                
+            }.padding()
             
             
             // Job Role Picker similar to Smoking Picker example
                        HStack {
                            Image(systemName: "briefcase.fill")
-                                              .foregroundColor(.blue)
+                               .foregroundColor(themeManager.currentTheme.backgroundColor)
                                               .padding(.leading)
                            
                            Picker("", selection: $selectedJobRole) {
@@ -72,19 +80,21 @@ struct UpdateJobRoleView: View {
 
             HStack {
                 // Button to update the job role
-                Button(action: {
+                Button( showNextButton ? "Next" : "Submit" , action: {
                     Task {
                         await updateJobRole()
                     }
-                }) {
-                    Text( showNextButton ? "Next" : "Update Job Role")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
+                }).buttonStyle(ThemedButtonStyle()) 
+//                }) {
+//                    Text( showNextButton ? "Next" : "Submit")
+//                        .font(.headline)
+//                        .foregroundColor(.white)
+//                        .padding()
+//                        .frame(maxWidth: .infinity)
+//                        .background(Color.blue)
+//                        .cornerRadius(8)
+//                }
+                    
                
             }
 

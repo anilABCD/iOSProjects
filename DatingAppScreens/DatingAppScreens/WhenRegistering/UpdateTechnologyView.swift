@@ -14,6 +14,7 @@ struct UpdateTechnologyNewView: View {
    
 //    @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
+  
     @Environment(\.presentationMode) var presentationMode
    
     @State var isFirstTimeUpdatingProfile = false;
@@ -197,18 +198,20 @@ struct UpdateTechnologyNewView: View {
                 }
             }
             
-            Button(action: {
+            Button(showNextButton ? "Next" : "Submit" , action: {
                 submitSelections( authToken: tokenManger.accessToken)
-            }) {
-                Text( showNextButton ? "Next" : "Submit")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-            }
+            }).buttonStyle(ThemedButtonStyle()).padding(.horizontal)
+            
+//            {
+//                Text( showNextButton ? "Next" : "Submit")
+//                    .font(.headline)
+//                    .foregroundColor(.white)
+//                    .padding()
+//                    .frame(maxWidth: .infinity)
+//                    .background(Color.blue)
+//                    .cornerRadius(10)
+//                    .padding(.horizontal)
+//            }
             
             if let status = status , status == "suceess"  {
                 Text(status)
@@ -221,17 +224,18 @@ struct UpdateTechnologyNewView: View {
 
 struct ItemView: View {
     let item: SelectableItem
-    
+    @EnvironmentObject private var themeManager : ThemeManager
     var body: some View {
         Text(item.name)
-            .fontWeight(.semibold)
-            .foregroundColor(item.isSelected ? .white : .white)
+            .fontWeight(item.isSelected ? .semibold : .regular)
+            .foregroundColor(item.isSelected ? .white : .black)
             .padding(.vertical, 10)
             .padding(.horizontal)
-            .background(item.isSelected ? Color.blue : Color.gray)
+            .background(item.isSelected ? themeManager.currentTheme.buttonColor : Color.white)
             .clipShape(Capsule())
-                        .overlay(Capsule().stroke(Color.white, lineWidth: 1))
+            .overlay( item.isSelected ? nil : Capsule().stroke(Color.gray, lineWidth: 1))
                         .lineLimit(1)
+                        
     }
 }
 

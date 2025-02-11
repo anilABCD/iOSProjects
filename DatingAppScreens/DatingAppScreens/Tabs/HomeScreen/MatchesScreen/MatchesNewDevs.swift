@@ -19,6 +19,7 @@ struct MatchesNewDevsView: View {
     
   
     @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var themeManager : ThemeManager
     
     init(){
         
@@ -246,7 +247,7 @@ struct MatchesNewDevsView: View {
                            .font(.headline)
                            .foregroundColor(.gray)
                    }
-               }
+        }.frame(maxWidth: .infinity).background(themeManager.currentTheme.backgroundColor)
                .edgesIgnoringSafeArea(.top)
         .popup(isPresented: $isPopupPresented) {
             ChatPopupView(isPresented: $isPopupPresented, profile: profiles[currentIndex] )
@@ -264,6 +265,7 @@ struct MatchesNewDevsView: View {
                 }
             }
         }
+        .background(themeManager.currentTheme.backgroundColor)
       
     }
     

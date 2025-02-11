@@ -85,6 +85,7 @@ struct HomeView: View {
     @State private var selectedTab = 0
     
     @EnvironmentObject private var tokenManager : TokenManager;
+    @EnvironmentObject private var themeManager : ThemeManager;
   
     
      @State private var permissionGranted = false
@@ -98,7 +99,7 @@ struct HomeView: View {
    
                 NavigationStack(path: $path) {
                     
-                    MatchesScreenView(path:$path).navigationDestination(for: MyNavigation<String>.self) { view in
+                    MatchesScreenView(path:$path).background(themeManager.currentTheme.backgroundColor).navigationDestination(for: MyNavigation<String>.self) { view in
                         switch view.appView {
                         case .home:
                             Text("Page 1")
@@ -145,7 +146,7 @@ struct HomeView: View {
                 
                 
                 
-            }.frame( maxWidth:.infinity)
+            }.background(themeManager.currentTheme.backgroundColor).frame( maxWidth:.infinity)
             .navigationBarTitle("", displayMode: .inline)
             
        

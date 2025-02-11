@@ -170,6 +170,17 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
     var body: some View {
         VStack(spacing: 0){
             
+            HStack {
+                
+                Text("DOB , Habbits")
+                    .font(.title) // Use .subheadline or .callout for smaller text
+                    .foregroundColor(.primary)
+             
+                Spacer();
+                
+            }.padding()
+            
+            
             VStack {
                 List {
                     
@@ -337,18 +348,21 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
             Spacer()
             
             
-            Button(action: {
+            Button(showNextButton ? "Next" : "Submit" , action: {
                 submitSelections( authToken: tokenManger.accessToken)
-            }) {
-                Text(showNextButton ? "Next" : "Submit")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-            }
+            }).buttonStyle(ThemedButtonStyle()).padding(.horizontal)
+            
+//            {
+//                Text()
+//                    .font(.headline)
+//                    .foregroundColor(.white)
+//                    .padding()
+//                    .frame(maxWidth: .infinity)
+//                    .background(Color.blue)
+//                    .cornerRadius(10)
+//                    .padding(.horizontal)
+//            }
+            
 //            .alert(isPresented: $showAlert) {
 //                Alert(
 //                    title: Text("Success"),
@@ -360,7 +374,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
 //                )
 //            }
             
-            Spacer()
+          
         }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline)
         
     }

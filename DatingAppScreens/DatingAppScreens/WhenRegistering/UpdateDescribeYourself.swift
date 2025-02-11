@@ -14,18 +14,26 @@ struct UpdateDescribeYourselfView : View {
     
     var body: some View {
         NavigationView {
+            
+            
            
             VStack(spacing: 20) {
                 
-              
+                
+                HStack {
+                    
+                    Text("Your Bio")
+                        .font(.title) // Use .subheadline or .callout for smaller text
+                        .foregroundColor(.primary)
+                 
+                    Spacer();
+                    
+                }.padding()
+                
                 VStack(alignment: .leading) {
                     
                     Spacer()
                     
-                    Text("Your Bio")
-                        .font(.headline)
-                        .foregroundColor(.gray)
-
                     TextEditor(text: $bio)
                         .frame(height: 150)
                         .padding()
@@ -52,19 +60,20 @@ struct UpdateDescribeYourselfView : View {
                 
                 Spacer()
                 
-                Button(action: {
+                Button(showNextButton ? "Next" : "Submit" , action: {
                     Task {
                         await submitDetails()
                     }
-                }) {
-                    Text( showNextButton ? "Next" : "Submit" )
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
+                }).buttonStyle(ThemedButtonStyle())
+//                {
+//                    Text( showNextButton ? "Next" : "Submit" )
+//                        .font(.headline)
+//                        .foregroundColor(.white)
+//                        .padding()
+//                        .frame(maxWidth: .infinity)
+//                        .background(Color.blue)
+//                        .cornerRadius(8)
+//                }
                 .disabled(bio.isEmpty)
                 .opacity(bio.isEmpty ? 0.5 : 1.0)
                 .alert(isPresented: $showSuccessMessage) {
@@ -77,7 +86,7 @@ struct UpdateDescribeYourselfView : View {
 //                Text("\(tokenManger.isKeyboardOpen)")
                
             } .padding(.horizontal)
-                .padding(.bottom, showNextButton ? 0 : ( tokenManger.isKeyboardOpen ? 4 : 110 ) ).navigationBarTitle("", displayMode: .inline)
+                .padding(.bottom, showNextButton ? 0 : ( tokenManger.isKeyboardOpen ? 30 : 110 ) ).navigationBarTitle("", displayMode: .inline)
         }
         .onAppear(){
             // Assuming tokenManager.technologies is a string containing comma-separated values
