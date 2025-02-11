@@ -11,45 +11,140 @@ struct UserSettingsView : View {
 
     @EnvironmentObject private var tokenManger : TokenManager
     
-    @Binding var path :[MyNavigation<String>]
     
-
+    @EnvironmentObject private var themeManager : ThemeManager
+    
+    
+   
     
   
     @State var items : [String] = ["Photo", "Technologies"]
     
+    
+    
+    
     var body: some View {
      
-        NavigationView {
+        NavigationStack {
             VStack {
                 AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo)").frame(width: 200, height: 200).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                    
                 Form {
-                    Section(header: Text("User Profile")) {
+                    Section(header: Text("User Profile").foregroundColor(themeManager.currentTheme.secondaryColor)) {
+                        
                         NavigationLink(destination: UploadYourPhotoView()) {
-                            Text("Photo")
-                        } 
+//                            Text("Photo").foregroundColor(themeManager.currentTheme.primaryColor)
+                                   HStack {
+                                       Text("Photo")
+                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                       Spacer()
+                                      
+                                       
+                                           Image(systemName: "chevron.right")
+                                               .font(.system(size: 13)) // Standard system chevron size
+                                               .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                               .background(themeManager.currentTheme.backgroundColor)
+                                                   .offset(x: 18) // Adjust horizontal position
+                                     
+                                            
+                                   }.zIndex(1)
+                               }
+                               .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
+                               
+                               .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
+                        
+                      
+                        
                         NavigationLink(destination: UpdateTechnologyNewView()) {
-                            Text("Technologies")
-                        }
+//                            Text("Technologies").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Technologies")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                               
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }.zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
                         
                         NavigationLink(destination: UpdateHobbiesView()) {
-                            Text("Hobbies")
-                        }
+//                            Text("Hobbies").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Hobbies")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                               
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }.zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
                         
                         NavigationLink(destination: UpdateSmokingAndDrinkingAndDOBView()) {
-                            Text("Dob , Habbits")
-                        }
+//                            Text("Dob , Habbits").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Dob , Habbits")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                               
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }.zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
                         
                         NavigationLink(destination: UpdateDescribeYourselfView ()) {
-                            Text("Bio")
-                        }
+//                            Text("Bio").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Bio")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                               
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }.zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
                         
                         NavigationLink(destination: UpdateJobRoleView ()) {
-                            Text("Job Role")
-                        }
+//                            Text("Job Role").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Job Role")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                               
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }
+                            .zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
                     }
                     
+//                    .overlay(Rectangle().frame(height: 1).foregroundColor(themeManager.currentTheme.primaryColor), alignment: .bottom)
+                        .listRowBackground(themeManager.currentTheme.backgroundColor) // Custom background for User Profile section
+                       
                     //                          Section(header: Text("Appearance")) {
                     //                              NavigationLink(destination: AppearanceSettingsView()) {
                     //                                  Text("Theme")
@@ -58,10 +153,15 @@ struct UserSettingsView : View {
                     //                                  Text("Font")
                     //                              }
                     //                          }
-                }
-            }.navigationBarTitle("Profile Settings" , displayMode: .inline).onAppear(){
+                }.scrollContentBackground(.hidden) // Removes default background
+                .background(themeManager.currentTheme.backgroundColor)
+                .listStyle(.insetGrouped)
+                .accentColor(themeManager.currentTheme.primaryColor) // Global fallback
+               
                 
+            }.navigationBarTitle("Profile Settings" , displayMode: .inline).background(themeManager.currentTheme.backgroundColor).onAppear(){
                 
+                UITableView.appearance().tintColor = UIColor(themeManager.currentTheme.primaryColor)
                 tokenManger.isMenuView = true;
                 
             }
@@ -72,23 +172,44 @@ struct UserSettingsView : View {
             .navigationBarItems(leading: BackButton {
                 // Handle back button action
                 tokenManger.isMenuView = false;
-                path.removeLast()
+               
             })
+            .onAppear {
+                            updateNavigationBarColor()
+                        }
 
     }
+    
+    func updateNavigationBarColor() {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+           
+            appearance.backgroundColor = UIColor(themeManager.currentTheme.backgroundColor)
+            appearance.titleTextAttributes = [.foregroundColor: UIColor(themeManager.currentTheme.primaryColor)] // Title color
+            
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
 }
 
 
 struct  UserSettingsView_Previews: PreviewProvider {
-    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
-       
+   
     static var previews: some View {
-        UserSettingsView(path: $path).environmentObject(TokenManager())
+        UserSettingsView().environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
 
 
-
+//struct UserSettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UserSettingsView()
+//            .environmentObject(TokenManager())
+//            .environmentObject(ThemeManager())
+//            .previewLayout(.sizeThatFits) // Ensures the preview adjusts properly
+//    }
+//}
+//
 
 struct AsyncImageView: View {
     

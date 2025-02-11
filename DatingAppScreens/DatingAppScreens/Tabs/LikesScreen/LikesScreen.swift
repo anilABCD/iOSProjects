@@ -6,7 +6,9 @@ import SwiftUI
 struct LikesScreenView: View {
     
     @State var likes : [LikesResponse] = []
+    
     @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var themeManager : ThemeManager
     
     
     
@@ -56,6 +58,9 @@ struct LikesScreenView: View {
                   
         }
         .onAppear(){
+            
+            updateNavigationBarColor()
+            
             Task {
                 do {
                     try await fetchLikes()
@@ -67,6 +72,17 @@ struct LikesScreenView: View {
            
         }
     }
+    
+    func updateNavigationBarColor() {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+           
+            appearance.backgroundColor = UIColor(themeManager.currentTheme.backgroundColor)
+            appearance.titleTextAttributes = [.foregroundColor: UIColor(themeManager.currentTheme.primaryColor)] // Title color
+            
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
 }
 
 

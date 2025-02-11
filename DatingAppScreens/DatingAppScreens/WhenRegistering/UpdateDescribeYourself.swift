@@ -19,7 +19,7 @@ struct UpdateDescribeYourselfView : View {
             
             
            
-            VStack(spacing: 20) {
+            VStack(spacing: 0) {
                 
                 
                 HStack {
@@ -30,21 +30,15 @@ struct UpdateDescribeYourselfView : View {
                  
                     Spacer();
                     
-                }.padding()
+                } 
                 
                 VStack(alignment: .leading) {
-                    
-                    Spacer()
-                    
+                   
                     TextEditor(text: $bio)
                         .frame(height: 150)
                         .padding()
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                        )
                         .onChange(of: bio) { newValue in
                             if newValue.count > maxLetters {
                                 bio = String(newValue.prefix(maxLetters))

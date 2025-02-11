@@ -75,7 +75,7 @@ struct UploadYourPhotoView: View {
                     PhotosPicker(selection: $photoPickerItem , matching: .images)
                     {
                         
-                        Text ("Upload Photo").padding().foregroundColor(.white).background(themeManager.currentTheme.buttonColor).cornerRadius(8)
+                        Text ("Upload Photo").modifier(ThemedTextButtonModifier()).padding()
                         
                     }
                 }

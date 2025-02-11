@@ -15,6 +15,8 @@ struct MatchedProfilesForMessagingListScreenView: View {
     
     @State var matched : [Chat] = []
     @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var themeManager : ThemeManager
+    
     @Binding var hideTabBar : Bool ;
     @StateObject  var webSocketManager = WebSocketManager(token: "" , otherUserId: "")
     
@@ -329,6 +331,8 @@ struct MatchedProfilesForMessagingListScreenView: View {
             
         }.onAppear()
         {
+            updateNavigationBarColor();
+            
                 Task {
                    do {
                     try await fetchMatched()
@@ -357,6 +361,17 @@ struct MatchedProfilesForMessagingListScreenView: View {
             self.webSocketManager.disconnect()
         }
     }
+    
+    func updateNavigationBarColor() {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+           
+            appearance.backgroundColor = UIColor(themeManager.currentTheme.backgroundColor)
+            appearance.titleTextAttributes = [.foregroundColor: UIColor(themeManager.currentTheme.primaryColor)] // Title color
+            
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
 }
 
 

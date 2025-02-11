@@ -191,23 +191,27 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
               
                     List {
 
-                            Section("Date Of Birth") {
+                            Section(header: Text("Date Of Birth").foregroundColor(themeManager.currentTheme.primaryColor)) {
                                 // Date of Birth Picker
                                 HStack() {
                                     
-                                    Text("Date of Birth")
+                                    Text("DOB")
                                         .modifier(ThemedTextModifier())
                                         .padding(.leading)
                                     Spacer()
                                     HStack {
-                                        TextField("", text: .constant(formattedDOB(date: viewModel.selectedDOB)))
+                                        
+                                        Spacer()
+                                        TextField("", text: .constant(formattedDOB(date: viewModel.selectedDOB))) .frame(width : 110)
                                             .disabled(true)
                                             .padding(.horizontal)
+                                           
                                             .onTapGesture {
                                                 showDOBPicker.toggle()
                                             }
-                                        
+                                            
                                         Spacer()
+                                      
                                         
                                         Image(systemName: "calendar")
                                             .padding(.trailing)
@@ -215,10 +219,16 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                                 showDOBPicker.toggle()
                                             }
                                     }
-                                    .padding(.vertical, 8)
+                                    .padding(.vertical,8)
                                     .background(Color(.systemGray6))
-                                    .cornerRadius(8)
-                                }
+                                    .padding(.horizontal, 4)
+                                    .cornerRadius(50)
+                                   
+                                }.padding(.vertical , 8).frame(width: 310).background(themeManager.currentTheme.backgroundColor)
+                                    .overlay(
+                                                    RoundedRectangle(cornerRadius: 20)
+                                                     .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
+                                                )
                                 .sheet(isPresented: $showDOBPicker) {
                                     ZStack {
                                         //                        Color.black.opacity(0.3) // Semi-transparent black background
@@ -236,7 +246,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                                 showDOBPicker.toggle()
                                             }) {
                                                 Text("OK")
-                                                    .modifier(ThemedTextModifier())
+                                                    .modifier(ThemedTextButtonModifier())
                                                     .padding()
                                                 
                                                     .cornerRadius(8)
@@ -279,7 +289,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                             }.listRowBackground(themeManager.currentTheme.backgroundColor)
 //                            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0)) // Example: removing insets from a section
                             
-                            Section("Habbits") {
+                        Section(header: Text("Habbits").foregroundColor(themeManager.currentTheme.primaryColor)) {
                                 // Smoking Picker
                                 HStack() {
                                     Text("Smoking")
@@ -292,14 +302,19 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                         }
                                     }
                                     .pickerStyle(MenuPickerStyle())
+                                    .accentColor(themeManager.currentTheme.primaryColor)
+                                    
                                     .padding(.horizontal)
                                 }
                                 .padding(.vertical, 8)
-                                .background(Color(.systemGray6))
+                               
                                 .cornerRadius(8)
-                                
-                                
-                                
+                                .background(themeManager.currentTheme.backgroundColor)
+                                .overlay(
+                                                RoundedRectangle(cornerRadius: 20)
+                                                 .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
+                                            )
+                                .frame(width: 310)
                                 // Drinking Picker
                                 HStack() {
                                     Text("Drinking")
@@ -313,10 +328,17 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                     }
                                     .pickerStyle(MenuPickerStyle())
                                     .padding(.horizontal)
+                                    .accentColor(themeManager.currentTheme.primaryColor)
                                 }
                                 .padding(.vertical, 8)
-                                .background(Color(.systemGray6))
+                                
                                 .cornerRadius(8)
+                                .background(themeManager.currentTheme.backgroundColor)
+                                .overlay(
+                                                RoundedRectangle(cornerRadius: 20)
+                                                 .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
+                                            )
+                                .frame(width: 310)
                             }
                             .listRowBackground(themeManager.currentTheme.backgroundColor)
                             //                Text("Selected Drinking: \(viewModel.selectedDrinking.name)")

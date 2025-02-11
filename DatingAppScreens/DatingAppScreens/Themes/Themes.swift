@@ -11,6 +11,7 @@ import SwiftUI
 struct AppTheme {
     let id: String
     let primaryColor: Color
+    let navigationLinkColor: Color
     let secondaryColor: Color
     let backgroundColor: Color
     let textColor: Color
@@ -28,6 +29,7 @@ struct Themes {
     static let light = AppTheme(
         id: "light",
         primaryColor: .blue,
+        navigationLinkColor: .black,
         secondaryColor: .gray,
         backgroundColor: .white,
         textColor: .black,
@@ -41,6 +43,7 @@ struct Themes {
     static let dark = AppTheme(
         id: "dark",
         primaryColor: .white,
+        navigationLinkColor: .white,
         secondaryColor: .gray,
         backgroundColor: .black,
         textColor: .white,
@@ -54,6 +57,7 @@ struct Themes {
     static let redTheme = AppTheme(
         id: "red",
         primaryColor: .red,
+        navigationLinkColor: .red,
         secondaryColor: .orange,
         backgroundColor: .black,
         textColor: .white,

@@ -574,7 +574,7 @@ struct ContentView: View {
                                         //                                        }
                                             .tag(2)
                                         
-                                        UserSettingsView(path: $path).onAppear(){
+                                        UserSettingsView().onAppear(){
                                             tokenManager.isMenuView = true
                                         } .background(themeManager.currentTheme.backgroundColor) // Set background color of the first tab
                                         //                                        .tabItem {

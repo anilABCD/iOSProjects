@@ -9,14 +9,14 @@
 import SwiftUI
 
 struct ThemedTextModifier: ViewModifier {
-    @EnvironmentObject var tokenManager: ThemeManager
+    @EnvironmentObject var themeManager: ThemeManager
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(tokenManager.currentTheme.textColor)
-            .font(tokenManager.currentTheme.font)
+            .foregroundColor(themeManager.currentTheme.textColor)
+            .font(themeManager.currentTheme.font)
             .padding()
-            .background(tokenManager.currentTheme.backgroundColor.opacity(0.2))
-            .cornerRadius(tokenManager.currentTheme.cornerRadius)
+            .background(themeManager.currentTheme.backgroundColor)
+            .cornerRadius(themeManager.currentTheme.cornerRadius)
     }
 }

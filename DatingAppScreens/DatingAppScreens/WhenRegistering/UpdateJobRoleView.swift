@@ -40,15 +40,16 @@ struct UpdateJobRoleView: View {
              
                 Spacer();
                 
-            }.padding()
+            }
             
             
             // Job Role Picker similar to Smoking Picker example
                        HStack {
                            Image(systemName: "briefcase.fill")
-                               .foregroundColor(themeManager.currentTheme.backgroundColor)
+                               .foregroundColor(themeManager.currentTheme.buttonColor)
                                               .padding(.leading)
-                           
+                   
+                      
                            Picker("", selection: $selectedJobRole) {
                                ForEach(jobRoles, id: \.self) { role in
                                    Text(role).tag(role)
@@ -56,11 +57,22 @@ struct UpdateJobRoleView: View {
                            }
                            .pickerStyle(MenuPickerStyle())
                            .padding(.horizontal)
+                           .accentColor(themeManager.currentTheme.primaryColor)
                        }
-                       .padding(.vertical, 8)
-                       .background(Color(.systemGray6))  // Background color similar to the provided example
-                       .cornerRadius(8)  // Corner radius for rounded edges
-
+                       
+                       .padding()
+                      
+                       .background(themeManager.currentTheme.backgroundColor)
+                       .frame(width:310)
+                       .overlay(
+                                       RoundedRectangle(cornerRadius: 20)
+                                        .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
+                                   )
+                    
+            
+            
+            
+                      
 //            // Picker to select job role
 //            Picker("Select Job Role", selection: $selectedJobRole) {
 //                ForEach(jobRoles, id: \.self) { role in
