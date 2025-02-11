@@ -36,7 +36,7 @@ struct UpdateJobRoleView: View {
                 
                 Text("Job Role")
                     .font(.title) // Use .subheadline or .callout for smaller text
-                    .foregroundColor(.primary)
+                    .modifier(ThemedTextModifier())
              
                 Spacer();
                 
@@ -109,7 +109,7 @@ struct UpdateJobRoleView: View {
             if tokenManger.jobRole != "" {
                 selectedJobRole = tokenManger.jobRole;
             }
-        }
+        }.background(themeManager.currentTheme.backgroundColor)
     }
 
     func updateJobRole() async {

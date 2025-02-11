@@ -38,7 +38,7 @@ struct UploadYourPhotoView: View {
                     
                     Text("Upload Your Photo")
                         .font(.title) // Use .subheadline or .callout for smaller text
-                        .foregroundColor(.primary)
+                        .modifier(ThemedTextModifier())
                  
                     Spacer();
                     
@@ -115,9 +115,9 @@ struct UploadYourPhotoView: View {
                                     }
                 }
                 
-            }.frame(maxWidth: .infinity).background(.white)
+            }.frame(maxWidth: .infinity) 
             
-        }.frame(maxWidth: .infinity)
+        }.frame(maxWidth: .infinity).background( themeManager.currentTheme.backgroundColor ) // Keeps the back button
            
             .onChange(of: photoPickerItem) { newValue in
                 Task {
@@ -142,7 +142,7 @@ struct UploadYourPhotoView: View {
                    
                     photoPickerItem = nil
                 }
-            } .navigationBarTitle("", displayMode: .inline) // Keeps the back button
+            } .navigationBarTitle("", displayMode: .inline).background( themeManager.currentTheme.backgroundColor ) // Keeps the back button
     }
     
     

@@ -6,7 +6,9 @@ struct UpdateDescribeYourselfView : View {
     @State private var showError: Bool = false
     private let maxLetters = 200
     @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var themeManager : ThemeManager
     
+
     var showNextButton : Bool = false
     
     @State var isFirstTimeUpdatingBio = false;
@@ -24,7 +26,7 @@ struct UpdateDescribeYourselfView : View {
                     
                     Text("Your Bio")
                         .font(.title) // Use .subheadline or .callout for smaller text
-                        .foregroundColor(.primary)
+                        .modifier(ThemedTextModifier())
                  
                     Spacer();
                     
@@ -86,7 +88,7 @@ struct UpdateDescribeYourselfView : View {
 //                Text("\(tokenManger.isKeyboardOpen)")
                
             } .padding(.horizontal)
-                .padding(.bottom, showNextButton ? 0 : ( tokenManger.isKeyboardOpen ? 30 : 110 ) ).navigationBarTitle("", displayMode: .inline)
+                .padding(.bottom, showNextButton ? 0 : ( tokenManger.isKeyboardOpen ? 30 : 110 ) ).navigationBarTitle("", displayMode: .inline) .background(themeManager.currentTheme.backgroundColor)
         }
         .onAppear(){
             // Assuming tokenManager.technologies is a string containing comma-separated values
@@ -97,6 +99,7 @@ struct UpdateDescribeYourselfView : View {
                 bio = tokenManger.bio;
             }
         }
+       
     }
 
     func submitDetails() async {

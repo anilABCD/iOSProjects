@@ -1201,14 +1201,14 @@ struct TabBarItem: View {
     var body: some View {
         VStack {
             Image(systemName: isSelected ? "\(imageName).fill" : imageName)
-                .foregroundColor(isSelected ? themeManager.currentTheme.primaryColor : .gray)
+                .foregroundColor(isSelected ? themeManager.currentTheme.buttonColor : .gray)
                 .frame(width: 40, height: 40) // Standard size for the icon
                 .font(.system(size: 20)) // Adjust the icon size within the frame
 //                .shadow(color: isSelected ? Color.blue : Color.clear, radius: isSelected ? 6 : 0, x: 0, y: 2) // Shadow effect when selected
                                
             Text("")
                 .font(.caption)
-                .foregroundColor(isSelected ? themeManager.currentTheme.primaryColor : .gray)
+                .foregroundColor(isSelected ? themeManager.currentTheme.buttonColor : .gray)
         }.frame( maxWidth:.infinity )
     }
 }
@@ -1228,7 +1228,7 @@ struct TabBarMessageItem: View {
            // Icon with notification bubble
            ZStack(alignment: .topTrailing) {
                Image(systemName: isSelected ? "\(imageName).fill" : imageName)
-                   .foregroundColor(isSelected ? themeManager.currentTheme.primaryColor : .gray)
+                   .foregroundColor(isSelected ? themeManager.currentTheme.buttonColor : .gray)
                    .frame(width: 40, height: 40)
                    .font(.system(size: 20))
 //                   .shadow(color: isSelected ? Color.blue : Color.clear, radius: isSelected ? 6 : 0, x: 0, y: 2) // Shadow effect when selected

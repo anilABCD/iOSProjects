@@ -226,6 +226,7 @@ struct UploadYourAdditionalPhotosView: View {
     @State private var image4 : UIImage?
     
     @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var themeManager : ThemeManager
     
     @State private var isFirstTimeUpdating = false;
   
@@ -349,7 +350,7 @@ struct UploadYourAdditionalPhotosView: View {
                 
 //            }.frame(maxWidth: .infinity).background(.white)
             
-        }.frame( maxHeight: .infinity )
+        }.frame( maxHeight: .infinity ).background( themeManager.currentTheme.backgroundColor)
         
         
 //        .frame(maxWidth: .infinity)

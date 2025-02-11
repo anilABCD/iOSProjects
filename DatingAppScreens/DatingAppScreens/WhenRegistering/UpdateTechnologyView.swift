@@ -14,6 +14,8 @@ struct UpdateTechnologyNewView: View {
    
 //    @Binding var path :[MyNavigation<String>]
     @EnvironmentObject private var tokenManger : TokenManager
+    
+    @EnvironmentObject private var themeManager : ThemeManager
   
     @Environment(\.presentationMode) var presentationMode
    
@@ -150,7 +152,10 @@ struct UpdateTechnologyNewView: View {
                 
                 Text("Technologies")
                     .font(.title) // Use .subheadline or .callout for smaller text
-                    .foregroundColor(.primary)
+                    
+                    .modifier(ThemedTextModifier())
+                    
+                    
              
                 Spacer();
                 
@@ -213,12 +218,12 @@ struct UpdateTechnologyNewView: View {
 //                    .padding(.horizontal)
 //            }
             
-            if let status = status , status == "suceess"  {
-                Text(status)
-                    .foregroundColor(.green)
-                    .padding()
-            }
-        }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline) // Keeps the back button // Conditionally add padding.navigationBarTitle("", displayMode: .inline) // Keeps the back button
+//            if let status = status , status == "suceess"  {
+//                Text(status)
+//                    .foregroundColor(.green)
+//                    .padding()
+//            }
+        }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline).background( themeManager.currentTheme.backgroundColor) // Keeps the back button // Conditionally add padding.navigationBarTitle("", displayMode: .inline) // Keeps the back button
     }
 }
 

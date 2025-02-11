@@ -7,6 +7,9 @@ struct UpdateHobbiesView: View {
    
    
     @EnvironmentObject private var tokenManger : TokenManager
+    
+    @EnvironmentObject private var themeManager : ThemeManager
+    
     @Environment(\.presentationMode) var presentationMode
     @State var isFirstTimeUpdatingProfile = false;
     
@@ -121,7 +124,7 @@ struct UpdateHobbiesView: View {
                 
                 Text("Hobbies")
                     .font(.title) // Use .subheadline or .callout for smaller text
-                    .foregroundColor(.primary)
+                    .modifier(ThemedTextModifier())
              
                 Spacer();
                 
@@ -205,7 +208,7 @@ struct UpdateHobbiesView: View {
                     .foregroundColor(.green)
                     .padding()
             }
-        }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline)
+        }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline).background( themeManager.currentTheme.backgroundColor )
     }
 }
 

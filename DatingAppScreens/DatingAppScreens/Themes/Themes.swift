@@ -14,7 +14,10 @@ struct AppTheme {
     let secondaryColor: Color
     let backgroundColor: Color
     let textColor: Color
+    
+ 
     let buttonColor: Color
+    
     let font: Font
     let cornerRadius: CGFloat
     let shadowRadius: CGFloat
@@ -28,6 +31,7 @@ struct Themes {
         secondaryColor: .gray,
         backgroundColor: .white,
         textColor: .black,
+ 
         buttonColor: .blue,
         font: .system(size: 16, weight: .regular),
         cornerRadius: 12,
@@ -40,7 +44,8 @@ struct Themes {
         secondaryColor: .gray,
         backgroundColor: .black,
         textColor: .white,
-        buttonColor: .black,
+  
+        buttonColor: .cyan,
         font: .system(size: 16, weight: .medium),
         cornerRadius: 12,
         shadowRadius: 5
@@ -52,6 +57,7 @@ struct Themes {
         secondaryColor: .orange,
         backgroundColor: .black,
         textColor: .white,
+ 
         buttonColor: .red,
         font: .system(size: 18, weight: .bold),
         cornerRadius: 20,
