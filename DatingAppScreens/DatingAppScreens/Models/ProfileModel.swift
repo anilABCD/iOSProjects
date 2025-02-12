@@ -54,6 +54,9 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     var smoking : String?
     var jobRole : String?
     
+    var dob: Date? // Added Date of Birth
+       
+    
     var bio: String?
     var isOnline: Bool?
     
@@ -74,6 +77,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         case experience
         case technologies
         
+        case dob
+        
         case hobbies
         case drinking
         case smoking
@@ -82,6 +87,52 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         case bio
         case isOnline
     }
+    
+    // Custom Decoding to Handle dob as String or Timestamp
+       init(from decoder: Decoder) throws {
+           let container = try decoder.container(keyedBy: CodingKeys.self)
+
+           self.objectId = try container.decode(ObjectId.self, forKey: .objectId)
+           self.name = try container.decodeIfPresent(String.self, forKey: .name)
+           self.email = try container.decodeIfPresent(String.self, forKey: .email)
+           self.photo = try container.decodeIfPresent(String.self, forKey: .photo)
+           self.experience = try container.decodeIfPresent(Int.self, forKey: .experience)
+           self.technologies = try container.decodeIfPresent([String].self, forKey: .technologies)
+
+           self.hobbies = try container.decodeIfPresent([String].self, forKey: .hobbies)
+           self.drinking = try container.decodeIfPresent(String.self, forKey: .drinking)
+           self.smoking = try container.decodeIfPresent(String.self, forKey: .smoking)
+           self.jobRole = try container.decodeIfPresent(String.self, forKey: .jobRole)
+
+           self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
+           self.isOnline = try container.decodeIfPresent(Bool.self, forKey: .isOnline)
+
+           self.leftSwipe = UUID()
+           self.rightSwipe = UUID()
+           
+           // Handle the decoding of `timestamp` properly
+           if let dobString = try container.decodeIfPresent(String.self, forKey: .dob) {
+               let dateFormatter = DateFormatter()
+               dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+               
+               if let dobDate = dateFormatter.date(from: dobString) {
+                   self.dob = dobDate
+               } else if let dobDouble = Double(dobString) {
+                   self.dob = Date(timeIntervalSince1970: dobDouble)
+               } else {
+                   
+                   throw DecodingError.dataCorruptedError(
+                       forKey: .dob,
+                       in: container,
+                       debugDescription: "Invalid date format: \(dobString)"
+                   )
+               }
+           } else {
+               self.dob = nil // If timestamp is not provided, set it to nil
+           }
+           
+       }
+
 
     // Implementing `Equatable` protocol
     static func == (lhs: Profile, rhs: Profile) -> Bool {
@@ -91,6 +142,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
                lhs.photo == rhs.photo &&
                lhs.experience == rhs.experience &&
                lhs.technologies == rhs.technologies &&
+        
+        lhs.dob == rhs.dob &&
         
                 lhs.hobbies == rhs.hobbies &&
                 lhs.drinking == rhs.drinking &&
@@ -124,11 +177,23 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
            
            hasher.combine(bio)
            hasher.combine(isOnline)
+           
+           hasher.combine(dob)
        }
 }
 
 struct ProfileEncodable : Encodable {
     
   
+}
+
+struct ProfileParametersEncodable : Encodable {
+    
+    var technologies : String
+    var minExperience : String
+    var maxExperience : String
+    
+    var excludingIds : String
+    
 }
 

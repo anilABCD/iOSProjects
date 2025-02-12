@@ -45,90 +45,91 @@ struct MatchesNewDevsView: View {
     
     func fetchProfiles() async throws {
         
-        
-        let data = MatchesFilter(technologies: nil , minExperience: nil, maxExperience: nil)
-        
-//        print (data)
-        
+
+        let profileIDs: [String] = profiles.map { $0.id }
+        // Convert array to a comma-separated string
+        let excludeIdsString = profileIDs.joined(separator: ",")
+
         // Example usage
         let baseURL = "\(tokenManger.localhost)/profiles"
-        let parameters = [
-            "technologies": (tokenManger.technologies),
-            "minExperience": "0",
-            "maxExperience": "5"
-        ] as [String: String]
+         
+        let data:MatchesFilter? = MatchesFilter(
+            technologies: (tokenManger.technologies),
+            minAge: "20",
+            maxAge: "35",
+            excludeProfileIds: excludeIdsString
+        )
+         
+        let urlRequest = try createURLRequest(method : "POST" , baseURL: baseURL, accessToken: tokenManger.accessToken , data: data, parameters: nil )
         
-        let createdUrl = createURLWithParameters(baseURL: baseURL, parameters:parameters)
+        self.profiles = try await fetchDataArray(from: urlRequest);
         
-        guard let url = createdUrl else {
-            throw URLError(.badURL)
-        }
-    
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let token = tokenManger.accessToken;
-        
-        print (token)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        do {
-//            request.httpBody = try JSONEncoder().encode(data)
-        } catch {
-            print (error.localizedDescription)
-            throw error
-        }
-        
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw StringError(message: "Invalid response received")
-            }
-            
-            if httpResponse.statusCode >= 400 {
-                
-                throw StringError(message: "\(httpResponse.statusCode )" )
-            }
-            
-            do {
-                print ("decode started")
-                
-                print (data)
-                let decodedResponse = try JSONDecoder().decode([Profile].self, from: data)
-                
-                print ("decode ended")
-                
-                
-//                added to display animating bar under tabs
-//                if( tokenManger.isFirstTimeLoading == true ){
+       
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        
+//        let token = tokenManger.accessToken;
+//        
+//        print (token)
+//        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+//        
+//        do {
+////            request.httpBody = try JSONEncoder().encode(data)
+//        } catch {
+//            print (error.localizedDescription)
+//            throw error
+//        }
+//        
+//        do {
+//            let (data, response) = try await URLSession.shared.data(for: request)
+//            
+//            guard let httpResponse = response as? HTTPURLResponse else {
+//                throw StringError(message: "Invalid response received")
+//            }
+//            
+//            if httpResponse.statusCode >= 400 {
+//                
+//                throw StringError(message: "\(httpResponse.statusCode )" )
+//            }
+//            
+//            do {
+//                print ("decode started")
+//                
+//                print (data)
+//                let decodedResponse = try JSONDecoder().decode([Profile].self, from: data)
+//                
+//                print ("decode ended")
+//                
+//                
+////                added to display animating bar under tabs
+////                if( tokenManger.isFirstTimeLoading == true ){
+////                    
+////                    tokenManger.isFirstTimeLoading = false;
+////                }
+////                else {
+////                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
+////                }
+////
+//                
+//                DispatchQueue.main.async {
 //                    
-//                    tokenManger.isFirstTimeLoading = false;
+//                  
+//                    
+//                    self.profiles = decodedResponse.reversed()
+//                    
+//                    isLoading=false
+//                    
+////                   k
 //                }
-//                else {
-//                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds = 300,000,000 nanoseconds
-//                }
-//
-                
-                DispatchQueue.main.async {
-                    
-                  
-                    
-                    self.profiles = decodedResponse
-                    
-                    isLoading=false
-                    
-//                   k
-                }
-                
-            } catch {
-                
-                print (error.localizedDescription)
-                
-                throw StringError(message: "Failed to decode response data")
-            }
-        }
+//                
+//            } catch {
+//                
+//                print (error.localizedDescription)
+//                
+//                throw StringError(message: "Failed to decode response data")
+//            }
+//        }
         
         
         
@@ -257,11 +258,14 @@ struct MatchesNewDevsView: View {
                 do {
                     
                   
-                    
+                    isLoading = true;
                     try await fetchProfiles()
+                    isLoading = false;
                     
                 } catch {
                     print("Failed to fetch profiles: \(error)")
+                    
+                    isLoading = false;
                 }
             }
         }
@@ -535,6 +539,8 @@ struct SwipeableView: View {
                   
                     BioCardView(bio: item.bio ?? "" )
                     
+                    AgeCardView(dob: item.dob  )
+                    
                     TechnologiesCardView(technologies: item.technologies ?? [])
                     
                     JobRoleCardView(jobRole: item.jobRole ?? "")
@@ -644,6 +650,55 @@ struct SwipeableView: View {
          }
      }
 }
+
+
+struct AgeCardView: View {
+    var dob: Date?
+    
+    var age: String {
+            guard let dob = dob else { return "N/A" } // Handle nil case
+            let calendar = Calendar.current
+            let birthYear = calendar.component(.year, from: dob)
+            let currentYear = calendar.component(.year, from: Date())
+            return "\(max(0, currentYear - birthYear))"
+        }
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Age")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("\(age) years")
+                    .font(.system(size: 40, weight: .bold))
+                    .foregroundColor(Color.white.opacity(0.85))
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 10)
+            }
+            .padding(8)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }
+        .padding(.horizontal, 25)
+    }
+}
+
 
 
 struct BioCardView: View {

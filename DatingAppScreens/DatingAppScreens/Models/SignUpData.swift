@@ -79,7 +79,8 @@ struct AuthResponse: Decodable {
 
 
 struct MatchesFilter : Codable {
-    let technologies : String?
-    let minExperience : Int?
-    let maxExperience : Int?
+    let technologies : String
+    let minAge : String
+    let maxAge : String
+    let excludeProfileIds : String
 }
