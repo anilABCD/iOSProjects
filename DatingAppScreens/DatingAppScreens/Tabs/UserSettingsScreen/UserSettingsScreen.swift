@@ -49,7 +49,7 @@ struct UserSettingsView : View {
                                             
                                    }.zIndex(1)
                                }
-                               .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
+                               .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                                
                                .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
                         
@@ -70,7 +70,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                         
                         NavigationLink(destination: UpdateHobbiesView()) {
 //                            Text("Hobbies").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -87,7 +87,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                         
                         NavigationLink(destination: UpdateSmokingAndDrinkingAndDOBView()) {
 //                            Text("Dob , Habbits").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -104,7 +104,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                         
                         NavigationLink(destination: UpdateDescribeYourselfView ()) {
 //                            Text("Bio").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -121,7 +121,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                         
                         NavigationLink(destination: UpdateJobRoleView ()) {
 //                            Text("Job Role").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -139,7 +139,7 @@ struct UserSettingsView : View {
                                 
                             }
                             .zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.primaryColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                     }
                     
 //                    .overlay(Rectangle().frame(height: 1).foregroundColor(themeManager.currentTheme.primaryColor), alignment: .bottom)

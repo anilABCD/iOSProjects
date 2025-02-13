@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct SplashScreenView: View {
+    @AppStorage("selectedThemeID") private var selectedThemeID: String = "light"
+
     var body: some View {
         VStack {
             Image("splashscreenlogo")
@@ -16,7 +18,7 @@ struct SplashScreenView: View {
 //                .fontWeight(.bold)
         }
         .frame( maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/ , maxHeight:.infinity)
-        .background(Color(red: 20 , green: 20, blue : 20))
+        .background(selectedThemeID == "light" ? Color.white : Color.black )
         .edgesIgnoringSafeArea(.all)
     }
 }
