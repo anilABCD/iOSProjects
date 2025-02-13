@@ -216,7 +216,7 @@ struct UpdateJobRoleView: View {
                                        jobRoles: jobRoles
                
                                    ) .background(TransparentBackground()) // Add this to sheet content
-                    .presentationDetents([.height(UIScreen.main.bounds.height * 0.9)])  // Fixed 300pt height
+                    .presentationDetents([.height(UIScreen.main.bounds.height * 0.85)])  // Fixed 300pt height
                             .presentationDragIndicator(.visible) // Optional indicator
                     }
         
@@ -694,8 +694,8 @@ struct CustomPopoverPicker3: View {
                         .stroke(Color.gray.opacity(0.1), lineWidth: 1)
                 )
                 .frame(
-                    width: UIScreen.main.bounds.width * 0.8,
-                    height: UIScreen.main.bounds.height * 0.9
+                    width: UIScreen.main.bounds.width * 0.9,
+                    height: UIScreen.main.bounds.height * 0.85
                 )
                 .transition(
                     .asymmetric(
