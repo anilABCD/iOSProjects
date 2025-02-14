@@ -23,7 +23,11 @@ struct UpdateJobRoleView: View {
     @State  var isPickerPresented2 : Bool = false
     @State  var isPickerPresented3 : Bool = false
     // State variables
-    @State   var selectedJobRole = "Senior Level"  // Default job role stored
+    @State  var selectedJobRole = "Senior Level"  // Default job role stored
+   
+    // multiselect example : 
+//    @State var selectedJobRoles : [String] = [ "Select Job Role"]
+    
     @State private var isUpdating = false
     @State private var responseMessage = ""
     
@@ -45,60 +49,7 @@ struct UpdateJobRoleView: View {
                 Spacer();
                 
             }
-            
-            
-            // Job Role Picker similar to Smoking Picker example
-//                       HStack {
-//                           Image(systemName: "briefcase.fill")
-//                               .foregroundColor(themeManager.currentTheme.buttonColor)
-//                                              .padding(.leading)
-//                   
-//                         
-//                               // **Button that Opens Picker**
-//                               Button(action: { isPickerPresented.toggle()
-//                                   
-//                                   isPickerPresented2 = false
-//                                
-//                               }) {
-//                                   HStack {
-//                                       Text(selectedJobRole)
-//                                           .font(.system(size: 17))
-//                                           .foregroundColor(themeManager.currentTheme.primaryColor)
-//                                           .multilineTextAlignment(.center) // Align text properly
-//                                           .fixedSize(horizontal: false, vertical: true) // Enable multiline
-//                                       
-//                                       VStack(spacing: 2) { // Small spacing between arrows
-//                                                  Image(systemName: "chevron.up")
-//                                                      .font(.system(size: 10)) // Adjust size
-//                                                      .foregroundColor(themeManager.currentTheme.primaryColor)
-//
-//                                                  Image(systemName: "chevron.down")
-//                                                      .font(.system(size: 10)) // Adjust size
-//                                                      .foregroundColor(themeManager.currentTheme.primaryColor)
-//                                              }
-//                                   }
-//                                   .padding()
-//                                   .background(themeManager.currentTheme.backgroundColor)
-//                                    
-//                               
-//                               
-//                           }
-//                           .padding()
-//                          
-//                          
-////                           Picker("", selection: $selectedJobRole) {
-////                               ForEach(jobRoles, id: \.self) { role in
-////                                   Text(role).tag(role)
-////                               }
-////                           }
-////                           .pickerStyle(MenuPickerStyle())
-////                           .padding(.horizontal)
-////                           .accentColor(themeManager.currentTheme.primaryColor)
-//                       }
-         
-            
-           
-            
+                       
             HStack {
                 Image(systemName: "briefcase.fill")
                     .foregroundColor(themeManager.currentTheme.buttonColor)
@@ -132,6 +83,36 @@ struct UpdateJobRoleView: View {
                     
                     
                 }
+//                
+//
+                   // multi select example .
+//                // **Button that Opens Picker**
+//                Button(action: { isPickerPresented.toggle()
+//                      
+//                }) {
+//                    HStack {
+//                        Text(selectedJobRoles.joined(separator: ", "))
+//                            .font(.system(size: 17))
+//                            .foregroundColor(themeManager.currentTheme.primaryColor)
+//                            .multilineTextAlignment(.center) // Align text properly
+//                            .fixedSize(horizontal: false, vertical: true) // Enable multiline
+//                        
+//                        VStack(spacing: 2) { // Small spacing between arrows
+//                                   Image(systemName: "chevron.up")
+//                                       .font(.system(size: 10)) // Adjust size
+//                                       .foregroundColor(themeManager.currentTheme.primaryColor)
+//
+//                                   Image(systemName: "chevron.down")
+//                                       .font(.system(size: 10)) // Adjust size
+//                                       .foregroundColor(themeManager.currentTheme.primaryColor)
+//                               }
+//                    }
+//                    .padding()
+//                    .background(themeManager.currentTheme.backgroundColor)
+//                     
+//                
+//                
+//            }
                
                
 //                           Picker("", selection: $selectedJobRole) {
@@ -208,16 +189,32 @@ struct UpdateJobRoleView: View {
             .onTapGesture {
                 isPickerPresented = false
             }
+            
             .sheet(isPresented: $isPickerPresented ) {
-                           CustomPopoverPicker3(
+                           CustomPopoverPickerSingleSelect(
                                        title: "Select Job Role",
                                        isPickerPresented: $isPickerPresented,
-                                       selectedJobRole: $selectedJobRole,
-                                       jobRoles: jobRoles
+                                       selectedItem: $selectedJobRole,
+                                       list: jobRoles
                
                                    ) .background(TransparentBackground()) // Add this to sheet content
                     .presentationDetents([.height(UIScreen.main.bounds.height * 0.85)])  // Fixed 300pt height
                             .presentationDragIndicator(.visible) // Optional indicator
+                
+//                Multiselect example
+//                CustomPopoverPickerMultiselect(
+//                            title: "Select Job Role",
+//                            isPickerPresented: $isPickerPresented,
+//                            selectedItems: $selectedJobRoles,
+//                            list: jobRoles ,
+//                            isMultiselect: true ,
+//                            defaultSelectText: "Select Job Role"
+//    
+//                        ) .background(TransparentBackground()) // Add this to sheet content
+//         .presentationDetents([.height(UIScreen.main.bounds.height * 0.85)])  // Fixed 300pt height
+//                 .presentationDragIndicator(.visible) // Optional indicator
+//                
+                
                     }
         
         
@@ -298,305 +295,19 @@ struct UpdateJobRoleView_Previews: PreviewProvider {
     }
 }
 
- 
-struct CustomPickerView: View {
-    @State private var isPickerPresented = false
-    @State private var selectedJobRole = "Designer"
-    let jobRoles = ["Designer", "Developer", "Manager", "Product Owner"]
-
-    var body: some View {
-        VStack {
-            // **Picker Button**
-            Button(action: { isPickerPresented.toggle() }) {
-                HStack {
-                    Text(selectedJobRole)
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(.white)
-                    Image(systemName: "chevron.down") // Dropdown icon
-                        .foregroundColor(.white)
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.blue.cornerRadius(10)) // Button background
-                .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 3)
-            }
-            
-            // **Custom Popover Picker**
-            if isPickerPresented {
-                VStack {
-                    Text("Select Job Role")
-                        .font(.title2)
-                        .padding()
-                        .foregroundColor(.white)
-                    
-                    ForEach(jobRoles, id: \.self) { role in
-                        Button(action: {
-                            selectedJobRole = role
-                            isPickerPresented.toggle()
-                        }) {
-                            Text(role)
-                                .font(.system(size: 18, weight: .medium))
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.white.opacity(0.2).cornerRadius(8)) // List item background
-                                .foregroundColor(.white)
-                        }
-                        .padding(.horizontal)
-                    }
-
-                    Button("Close") {
-                        isPickerPresented = false
-                    }
-                    .padding()
-                    .background(Color.red.cornerRadius(10))
-                    .foregroundColor(.white)
-                }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: 300)
-                .background(Color.black.opacity(0.8).cornerRadius(15))
-                .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
-                .transition(.move(edge: .bottom))
-                .animation(.spring(), value: isPickerPresented)
-            }
-        }
-        .padding()
-    }
-}
-
- 
-struct FloatingCustomPicker: View {
-    @State private var isPickerPresented = false
-    @State private var selectedJobRole = "Designer"
-    let jobRoles = ["Designer", "Developer", "Manager", "Product Owner"]
-
-    var body: some View {
-        ZStack {
-            // Main Content
-            VStack {
-                Button(action: { isPickerPresented.toggle() }) {
-                    HStack {
-                        Text(selectedJobRole)
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.white)
-                        Image(systemName: "chevron.down") // Dropdown icon
-                            .foregroundColor(.white)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue.cornerRadius(10)) // Button background
-                    .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 3)
-                }
-            }
-            .padding()
-
-            // Floating Picker Overlay
-            if isPickerPresented {
-                ZStack {
-                    // **Background Dim (Tap to Dismiss)**
-                    Color.black.opacity(0.3)
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            isPickerPresented = false
-                        }
-
-                    // **Floating Picker**
-                    VStack {
-                        Text("Select Job Role")
-                            .font(.title2)
-                            .padding()
-                            .foregroundColor(.white)
-
-                        ForEach(jobRoles, id: \.self) { role in
-                            Button(action: {
-                                selectedJobRole = role
-                                isPickerPresented = false
-                            }) {
-                                Text(role)
-                                    .font(.system(size: 18, weight: .medium))
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color.white.opacity(0.2).cornerRadius(8)) // List item background
-                                    .foregroundColor(.white)
-                            }
-                            .padding(.horizontal)
-                        }
-
-                        Button("Close") {
-                            isPickerPresented = false
-                        }
-                        .padding()
-                        .background(Color.red.cornerRadius(10))
-                        .foregroundColor(.white)
-                    }
-                    .padding()
-                    .frame(width: 300)
-                    .background(Color.black.opacity(0.9).cornerRadius(15))
-                    .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
-                    .transition(.scale)
-                    .animation(.spring(), value: isPickerPresented)
-                }
-            }
-        }
-    }
-}
- 
-struct CustomPopoverPicker: View {
-    @State private var isPickerPresented = false
-    @State private var selectedJobRole = "Designer"
-    let jobRoles = ["Designer", "Developer", "Manager", "Product Owner"]
-
-    var body: some View {
-        ZStack {
-            VStack {
-                // **Button that opens the popover**
-                Button(action: { isPickerPresented.toggle() }) {
-                    HStack {
-                        Text(selectedJobRole)
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.white)
-                        Image(systemName: "chevron.down") // Dropdown icon
-                            .foregroundColor(.white)
-                    }
-                    .padding()
-                    .background(Color.blue.cornerRadius(10)) // Button background
-                }
-            }
-            .padding()
-
-            // **Floating Popover**
-            if isPickerPresented {
-                VStack {
-                    VStack(spacing: 8) {
-                        ForEach(jobRoles, id: \.self) { role in
-                            Button(action: {
-                                selectedJobRole = role
-                                isPickerPresented = false
-                            }) {
-                                Text(role)
-                                    .font(.system(size: 16, weight: .medium))
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding()
-                                    .background(Color.white.opacity(0.1).cornerRadius(8))
-                                    .foregroundColor(.white)
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color.black.opacity(0.9).cornerRadius(12))
-                    .shadow(color: .black.opacity(0.4), radius: 10, x: 0, y: 5)
-                    .frame(width: 250)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                    )
-                    .transition(.scale)
-                    .animation(.spring(), value: isPickerPresented)
-                }
-                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height * 0.4) // Adjust for positioning
-                
-            }
-        }
-        .onTapGesture {
-            isPickerPresented = false
-        }
-    }
-}
-
- 
-struct CustomPopoverPicker2 : View {
-    @State private var isPickerPresented = false
-    @State private var selectedJobRole = "Designer"
-    let jobRoles = ["Designer", "Developer", "Manager", "Product Owner", "QA Engineer", "Business Analyst", "Scrum Master", "HR", "Marketing", "Support", "Intern"] // Add more for scrolling
-
-    var body: some View {
-        ZStack {
-            VStack {
-                // **Picker Button (Does Not Move)**
-                Button(action: { isPickerPresented.toggle() }) {
-                    HStack {
-                        Text(selectedJobRole)
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.white)
-                        Image(systemName: "chevron.down") // Dropdown icon
-                            .foregroundColor(.white)
-                    }
-                    .padding()
-                    .background(Color.blue.cornerRadius(10)) // Button background
-                }
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                )
-            }
-            .padding()
-
-            // **Floating Popover (Appears Near Button)**
-            if isPickerPresented {
-                VStack {
-                    Text("Select Job Role")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding(.top)
-
-                    ScrollView {
-                        VStack(spacing: 5) {
-                            ForEach(jobRoles, id: \.self) { role in
-                                Button(action: {
-                                    selectedJobRole = role
-                                    isPickerPresented = false
-                                }) {
-                                    Text(role)
-                                        .font(.system(size: 16))
-                                        .foregroundColor(.white)
-                                        .padding()
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .background(Color.white.opacity(0.1).cornerRadius(8))
-                                }
-                            }
-                        }
-                        .padding()
-                    }
-                    .frame(maxHeight: 200) // **Scrollable Limit**
-                    
-                    Button("Close") {
-                        isPickerPresented = false
-                    }
-                    .padding()
-                    .background(Color.red.cornerRadius(10))
-                    .foregroundColor(.white)
-                }
-                .frame(width: 260)
-                .background(Color.black.opacity(0.9).cornerRadius(12))
-                .shadow(color: .black.opacity(0.4), radius: 10, x: 0, y: 5)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                )
-                .transition(.scale)
-                .animation(.spring(), value: isPickerPresented)
-                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height * 0.4) // **Fixed Positioning**
-            }
-        }
-        .onTapGesture {
-            isPickerPresented = false
-        }
-    }
-}
-
-
-struct CustomPopoverPicker3: View {
+struct CustomPopoverPickerSingleSelect: View {
     var title: String
     @Binding var isPickerPresented: Bool
-    @Binding var selectedJobRole: String
-    var jobRoles: [String] = []
+    @Binding var selectedItem: String
+    var list: [String] = []
     @EnvironmentObject private var themeManager: ThemeManager
     
     // Search functionality
     @State private var searchText = ""
     
     var filteredRoles: [String] {
-        guard !searchText.isEmpty else { return jobRoles }
-        return jobRoles.filter { $0.localizedCaseInsensitiveContains(searchText) }
+        guard !searchText.isEmpty else { return list }
+        return list.filter { $0.localizedCaseInsensitiveContains(searchText) }
     }
     
     var body: some View {
@@ -611,84 +322,96 @@ struct CustomPopoverPicker3: View {
             if isPickerPresented {
                 VStack(spacing: 0) {
                     // Header
-                    HStack {
-                        Text(title)
-                            .font(.system(.title3, design: .rounded, weight: .semibold))
-                            .foregroundColor(themeManager.currentTheme.primaryColor)
-                        
-                        Spacer()
-                        
-                        Button {
-                            isPickerPresented = false
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
-                                .font(.title2)
-                                .foregroundColor(themeManager.currentTheme.primaryColor)
-                        }
-                    }
-                    .padding()
                     
-                    // Search bar
-                    TextField("Search roles", text: $searchText)
-                        .padding(.horizontal, 40)
-                        .padding(.vertical, 12)
-                        .background(Color(.systemBackground))
-                        .cornerRadius(10)
-                        .padding(.horizontal)
-                        .overlay(
-                            HStack {
-                                Image(systemName: "magnifyingglass")
-                                    .foregroundColor(.gray)
-                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                    .padding(.leading, 20)
+                    VStack {
+                        HStack {
+                            Text(title)
+                                .font(.system(.title3, design: .rounded, weight: .semibold))
+                                .foregroundColor(themeManager.currentTheme.primaryColor)
+                            
+                            Spacer()
+                            
+                            Button {
+                                isPickerPresented = false
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .symbolRenderingMode(.hierarchical)
+                                    .font(.title2)
+                                    .foregroundColor(themeManager.currentTheme.primaryColor)
+                            }
+                        }
+                        .padding()
+                        
+                        // Search bar
+                        TextField("Search roles", text: $searchText)
+                            .padding(.horizontal, 40)
+                            .padding(.vertical, 12)
+                            .background(Color(.systemBackground))
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .overlay(
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundColor(.gray)
+                                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                                        .padding(.leading, 20)
+                                    
+                                    if !searchText.isEmpty {
+                                        Button {
+                                            searchText = ""
+                                        } label: {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .padding(.trailing, 15)
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            )
+                        
+                        // Content list
+                        ScrollViewReader { proxy in
+                            ScrollView(showsIndicators: false) {
+                                LazyVStack(spacing: 8) {
+                                    ForEach(filteredRoles, id: \.self) { role in
+                                        roleItem(role: role)
+                                            .transition(.opacity.combined(with: .move(edge: .leading)))
+                                    }
+                                }
+                                .padding()
                                 
-                                if !searchText.isEmpty {
-                                    Button {
-                                        searchText = ""
-                                    } label: {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .padding(.trailing, 15)
-                                            .foregroundColor(.gray)
+                                Color.clear.frame(height: 100)
+                            }
+                            .onAppear {
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                                    
+                                    withAnimation {
+                                        proxy.scrollTo(selectedItem, anchor: .center)
                                     }
                                 }
                             }
-                        )
-                    
-                    // Content list
-                    ScrollViewReader { proxy in
-                        ScrollView(showsIndicators: false) {
-                            LazyVStack(spacing: 8) {
-                                ForEach(filteredRoles, id: \.self) { role in
-                                    roleItem(role: role)
-                                        .transition(.opacity.combined(with: .move(edge: .leading)))
-                                }
-                            }
-                            .padding()
-                            
-                            Color.clear.frame(height: 100)
                         }
-                        .onAppear {
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                                
-                                withAnimation {
-                                    proxy.scrollTo(selectedJobRole, anchor: .center)
-                                }
-                            }
-                        }
+                        
+                        Spacer()
+                        
+//                        Button("Close"){
+//                            isPickerPresented = false
+//                        }
+//                        .buttonStyle(ThemedButtonStyle())
                     }
+                    .background(
+                        themeManager.currentTheme.backgroundColor
+                            .cornerRadius(20)
+                            .shadow(
+                                color: Color.black.opacity(0.1),
+                                radius: 20,
+                                x: 0,
+                                y: 10
+                            )
+                    )
+                    .padding()
                 }
-                .background(
-                    themeManager.currentTheme.backgroundColor
-                        .cornerRadius(20)
-                        .shadow(
-                            color: Color.black.opacity(0.1),
-                            radius: 20,
-                            x: 0,
-                            y: 10
-                        )
-                )
+               
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.gray.opacity(0.1), lineWidth: 1)
@@ -709,50 +432,205 @@ struct CustomPopoverPicker3: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isPickerPresented)
     }
     
+
     private func roleItem(role: String) -> some View {
         Button {
             withAnimation(.interactiveSpring()) {
-                selectedJobRole = role
+                selectedItem = role
                 isPickerPresented = false
             }
         } label: {
-            HStack(spacing: 15) {
-                // Selection indicator
-                ZStack {
-                    Circle()
-                        .strokeBorder(themeManager.currentTheme.primaryColor, lineWidth: 2)
+            
+            VStack {
+                HStack(spacing: 15) {
                     
-                    if selectedJobRole == role {
+                    Text(role)
+                        .font(.system(.body, design: .rounded)).fontWeight(.semibold)
+                        .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                    Spacer()
+                    // Selection indicator
+                    ZStack {
                         Circle()
-                            .fill(themeManager.currentTheme.primaryColor)
-                            .padding(4)
+                            .strokeBorder(themeManager.currentTheme.navigationLinkColor, lineWidth: 2)
+                        
+                        if selectedItem == role {
+                            Circle()
+                                .fill(themeManager.currentTheme.navigationLinkColor)
+                                .padding(4)
+                        }
                     }
+                    .frame(width: 22, height: 22)
+                    
+                    
+                    //                if selectedJobRole == role {
+                    //                    Image(systemName: "checkmark")
+                    //                        .font(.system(size: 14, weight: .bold))
+                    //                        .foregroundColor(themeManager.currentTheme.primaryColor)
+                    //                }
                 }
-                .frame(width: 22, height: 22)
-                
-                Text(role)
-                    .font(.system(.body, design: .rounded))
-                    .foregroundColor(themeManager.currentTheme.primaryColor)
-                
-                Spacer()
-                
-                if selectedJobRole == role {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(themeManager.currentTheme.primaryColor)
-                }
+                Divider() // Separator line
             }
             .padding(.horizontal)
-            .padding(.vertical, 12)
+//            .padding(.vertical, 4)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(themeManager.currentTheme.buttonSecondaryColor.opacity(0.2))
+                    .fill(themeManager.currentTheme.backgroundColor.opacity(0.2))
             )
             .contentShape(Rectangle())
         }
         .buttonStyle(ScaleButtonStyle())
     }
 }
+
+
+
+struct CustomPopoverPickerMultiselect : View {
+    var title: String
+    @Binding var isPickerPresented: Bool
+    @Binding var selectedItems: [String] // Changed to array for multi-selection
+    var list: [String] = []
+    var isMultiselect: Bool // New flag for multi-selection
+    var defaultSelectText : String
+    @EnvironmentObject private var themeManager: ThemeManager
+    
+    @State private var searchText = ""
+    
+    var filteredRoles: [String] {
+        guard !searchText.isEmpty else { return list }
+        return list.filter { $0.localizedCaseInsensitiveContains(searchText) }
+    }
+    
+    var body: some View {
+        ZStack {
+            if isPickerPresented {
+                Color.clear.onTapGesture { isPickerPresented = false }
+            }
+            
+            if isPickerPresented {
+                VStack(spacing: 0) {
+                    VStack {
+                        HStack {
+                            Text(title)
+                                .font(.system(.title3, design: .rounded, weight: .semibold))
+                                .foregroundColor(themeManager.currentTheme.primaryColor)
+                            
+                            Spacer()
+                            
+                            Button { isPickerPresented = false } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .symbolRenderingMode(.hierarchical)
+                                    .font(.title2)
+                                    .foregroundColor(themeManager.currentTheme.primaryColor)
+                            }
+                        }
+                        .padding()
+                        
+                        // Search bar
+                        TextField("Search roles", text: $searchText)
+                            .padding(.horizontal, 40)
+                            .padding(.vertical, 12)
+                            .background(Color(.systemBackground))
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .overlay(
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundColor(.gray)
+                                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                                        .padding(.leading, 20)
+                                    
+                                    if !searchText.isEmpty {
+                                        Button { searchText = "" } label: {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .padding(.trailing, 15)
+                                                .foregroundColor(.gray)
+                                        }
+                                    }
+                                }
+                            )
+                        
+                        // Content list
+                        ScrollView(showsIndicators: false) {
+                            LazyVStack(spacing: 8) {
+                                ForEach(filteredRoles, id: \.self) { role in
+                                    roleItem(role: role)
+                                        .transition(.opacity.combined(with: .move(edge: .leading)))
+                                    Divider() // Separator
+                                }
+                            }
+                            .padding()
+                        }
+                        
+                        Spacer()
+                    }
+                    .background(
+                        themeManager.currentTheme.backgroundColor
+                            .cornerRadius(20)
+                            .shadow(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 10)
+                    )
+                    .padding()
+                }
+                .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.85)
+                .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                .zIndex(1)
+            }
+        }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isPickerPresented)
+    }
+    
+    // Role item selection logic
+    @ViewBuilder
+    private func roleItem(role: String) -> some View {
+        HStack(spacing: 15) {
+            Text(role)
+                .font(.system(.body, design: .rounded))
+                .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+            
+            Spacer()
+            
+            // Selection indicator
+            ZStack {
+                Circle()
+                    .strokeBorder(themeManager.currentTheme.primaryColor, lineWidth: 2)
+                
+                if selectedItems.contains(role) {
+                    Circle()
+                        .fill(themeManager.currentTheme.primaryColor)
+                        .padding(4)
+                }
+            }
+            .frame(width: 22, height: 22)
+        }
+        .padding(.vertical, 8)
+        .contentShape(Rectangle()) // Makes the whole row tappable
+        .onTapGesture {
+            if isMultiselect {
+                if selectedItems.contains(role) {
+                    selectedItems.removeAll { $0 == role }
+                    
+                   
+                } else {
+                    selectedItems.append(role)
+                }
+                
+                if ( selectedItems.isEmpty){
+                    selectedItems.append(defaultSelectText)
+                }
+                else{
+                    selectedItems.removeAll { $0 == defaultSelectText}
+                }
+                
+                
+            } else {
+                selectedItems = [role] // Single selection mode
+                isPickerPresented = false // Close popover
+            }
+        }
+    }
+}
+
+
+
 
 // Button press effect
 struct ScaleButtonStyle: ButtonStyle {
@@ -891,7 +769,8 @@ struct ScaleButtonStyle: ButtonStyle {
 //    }
 //}
 // 
-// 
+//
+
 struct TransparentBackground: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         return TransparentBackgroundController()
@@ -913,9 +792,20 @@ struct TransparentBackground: UIViewControllerRepresentable {
     }
 }
 
+
+
+
+// Example for transparent background in sheet .
 struct TransparentSheetContent: View {
     @Environment(\.dismiss) var dismiss
-    
+
+    // to apply in another screen .
+    //    .sheet( isPresented : $isPickerPresented){
+    //        TransparentSheetContent()
+    //            .presentationDetents([.height(UIScreen.main.bounds.height * 0.5)])  // Fixed 300pt height
+    //                    .presentationDragIndicator(.visible) // Optional indicator
+    //    }
+
     var body: some View {
         VStack(spacing: 20) {
             
@@ -934,3 +824,6 @@ struct TransparentSheetContent: View {
         .ignoresSafeArea() // Fill entire available space
     }
 }
+
+
+
