@@ -56,7 +56,7 @@ struct UpdateDescribeYourselfView : View {
                 
                 Spacer()
                 
-                Button(showNextButton ? "Next" : "Submit" , action: {
+                Button(showNextButton ? "Next" : Constants.Strings.submitButtonTitle , action: {
                     Task {
                         await submitDetails()
                     }

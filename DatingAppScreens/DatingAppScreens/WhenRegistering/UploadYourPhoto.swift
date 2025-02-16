@@ -56,7 +56,7 @@ struct UploadYourPhotoView: View {
                 }
                 else if ( tokenManger.photo != "")
                 {
-                    AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo)")
+                    AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo)")
                         .clipShape(Circle()).frame(width: 200, height: 200)
                 }
                 else{
@@ -75,7 +75,7 @@ struct UploadYourPhotoView: View {
                     PhotosPicker(selection: $photoPickerItem , matching: .images)
                     {
                         
-                        Text ("Upload Photo").modifier(ThemedTextButtonModifier()).padding()
+                        Text ("Upload Photo").modifier(ThemedTextButtonModifier()).padding().frame(width: 300)
                         
                     }
                 }

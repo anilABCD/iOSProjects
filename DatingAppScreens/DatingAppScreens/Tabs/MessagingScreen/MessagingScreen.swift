@@ -938,7 +938,7 @@ struct ChatView: View {
                                         
                                         let now = Date()
                                         
-                                        self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManager.userId , user2: profile?.id ?? "" , timestamp: now.timeIntervalSince1970  )
+                                        self.webSocketManager.sendMessage(  self.newMessage , imageBase64: self.selectedImage?.toBase64() ?? "" , chatId: self.chat?.id ?? "" , senderId: tokenManager.userId , user2: profile?.id ?? "" , timestamp: now )
                                         
                                         
                                         let dateFormatter = DateFormatter()

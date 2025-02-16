@@ -17,7 +17,9 @@ struct MatchesNewDevsView: View {
     @State private var selectedPerson: String = "John Doe"
     
     
-  
+    @State var swipeRightId : String = ""
+    @State var swipeLeftId : String = ""
+    
     @EnvironmentObject private var tokenManger : TokenManager
     @EnvironmentObject private var themeManager : ThemeManager
     
@@ -165,23 +167,17 @@ struct MatchesNewDevsView: View {
                                         item: $profiles[index],
                                         onSwipeRight: {
                                             
-                                            
+                                           
                                             // Start an asynchronous task for the network request
-                                            Task {
-                                                do {
-                                                    // Call the asynchronous function with the local copy
-                                                    try await likeTheProfile(user2_id: profiles[index].id)
-                                                } catch {
-                                                    // Handle any errors here
-                                                    print("Failed to like the profile: \(error)")
-                                                }
-                                                
-                                                withAnimation {
-                                                    removeProfile(at: index)
-                                                }
+                                            
+                                            
+                                            swipeRightId = profiles[index].id
+                                            
+                                           
+                                            
+                                            withAnimation {
+                                                removeProfile(at: index)
                                             }
-                                            
-                                            
                                             
                                         } ,
                                         onSwipeLeft: {
@@ -252,6 +248,24 @@ struct MatchesNewDevsView: View {
                .edgesIgnoringSafeArea(.top)
         .popup(isPresented: $isPopupPresented) {
             ChatPopupView(isPresented: $isPopupPresented, profile: profiles[currentIndex] )
+        }
+        .onChange( of : swipeRightId ) { newVaulue in
+            
+            
+            Task {
+                do {
+                    
+                   
+                    // Call the asynchronous function with the local copy
+                    try await likeTheProfile(user2_id: newVaulue)
+                } catch {
+                    // Handle any errors here
+                    print("Failed to like the profile: \(error)")
+                }
+                
+              
+            }
+            
         }
         .onAppear {
             Task {
@@ -437,7 +451,7 @@ struct SwipeableView: View {
                             // Use AsyncImage to load remote images
                             
                             
-                            AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(item.photo ?? "image.jpg")")) { phase in
+                            AsyncImage(url: URL(string: "\(tokenManger.serverImageURL)/\(item.photo ?? "image.jpg")")) { phase in
                                 switch phase {
                                 case .empty:
                                     ProgressView()
@@ -632,7 +646,10 @@ struct SwipeableView: View {
                isHidden = true
               
            }
-           onSwipeRight()
+           
+           
+               onSwipeRight()
+           
        }
     
     

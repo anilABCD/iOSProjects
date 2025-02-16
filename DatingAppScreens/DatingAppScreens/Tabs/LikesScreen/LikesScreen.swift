@@ -34,8 +34,8 @@ struct LikesScreenView: View {
             List {
                 ForEach(likes) { like in  // Iterate over likes directly
                     
-                    NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil , photoUrl: "\(tokenManger.localhost)/images")) {
-                        LikeItemView(like: like, photoURL: "\(tokenManger.localhost)/images")
+                    NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil , photoUrl: "\(tokenManger.serverImageURL)")) {
+                        LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
                             .onAppear {
                                 if let index = likes.firstIndex(where: { $0.id == like.id }), index == likes.count - 5 {
                                     //                                              loadMoreItems()

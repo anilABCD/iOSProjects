@@ -172,6 +172,8 @@ class TokenManager: ObservableObject {
 //    @Published  var localhost : String = "http://169.254.23.107:8000"
     @Published var localhost : String = Constants.localhost;
     
+    @Published var serverImageURL : String = Constants.serverImageURL;
+    
     func updateAccessToken( token: String , userId: String , email : String , name : String , photo:String , technologies : String , hobbies : String , bio : String , jobRole : String ) {
      
         self.userId = userId

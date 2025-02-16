@@ -188,7 +188,7 @@ struct UpdateHobbiesView: View {
                 }
             }
             
-            Button(showNextButton ? "Next" : "Submit" , action: {
+            Button(showNextButton ? "Next" : Constants.Strings.submitButtonTitle , action: {
                 submitSelections( authToken: tokenManger.accessToken)
             }).buttonStyle(ThemedButtonStyle()).padding(.horizontal)
             

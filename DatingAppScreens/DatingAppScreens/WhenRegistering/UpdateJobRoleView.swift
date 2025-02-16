@@ -63,18 +63,18 @@ struct UpdateJobRoleView: View {
                         HStack {
                             Text(selectedJobRole)
                                 .font(.system(size: 17))
-                                .foregroundColor(themeManager.currentTheme.primaryColor)
+                                .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 .multilineTextAlignment(.center) // Align text properly
                                 .fixedSize(horizontal: false, vertical: true) // Enable multiline
                             
                             VStack(spacing: 2) { // Small spacing between arrows
                                        Image(systemName: "chevron.up")
                                            .font(.system(size: 10)) // Adjust size
-                                           .foregroundColor(themeManager.currentTheme.primaryColor)
+                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor)
 
                                        Image(systemName: "chevron.down")
                                            .font(.system(size: 10)) // Adjust size
-                                           .foregroundColor(themeManager.currentTheme.primaryColor)
+                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                    }
                         }
                         .padding()
@@ -156,7 +156,7 @@ struct UpdateJobRoleView: View {
 
             HStack {
                 // Button to update the job role
-                Button( showNextButton ? "Next" : "Submit" , action: {
+                Button( showNextButton ? "Next" : Constants.Strings.submitButtonTitle , action: {
                     Task {
                         await updateJobRole()
                     }
@@ -197,7 +197,9 @@ struct UpdateJobRoleView: View {
                                        selectedItem: $selectedJobRole,
                                        list: jobRoles
                
-                                   ) .background(TransparentBackground()) // Add this to sheet content
+                                   )
+                           .background(themeManager.currentTheme.backgroundColor)
+//                           .background(TransparentBackground()) // Add this to sheet content
                     .presentationDetents([.height(UIScreen.main.bounds.height * 0.85)])  // Fixed 300pt height
                             .presentationDragIndicator(.visible) // Optional indicator
                 
@@ -326,7 +328,7 @@ struct CustomPopoverPickerSingleSelect: View {
                     VStack {
                         HStack {
                             Text(title)
-                                .font(.system(.title3, design: .rounded, weight: .semibold))
+                                .font(.system(.title3, design: .rounded))
                                 .foregroundColor(themeManager.currentTheme.primaryColor)
                             
                             Spacer()
@@ -342,31 +344,31 @@ struct CustomPopoverPickerSingleSelect: View {
                         }
                         .padding()
                         
-                        // Search bar
-                        TextField("Search roles", text: $searchText)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 12)
-                            .background(Color(.systemBackground))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                            .overlay(
-                                HStack {
-                                    Image(systemName: "magnifyingglass")
-                                        .foregroundColor(.gray)
-                                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                        .padding(.leading, 20)
-                                    
-                                    if !searchText.isEmpty {
-                                        Button {
-                                            searchText = ""
-                                        } label: {
-                                            Image(systemName: "xmark.circle.fill")
-                                                .padding(.trailing, 15)
-                                                .foregroundColor(.gray)
-                                        }
-                                    }
-                                }
-                            )
+//                        // Search bar
+//                        TextField("Search roles", text: $searchText)
+//                            .padding(.horizontal, 40)
+//                            .padding(.vertical, 12)
+//                            .background(Color(.systemBackground))
+//                            .cornerRadius(10)
+//                            .padding(.horizontal)
+//                            .overlay(
+//                                HStack {
+//                                    Image(systemName: "magnifyingglass")
+//                                        .foregroundColor(.gray)
+//                                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+//                                        .padding(.leading, 20)
+//                                    
+//                                    if !searchText.isEmpty {
+//                                        Button {
+//                                            searchText = ""
+//                                        } label: {
+//                                            Image(systemName: "xmark.circle.fill")
+//                                                .padding(.trailing, 15)
+//                                                .foregroundColor(.gray)
+//                                        }
+//                                    }
+//                                }
+//                            )
                         
                         // Content list
                         ScrollViewReader { proxy in
@@ -379,7 +381,7 @@ struct CustomPopoverPickerSingleSelect: View {
                                 }
                                 .padding()
                                 
-                                Color.clear.frame(height: 100)
+//                                Color.clear.frame(height: 10)
                             }
                             .onAppear {
                                 
@@ -417,7 +419,7 @@ struct CustomPopoverPickerSingleSelect: View {
                         .stroke(Color.gray.opacity(0.1), lineWidth: 1)
                 )
                 .frame(
-                    width: UIScreen.main.bounds.width * 0.9,
+                    width: UIScreen.main.bounds.width ,
                     height: UIScreen.main.bounds.height * 0.85
                 )
                 .transition(
@@ -445,7 +447,7 @@ struct CustomPopoverPickerSingleSelect: View {
                 HStack(spacing: 15) {
                     
                     Text(role)
-                        .font(.system(.body, design: .rounded)).fontWeight(.semibold)
+                        .font(.system(.body, design: .rounded))
                         .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                     Spacer()
                     // Selection indicator

@@ -243,10 +243,18 @@ class WebSocketManager: ObservableObject {
         socket.emit("onLeaveChatUser" , user2Id)
     }
     
-    func sendMessage(_ newMessageText: String , imageBase64 : String , chatId : String , senderId : String , user2 : String , timestamp : TimeInterval ) {
+    func sendMessage(_ newMessageText: String , imageBase64 : String , chatId : String , senderId : String , user2 : String , timestamp : Date ) {
 //        socket.emit("sendMessage", message )
       
         guard !newMessageText.isEmpty || !imageBase64.isEmpty else { return }
+        
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // ISO 8601 format
+        dateFormatter.timeZone = TimeZone.current
+        
+        let timestampString = dateFormatter.string(from: timestamp)
+
         
         print("send message base " , imageBase64)
 
@@ -256,7 +264,7 @@ class WebSocketManager: ObservableObject {
                    "text": newMessageText,
                    "imageBase64" : imageBase64 ,
                    "user2" : user2,
-                   
+                   "timestamp" : timestampString
                ]
         
         

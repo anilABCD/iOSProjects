@@ -225,10 +225,10 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                     .cornerRadius(50)
                                    
                                 }.padding(.vertical , 8).frame(width: 310).background(themeManager.currentTheme.backgroundColor)
-                                    .overlay(
-                                                    RoundedRectangle(cornerRadius: 20)
-                                                     .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
-                                                )
+//                                    .overlay(
+//                                                    RoundedRectangle(cornerRadius: 20)
+//                                                     .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
+//                                                )
                                 .sheet(isPresented: $showDOBPicker) {
                                     ZStack {
                                         //                        Color.black.opacity(0.3) // Semi-transparent black background
@@ -302,7 +302,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                         }
                                     }
                                     .pickerStyle(MenuPickerStyle())
-                                    .accentColor(themeManager.currentTheme.primaryColor)
+                                    .accentColor(themeManager.currentTheme.navigationLinkColor)
                                     
                                     .padding(.horizontal)
                                 }
@@ -310,10 +310,11 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                
                                 .cornerRadius(8)
                                 .background(themeManager.currentTheme.backgroundColor)
-                                .overlay(
-                                                RoundedRectangle(cornerRadius: 20)
-                                                 .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
-                                            )
+                                .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+//                                .overlay(
+//                                                RoundedRectangle(cornerRadius: 20)
+//                                                 .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
+//                                            )
                                 .frame(width: 310)
                                 // Drinking Picker
                                 HStack() {
@@ -328,17 +329,19 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                     }
                                     .pickerStyle(MenuPickerStyle())
                                     .padding(.horizontal)
-                                    .accentColor(themeManager.currentTheme.primaryColor)
+                                    .accentColor(themeManager.currentTheme.navigationLinkColor)
                                 }
                                 .padding(.vertical, 8)
                                 
                                 .cornerRadius(8)
                                 .background(themeManager.currentTheme.backgroundColor)
-                                .overlay(
-                                                RoundedRectangle(cornerRadius: 20)
-                                                 .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
-                                            )
+//                                .overlay(
+//                                                RoundedRectangle(cornerRadius: 20)
+//                                                 .stroke(themeManager.currentTheme.primaryColor, lineWidth: 3)
+//                                            )
+                                .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                                 .frame(width: 310)
+                            
                             }
                             .listRowBackground(themeManager.currentTheme.backgroundColor)
                             //                Text("Selected Drinking: \(viewModel.selectedDrinking.name)")
@@ -386,7 +389,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
             Spacer()
             
             
-            Button(showNextButton ? "Next" : "Submit" , action: {
+            Button(showNextButton ? "Next" : Constants.Strings.submitButtonTitle , action: {
                 submitSelections( authToken: tokenManger.accessToken)
             }).buttonStyle(ThemedButtonStyle()).padding(.horizontal)
             

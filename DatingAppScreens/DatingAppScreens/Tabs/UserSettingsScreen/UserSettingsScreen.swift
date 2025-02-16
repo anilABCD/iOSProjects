@@ -27,7 +27,7 @@ struct UserSettingsView : View {
      
         NavigationStack {
             VStack {
-                AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo)").frame(width: 200, height: 200).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo)").frame(width: 200, height: 200).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                    
                 Form {
                     Section(header: Text("User Profile").foregroundColor(themeManager.currentTheme.secondaryColor)) {

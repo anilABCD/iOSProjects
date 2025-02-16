@@ -203,7 +203,7 @@ struct UpdateTechnologyNewView: View {
                 }
             }
             
-            Button(showNextButton ? "Next" : "Submit" , action: {
+            Button(showNextButton ? "Next" : Constants.Strings.submitButtonTitle , action: {
                 submitSelections( authToken: tokenManger.accessToken)
             }).buttonStyle(ThemedButtonStyle()).padding(.horizontal)
             
@@ -233,6 +233,7 @@ struct ItemView: View {
     var body: some View {
         Text(item.name)
             .fontWeight(item.isSelected ? .semibold : .regular)
+            .font( .system(size: 14))
             .foregroundColor(item.isSelected ? .white : .black)
             .padding(.vertical, 10)
             .padding(.horizontal)
