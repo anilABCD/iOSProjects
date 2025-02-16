@@ -9,6 +9,7 @@ struct SingleSelectionPopup: View {
 
     var body: some View {
         VStack {
+     
             Text(selectedOption ?? "Select an option")
                 .padding()
                 .background(Color.gray.opacity(0.2))
@@ -24,6 +25,8 @@ struct SingleSelectionPopup: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
+            
+          
         }
         .sheet(isPresented: $showSheet) {
             SelectionSheet(options: options, selectedOption: $selectedOption, selectedSize: $selectedSize)
@@ -162,10 +165,7 @@ struct SingleSelectionPopup_Previews: PreviewProvider {
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            SingleSelectionPopup()
         }
         .padding()
     }
