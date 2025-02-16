@@ -23,8 +23,9 @@ struct UpdateJobRoleView: View {
     @State  var isPickerPresented2 : Bool = false
     @State  var isPickerPresented3 : Bool = false
     // State variables
-    @State  var selectedJobRole = "Senior Level"  // Default job role stored
-   
+    @State  var selectedJobRole : String? = "Senior Level"  // Default job role stored
+    @State private var selectedSize: CapsuleSize = .medium  // Default size
+
     // multiselect example : 
 //    @State var selectedJobRoles : [String] = [ "Select Job Role"]
     
@@ -61,7 +62,7 @@ struct UpdateJobRoleView: View {
                           
                     }) {
                         HStack {
-                            Text(selectedJobRole)
+                            Text(selectedJobRole ?? "")
                                 .font(.system(size: 17))
                                 .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 .multilineTextAlignment(.center) // Align text properly
@@ -191,16 +192,18 @@ struct UpdateJobRoleView: View {
             }
             
             .sheet(isPresented: $isPickerPresented ) {
-                           CustomPopoverPickerSingleSelect(
-                                       title: "Select Job Role",
-                                       isPickerPresented: $isPickerPresented,
-                                       selectedItem: $selectedJobRole,
-                                       list: jobRoles
-               
-                                   )
-                           .background(themeManager.currentTheme.backgroundColor)
+//                           CustomPopoverPickerSingleSelect(
+//                                       title: "Select Job Role",
+//                                       isPickerPresented: $isPickerPresented,
+//                                       selectedItem: $selectedJobRole,
+//                                       list: jobRoles
+//               
+//                                   )
+                
+                SingleSelectPopUpChipSelectionSheet( options: jobRoles, selectedOption: $selectedJobRole, selectedSize: $selectedSize )
+                    .background(themeManager.currentTheme.backgroundColor)
 //                           .background(TransparentBackground()) // Add this to sheet content
-                    .presentationDetents([.height(UIScreen.main.bounds.height * 0.85)])  // Fixed 300pt height
+                    .presentationDetents([.height(300)])  // Fixed 300pt height
                             .presentationDragIndicator(.visible) // Optional indicator
                 
 //                Multiselect example
@@ -243,6 +246,12 @@ struct UpdateJobRoleView: View {
     }
 
     func updateJobRole() async {
+        
+        guard let selectedJobRole = selectedJobRole as? String else {
+            print("Please select a job role")
+            return
+        }
+        
         // Create the request payload
         let payload: [String: String] = [
             "jobRole": selectedJobRole

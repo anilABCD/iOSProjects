@@ -15,6 +15,15 @@ let drinkingOptions: [Option] = [
     Option(name: "Frequently")
 ]
 
+let drinkingOptionsArray  : [String] = [
+    "Never" ,"Socially","Occasionally" , "Frequently"
+] ;
+
+let smokingOptionsArray  : [String] = [
+    "Never" , "Occasionally" , "Regularly", "Trying to Quit"
+] ;
+
+
 let smokingOptions: [Option] = [
     Option(name: "Never"),
     Option(name: "Occasionally"),
@@ -24,14 +33,14 @@ let smokingOptions: [Option] = [
 
 // ViewModel to manage selection state
 class ProfileEditorViewModel: ObservableObject {
-    @Published var selectedDrinking: Option
-    @Published var selectedSmoking: Option
+    @Published var selectedDrinking: String
+    @Published var selectedSmoking: String
     @Published var selectedDOB: Date
     
     init() {
         // Default selections
-        self.selectedDrinking = drinkingOptions.first!
-        self.selectedSmoking = smokingOptions.first!
+        self.selectedDrinking = "Never"
+        self.selectedSmoking = "Never"
         self.selectedDOB = Calendar.current.date(byAdding: .year, value: -15, to: Date()) ?? Date()
     }
 }
@@ -43,6 +52,11 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
     @State private var showAlert = false
     @State private var showDOBPicker = false
     @State var isFirstTimeUpdatingProfile = false;
+    @State private var selectedSize: CapsuleSize = .medium  // Default size
+    
+    @State private var isPickerSmokingPresented : Bool = false  // Default size
+    @State private var isPickerDrinkingPresented : Bool = false  // Default size
+
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -130,7 +144,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
          
         
         
-         let body = ["drinking": viewModel.selectedDrinking.name , "smoking" : viewModel.selectedSmoking.name , "dob" : convertToString(from : viewModel.selectedDOB) ] as [String : String]
+         let body = ["drinking": viewModel.selectedDrinking , "smoking" : viewModel.selectedSmoking , "dob" : convertToString(from : viewModel.selectedDOB) ] as [String : String]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -157,7 +171,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                         }
                     }
                     
-                    self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: convertToString(from: viewModel.selectedDOB ) , drinking: viewModel.selectedDrinking.name , smoking: viewModel.selectedSmoking.name )
+                    self.tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: convertToString(from: viewModel.selectedDOB ) , drinking: viewModel.selectedDrinking , smoking: viewModel.selectedSmoking )
                     
                     
                     self.tokenManger.nextButtonWhenRegistrationProcess = UUID() ;
@@ -296,15 +310,48 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                         .modifier(ThemedTextModifier())
                                         .padding(.leading)
                                     
-                                    Picker("", selection: $viewModel.selectedSmoking) {
-                                        ForEach(smokingOptions) { option in
-                                            Text(option.name).modifier(ThemedTextModifier()).tag(option)
-                                        }
-                                    }
-                                    .pickerStyle(MenuPickerStyle())
-                                    .accentColor(themeManager.currentTheme.navigationLinkColor)
                                     
-                                    .padding(.horizontal)
+                                    Spacer()
+                                    
+//                                    Picker("", selection: $viewModel.selectedSmoking) {
+//                                        ForEach(smokingOptions) { option in
+//                                            Text(option.name).modifier(ThemedTextModifier()).tag(option)
+//                                        }
+//                                    }
+//                                    .pickerStyle(MenuPickerStyle())
+//                                    .accentColor(themeManager.currentTheme.navigationLinkColor)
+//                                    
+//                                    .padding(.horizontal)
+                                    
+                                    // **Button that Opens Picker**
+                                    Button(action: { isPickerSmokingPresented .toggle()
+                                          
+                                    }) {
+                                        HStack {
+                                            Text(viewModel.selectedSmoking ?? "")
+                                                .font(.system(size: 17))
+                                                .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                .multilineTextAlignment(.center) // Align text properly
+                                                .fixedSize(horizontal: false, vertical: true) // Enable multiline
+                                            
+                                            VStack(spacing: 2) { // Small spacing between arrows
+                                                Image(systemName: "chevron.up")
+                                                    .font(.system(size: 10)) // Adjust size
+                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                
+                                                Image(systemName: "chevron.down")
+                                                    .font(.system(size: 10)) // Adjust size
+                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                            }
+                                        }
+                                        .padding()
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        
+                                        
+                                        .cornerRadius(8)
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                                    }
                                 }
                                 .padding(.vertical, 8)
                                
@@ -322,14 +369,45 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                         .modifier(ThemedTextModifier())
                                         .padding(.leading)
                                     
-                                    Picker("", selection: $viewModel.selectedDrinking) {
-                                        ForEach(drinkingOptions) { option in
-                                            Text(option.name).modifier(ThemedTextModifier()).tag(option)
+                                    Spacer()
+                                    // **Button that Opens Picker**
+                                    Button(action: { isPickerDrinkingPresented.toggle()
+                                          
+                                    }) {
+                                        HStack {
+                                            Text(viewModel.selectedDrinking ?? "")
+                                                .font(.system(size: 17))
+                                                .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                .multilineTextAlignment(.center) // Align text properly
+                                                .fixedSize(horizontal: false, vertical: true) // Enable multiline
+                                            
+                                            VStack(spacing: 2) { // Small spacing between arrows
+                                                Image(systemName: "chevron.up")
+                                                    .font(.system(size: 10)) // Adjust size
+                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                
+                                                Image(systemName: "chevron.down")
+                                                    .font(.system(size: 10)) // Adjust size
+                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                            }
                                         }
+                                        .padding()
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        
+                                        
+                                        .cornerRadius(8)
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                                     }
-                                    .pickerStyle(MenuPickerStyle())
-                                    .padding(.horizontal)
-                                    .accentColor(themeManager.currentTheme.navigationLinkColor)
+                                    
+//                                    Picker("", selection: $viewModel.selectedDrinking) {
+//                                        ForEach(drinkingOptions) { option in
+//                                            Text(option.name).modifier(ThemedTextModifier()).tag(option)
+//                                        }
+//                                    }
+//                                    .pickerStyle(MenuPickerStyle())
+//                                    .padding(.horizontal)
+//                                    .accentColor(themeManager.currentTheme.navigationLinkColor)
                                 }
                                 .padding(.vertical, 8)
                                 
@@ -378,11 +456,11 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                 }
                               
                               if let smokingOption = smokingOptions.first(where: { $0.name == tokenManger.smoking }) {
-                                  viewModel.selectedSmoking = smokingOption
+                                  viewModel.selectedSmoking = tokenManger.smoking
                               }
                               
                               if let drinkingOption = drinkingOptions.first(where: { $0.name == tokenManger.drinking }) {
-                                  viewModel.selectedDrinking = drinkingOption
+                                  viewModel.selectedDrinking = tokenManger.drinking
                               }
             }.padding(0)
             
@@ -417,6 +495,41 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
             
           
         }.background(themeManager.currentTheme.backgroundColor).padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline).background(themeManager.currentTheme.backgroundColor)
+        
+            .sheet(isPresented: $isPickerSmokingPresented ) {
+//
+                SingleSelectPopUpChipSelectionSheet( options: smokingOptionsArray , selectedOption: Binding(
+                    get: { viewModel.selectedSmoking }, // Convert Option to String
+                    set: { newValue in
+                        if let newOption = newValue { // Convert back to Option
+                            viewModel.selectedSmoking = newOption
+                        }
+                    } ) , selectedSize: $selectedSize )
+                           .background(themeManager.currentTheme.backgroundColor)
+//                           .background(TransparentBackground()) // Add this to sheet content
+                           .presentationDetents([.height(150)])  // Fixed 300pt height
+                           .presentationDragIndicator(.visible) // Optional indicator
+
+                
+ 
+                    }
+        
+            .sheet(isPresented: $isPickerDrinkingPresented ) {
+//
+                SingleSelectPopUpChipSelectionSheet( options: drinkingOptionsArray , selectedOption: Binding(
+                    get: { viewModel.selectedDrinking }, // Convert Option to String
+                    set: { newValue in
+                        if let newOption = newValue { // Convert back to Option
+                            viewModel.selectedDrinking = newOption
+                        }
+                    } ) , selectedSize: $selectedSize )
+                           .background(themeManager.currentTheme.backgroundColor)
+//                           .background(TransparentBackground()) // Add this to sheet content
+                           .presentationDetents([.height(150)])  // Fixed 300pt height
+                           .presentationDragIndicator(.visible) // Optional indicator
+
+ 
+                    }
         
     }
     
