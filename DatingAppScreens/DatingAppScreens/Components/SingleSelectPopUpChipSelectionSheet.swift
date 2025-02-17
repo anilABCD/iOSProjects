@@ -45,7 +45,7 @@ struct SingleSelectPopUpChipSelectionSheet: View {
             Text("Select an Option")
                 .font(.caption2)
                 .padding(.top)
-                .foregroundColor(themeManager.currentTheme.primaryColor)
+                .foregroundColor(.white)
 //                .modifier(ThemedTextModifier())
 
             ScrollView {
@@ -68,10 +68,12 @@ struct SingleSelectPopUpChipSelectionSheet: View {
                         .fill(themeManager.currentTheme.buttonColor)
                 )
             }
-        }  .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill( .white.opacity(0.1))
-        )
+        }
+        
+//        .background(
+//            RoundedRectangle(cornerRadius: 10)
+//                .fill( .white.opacity(0.1))
+//        )
 
         .padding()
     }
@@ -106,9 +108,13 @@ struct WrapView: View {
                             .font(.system(size: selectedSize.fontSize)) // Dynamic font size
                             .padding(.horizontal, selectedSize.padding)
                             .padding(.vertical, selectedSize.padding / 2)
-                            .background(selectedOption == option ? themeManager.currentTheme.primaryColor : Color.gray.opacity(0.2))
-                            .foregroundColor(selectedOption == option ? ( themeManager.currentTheme.id == "light" ? .white : .black ) : ( themeManager.currentTheme.id == "light" ? .black : .white ))
+                            .background(selectedOption == option ? .white : Color.clear)
+                            .foregroundColor(selectedOption == option ? .black : .white)
                             .clipShape(Capsule())
+                            .overlay(
+                                    Capsule()
+                                        .stroke(Color.white, lineWidth: 1) // White border with 2px thickness
+                                )
                             .fixedSize(horizontal: true, vertical: false) // Prevents truncation
                             .onTapGesture {
                                 selectedOption = option

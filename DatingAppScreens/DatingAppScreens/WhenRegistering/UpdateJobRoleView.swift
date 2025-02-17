@@ -64,18 +64,18 @@ struct UpdateJobRoleView: View {
                         HStack {
                             Text(selectedJobRole ?? "")
                                 .font(.system(size: 17))
-                                .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                .foregroundColor(themeManager.currentTheme.buttonColor)
                                 .multilineTextAlignment(.center) // Align text properly
                                 .fixedSize(horizontal: false, vertical: true) // Enable multiline
                             
                             VStack(spacing: 2) { // Small spacing between arrows
                                        Image(systemName: "chevron.up")
                                            .font(.system(size: 10)) // Adjust size
-                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                           .foregroundColor(themeManager.currentTheme.buttonColor)
 
                                        Image(systemName: "chevron.down")
                                            .font(.system(size: 10)) // Adjust size
-                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                           .foregroundColor(themeManager.currentTheme.buttonColor)
                                    }
                         }
                         .padding()
@@ -201,7 +201,7 @@ struct UpdateJobRoleView: View {
 //                                   )
                 
                 SingleSelectPopUpChipSelectionSheet( options: jobRoles, selectedOption: $selectedJobRole, selectedSize: $selectedSize )
-                    .background(themeManager.currentTheme.backgroundColor)
+                    .background(themeManager.currentTheme.buttonColor)
 //                           .background(TransparentBackground()) // Add this to sheet content
                     .presentationDetents([.height(300)])  // Fixed 300pt height
                             .presentationDragIndicator(.visible) // Optional indicator

@@ -330,18 +330,18 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                         HStack {
                                             Text(viewModel.selectedSmoking ?? "")
                                                 .font(.system(size: 17))
-                                                .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                .foregroundColor(themeManager.currentTheme.buttonColor)
                                                 .multilineTextAlignment(.center) // Align text properly
                                                 .fixedSize(horizontal: false, vertical: true) // Enable multiline
                                             
                                             VStack(spacing: 2) { // Small spacing between arrows
                                                 Image(systemName: "chevron.up")
                                                     .font(.system(size: 10)) // Adjust size
-                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                    .foregroundColor(themeManager.currentTheme.buttonColor)
                                                 
                                                 Image(systemName: "chevron.down")
                                                     .font(.system(size: 10)) // Adjust size
-                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                    .foregroundColor(themeManager.currentTheme.buttonColor)
                                             }
                                         }
                                         .padding()
@@ -377,18 +377,18 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                                         HStack {
                                             Text(viewModel.selectedDrinking ?? "")
                                                 .font(.system(size: 17))
-                                                .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                .foregroundColor(themeManager.currentTheme.buttonColor)
                                                 .multilineTextAlignment(.center) // Align text properly
                                                 .fixedSize(horizontal: false, vertical: true) // Enable multiline
                                             
                                             VStack(spacing: 2) { // Small spacing between arrows
                                                 Image(systemName: "chevron.up")
                                                     .font(.system(size: 10)) // Adjust size
-                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                    .foregroundColor(themeManager.currentTheme.buttonColor)
                                                 
                                                 Image(systemName: "chevron.down")
                                                     .font(.system(size: 10)) // Adjust size
-                                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                                    .foregroundColor(themeManager.currentTheme.buttonColor)
                                             }
                                         }
                                         .padding()
@@ -505,7 +505,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                             viewModel.selectedSmoking = newOption
                         }
                     } ) , selectedSize: $selectedSize )
-                           .background(themeManager.currentTheme.backgroundColor)
+                .background(themeManager.currentTheme.buttonColor)
 //                           .background(TransparentBackground()) // Add this to sheet content
                            .presentationDetents([.height(150)])  // Fixed 300pt height
                            .presentationDragIndicator(.visible) // Optional indicator
@@ -523,7 +523,7 @@ struct UpdateSmokingAndDrinkingAndDOBView: View {
                             viewModel.selectedDrinking = newOption
                         }
                     } ) , selectedSize: $selectedSize )
-                           .background(themeManager.currentTheme.backgroundColor)
+                .background(themeManager.currentTheme.buttonColor)
 //                           .background(TransparentBackground()) // Add this to sheet content
                            .presentationDetents([.height(150)])  // Fixed 300pt height
                            .presentationDragIndicator(.visible) // Optional indicator
