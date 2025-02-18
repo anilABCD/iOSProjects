@@ -131,6 +131,14 @@ struct UpdateHobbiesView: View {
             }.padding()
             
             
+            HStack {
+                
+                Image("hobbies").resizable().frame(width: 74, height: 74).padding(.horizontal , 100 )
+             
+               
+            }
+           
+            
             ScrollView {
 //                
 //                Spacer()

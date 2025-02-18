@@ -202,11 +202,26 @@ class TokenManager: ObservableObject {
     func updateProfileDobSmokingDrinkingEmpty( dob: String , drinking : String , smoking : String) {
         print (dob , "dob date of birth value")
         self.dob = dob;
-        self.drinking = drinking
+    }
+    
+    
+    func updateDob( dob: String ) {
+        print (dob , "dob date of birth value")
+        self.dob = dob;
+    }
+    
+    
+    func updateSmoking(   smoking : String) {
+        
         self.smoking = smoking
         
     }
     
+    func updateDrinking(   drinking : String) {
+        
+        self.drinking = drinking
+        
+    }
     
     func updatePhoto ( photo : String){
         self.photo = photo;
@@ -247,6 +262,12 @@ class TokenManager: ObservableObject {
         self.smoking = ""
         self.bio=""
         self.jobRole = ""
+        
+        self.photo1 = ""
+        self.photo2 = ""
+        self.photo3 = ""
+        self.photo4 = ""
+        
 //        self.notificationSettings = "";
 //        self.locationSettings = "";
     }

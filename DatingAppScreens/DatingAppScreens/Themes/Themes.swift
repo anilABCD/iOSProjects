@@ -15,7 +15,7 @@ struct AppTheme {
     let secondaryColor: Color
     let backgroundColor: Color
     let textColor: Color
-    
+    let popUpBackgroundColor : Color
  
     let buttonColor: Color
     let buttonSecondaryColor : Color
@@ -34,8 +34,11 @@ struct Themes {
         secondaryColor: .gray,
         backgroundColor: .white,
         textColor: .black,
- 
+     
+        popUpBackgroundColor : .blue ,
+        
         buttonColor: .blue,
+        
         
         buttonSecondaryColor: .blue.opacity(0.9) ,
         
@@ -52,6 +55,9 @@ struct Themes {
         backgroundColor: .black,
         textColor: .white,
   
+        popUpBackgroundColor : .cyan,
+        
+        
         buttonColor: .cyan,
         buttonSecondaryColor : .white.opacity(0.1) ,
         font: .system(size: 16, weight: .medium),
@@ -66,7 +72,9 @@ struct Themes {
         secondaryColor: .orange,
         backgroundColor: .black,
         textColor: .white,
- 
+        
+        popUpBackgroundColor : .red.opacity(0.5) ,
+        
         buttonColor: .red,
         buttonSecondaryColor: .red, 
         font: .system(size: 18, weight: .bold),

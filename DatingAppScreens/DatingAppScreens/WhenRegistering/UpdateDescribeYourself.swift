@@ -30,7 +30,17 @@ struct UpdateDescribeYourselfView : View {
                  
                     Spacer();
                     
-                } 
+                }.padding()
+                
+                
+                HStack {
+                    
+                    Image("bio2").resizable().frame(width: 54, height: 54).padding(.horizontal , 100 )
+                 
+                   
+                }.padding(.bottom,10)
+               
+                
                 
                 VStack(alignment: .leading) {
                    
@@ -175,6 +185,6 @@ struct UpdateDescribeYourselfView : View {
 struct UpdateDescribeYourselfView_Previews: PreviewProvider {
   
     static var previews: some View {
-        UpdateDescribeYourselfView(showNextButton: true).environmentObject(TokenManager())
+        UpdateDescribeYourselfView(showNextButton: true).environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }

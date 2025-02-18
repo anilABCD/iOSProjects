@@ -131,6 +131,8 @@ struct ContentView: View {
          case stepFour
          case stepFive
          case stepSix
+         case stepSeven
+         case stepEight
      }
 
     @State private var currentStep: Step = .stepZero
@@ -258,7 +260,7 @@ struct ContentView: View {
                         LoginView()
                         
                     }
-                    else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || ( tokenManager.isAdditionalPhotosAdded == false ) || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" || tokenManager.jobRole == "" ) ) {
+                    else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || ( tokenManager.isAdditionalPhotosAdded == false ) || tokenManager.hobbies == "" || tokenManager.dob.isEmpty || tokenManager.bio == "" || tokenManager.jobRole == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() ) ) {
                         
                          
                         // Display the view for the current step
@@ -317,7 +319,7 @@ struct ContentView: View {
                                            
                                            // Step progress bar
                                            HStack(spacing: 8) {
-                                               ForEach(0...6, id: \.self) { step in
+                                               ForEach(0...8, id: \.self) { step in
                                                    Rectangle()
                                                        .fill(currentStep.rawValue >= step ? Color.blue : Color.gray.opacity(0.5)) // Blue if completed, gray otherwise
                                                        .frame(height: 10)
@@ -337,17 +339,25 @@ struct ContentView: View {
                                                } else if currentStep == .stepTwo {
                                                    UpdateTechnologyNewView( showNextButton : true )
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
-                                               } else if currentStep == .stepThree {
+                                               }  else if currentStep ==  .stepThree  {
                                                    UpdateHobbiesView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
-                                               } else if currentStep ==  .stepFour  {
-                                                   UpdateSmokingAndDrinkingAndDOBView(showNextButton: true)
+                                               }  else if currentStep ==  .stepFour  {
+                                                   UpdateDOBView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                } else if currentStep ==  .stepFive  {
                                                    UpdateDescribeYourselfView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                } else if currentStep ==  .stepSix {
-                                                   UpdateJobRoleView(showNextButton: true)
+                                                   UpdateJobRole2View(showNextButton: true)
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               }
+                                               else if currentStep ==  .stepSeven {
+                                                   UpdateSmokingView(showNextButton: true)
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               }
+                                               else if currentStep ==  .stepEight {
+                                                   UpdateDrinkingView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                }
                                            }  .animation(hasLoaded ? .easeInOut : nil, value: currentStep) // Apply animation only after the first load
@@ -897,7 +907,7 @@ struct ContentView: View {
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page3, params: Params<String>(data: "")))
         } 
-        else if tokenManager.isProfileDobSmokingDrinkingEmpty() {
+        else if tokenManager.dob.isEmpty {
             
             
             self.currentStep = .stepFour
@@ -927,7 +937,26 @@ struct ContentView: View {
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page6, params: Params<String>(data: "")))
         }
-        
+        else if tokenManager.smoking.isEmpty {
+            
+            
+            self.currentStep = .stepSeven
+            
+            
+            print("jobRole  empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page6, params: Params<String>(data: "")))
+        }
+        else if tokenManager.drinking.isEmpty {
+            
+            
+            self.currentStep = .stepEight
+            
+            
+            print("jobRole  empty ")
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page6, params: Params<String>(data: "")))
+        }
         else {
             path.removeAll()
         }
@@ -983,8 +1012,8 @@ struct ContentView_Previews: PreviewProvider {
                        .environmentObject(tokenManager)
                    
                 
-               }
-//        
+        } .environmentObject(ThemeManager())
+//
 //        RegisterView(path: $path)
 //            .tabItem {
 //                Label("Register", systemImage: "person.crop.circle")

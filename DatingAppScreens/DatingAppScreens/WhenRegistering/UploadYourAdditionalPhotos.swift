@@ -238,7 +238,8 @@ struct UploadYourAdditionalPhotosView: View {
     var showNextButton : Bool = false ;
     
     @State private var showAlert = false; // Alert visibility state
-    
+    @State private var isLoaded = false
+
     let columns = [
           GridItem(.flexible()),
           GridItem(.flexible()) // Two flexible columns
@@ -253,12 +254,14 @@ struct UploadYourAdditionalPhotosView: View {
                 Spacer()
             }
             LazyVGrid(columns: columns, spacing: 16) {
-                            ImageUploaderView(imageNumber: 1, image: $image1, title: "Photo 1")
-                            ImageUploaderView(imageNumber: 2, image: $image2, title: "Photo 2")
-                            ImageUploaderView(imageNumber: 3, image: $image3, title: "Photo 3")
-                            ImageUploaderView(imageNumber: 4, image: $image4, title: "Photo 4")
+                if isLoaded { // Views appear when isLoaded becomes true
+                    ImageUploaderView(imageNumber: 1, image: $image1, title: "Photo 1")
+                    ImageUploaderView(imageNumber: 2, image: $image2, title: "Photo 2")
+                    ImageUploaderView(imageNumber: 3, image: $image3, title: "Photo 3")
+                    ImageUploaderView(imageNumber: 4, image: $image4, title: "Photo 4")
+                }
                         }
-            .padding()
+            .padding().background( themeManager.currentTheme.backgroundColor)
         
 //            VStack{
                 
@@ -351,7 +354,11 @@ struct UploadYourAdditionalPhotosView: View {
 //            }.frame(maxWidth: .infinity).background(.white)
             
         }.frame( maxHeight: .infinity ).background( themeManager.currentTheme.backgroundColor)
-        
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    isLoaded = true // Triggers animation
+                }
+            }
         
 //        .frame(maxWidth: .infinity)
 //           

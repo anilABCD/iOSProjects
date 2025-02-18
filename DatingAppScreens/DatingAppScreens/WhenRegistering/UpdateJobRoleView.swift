@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct UpdateJobRoleView: View {
     // List of job roles
     let jobRoles = [
@@ -50,6 +51,8 @@ struct UpdateJobRoleView: View {
                 Spacer();
                 
             }
+            
+            
                        
             HStack {
                 Image(systemName: "briefcase.fill")
@@ -201,7 +204,7 @@ struct UpdateJobRoleView: View {
 //                                   )
                 
                 SingleSelectPopUpChipSelectionSheet( options: jobRoles, selectedOption: $selectedJobRole, selectedSize: $selectedSize )
-                    .background(themeManager.currentTheme.buttonColor)
+                    .background(themeManager.currentTheme.popUpBackgroundColor)
 //                           .background(TransparentBackground()) // Add this to sheet content
                     .presentationDetents([.height(300)])  // Fixed 300pt height
                             .presentationDragIndicator(.visible) // Optional indicator

@@ -89,10 +89,10 @@ struct UserSettingsView : View {
                             }.zIndex(1)
                         } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                         
-                        NavigationLink(destination: UpdateSmokingAndDrinkingAndDOBView()) {
+                        NavigationLink(destination: UpdateDOBView()) {
 //                            Text("Dob , Habbits").foregroundColor(themeManager.currentTheme.primaryColor)
                             HStack {
-                                Text("Dob , Habbits")
+                                Text("Date Of Birth")
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                
@@ -123,7 +123,7 @@ struct UserSettingsView : View {
                             }.zIndex(1)
                         } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                         
-                        NavigationLink(destination: UpdateJobRoleView ()) {
+                        NavigationLink(destination: UpdateJobRole2View ()) {
 //                            Text("Job Role").foregroundColor(themeManager.currentTheme.primaryColor)
                             HStack {
                                 Text("Job Role")

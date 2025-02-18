@@ -161,6 +161,15 @@ struct UpdateTechnologyNewView: View {
                 
             }.padding()
             
+            
+            HStack {
+                
+                Image("technologies2").resizable().frame(width: 64, height: 64).padding(.horizontal , 100 ).opacity(0.8)
+             
+               
+            }
+           
+            
             ScrollView {
 //              
 //                Text("")
@@ -237,17 +246,19 @@ struct ItemView: View {
             .foregroundColor(item.isSelected ? .white : .black)
             .padding(.vertical, 10)
             .padding(.horizontal)
-            .background(item.isSelected ? themeManager.currentTheme.buttonColor : Color.white)
-            .clipShape(Capsule())
-            .overlay( item.isSelected ? nil : Capsule().stroke(Color.gray, lineWidth: 1))
+            .background(item.isSelected ? themeManager.currentTheme.buttonColor : Color.gray.opacity(0.04))
+            .cornerRadius(10) // Apply a corner radius of 10 instead of Capsule
+            .overlay(item.isSelected ? nil : RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1)) // Use a rounded rectangle for the border
                         .lineLimit(1)
+                        .id(item.name)
                         
+                        .frame(maxWidth: 140)
     }
 }
 
 struct UpdateTechnologyView_Previews: PreviewProvider {
 //    @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
     static var previews: some View {
-        UpdateTechnologyNewView( ).environmentObject(TokenManager())
+        UpdateTechnologyNewView( ).environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }

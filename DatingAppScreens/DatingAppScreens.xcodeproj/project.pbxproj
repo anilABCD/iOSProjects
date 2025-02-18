@@ -20,16 +20,19 @@
 		B733B3952C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */; };
 		B73A22732BF09DB300D5B3B2 /* ForYouMatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */; };
 		B73C5B672D2B00320030F136 /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73C5B662D2B002E0030F136 /* DateUtilities.swift */; };
+		B7434CF22D63D49700C190AB /* UpdateSmokingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */; };
 		B74484CD2D3F6E6500FC4119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */; };
 		B7453FCC8150D871474A0CFE /* libPods-DatingAppScreensTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24CE1DBB042EB1905708F0EA /* libPods-DatingAppScreensTests.a */; };
 		B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74E89A92C197E1B005DD13C /* LoginSocialView.swift */; };
 		B750772F2D4FA98C00EC676D /* UploadYourAdditionalPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
 		B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */; };
-		B75F69B12C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75F69B02C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift */; };
+		B75F69B12C1B4AD90099E112 /* UpdateDOBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75F69B02C1B4AD90099E112 /* UpdateDOBView.swift */; };
 		B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76039242BF0F8A90088DFB7 /* HomeView.swift */; };
 		B76620002C107B1100C3D548 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661FFF2C107B1100C3D548 /* LocationManager.swift */; };
 		B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B90852C153B1100BA7B5D /* GlobalConstants.swift */; };
+		B77156C82D63E74200947058 /* UpdateDrinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77156C72D63E73700947058 /* UpdateDrinkingView.swift */; };
+		B77156CA2D63F49500947058 /* UpdateJobRole2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77156C92D63F48D00947058 /* UpdateJobRole2View.swift */; };
 		B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772800C2C19BBA100446085 /* UserSettingsScreen.swift */; };
 		B772800F2C19D62200446085 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772800E2C19D62200446085 /* Utils.swift */; };
 		B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A36F32BF863D00051ACF1 /* RegisterView.swift */; };
@@ -104,15 +107,18 @@
 		B733B3942C2155CF00DE9B09 /* sendUserDeviceNotificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendUserDeviceNotificationToken.swift; sourceTree = "<group>"; };
 		B73A22722BF09DB300D5B3B2 /* ForYouMatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouMatches.swift; sourceTree = "<group>"; };
 		B73C5B662D2B002E0030F136 /* DateUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
+		B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSmokingView.swift; sourceTree = "<group>"; };
 		B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B74E89A92C197E1B005DD13C /* LoginSocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialView.swift; sourceTree = "<group>"; };
 		B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadYourAdditionalPhotos.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
 		B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachesScreen.swift; sourceTree = "<group>"; };
-		B75F69B02C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSmokingAndDrinkingAndDobView.swift; sourceTree = "<group>"; };
+		B75F69B02C1B4AD90099E112 /* UpdateDOBView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDOBView.swift; sourceTree = "<group>"; };
 		B76039242BF0F8A90088DFB7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B7661FFF2C107B1100C3D548 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B76B90852C153B1100BA7B5D /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
+		B77156C72D63E73700947058 /* UpdateDrinkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDrinkingView.swift; sourceTree = "<group>"; };
+		B77156C92D63F48D00947058 /* UpdateJobRole2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateJobRole2View.swift; sourceTree = "<group>"; };
 		B772800C2C19BBA100446085 /* UserSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsScreen.swift; sourceTree = "<group>"; };
 		B772800E2C19D62200446085 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		B77A36F32BF863D00051ACF1 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -433,6 +439,9 @@
 		B7E2A83A2C170192008ADE0E /* WhenRegistering */ = {
 			isa = PBXGroup;
 			children = (
+				B77156C92D63F48D00947058 /* UpdateJobRole2View.swift */,
+				B77156C72D63E73700947058 /* UpdateDrinkingView.swift */,
+				B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */,
 				B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */,
 				B7F4CE782D1BB42E00F92EDB /* UpdateJobRoleView.swift */,
 				B7DB2C382D19A96A000DF909 /* UpdateDescribeYourself.swift */,
@@ -440,7 +449,7 @@
 				B710DDD02C070CD800285C1A /* UpdateTechnologyView.swift */,
 				B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */,
 				B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */,
-				B75F69B02C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift */,
+				B75F69B02C1B4AD90099E112 /* UpdateDOBView.swift */,
 			);
 			path = WhenRegistering;
 			sourceTree = "<group>";
@@ -736,8 +745,9 @@
 				B7C523772D5AD80F002412E6 /* ThemeToggleButton.swift in Sources */,
 				B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */,
 				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
-				B75F69B12C1B4AD90099E112 /* UpdateSmokingAndDrinkingAndDobView.swift in Sources */,
+				B75F69B12C1B4AD90099E112 /* UpdateDOBView.swift in Sources */,
 				B7DB2C392D19A97A000DF909 /* UpdateDescribeYourself.swift in Sources */,
+				B77156CA2D63F49500947058 /* UpdateJobRole2View.swift in Sources */,
 				B772800F2C19D62200446085 /* Utils.swift in Sources */,
 				B71753732D4B4B2B00834FD3 /* UnreadChatCountResponse.swift in Sources */,
 				B7C523742D5AD744002412E6 /* ThemedTextModifier.swift in Sources */,
@@ -749,6 +759,7 @@
 				B7E898782D054BBA00F0D41D /* UpdateNotificationPermissionsView.swift in Sources */,
 				B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */,
 				B77B2F0B2D0C511000C7EDDF /* LocationPermissionManager.swift in Sources */,
+				B77156C82D63E74200947058 /* UpdateDrinkingView.swift in Sources */,
 				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
 				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
 				B7C523712D5ACCDA002412E6 /* ThemedButtonStyle.swift in Sources */,
@@ -764,6 +775,7 @@
 				B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
 				B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */,
+				B7434CF22D63D49700C190AB /* UpdateSmokingView.swift in Sources */,
 				7CEA455E2C42630100524FB3 /* MatchedScreen.swift in Sources */,
 				B79B38BB2BFEF2A9007D1E01 /* UploadYourPhoto.swift in Sources */,
 				B74484CD2D3F6E6500FC4119 /* AppDelegate.swift in Sources */,
