@@ -82,7 +82,14 @@ struct UserSettingsView : View {
                                 Text("Technologies")
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
-                               
+                                
+                                Text(tokenManger.technologies.replacingOccurrences(of: "#", with: ""))
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 100)
+                                   
+                                
+                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
                                         .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -100,6 +107,12 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                
+                                Text(tokenManger.hobbies.replacingOccurrences(of: "#", with: ""))
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 100)
+                                    
+                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
                                         .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -116,7 +129,14 @@ struct UserSettingsView : View {
                                 Text("Date Of Birth")
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
-                               
+                                
+                                
+                                Text(formattedDateddMMMyyy(dateString: tokenManger.dob))
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 100)
+                                   
+                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
                                         .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -133,7 +153,14 @@ struct UserSettingsView : View {
                                 Text("Bio")
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
-                               
+                                
+                                
+                                Text(tokenManger.bio)
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 100)
+                                     
+                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
                                         .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -150,6 +177,12 @@ struct UserSettingsView : View {
                                 Text("Job Role")
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
+                                
+                                Text(tokenManger.jobRole)
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 80)
+                                   
                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
@@ -170,6 +203,12 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                
+                                Text(tokenManger.smoking)
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 100)
+                                    
+                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
                                         .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -186,7 +225,13 @@ struct UserSettingsView : View {
                                 Text("Drinking")
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
-                               
+                                
+                                Text(tokenManger.drinking)
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 100)
+                                    
+                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
                                         .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -212,13 +257,20 @@ struct UserSettingsView : View {
                     //                          }
                     
                     
-                    Color.clear.frame(height: 100)
+//                    Rectangle().frame(height: 100).background(themeManager.currentTheme.backgroundColor)
+                    
+                    VStack {
+                        
+                    }.frame(height: 200).listRowBackground(themeManager.currentTheme.backgroundColor) // Custom
                     
                 }.scrollContentBackground(.hidden) // Removes default background
                 .background(themeManager.currentTheme.backgroundColor)
                 .listStyle(.insetGrouped)
+                .edgesIgnoringSafeArea(.all)
                 .accentColor(themeManager.currentTheme.primaryColor) // Global fallback
-               
+                
+                
+        
                 
             }.navigationBarTitle("Profile Settings" , displayMode: .inline).background(themeManager.currentTheme.backgroundColor).onAppear(){
                 

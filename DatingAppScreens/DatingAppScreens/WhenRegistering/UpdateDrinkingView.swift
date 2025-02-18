@@ -138,7 +138,7 @@ struct UpdateDrinkingView: View {
             HStack {
              
                 
-                Text("\(selectedItem?.name ?? "No item selected")").foregroundColor(.black.opacity(0.8))
+                Text("\(selectedItem?.name ?? "No item selected")").foregroundColor( themeManager.currentTheme.id == "light" ? .black.opacity(0.8) :  .white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding().background(themeManager.currentTheme.secondaryColor.opacity(0.1))
                     .cornerRadius(10)
