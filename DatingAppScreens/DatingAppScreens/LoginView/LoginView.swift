@@ -347,11 +347,17 @@ struct LoginView: View {
                               self.token = tokenId;
                               tokenManger.gotToNotificationsPage = true
                               tokenManger.updateAccessToken( token: self.token ?? "" , userId: decodedResponse.data?.user?.id ?? "", email: decodedResponse.data?.user?.email ?? "" ,  name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
-                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "" ,bio: decodedResponse.data?.user?.bio ?? "", jobRole: decodedResponse.data?.user?.jobRole ?? "" )
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "" ,bio: decodedResponse.data?.user?.bio ?? "", jobRole: decodedResponse.data?.user?.jobRole ?? ""  ,
+                                                             dob: decodedResponse.data?.user?.dob ?? "" ,
+                                                          smoking: decodedResponse.data?.user?.smoking ?? ""  ,
+                                                          drinking: decodedResponse.data?.user?.drinking ?? "" ,
+                                                          photo1: decodedResponse.data?.user?.photo1 ?? "" ,
+                                                          photo2: decodedResponse.data?.user?.photo2 ?? "" ,
+                                                          photo3: decodedResponse.data?.user?.photo3 ??  "" ,
+                                                          photo4: decodedResponse.data?.user?.photo4 ??  ""
+                           )
                               
                               
-                                tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: decodedResponse.data?.user?.dob ?? "" , drinking: decodedResponse.data?.user?.drinking ?? "" , smoking: decodedResponse.data?.user?.smoking ?? "" )
-                                
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
@@ -415,11 +421,17 @@ struct LoginView: View {
                               self.token = tokenId;
                               
                               tokenManger.updateAccessToken( token: self.token ?? "", userId: decodedResponse.data?.user?.id ?? "", email: decodedResponse.data?.user?.email ?? "", name: decodedResponse.data?.user?.name ?? "", photo: decodedResponse.data?.user?.photo ?? "",
-                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "", bio: decodedResponse.data?.user?.bio ?? "", jobRole: decodedResponse.data?.user?.jobRole ?? "")
+                                                             technologies: decodedResponse.data?.user?.technologies ?? "" , hobbies: decodedResponse.data?.user?.hobbies ?? "", bio: decodedResponse.data?.user?.bio ?? "", jobRole: decodedResponse.data?.user?.jobRole ?? "" ,
+                                                             dob: decodedResponse.data?.user?.dob ?? "" ,
+                                                          smoking: decodedResponse.data?.user?.smoking ?? ""  ,
+                                                          drinking: decodedResponse.data?.user?.drinking ?? "" ,
+                                                          photo1: decodedResponse.data?.user?.photo1 ?? "" ,
+                                                          photo2: decodedResponse.data?.user?.photo2 ?? "" ,
+                                                          photo3: decodedResponse.data?.user?.photo3 ??  "" ,
+                                                          photo4: decodedResponse.data?.user?.photo4 ??  ""
+                           )
                               
-                            
-                              tokenManger.updateProfileDobSmokingDrinkingEmpty(dob: decodedResponse.data?.user?.dob ?? "" , drinking: decodedResponse.data?.user?.drinking ?? "" , smoking: decodedResponse.data?.user?.smoking ?? "" )
-                              
+                             
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")

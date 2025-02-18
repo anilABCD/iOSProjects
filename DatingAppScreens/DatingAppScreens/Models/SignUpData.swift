@@ -49,6 +49,12 @@ struct AuthResponse: Decodable {
         let name : String?
         let email : String?
         let photo : String?
+        
+        let photo1 : String?
+        let photo2 : String?
+        let photo3 : String?
+        let photo4 : String?
+        
         let technologies : String?
         let hobbies: String?
         let dob : String?
@@ -70,6 +76,11 @@ struct AuthResponse: Decodable {
             case smoking
             case bio
             case jobRole
+            
+            case photo1
+            case photo2
+            case photo3
+            case photo4
                // Other fields...
            }
         
