@@ -176,15 +176,21 @@ struct UpdateJobRole2View: View {
                    
                     Color.clear.frame(height: 30)
                     
-                } .onAppear {
+                }
+                    .onAppear {
                     // Scroll to the item you want, replace `item.id` with the actual ID of the item you want to scroll to
                     if let itemToScrollTo = items.first(where: { $0.name == tokenManger.jobRole }) {
-                        withAnimation {
-                            proxy.scrollTo(itemToScrollTo.name, anchor: .center) // You can change `anchor` as needed
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation {
+                                proxy.scrollTo(itemToScrollTo.name, anchor: .center) // You can change `anchor` as needed
+                            }
                         }
+                       
                     }
                 }
-            } .alert(isPresented: $IsNoItemsSelected) {
+            }
+            .alert(isPresented: $IsNoItemsSelected) {
                 Alert(title: Text("Required"), message: Text("Please Select Atleast One Technology"), dismissButton: .default(Text("OK")))
             }
             

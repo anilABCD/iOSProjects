@@ -243,7 +243,7 @@ struct ItemView: View {
         Text(item.name)
             .fontWeight(item.isSelected ? .semibold : .regular)
             .font( .system(size: 14))
-            .foregroundColor(item.isSelected ? .white : .black)
+            .foregroundColor(item.isSelected ? ( themeManager.currentTheme.id == "light" ?  .white : .black ) : ( themeManager.currentTheme.id == "light" ?  .black : .white ) )
             .padding(.vertical, 10)
             .padding(.horizontal)
             .background(item.isSelected ? themeManager.currentTheme.buttonColor : Color.gray.opacity(0.04))

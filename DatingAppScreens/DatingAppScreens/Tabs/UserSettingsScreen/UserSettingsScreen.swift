@@ -53,7 +53,28 @@ struct UserSettingsView : View {
                                
                                .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
                         
-                      
+                        
+                        NavigationLink(destination: UploadYourAdditionalPhotosView()) {
+//                            Text("Photo").foregroundColor(themeManager.currentTheme.primaryColor)
+                                   HStack {
+                                       Text("Additional Photo")
+                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                       Spacer()
+                                      
+                                       
+                                           Image(systemName: "chevron.right")
+                                               .font(.system(size: 13)) // Standard system chevron size
+                                               .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                               .background(themeManager.currentTheme.backgroundColor)
+                                                   .offset(x: 18) // Adjust horizontal position
+                                     
+                                            
+                                   }.zIndex(1)
+                               }
+                               .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                               
+                               .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
+                        
                         
                         NavigationLink(destination: UpdateTechnologyNewView()) {
 //                            Text("Technologies").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -140,6 +161,42 @@ struct UserSettingsView : View {
                             }
                             .zIndex(1)
                         } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        
+                        
+                        NavigationLink(destination: UpdateSmokingView ()) {
+//                            Text("Bio").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Smoking")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                               
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }.zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        
+                        NavigationLink(destination: UpdateDrinkingView ()) {
+//                            Text("Bio").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Drinking")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                               
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }.zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        
                     }
                     
 //                    .overlay(Rectangle().frame(height: 1).foregroundColor(themeManager.currentTheme.primaryColor), alignment: .bottom)
@@ -153,6 +210,10 @@ struct UserSettingsView : View {
                     //                                  Text("Font")
                     //                              }
                     //                          }
+                    
+                    
+                    Color.clear.frame(height: 100)
+                    
                 }.scrollContentBackground(.hidden) // Removes default background
                 .background(themeManager.currentTheme.backgroundColor)
                 .listStyle(.insetGrouped)
@@ -185,7 +246,7 @@ struct UserSettingsView : View {
             appearance.configureWithOpaqueBackground()
            
             appearance.backgroundColor = UIColor(themeManager.currentTheme.backgroundColor)
-            appearance.titleTextAttributes = [.foregroundColor: UIColor(themeManager.currentTheme.primaryColor)] // Title color
+        appearance.titleTextAttributes = [.foregroundColor: UIColor( themeManager.currentTheme.id == "light" ? .black : themeManager.currentTheme.primaryColor)] // Title color
             
             UINavigationBar.appearance().standardAppearance = appearance
             UINavigationBar.appearance().scrollEdgeAppearance = appearance

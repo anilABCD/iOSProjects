@@ -73,12 +73,13 @@ struct LikesScreenView: View {
         }
     }
     
+    
     func updateNavigationBarColor() {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
            
             appearance.backgroundColor = UIColor(themeManager.currentTheme.backgroundColor)
-            appearance.titleTextAttributes = [.foregroundColor: UIColor(themeManager.currentTheme.primaryColor)] // Title color
+        appearance.titleTextAttributes = [.foregroundColor: UIColor( themeManager.currentTheme.id == "light" ? .black : themeManager.currentTheme.primaryColor)] // Title color
             
             UINavigationBar.appearance().standardAppearance = appearance
             UINavigationBar.appearance().scrollEdgeAppearance = appearance

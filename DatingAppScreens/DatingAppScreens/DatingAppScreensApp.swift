@@ -186,6 +186,8 @@ class TokenManager: ObservableObject {
         self.hobbies = hobbies
         self.bio = bio
         self.jobRole = jobRole
+        
+        
         print ( "User Id" , self.userId , token , email , name , photo , bio , technologies , hobbies , jobRole )
     }
     
