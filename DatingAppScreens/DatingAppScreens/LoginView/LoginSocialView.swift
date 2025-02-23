@@ -255,7 +255,7 @@ struct LoginSocialView: View {
                                                              photo1: decodedResponse.data?.user?.photo1 ?? "" ,
                                                              photo2: decodedResponse.data?.user?.photo2 ?? "" ,
                                                              photo3: decodedResponse.data?.user?.photo3 ??  "" ,
-                                                             photo4: decodedResponse.data?.user?.photo4 ??  ""
+                                                             photo4: decodedResponse.data?.user?.photo4 ??  "", gender: decodedResponse.data?.user?.gender ??  ""
                               )
                               
                               print("Token: \(self.token ?? "No token received")")
@@ -324,7 +324,8 @@ struct LoginSocialView: View {
                                                           photo1: decodedResponse.data?.user?.photo1 ?? "" ,
                                                           photo2: decodedResponse.data?.user?.photo2 ?? "" ,
                                                           photo3: decodedResponse.data?.user?.photo3 ??  "" ,
-                                                          photo4: decodedResponse.data?.user?.photo4 ??  ""
+                                                          photo4: decodedResponse.data?.user?.photo4 ??  "" ,
+                                                          gender : decodedResponse.data?.user?.gender ??  "" 
                            )
                               
                             

@@ -890,6 +890,11 @@ struct ContentView: View {
     func handleNavigation() {
         print("technologies")
         
+        
+        if ( !( tokenManager.photo1.isEmpty || tokenManager.photo2.isEmpty || tokenManager.photo3.isEmpty || tokenManager.photo4.isEmpty ) ){
+            tokenManager.isAdditionalPhotosAdded = true;
+        }
+        
         if tokenManager.accessToken.isEmpty {
             print("access token empty ")
             path.removeAll()

@@ -176,7 +176,7 @@ class TokenManager: ObservableObject {
     
     @Published var serverImageURL : String = Constants.serverImageURL;
     
-    func updateAccessToken( token: String , userId: String , email : String , name : String , photo:String , technologies : String , hobbies : String , bio : String , jobRole : String , dob : String , smoking : String , drinking : String , photo1 : String , photo2 : String , photo3: String , photo4 : String ) {
+    func updateAccessToken( token: String , userId: String , email : String , name : String , photo:String , technologies : String , hobbies : String , bio : String , jobRole : String , dob : String , smoking : String , drinking : String , photo1 : String , photo2 : String , photo3: String , photo4 : String , gender: String ) {
      
         self.userId = userId
         self.accessToken = token
@@ -197,6 +197,8 @@ class TokenManager: ObservableObject {
         self.photo2 = photo2
         self.photo3 = photo3
         self.photo4 = photo4
+        
+        self.gender = gender
         
         print ( "User Id" , self.userId , token , email , name , photo , bio , technologies , hobbies , jobRole )
     }
@@ -258,6 +260,7 @@ class TokenManager: ObservableObject {
     
     
     func resetAccessToken () {
+        
         self.accessToken = ""
         self.email = ""
         self.name = ""
@@ -275,8 +278,11 @@ class TokenManager: ObservableObject {
         self.photo3 = ""
         self.photo4 = ""
         
+        self.gender = ""
+        
 //        self.notificationSettings = "";
 //        self.locationSettings = "";
+        
     }
 }
 

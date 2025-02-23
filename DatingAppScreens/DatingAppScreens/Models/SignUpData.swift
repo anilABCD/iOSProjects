@@ -64,6 +64,8 @@ struct AuthResponse: Decodable {
         let bio : String?
         let jobRole : String?
         
+        let gender : String?
+        
         enum CodingKeys: String, CodingKey {
                case objectId = "_id"
                case name
@@ -81,6 +83,8 @@ struct AuthResponse: Decodable {
             case photo2
             case photo3
             case photo4
+            
+            case gender 
                // Other fields...
            }
         

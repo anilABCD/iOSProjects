@@ -76,6 +76,31 @@ struct UserSettingsView : View {
                                .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
                         
                         
+                        NavigationLink(destination: UpdateGenderView()) {
+//                            Text("Technologies").foregroundColor(themeManager.currentTheme.primaryColor)
+                            HStack {
+                                Text("Gender")
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                                Spacer()
+                                
+                                Text(tokenManger.gender)
+                                    .lineLimit(1)
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .frame(maxWidth: 60)
+                                   
+                                
+                                
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13)) // Standard system chevron size
+                                        .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+                                     
+                                        .background(themeManager.currentTheme.backgroundColor)
+                                        .offset(x: 18) // Adjust horizontal position
+                                
+                            }.zIndex(1)
+                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        
+                        
                         NavigationLink(destination: UpdateTechnologyNewView()) {
 //                            Text("Technologies").foregroundColor(themeManager.currentTheme.primaryColor)
                             HStack {
