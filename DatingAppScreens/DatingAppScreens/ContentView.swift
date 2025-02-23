@@ -133,6 +133,7 @@ struct ContentView: View {
          case stepSix
          case stepSeven
          case stepEight
+         case stepNine
      }
 
     @State private var currentStep: Step = .stepZero
@@ -260,13 +261,17 @@ struct ContentView: View {
                         LoginView()
                         
                     }
-                    else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || ( tokenManager.isAdditionalPhotosAdded == false ) || tokenManager.hobbies == "" || tokenManager.dob.isEmpty || tokenManager.bio == "" || tokenManager.jobRole == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() ) ) {
+                    else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.gender == "" || tokenManager.technologies == "" || tokenManager.photo == "" || ( tokenManager.isAdditionalPhotosAdded == false ) || tokenManager.hobbies == "" || tokenManager.dob.isEmpty || tokenManager.bio == "" || tokenManager.jobRole == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() ) ) {
                         
                          
                         // Display the view for the current step
                                    ZStack {
                                        
                                        VStack {
+                                           
+                                           ThemeToggleButton()
+                                           
+                                           
                                            // Custom top "Previous" button
                                            if( currentStep != .stepZero ) {
                                                HStack {
@@ -289,7 +294,7 @@ struct ContentView: View {
                                                //                                                   .font(.headline)
                                                
                                                .padding()
-                                               .background(Color(UIColor.systemGroupedBackground)) // Background for contrast
+                                               .background(themeManager.currentTheme.backgroundColor) // Background for contrast
                                            }
                                            else{
                                                
@@ -313,13 +318,15 @@ struct ContentView: View {
                                                //                                                   .font(.headline)
                                                
                                                .padding()
-                                               .background(Color(UIColor.systemGroupedBackground)) // Background for contrast
+                                               .background(themeManager.currentTheme.backgroundColor) // Background for contrast
                                                .opacity(0);
                                            }
                                            
+                                           
+                                           
                                            // Step progress bar
                                            HStack(spacing: 8) {
-                                               ForEach(0...8, id: \.self) { step in
+                                               ForEach(0...9, id: \.self) { step in
                                                    Rectangle()
                                                        .fill(currentStep.rawValue >= step ? Color.blue : Color.gray.opacity(0.5)) // Blue if completed, gray otherwise
                                                        .frame(height: 10)
@@ -337,8 +344,10 @@ struct ContentView: View {
                                                    UploadYourAdditionalPhotosView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                } else if currentStep == .stepTwo {
-                                                   UpdateTechnologyNewView( showNextButton : true )
+                                                   
+                                                   UpdateGenderView( showNextButton : true )
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                                 
                                                }  else if currentStep ==  .stepThree  {
                                                    UpdateHobbiesView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
@@ -360,6 +369,11 @@ struct ContentView: View {
                                                    UpdateDrinkingView(showNextButton: true)
                                                        .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
                                                }
+                                               else if currentStep == .stepNine {
+                                                   UpdateTechnologyNewView( showNextButton : true )
+                                                       .transition(hasLoaded ? .asymmetric(insertion: .move(edge: transitionDirection), removal: .opacity) : .identity)
+                                               }
+                                               
                                            }  .animation(hasLoaded ? .easeInOut : nil, value: currentStep) // Apply animation only after the first load
                                        }
                                       
@@ -893,7 +907,7 @@ struct ContentView: View {
            path.removeAll()
            path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))
        }
-        else if tokenManager.technologies.isEmpty {
+        else if tokenManager.gender.isEmpty {
             print("technologies  empty ")
             self.currentStep = .stepTwo
             path.removeAll()
@@ -956,6 +970,12 @@ struct ContentView: View {
             print("jobRole  empty ")
             path.removeAll()
             path.append(MyNavigation<String>(appView: .page6, params: Params<String>(data: "")))
+        }
+        else if tokenManager.technologies.isEmpty {
+            print("technologies  empty ")
+            self.currentStep = .stepNine
+            path.removeAll()
+            path.append(MyNavigation<String>(appView: .page2, params: Params<String>(data: "")))
         }
         else {
             path.removeAll()

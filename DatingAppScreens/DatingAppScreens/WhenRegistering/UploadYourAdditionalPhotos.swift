@@ -87,7 +87,7 @@ struct ImageUploaderView: View {
             }
             
             PhotosPicker(selection: $photoPickerItem, matching: .images) {
-                Text("Upload Photo").padding().foregroundColor(.white).background(.blue).cornerRadius(8)
+                Text("Upload Photo").modifier(ThemedTextButtonModifier())
             }
             
         }
@@ -336,11 +336,8 @@ struct UploadYourAdditionalPhotosView: View {
                         }
                     }) {
                         Text("Next")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, maxHeight: 50)
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
+                            
+                    }.buttonStyle(ThemedButtonStyle())
                     .padding()
                     .alert(isPresented: $showAlert) {
                                         Alert(

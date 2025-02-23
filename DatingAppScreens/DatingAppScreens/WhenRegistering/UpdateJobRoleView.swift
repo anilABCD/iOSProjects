@@ -33,7 +33,7 @@ struct UpdateJobRoleView: View {
     @State private var isUpdating = false
     @State private var responseMessage = ""
     
-    @State var isFirstTimeUpdatingBio = false;
+    @State var isFirstTimeUpdating = false;
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject private var themeManager : ThemeManager
@@ -184,7 +184,7 @@ struct UpdateJobRoleView: View {
         .padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline).onAppear(){
             // Assuming tokenManager.technologies is a string containing comma-separated values
             if tokenManger.jobRole == "" {
-                isFirstTimeUpdatingBio = true;
+                isFirstTimeUpdating = true;
             }
             if tokenManger.jobRole != "" {
                 selectedJobRole = tokenManger.jobRole;
@@ -280,7 +280,7 @@ struct UpdateJobRoleView: View {
                             
                             tokenManger.jobRole = selectedJobRole;
                             
-                            if ( !isFirstTimeUpdatingBio && showNextButton == false) {
+                            if ( !isFirstTimeUpdating && showNextButton == false) {
                                 presentationMode.wrappedValue.dismiss()
                             }
                             

@@ -23,6 +23,7 @@
 		B7434CF22D63D49700C190AB /* UpdateSmokingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */; };
 		B74484CD2D3F6E6500FC4119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */; };
 		B7453FCC8150D871474A0CFE /* libPods-DatingAppScreensTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24CE1DBB042EB1905708F0EA /* libPods-DatingAppScreensTests.a */; };
+		B74C179B2D6AA80100A334C7 /* UpdateGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74C179A2D6AA7F900A334C7 /* UpdateGenderView.swift */; };
 		B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74E89A92C197E1B005DD13C /* LoginSocialView.swift */; };
 		B750772F2D4FA98C00EC676D /* UploadYourAdditionalPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */; };
 		B750C9EC2BEF401200B278B7 /* MatchesNewDevs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */; };
@@ -109,6 +110,7 @@
 		B73C5B662D2B002E0030F136 /* DateUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSmokingView.swift; sourceTree = "<group>"; };
 		B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B74C179A2D6AA7F900A334C7 /* UpdateGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGenderView.swift; sourceTree = "<group>"; };
 		B74E89A92C197E1B005DD13C /* LoginSocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialView.swift; sourceTree = "<group>"; };
 		B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadYourAdditionalPhotos.swift; sourceTree = "<group>"; };
 		B750C9EB2BEF401200B278B7 /* MatchesNewDevs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNewDevs.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 		B7E2A83A2C170192008ADE0E /* WhenRegistering */ = {
 			isa = PBXGroup;
 			children = (
+				B74C179A2D6AA7F900A334C7 /* UpdateGenderView.swift */,
 				B77156C92D63F48D00947058 /* UpdateJobRole2View.swift */,
 				B77156C72D63E73700947058 /* UpdateDrinkingView.swift */,
 				B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */,
@@ -763,6 +766,7 @@
 				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
 				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
 				B7C523712D5ACCDA002412E6 /* ThemedButtonStyle.swift in Sources */,
+				B74C179B2D6AA80100A334C7 /* UpdateGenderView.swift in Sources */,
 				B77B92FA2D432CCC007B3A37 /* ClosingKeyboard.swift in Sources */,
 				B78180892C039A550040FADB /* ProfileView.swift in Sources */,
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,

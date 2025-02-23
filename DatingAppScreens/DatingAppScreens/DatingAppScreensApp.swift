@@ -137,6 +137,8 @@ class TokenManager: ObservableObject {
      @AppStorage("photo3") var photo3: String = ""
      @AppStorage("photo4") var photo4: String = ""
     
+     @AppStorage("gender") var gender: String = ""
+    
      @AppStorage("hobbies") var hobbies: String = ""
      @AppStorage("bio") var bio: String = ""
      @AppStorage("jobRole") var jobRole : String = ""
