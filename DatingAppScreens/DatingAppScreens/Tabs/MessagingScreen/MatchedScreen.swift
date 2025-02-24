@@ -217,7 +217,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                       }
                                       
                                   }
-                              }
+                              }.padding(.top , 10)
                               
                           }
                           

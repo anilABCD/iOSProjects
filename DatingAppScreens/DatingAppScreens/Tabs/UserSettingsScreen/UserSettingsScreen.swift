@@ -27,8 +27,14 @@ struct UserSettingsView : View {
      
         NavigationStack {
             VStack {
-                AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo)").frame(width: 200, height: 200).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                   
+                AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo)").frame(width: 200, height: 200).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/).padding()
+                
+                HStack {
+                    Spacer()
+                    Text(tokenManger.name).modifier(ThemedTextModifier()).padding()
+                    Spacer()
+                }.frame(height: 20)
+                
                 Form {
                     Section(header: Text("User Profile").foregroundColor(themeManager.currentTheme.secondaryColor)) {
                         
@@ -85,9 +91,9 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.gender)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 60)
-                                   
+                                    .offset(x: 18) // Adjust horizontal position
                                 
                                 
                                     Image(systemName: "chevron.right")
@@ -110,9 +116,9 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.technologies.replacingOccurrences(of: "#", with: ""))
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 100)
-                                   
+                                    .offset(x: 18) // Adjust horizontal position
                                 
                                 
                                     Image(systemName: "chevron.right")
@@ -134,9 +140,9 @@ struct UserSettingsView : View {
                                
                                 Text(tokenManger.hobbies.replacingOccurrences(of: "#", with: ""))
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 100)
-                                    
+                                    .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
@@ -158,9 +164,9 @@ struct UserSettingsView : View {
                                 
                                 Text(formattedDateddMMMyyy(dateString: tokenManger.dob))
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 100)
-                                   
+                                    .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
@@ -182,9 +188,9 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.bio)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 100)
-                                     
+                                    .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
@@ -205,9 +211,9 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.jobRole)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 80)
-                                   
+                                    .offset(x: 18) // Adjust horizontal position
                                
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
@@ -230,9 +236,9 @@ struct UserSettingsView : View {
                                
                                 Text(tokenManger.smoking)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 100)
-                                    
+                                    .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size
@@ -253,9 +259,9 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.drinking)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.6))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
                                     .frame(maxWidth: 100)
-                                    
+                                    .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13)) // Standard system chevron size

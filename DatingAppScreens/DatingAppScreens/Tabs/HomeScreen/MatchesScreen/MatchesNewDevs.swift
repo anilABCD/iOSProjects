@@ -20,14 +20,13 @@ struct MatchesNewDevsView: View {
     @State var swipeRightId : String = ""
     @State var swipeLeftId : String = ""
     
-    @State var isRemoving : Bool = false ;
   
     @State var isButtonDisabled : Bool = false;
     
     @EnvironmentObject private var tokenManger : TokenManager
     @EnvironmentObject private var themeManager : ThemeManager
     
-    let buttonDelay : Double = 0.5 ;
+    let buttonClickDelay : Double = 0.5 ;
     
     init(){
         
@@ -386,7 +385,7 @@ struct MatchesNewDevsView: View {
        }
             
             // Enable the button after 20ms
-            DispatchQueue.main.asyncAfter(deadline: .now() + buttonDelay ) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay ) {
                 isButtonDisabled = false
             }
             
@@ -407,7 +406,7 @@ struct MatchesNewDevsView: View {
                 
             }  // Enable the button after 20ms
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + buttonDelay ) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay ) {
                 isButtonDisabled = false
             }
             
