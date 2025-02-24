@@ -61,7 +61,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     var isOnline: Bool?
     
     var leftSwipe : UUID = UUID()
-    var rightSwipe : UUID = UUID() 
+    var rightSwipe : UUID = UUID()
+    
     
     // Computed property for Identifiable protocol
     var id: String {

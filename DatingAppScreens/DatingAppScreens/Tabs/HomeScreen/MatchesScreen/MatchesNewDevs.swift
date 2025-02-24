@@ -20,8 +20,14 @@ struct MatchesNewDevsView: View {
     @State var swipeRightId : String = ""
     @State var swipeLeftId : String = ""
     
+    @State var isRemoving : Bool = false ;
+  
+    @State var isButtonDisabled : Bool = false;
+    
     @EnvironmentObject private var tokenManger : TokenManager
     @EnvironmentObject private var themeManager : ThemeManager
+    
+    let buttonDelay : Double = 0.5 ;
     
     init(){
         
@@ -45,28 +51,59 @@ struct MatchesNewDevsView: View {
         
     }
     
+    func unLikeTheProfile(user2_id : String) async throws {
+//
+//        let user2_id = profiles[currentIndex].id
+//
+//        print(currentIndex, user2_id)
+        
+        let matches = Matches(user2_id: user2_id )
+    
+        
+        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/matches/", accessToken: tokenManger.accessToken, data: matches, parameters: nil)
+        
+         let response: MatchesResponse = try await fetchData(from: urlRequest)
+        
+    }
+    
+    
     func fetchProfiles() async throws {
         
 
         let profileIDs: [String] = profiles.map { $0.id }
         // Convert array to a comma-separated string
-        let excludeIdsString = profileIDs.joined(separator: ",")
+        let excludeIdsString = profileIDs
 
         // Example usage
         let baseURL = "\(tokenManger.localhost)/profiles"
          
         let data:MatchesFilter? = MatchesFilter(
             technologies: (tokenManger.technologies),
-            minAge: "20",
-            maxAge: "35",
+            minAge: "15",
+            maxAge: "100",
             excludeProfileIds: excludeIdsString
         )
          
         let urlRequest = try createURLRequest(method : "POST" , baseURL: baseURL, accessToken: tokenManger.accessToken , data: data, parameters: nil )
         
-        self.profiles = try await fetchDataArray(from: urlRequest);
-        
-       
+//        self.profiles = try await fetchDataArray(from: urlRequest) + self.profiles
+        // Ensure UI updates happen on the main thread
+        Task {
+            do {
+                let newProfiles : [Profile] = try await fetchDataArray(from: urlRequest)
+                
+                // Ensure UI updates with animation on the main thread
+                await MainActor.run {
+                    withAnimation {
+                        self.profiles.insert(contentsOf: newProfiles, at: 0)
+                    }
+                }
+                
+            } catch {
+                print("Error fetching profiles: \(error)")
+            }
+        }
+
 //        var request = URLRequest(url: url)
 //        request.httpMethod = "GET"
 //        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -141,6 +178,12 @@ struct MatchesNewDevsView: View {
     private let images = ["person.fill", "star.fill"] // Replace with your images
 
     @State private var isLoading: Bool = false
+    
+    func removeProfile(with id: String) {
+        if let index = profiles.firstIndex(where: { $0.id == id }) {
+            profiles.remove(at: index)
+        }
+    }
         
     var body: some View {
         
@@ -156,53 +199,60 @@ struct MatchesNewDevsView: View {
                            
                            
                            ZStack {
-                               
-                               ForEach(profiles.indices , id: \.self ) { index in
-                                   
-                                   if index == profiles.count - 1 { // Show topmost item
+                               if !profiles.isEmpty {
+                                   ForEach(profiles.indices , id: \.self ) { index in
                                        
-                                       
-                                       
-                                       SwipeableView(
-                                        item: $profiles[index],
-                                        onSwipeRight: {
-                                            
+                                       if index == profiles.count - 1 { // Show topmost item
                                            
-                                            // Start an asynchronous task for the network request
-                                            
-                                            
-                                            swipeRightId = profiles[index].id
-                                            
                                            
-                                            
-                                            withAnimation {
-                                                removeProfile(at: index)
+                                           
+                                           SwipeableView(
+                                            item: $profiles[index],
+                                            onSwipeRight: {
+                                                
+                                                
+                                                // Start an asynchronous task for the network request
+                                                
+                                                
+                                                    swipeRightId = profiles[index].id
+                                                                  
+                                                    withAnimation {
+                                                        removeProfile(at: index)
+                                                    }
+
+                                                    
+                                                
+                                                
+                                            } ,
+                                            onSwipeLeft: {
+                                                
+                                                //
+                                                //                                                        // Start an asynchronous task for the network request
+                                                //                                                                                  Task {
+                                                //                                                                                      do {
+                                                //                                                                                          // Call the asynchronous function with the local copy
+                                                //                                                                                          try await likeTheProfile(user2_id: profiles[index].id)
+                                                //                                                                                      } catch {
+                                                //                                                                                          // Handle any errors here
+                                                //                                                                                          print("Failed to like the profile: \(error)")
+                                                //                                                                                      }
+                                                //
+                                                //
+                                                //                                                                                  }
+                                                //
+                                                //                                                       withAnimation {
+                                                
+                                                if !profiles.isEmpty {
+                                                    
+                                                    swipeLeftId = profiles[index].id
+                                                    
+                                                    removeProfile(at: index)
+                                                }
+                                                
                                             }
                                             
-                                        } ,
-                                        onSwipeLeft: {
-                                            
-                                            //
-                                            //                                                        // Start an asynchronous task for the network request
-                                            //                                                                                  Task {
-                                            //                                                                                      do {
-                                            //                                                                                          // Call the asynchronous function with the local copy
-                                            //                                                                                          try await likeTheProfile(user2_id: profiles[index].id)
-                                            //                                                                                      } catch {
-                                            //                                                                                          // Handle any errors here
-                                            //                                                                                          print("Failed to like the profile: \(error)")
-                                            //                                                                                      }
-                                            //
-                                            //
-                                            //                                                                                  }
-                                            //
-                                            //                                                       withAnimation {
-                                            removeProfile(at: index)
-                                            
-                                            
-                                        }
-                                        
-                                       )
+                                           )
+                                       }
                                    }
                                }
                            }.frame(maxHeight:.infinity)
@@ -216,7 +266,7 @@ struct MatchesNewDevsView: View {
                                                       .background(Color.white) // Same background for consistency
                                                       .cornerRadius(25) // Same rounded corners
                                                       .shadow(radius: 5) // Same shadow for both buttons
-                               }
+                               }.disabled(isButtonDisabled)
                                .padding()
                                
                                Button(action: swipeRight) {
@@ -228,7 +278,7 @@ struct MatchesNewDevsView: View {
                                                       .cornerRadius(25) // Rounded corners
                                                       .shadow(radius: 5)
                                    
-                               }
+                               }.disabled(isButtonDisabled)
                                .padding()
                            }.frame(height: 28).padding(5).padding(.bottom , 28).background(Color.clear) // Transparent background
                            
@@ -258,9 +308,44 @@ struct MatchesNewDevsView: View {
                    
                     // Call the asynchronous function with the local copy
                     try await likeTheProfile(user2_id: newVaulue)
+                    
+                     
+                    if ( profiles.count == 5 ) {
+                        try await fetchProfiles()
+                    }
+                    
+                    
+                  
+                   
+                    
                 } catch {
                     // Handle any errors here
                     print("Failed to like the profile: \(error)")
+                }
+                
+              
+            }
+            
+        }
+        .onChange( of : swipeLeftId ) { newVaulue in
+            
+            
+            Task {
+                do {
+                    
+                   
+                    // Call the asynchronous function with the local copy
+//                    try await likeTheProfile(user2_id: newVaulue)
+                    
+                    
+                    if ( profiles.count == 5 ) {
+                        try await fetchProfiles()
+                    }
+                    
+                    
+                } catch {
+                    // Handle any errors here
+                    print("Failed to unlike the profile: \(error)")
                 }
                 
               
@@ -288,22 +373,51 @@ struct MatchesNewDevsView: View {
     }
     
     private func swipeLeft () {
-        
+        if !isButtonDisabled {
+                isButtonDisabled = true
+                
+                // Perform your action here
+                print("Button clicked!")
+                
+               
+           
         if(!profiles.isEmpty) {
          profiles[self.profiles.count-1].leftSwipe = UUID();
        }
+            
+            // Enable the button after 20ms
+            DispatchQueue.main.asyncAfter(deadline: .now() + buttonDelay ) {
+                isButtonDisabled = false
+            }
+            
+        }
     }
     
     private func swipeRight () {
         
-        if(!profiles.isEmpty) {
-            profiles[self.profiles.count-1].rightSwipe = UUID();
+        if !isButtonDisabled {
+            
+            isButtonDisabled = true
+                
+                // Perform your action here
+                print("Button clicked!")
+        
+            if(!profiles.isEmpty) {
+                profiles[self.profiles.count-1].rightSwipe = UUID();
+                
+            }  // Enable the button after 20ms
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + buttonDelay ) {
+                isButtonDisabled = false
+            }
+            
         }
     }
     
     private func removeProfile(at index: Int) {
             guard profiles.indices.contains(index) else { return }
             profiles.remove(at: index)
+    
         }
   
 }
