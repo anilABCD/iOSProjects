@@ -35,6 +35,7 @@ struct UserSettingsView : View {
                     Spacer()
                 }.frame(height: 20)
                 
+              
                 Form {
                     Section(header: Text("User Profile").foregroundColor(themeManager.currentTheme.secondaryColor)) {
                         
@@ -91,7 +92,7 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.gender)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                 
@@ -116,7 +117,7 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.technologies.replacingOccurrences(of: "#", with: ""))
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 100)
                                     .offset(x: 18) // Adjust horizontal position
                                 
@@ -140,7 +141,7 @@ struct UserSettingsView : View {
                                
                                 Text(tokenManger.hobbies.replacingOccurrences(of: "#", with: ""))
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 100)
                                     .offset(x: 18) // Adjust horizontal position
                                 
@@ -164,7 +165,7 @@ struct UserSettingsView : View {
                                 
                                 Text(formattedDateddMMMyyy(dateString: tokenManger.dob))
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 100)
                                     .offset(x: 18) // Adjust horizontal position
                                 
@@ -188,7 +189,7 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.bio)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 100)
                                     .offset(x: 18) // Adjust horizontal position
                                 
@@ -211,7 +212,7 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.jobRole)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 80)
                                     .offset(x: 18) // Adjust horizontal position
                                
@@ -236,7 +237,7 @@ struct UserSettingsView : View {
                                
                                 Text(tokenManger.smoking)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 100)
                                     .offset(x: 18) // Adjust horizontal position
                                 
@@ -259,7 +260,7 @@ struct UserSettingsView : View {
                                 
                                 Text(tokenManger.drinking)
                                     .lineLimit(1)
-                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.4))
+                                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 100)
                                     .offset(x: 18) // Adjust horizontal position
                                 

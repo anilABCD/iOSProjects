@@ -148,7 +148,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                       // Determine which profile to display
                                       let onlineProfile = match.participants.first
                                       
-                                      let photoUrl = URL(string: "\(tokenManger.localhost)/images/\("resized-")\(onlineProfile?.photo ?? "" )" )
+                                      let photoUrl = URL(string: "\(tokenManger.serverImageURL)/\("resized-")\(onlineProfile?.photo ?? "" )" )
                                       
                                       
                                       if (( onlineProfile?.isOnline ) != nil &&
@@ -157,7 +157,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                       ) {
                                           
                                           
-                                          NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images" , onBackAction: {
+                                          NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.serverImageURL)/" , onBackAction: {
                                               Task {
                                                   do {
                                                       try await fetchMatched()
@@ -278,7 +278,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                               // Determine which profile to display
                               let matchProfile = match.participants.first
                               
-                              NavigationLink(destination: ChatView( profile: matchProfile ?? nil , photoUrl: "\(tokenManger.localhost)/images", onBackAction: {
+                              NavigationLink(destination: ChatView( profile: matchProfile ?? nil , photoUrl: "\(tokenManger.serverImageURL)/", onBackAction: {
                                   Task {
                                       do {
                                           try await fetchMatched()
@@ -289,7 +289,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                               }, hideTabBar: $hideTabBar, webSocketManager: webSocketManager)  // Hides the back button in ChatView
                               
                               ) {
-                                  MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.localhost)/images", lastMessage : match.lastMessage , unreadCounts: match.unreadCounts , userId: tokenManger.userId )
+                                  MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.serverImageURL)/", lastMessage : match.lastMessage , unreadCounts: match.unreadCounts , userId: tokenManger.userId )
                                       .onAppear {
                                           if let index = matched.firstIndex(where: { $0.id == match.id }), index == matched.count - 5 {
                                               //                                              loadMoreItems()

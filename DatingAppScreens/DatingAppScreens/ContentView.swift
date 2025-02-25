@@ -1106,7 +1106,7 @@ struct SideMenuView: View {
                     //
                     HStack {
                         
-                        AsyncImage(url: URL(string: "\(tokenManger.localhost)/images/\(tokenManger.photo)")) { image in
+                        AsyncImage(url: URL(string: "\(tokenManger.serverImageURL)/\(tokenManger.photo)")) { image in
                             image
                                 .resizable()
                                 .frame(width: 50, height: 50)

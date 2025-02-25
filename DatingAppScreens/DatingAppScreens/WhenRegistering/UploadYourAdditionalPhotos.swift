@@ -57,13 +57,13 @@ struct ImageUploaderView: View {
             ) {
                 
                 switch imageNumber {
-                case 1 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo1)")
+                case 1 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo1)")
                         .clipShape(Circle()).frame(width: 100, height: 100)
-                case 2 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo2)")
+                case 2 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo2)")
                         .clipShape(Circle()).frame(width: 100, height: 100)
-                case 3 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo3)")
+                case 3 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo3)")
                         .clipShape(Circle()).frame(width: 100, height: 100)
-                case 4 : AsyncImageView(photoURL: "\(tokenManger.localhost)/images/\(tokenManger.photo4)")
+                case 4 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo4)")
                         .clipShape(Circle()).frame(width: 100, height: 100)
                 default:
                     Image(systemName: "person.fill")

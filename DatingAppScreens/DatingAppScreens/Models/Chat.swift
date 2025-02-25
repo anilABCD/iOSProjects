@@ -215,6 +215,8 @@ class Chat: ObservableObject, Identifiable, Codable , Hashable {
         
         var isSent : Bool = true
         
+        var isNewMessages : Bool = false 
+        
         // Computed property to check if the other person has read the message
         func isRead(by userID: String) -> Bool {
             return readBy.contains(userID)
@@ -231,6 +233,7 @@ class Chat: ObservableObject, Identifiable, Codable , Hashable {
                 hasher.combine(delivered)
                 hasher.combine(monthTemp)
                 hasher.combine(isSent)
+                hasher.combine(isNewMessages)
             }
         
         // Implementing `Equatable` protocol
@@ -242,11 +245,12 @@ class Chat: ObservableObject, Identifiable, Codable , Hashable {
                       lhs.timestamp == rhs.timestamp &&
                       lhs.readBy == rhs.readBy &&
                       lhs.delivered == rhs.delivered &&
-                      lhs.isSent == rhs.isSent
+                      lhs.isSent == rhs.isSent &&
+               lhs.isNewMessages == rhs.isNewMessages
            }
         
         // Custom initializers
-        init(sender: String, text: String, timestamp: String? = nil, image: String? = nil , isSent : Bool = false , delivered: Bool = false, readBy: [String] = []) {
+        init(sender: String, text: String, timestamp: String? = nil, image: String? = nil , isSent : Bool = false , isNewMessages : Bool = false , delivered: Bool = false, readBy: [String] = []) {
             self.id = UUID().uuidString // Generate a unique ID
             self.sender = sender
             self.text = text
@@ -255,6 +259,7 @@ class Chat: ObservableObject, Identifiable, Codable , Hashable {
             self.image = image
             
             self.isSent = isSent
+            self.isNewMessages = isNewMessages
             
             let timestampString = timestamp?.isEmpty == false ? timestamp ?? getCurrentUTCTime() : getCurrentUTCTime()
             

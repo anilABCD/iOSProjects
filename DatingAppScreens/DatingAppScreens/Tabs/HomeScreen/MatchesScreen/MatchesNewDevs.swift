@@ -190,8 +190,7 @@ struct MatchesNewDevsView: View {
             
             
                    if isLoading {
-                       ProgressView("Loading...")
-                           .scaleEffect(1.5)
+                      
                    } else if !profiles.isEmpty {
                        
                        VStack (spacing: 0 ) {
@@ -293,11 +292,23 @@ struct MatchesNewDevsView: View {
                            .font(.headline)
                            .foregroundColor(.gray)
                    }
-        }.frame(maxWidth: .infinity).background(themeManager.currentTheme.backgroundColor)
+        }.frame(maxWidth: .infinity , maxHeight: .infinity).background(themeManager.currentTheme.backgroundColor)
                .edgesIgnoringSafeArea(.top)
         .popup(isPresented: $isPopupPresented) {
             ChatPopupView(isPresented: $isPopupPresented, profile: profiles[currentIndex] )
-        }
+        }.overlay{
+            
+            isLoading ?
+           VStack {
+              
+               ProgressView("Loading...")
+               
+                   .scaleEffect(1).foregroundColor(themeManager.currentTheme.primaryColor).tint(themeManager.currentTheme.primaryColor).padding(.bottom, 100)
+           }
+           : nil
+           
+           
+       }
         .onChange( of : swipeRightId ) { newVaulue in
             
             
@@ -357,8 +368,13 @@ struct MatchesNewDevsView: View {
                     
                   
                     isLoading = true;
+                    
                     try await fetchProfiles()
-                    isLoading = false;
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0 ) {
+                        isLoading = false
+                    }
+
                     
                 } catch {
                     print("Failed to fetch profiles: \(error)")

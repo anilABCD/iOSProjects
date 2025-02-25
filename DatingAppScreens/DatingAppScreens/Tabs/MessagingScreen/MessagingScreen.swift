@@ -411,6 +411,7 @@ struct ChatView: View {
 //                            dayMessages[groupedIndex].delivered = true
                             
                             dayMessages[groupedIndex].isSent = isSent
+                            dayMessages[groupedIndex].image = newValue.image
 //
 //                            if ( isRead) {
 //                                // Safely unwrap and update `readBy`
@@ -500,7 +501,7 @@ struct ChatView: View {
                                                                                ForEach(messages.reversed(), id: \.id) { message in
                                                                                    HStack {
                                                                                     
-                                                                                       if message.sender == tokenManager.userId {
+                                                                                       if message.sender == tokenManager.userId  {
                                                                                            Spacer()
                                                                                            
                                                                                            VStack {
@@ -508,43 +509,51 @@ struct ChatView: View {
                                                                                                HStack {
                                                                                                    Spacer() // Push the message to the right
                                                                                                   
-//                                                                                                   
-                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManager.localhost)/images/\(imageUrl)") {
-                                                                                                                  AsyncImage(url: url) { phase in
-                                                                                                                      switch phase {
-                                                                                                                      case .empty:
-                                                                                                                          ProgressView()
-                                                                                                                              .progressViewStyle(CircularProgressViewStyle())
-                                                                                                                              .frame(width: 50, height: 50)
-                                                                                                                      case .success(let img):
-                                                                                                                          img
-                                                                                                                              .resizable()
-//                                                                                                                              .scaledToFit()
-                                                                                                                              .frame(width: 150, height: 150)
-                                                                                                                              .onTapGesture {
-                                                                                                                                  // Update the selected image URL
-                                                                                                                                 print( "\(url)" )
-                                                                                                                                  print( "\(url)" )
-                                                                                                                                  self.showImageViewer = true // Show image viewer
-                                                                                                                              
-                                                                                                                          
-                                                                                                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                                                                                                      
-                                                                                                                                      
-                                                                                                                                          selectedImageURL = url // Set new URL
-                                                                                                                                     
-                                                                                                                                  }
-                                                                                                                              }
-                                                                                                                             
-                                                                                                                      case .failure:
-                                                                                                                          Text("Failed to load image")
-                                                                                                                              .foregroundColor(.red)
-                                                                                                                      @unknown default:
-                                                                                                                          EmptyView()
-                                                                                                                      }
-                                                                                                                  }
-                                                                                                              }
-                                                                                                          
+                                                                                                   if let image = message.image , message.isSent == true , message.isNewMessages == false {
+                                                                                                       if let imageUrl = message.image, let url = URL(string: "\(tokenManager.serverImageURL)/\(imageUrl)") {
+                                                                                                           AsyncImage(url: url) { phase in
+                                                                                                               switch phase {
+                                                                                                               case .empty:
+                                                                                                                   ProgressView()
+                                                                                                                       .progressViewStyle(CircularProgressViewStyle())
+                                                                                                                       .frame(width: 50, height: 50)
+                                                                                                               case .success(let img):
+                                                                                                                   img
+                                                                                                                       .resizable()
+                                                                                                                   //                                                                                                                              .scaledToFit()
+                                                                                                                       .frame(width: 150, height: 150)
+                                                                                                                       .onTapGesture {
+                                                                                                                           // Update the selected image URL
+                                                                                                                           print( "\(url)" )
+                                                                                                                           print( "\(url)" )
+                                                                                                                           self.showImageViewer = true // Show image viewer
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                                                                                               
+                                                                                                                               
+                                                                                                                               selectedImageURL = url // Set new URL
+                                                                                                                               
+                                                                                                                           }
+                                                                                                                       }
+                                                                                                                   
+                                                                                                               case .failure:
+                                                                                                                   Text("Failed to load image")
+                                                                                                                       .foregroundColor(.red)
+                                                                                                               @unknown default:
+                                                                                                                   EmptyView()
+                                                                                                               }
+                                                                                                           }
+                                                                                                           
+                                                                                                       }
+                                                                                                   }
+                                                                                                   else                                                                                                   if let imageString = message.image, // Ensure it's not nil
+                                                                                                      let imageData = Data(base64Encoded: imageString), // Convert to Data
+                                                                                                      let uiImage = UIImage(data: imageData) { // Convert to UIImage
+                                                                                                       Image(uiImage: uiImage)
+                                                                                                           .resizable()
+                                                                                                           .frame(width: 150, height: 150)
+                                                                                                   }
                                                                                                    else {
                                                                                                        Text(message.text)
                                                                                                            .padding()
@@ -586,7 +595,7 @@ struct ChatView: View {
                                                                                            VStack {
                                                                                                
                                                                                                HStack {
-                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManager.localhost)/images/\(imageUrl)") {
+                                                                                                   if let imageUrl = message.image, let url = URL(string: "\(tokenManager.serverImageURL)/\(imageUrl)") {
                                                                                                                   AsyncImage(url: url) { phase in
                                                                                                                       switch phase {
                                                                                                                       case .empty:
@@ -679,7 +688,7 @@ struct ChatView: View {
                                            
 //                                           if ( message?["chatId"] == self.chatId ) {
                                                
-                                               if  let sender = message?["sender"] as? String, let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"]  as? String , let chatId = message?["chatId"] as? String,
+                                           if  let sender = message?["sender"] as? String, let imageURL = message?["image"] as? String , let messageText = message?["text"] as? String , let timeStamp = message?["timestamp"]  as? String , let chatId = message?["chatId"] as? String,
                                                    chatId == self.chat?.id {
                                                    
                                                    let dateFormatter = DateFormatter()
@@ -696,8 +705,15 @@ struct ChatView: View {
                                                            }) {
                                                                // ✅ Modify the struct by creating a new instance
                                                                    var updatedMessage = self.messages[index]
+                                                               
+                                                               
+//                                                                     updatedMessage.image = imageURL ;
 //                                                                   updatedMessage.text = "hero"
+                                                               
+                                                               print("image " , updatedMessage.image)
+                                                               
                                                                      updatedMessage.isSent = true;
+                                                                    
                                                                    
                                                                    // ✅ Reassign the struct in the array
                                                                
@@ -948,7 +964,7 @@ struct ChatView: View {
                                         let timestampString = dateFormatter.string(from: now)
 
                                         
-                                        let newMessage = Chat.Message( sender: tokenManager.userId , text: self.newMessage , timestamp: timestampString , image :  self.selectedImage?.toBase64() ?? nil , isSent: false )
+                                        let newMessage = Chat.Message( sender: tokenManager.userId , text: self.newMessage , timestamp: timestampString , image :  self.selectedImage?.toBase64() ?? nil , isSent: false , isNewMessages : true )
                                         
                                         
                                         DispatchQueue.main.async {
