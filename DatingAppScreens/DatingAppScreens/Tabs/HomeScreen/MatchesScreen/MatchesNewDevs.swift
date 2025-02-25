@@ -371,7 +371,7 @@ struct MatchesNewDevsView: View {
                     
                     try await fetchProfiles()
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0 ) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0 ) {
                         isLoading = false
                     }
 

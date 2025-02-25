@@ -509,7 +509,7 @@ struct ChatView: View {
                                                                                                HStack {
                                                                                                    Spacer() // Push the message to the right
                                                                                                   
-                                                                                                   if let image = message.image , message.isSent == true , message.isNewMessages == false {
+                                                                                                   if let image = message.image , !image.isEmpty , message.isSent == true , message.isNewMessages == false {
                                                                                                        if let imageUrl = message.image, let url = URL(string: "\(tokenManager.serverImageURL)/\(imageUrl)") {
                                                                                                            AsyncImage(url: url) { phase in
                                                                                                                switch phase {
@@ -549,7 +549,7 @@ struct ChatView: View {
                                                                                                    }
                                                                                                    else                                                                                                   if let imageString = message.image, // Ensure it's not nil
                                                                                                       let imageData = Data(base64Encoded: imageString), // Convert to Data
-                                                                                                      let uiImage = UIImage(data: imageData) { // Convert to UIImage
+                                                                                                      let uiImage = UIImage(data: imageData) ,  !imageString.isEmpty { // Convert to UIImage
                                                                                                        Image(uiImage: uiImage)
                                                                                                            .resizable()
                                                                                                            .frame(width: 150, height: 150)
@@ -719,7 +719,7 @@ struct ChatView: View {
                                                                
                                                                    self.messages[index] = updatedMessage  // ✅ Triggers UI update
                                                               
-                                                               
+                                                                 print ("update sent")
                                                              
                                                                    guard let currentChat = chat else { return }
                                                                    

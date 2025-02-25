@@ -140,6 +140,9 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                   
                                   
                                   
+                                  if self.matched.count == 0 {
+                                      Text("No Online Members").modifier(ThemedTextModifier())
+                                  }
                                   
                                   ForEach(self.matched, id: \.id) { match in
                                       
@@ -273,6 +276,12 @@ struct MatchedProfilesForMessagingListScreenView: View {
 //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
                        
                       List {
+                          
+                          
+                          if self.matched.count == 0 {
+                              Text("No Online Members").modifier(ThemedTextModifier())
+                          }
+                          
                           ForEach(matched) { match in  // Iterate over likes directly
                               
                               // Determine which profile to display

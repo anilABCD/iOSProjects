@@ -176,8 +176,13 @@ class WebSocketManager: ObservableObject {
                         if let chatId = item["chatId"] as? String ,
                            let sender = item["sender"] as? String,
                            let text = item["text"] as? String ,
-                           let image = item["image"] ,
+                           
                            let timestampString = item["timestamp"] as? String {
+                            
+                            let image = item["image"] as? String ?? "" 
+                            
+                            print("message added")
+                            
                             DispatchQueue.main.async {
                                 self.messages.append([ "chatId" : chatId , "sender": sender, "text": text , "image" : image, "timestamp" : timestampString ])
                                 
