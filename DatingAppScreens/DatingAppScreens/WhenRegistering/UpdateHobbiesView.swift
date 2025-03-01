@@ -52,6 +52,19 @@ struct UpdateHobbiesView: View {
         }
     }
     
+    func getSelectedItems ( ) -> String
+    {
+        let selectedItems = items
+                .filter { $0.isSelected }
+                .map { String($0.name.dropFirst()) } // Convert Substring to String
+                .joined(separator: ", ") // Removed extra space before the comma
+
+            return selectedItems.isEmpty ? "No Item Selected" : selectedItems
+    }
+    
+
+    
+    
     func submitSelections( authToken : String ) {
         let selectedItems = items.filter { $0.isSelected }.map { $0.name }
         
@@ -138,6 +151,19 @@ struct UpdateHobbiesView: View {
                
             }
            
+            HStack {
+             
+                
+                Text("\(getSelectedItems())").lineLimit(1).foregroundColor( themeManager.currentTheme.id == "light" ? .black.opacity(0.8) :  .white)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding().background(themeManager.currentTheme.secondaryColor.opacity(0.1))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 30)
+                    .padding(.bottom , 10)
+                
+                
+                Spacer()
+            }
             
             ScrollView {
 //                

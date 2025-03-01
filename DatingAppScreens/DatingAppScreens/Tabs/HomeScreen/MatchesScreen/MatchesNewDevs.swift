@@ -475,7 +475,7 @@ struct  MatchesNewDevsView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
        
     static var previews: some View {
-        MatchesNewDevsView().environmentObject(TokenManager())
+        MatchesNewDevsView().environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
 
@@ -911,16 +911,18 @@ struct TechnologiesCardView: View {
                     ForEach(technologies, id: \.self) { tech in
                         Text(tech.dropFirst())
                             .font(.subheadline)
-                            .foregroundColor(.white)
+                            
+                            .foregroundColor(.black)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 15)
-                            .background(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [Color.blue, Color.purple]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
+                            .background(.white)
+//                            .background(
+//                                LinearGradient(
+//                                    gradient: Gradient(colors: [Color.black, Color.black]),
+//                                    startPoint: .topLeading,
+//                                    endPoint: .bottomTrailing
+//                                )
+//                            )
                             .cornerRadius(12)
                             .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
                             .overlay(
@@ -973,16 +975,17 @@ struct HobbiesCardView: View {
                     ForEach(hobbies, id: \.self) { hobby in
                         Text(hobby.dropFirst())
                             .font(.subheadline)
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 15)
-                            .background(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [Color.green, Color.blue]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
+                            .background(.white)
+//                            .background(
+//                                LinearGradient(
+//                                    gradient: Gradient(colors: [Color.green, Color.blue]),
+//                                    startPoint: .topLeading,
+//                                    endPoint: .bottomTrailing
+//                                )
+//                            )
                             .cornerRadius(12)
                             .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
                             .overlay(
@@ -1032,10 +1035,11 @@ struct SmokingCardView: View {
                     
                     Text(smoking.isEmpty ? "Not Specified" : smoking)
                         .font(.subheadline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 15)
-                        .background(getGradient(for: smoking)) // Dynamic background
+                        .background(.white)
+//                        .background(getGradient(for: smoking)) // Dynamic background
                         .cornerRadius(12)
                         .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
                         .overlay(
@@ -1119,10 +1123,11 @@ struct DrinkingCardView: View {
                
                 Text(drinking.isEmpty ? "Not Specified" : drinking)
                     .font(.subheadline)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 15)
-                    .background(getGradient(for: drinking)) // Dynamic background
+                    .background(.white)
+//                    .background(getGradient(for: drinking)) // Dynamic background
                     .cornerRadius(12)
                     .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
                     .overlay(
@@ -1209,10 +1214,11 @@ struct JobRoleCardView: View {
                     
                     Text(jobRole.isEmpty ? "Not Specified" : jobRole)
                         .font(.subheadline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 15)
-                        .background(getGradient(for: jobRole)) // Dynamic gradient based on job level
+                        .background(.white)
+//                        .background(getGradient(for: jobRole)) // Dynamic gradient based on job level
                         .cornerRadius(12)
                         .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
                         .overlay(

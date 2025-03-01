@@ -73,6 +73,16 @@ struct UpdateTechnologyNewView: View {
         SelectableItem(name: "#Data Scientist/Engineer"),
     ]
     
+    func getSelectedItems ( ) -> String
+    {
+        let selectedItems = items
+                .filter { $0.isSelected }
+                .map { String($0.name.dropFirst()) } // Convert Substring to String
+                .joined(separator: ", ") // Removed extra space before the comma
+
+            return selectedItems.isEmpty ? "No Item Selected" : selectedItems
+    }
+    
     @State var status: String? = nil
     
     func toggleSelection(for item: SelectableItem) {
@@ -169,6 +179,19 @@ struct UpdateTechnologyNewView: View {
                
             }
            
+            HStack {
+             
+                
+                Text("\(getSelectedItems())").lineLimit(1).foregroundColor( themeManager.currentTheme.id == "light" ? .black.opacity(0.8) :  .white)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding().background(themeManager.currentTheme.secondaryColor.opacity(0.1))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 30)
+                    .padding(.bottom , 10)
+                
+                
+                Spacer()
+            }
             
             ScrollView {
 //              
@@ -246,13 +269,17 @@ struct ItemView: View {
             .foregroundColor(item.isSelected ? ( themeManager.currentTheme.id == "light" ?  .white : .black ) : ( themeManager.currentTheme.id == "light" ?  .black : .white ) )
             .padding(.vertical, 10)
             .padding(.horizontal)
+           
+            .cornerRadius(10) // Apply a corner radius of 10 instead of Capsule
+            .frame(width: 140)
             .background(item.isSelected ? themeManager.currentTheme.buttonColor : Color.gray.opacity(0.04))
             .cornerRadius(10) // Apply a corner radius of 10 instead of Capsule
-            .overlay(item.isSelected ? nil : RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1)) // Use a rounded rectangle for the border
-                        .lineLimit(1)
+            .overlay(item.isSelected ?  RoundedRectangle(cornerRadius: 10).stroke(themeManager.currentTheme.buttonColor, lineWidth: 1) : RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1)) // Use a rounded rectangle for the border
+          
+            .frame(width: 140).lineLimit(1)
                         .id(item.name)
-                        
-                        .frame(maxWidth: 140)
+                       
+                       
     }
 }
 

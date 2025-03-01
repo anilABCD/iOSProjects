@@ -47,6 +47,12 @@ struct UserSettingsView : View {
                                        Spacer()
                                       
                                        
+                                       Text("select")
+                                           .lineLimit(1)
+                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
+                                           .frame(maxWidth: 60)
+                                           .offset(x: 18) // Adjust horizontal position
+                                       
                                            Image(systemName: "chevron.right")
                                                .font(.system(size: 13)) // Standard system chevron size
                                                .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -69,6 +75,12 @@ struct UserSettingsView : View {
                                        Spacer()
                                       
                                        
+                                       Text("select")
+                                           .lineLimit(1)
+                                           .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
+                                           .frame(maxWidth: 60)
+                                           .offset(x: 18) // Adjust horizontal position
+                                       
                                            Image(systemName: "chevron.right")
                                                .font(.system(size: 13)) // Standard system chevron size
                                                .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
@@ -90,7 +102,8 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                 
-                                Text(tokenManger.gender)
+//                                Text(tokenManger.gender)
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
                                     .frame(maxWidth: 60)
@@ -115,10 +128,11 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                 
-                                Text(tokenManger.technologies.replacingOccurrences(of: "#", with: ""))
+//                                Text(tokenManger.technologies.replacingOccurrences(of: "#", with: ""))
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
-                                    .frame(maxWidth: 100)
+                                    .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                 
                                 
@@ -139,10 +153,11 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                
-                                Text(tokenManger.hobbies.replacingOccurrences(of: "#", with: ""))
+//                                Text(tokenManger.hobbies.replacingOccurrences(of: "#", with: "") )
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
-                                    .frame(maxWidth: 100)
+                                    .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
@@ -163,10 +178,11 @@ struct UserSettingsView : View {
                                 Spacer()
                                 
                                 
-                                Text(formattedDateddMMMyyy(dateString: tokenManger.dob))
+//                                Text(formattedDateddMMMyyy(dateString: tokenManger.dob))
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
-                                    .frame(maxWidth: 100)
+                                    .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
@@ -187,10 +203,11 @@ struct UserSettingsView : View {
                                 Spacer()
                                 
                                 
-                                Text(tokenManger.bio)
+//                                Text(tokenManger.bio)
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
-                                    .frame(maxWidth: 100)
+                                    .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
@@ -210,10 +227,11 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                 
-                                Text(tokenManger.jobRole)
+//                                Text(tokenManger.jobRole)
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
-                                    .frame(maxWidth: 80)
+                                    .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                
                                     Image(systemName: "chevron.right")
@@ -235,10 +253,11 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                
-                                Text(tokenManger.smoking)
+//                                Text(tokenManger.smoking)
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
-                                    .frame(maxWidth: 100)
+                                    .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
@@ -258,10 +277,11 @@ struct UserSettingsView : View {
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                                 Spacer()
                                 
-                                Text(tokenManger.drinking)
+//                                Text(tokenManger.drinking )
+                                Text("select")
                                     .lineLimit(1)
                                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.3))
-                                    .frame(maxWidth: 100)
+                                    .frame(maxWidth: 60)
                                     .offset(x: 18) // Adjust horizontal position
                                 
                                     Image(systemName: "chevron.right")
