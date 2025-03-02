@@ -36,48 +36,48 @@ struct UpdateTechnologyNewView: View {
     
     @State var items: [SelectableItem] = [
         
-        SelectableItem(name: "#React"),
-        SelectableItem(name: "#Angular"),
-        SelectableItem(name: "#React Native"),
-        SelectableItem(name: "#Flutter"),
-        SelectableItem(name: "#iOS"),
-        SelectableItem(name: "#Android"),
-        SelectableItem(name: "#Swift"),
-        SelectableItem(name: "#Swift UI"),
+        SelectableItem(name: "React"),
+        SelectableItem(name: "Angular"),
+        SelectableItem(name: "React Native"),
+        SelectableItem(name: "Flutter"),
+        SelectableItem(name: "iOS"),
+        SelectableItem(name: "Android"),
+        SelectableItem(name: "Swift"),
+        SelectableItem(name: "Swift UI"),
         
-        SelectableItem(name: "#Node js"),
-        SelectableItem(name: "#MERN"),
-        SelectableItem(name: "#MEAN"),
+        SelectableItem(name: "Node js"),
+        SelectableItem(name: "MERN"),
+        SelectableItem(name: "MEAN"),
         
        
-        SelectableItem(name: "#Front End"),
-        SelectableItem(name: "#UI/UX Designer"),
-        SelectableItem(name: "#Backend"),
-        SelectableItem(name: "#Fullstack"),
-        SelectableItem(name: "#Dev Ops"),
+        SelectableItem(name: "Front End"),
+        SelectableItem(name: "UI/UX Designer"),
+        SelectableItem(name: "Backend"),
+        SelectableItem(name: "Fullstack"),
+        SelectableItem(name: "Dev Ops"),
         
-        SelectableItem(name: "#Cloud Engineer"),
-        SelectableItem(name: "#QA Engineer"),
+        SelectableItem(name: "Cloud Engineer"),
+        SelectableItem(name: "QA Engineer"),
         
-        SelectableItem(name: "#AI/ML Engineer"),
-        SelectableItem(name: "#Game Developer"),
+        SelectableItem(name: "AI/ML Engineer"),
+        SelectableItem(name: "Game Developer"),
 
-        SelectableItem(name: "#Database"),
-        SelectableItem(name: "#System Administrator"),
-        SelectableItem(name: "#Security Engineer"),
+        SelectableItem(name: "Database"),
+        SelectableItem(name: "System Administrator"),
+        SelectableItem(name: "Security Engineer"),
         
-        SelectableItem(name: "#Product Manager"),
-        SelectableItem(name: "#CEO"),
-        SelectableItem(name: "#Chairman"),
+        SelectableItem(name: "Product Manager"),
+        SelectableItem(name: "CEO"),
+        SelectableItem(name: "Chairman"),
  
-        SelectableItem(name: "#Data Scientist/Engineer"),
+        SelectableItem(name: "Data Scientist/Engineer"),
     ]
     
     func getSelectedItems ( ) -> String
     {
         let selectedItems = items
                 .filter { $0.isSelected }
-                .map { String($0.name.dropFirst()) } // Convert Substring to String
+                .map { String($0.name) } // Convert Substring to String
                 .joined(separator: ", ") // Removed extra space before the comma
 
             return selectedItems.isEmpty ? "No Item Selected" : selectedItems
@@ -264,17 +264,17 @@ struct ItemView: View {
     @EnvironmentObject private var themeManager : ThemeManager
     var body: some View {
         Text(item.name)
-            .fontWeight(item.isSelected ? .semibold : .regular)
+//            .fontWeight(item.isSelected ? .semibold : .regular)
             .font( .system(size: 14))
-            .foregroundColor(item.isSelected ? ( themeManager.currentTheme.id == "light" ?  .white : .black ) : ( themeManager.currentTheme.id == "light" ?  .black : .white ) )
+//            .foregroundColor(item.isSelected ? ( themeManager.currentTheme.id == "light" ?  .white : .black ) : ( themeManager.currentTheme.id == "light" ?  .black : .white ) )
             .padding(.vertical, 10)
             .padding(.horizontal)
            
             .cornerRadius(10) // Apply a corner radius of 10 instead of Capsule
             .frame(width: 140)
-            .background(item.isSelected ? themeManager.currentTheme.buttonColor : Color.gray.opacity(0.04))
+            .background(item.isSelected ? themeManager.currentTheme.buttonColor.opacity(0.1) : Color.gray.opacity(0.04))
             .cornerRadius(10) // Apply a corner radius of 10 instead of Capsule
-            .overlay(item.isSelected ?  RoundedRectangle(cornerRadius: 10).stroke(themeManager.currentTheme.buttonColor, lineWidth: 1) : RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1)) // Use a rounded rectangle for the border
+            .overlay(item.isSelected ?  RoundedRectangle(cornerRadius: 10).stroke(themeManager.currentTheme.buttonColor.opacity(0.4) , lineWidth: 1) : RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1)) // Use a rounded rectangle for the border
           
             .frame(width: 140).lineLimit(1)
                         .id(item.name)

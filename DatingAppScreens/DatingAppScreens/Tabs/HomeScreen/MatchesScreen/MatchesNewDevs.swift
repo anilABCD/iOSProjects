@@ -26,8 +26,10 @@ struct MatchesNewDevsView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     @EnvironmentObject private var themeManager : ThemeManager
     
+   
     let buttonClickDelay : Double = 0.5 ;
     
+   
     init(){
         
     }
@@ -476,6 +478,8 @@ struct  MatchesNewDevsView_Previews: PreviewProvider {
        
     static var previews: some View {
         MatchesNewDevsView().environmentObject(TokenManager()).environmentObject(ThemeManager())
+        
+//        HobbiesCardView(hobbies: ["asdf","dfddf"])
     }
 }
 
@@ -570,6 +574,10 @@ struct SwipeableView: View {
     @State private var isHidden: Bool = false
     @EnvironmentObject private var tokenManger : TokenManager
     @State private var initialDragPosition: CGPoint = .zero
+    
+    var sizeTextInCard = 15.0
+    
+    
     var body: some View {
         
         VStack {
@@ -680,19 +688,19 @@ struct SwipeableView: View {
                     }
                     
                   
-                    BioCardView(bio: item.bio ?? "" )
+                    BioCardView(bio: item.bio ?? "" , sizeTextInCard: sizeTextInCard )
                     
-                    AgeCardView(dob: item.dob  )
+                    AgeCardView(dob: item.dob )
                     
-                    TechnologiesCardView(technologies: item.technologies ?? [])
+                    TechnologiesCardView(technologies: item.technologies ?? [] , sizeTextInCard: sizeTextInCard )
                     
-                    JobRoleCardView(jobRole: item.jobRole ?? "")
+                    JobRoleCardView(jobRole: item.jobRole ?? "" , sizeTextInCard: sizeTextInCard )
                     
-                    HobbiesCardView(hobbies: item.hobbies ?? [])
+                    HobbiesCardView(hobbies: item.hobbies ?? [] , sizeTextInCard: sizeTextInCard )
                     
-                    SmokingCardView(smoking: item.smoking ?? "" )
+                    SmokingCardView(smoking: item.smoking ?? "" , sizeTextInCard: sizeTextInCard )
                     
-                    DrinkingCardView(drinking: item.drinking ?? "" )
+                    DrinkingCardView(drinking: item.drinking ?? "" , sizeTextInCard: sizeTextInCard )
                     
 //                    Text("Profile Bio:")
 //                        .frame(maxWidth: .infinity, alignment: .leading)
@@ -800,6 +808,7 @@ struct SwipeableView: View {
 
 struct AgeCardView: View {
     var dob: Date?
+    @EnvironmentObject var themeManager : ThemeManager
     
     var age: String {
             guard let dob = dob else { return "N/A" } // Handle nil case
@@ -815,31 +824,32 @@ struct AgeCardView: View {
                 Text("Age")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text("\(age) years")
                     .font(.system(size: 40, weight: .bold))
-                    .foregroundColor(Color.white.opacity(0.85))
+                    .foregroundColor( themeManager.currentTheme.subTextColor)
                     .padding(.horizontal, 10)
                     .padding(.bottom, 10)
             }
-            .padding(8)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
-            )
+            .cardStyle()
+//            .padding(8)
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 14)
+//                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//            )
         }
         .padding(.horizontal, 25)
     }
@@ -850,6 +860,10 @@ struct AgeCardView: View {
 struct BioCardView: View {
     var bio: String = ""
     
+    @EnvironmentObject var themeManager : ThemeManager
+    
+    var sizeTextInCard = 30.0
+    
     var body: some View {
         
         VStack {
@@ -857,39 +871,45 @@ struct BioCardView: View {
                 Text("About Me")
                                .font(.headline)
                                .fontWeight(.bold)
-                               .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                               .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                                .padding(.horizontal, 10)
                                .padding(.top, 10)
                                .frame(maxWidth: .infinity, alignment: .leading)
                            
                            Text(bio)
                                .font(.subheadline)
-                               .foregroundColor(Color.white.opacity(0.85))
+                               .foregroundColor( themeManager.currentTheme.subTextColor)
                                .lineLimit(nil)
                                .padding(.horizontal, 10)
                                .padding(.bottom, 10)
             }
             .padding(8) // Reduce padding
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 14)
-                            .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                    )
+            .cardStyle()
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//                    .overlay(
+//                        RoundedRectangle(cornerRadius: 14)
+//                            .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//                    )
         }.padding(.horizontal, 25)
+           
     }
     
 }
 
 struct TechnologiesCardView: View {
     var technologies: [String] = ["Swift", "UI/UX Design", "Cloud Computing", "SwiftUI", "iOS Development", "React", "Machine Learning", "DevOps", "Xcode", "Firebase"]
+   
+    var sizeTextInCard = 30.0
+    
+    @EnvironmentObject var themeManager : ThemeManager
     
     let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -902,58 +922,51 @@ struct TechnologiesCardView: View {
                 Text("Technologies")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.white.opacity(0.9))
+                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                LazyVGrid(columns: columns, spacing: 15) {
-                    ForEach(technologies, id: \.self) { tech in
-                        Text(tech.dropFirst())
-                            .font(.subheadline)
-                            
-                            .foregroundColor(.black)
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 15)
-                            .background(.white)
-//                            .background(
-//                                LinearGradient(
-//                                    gradient: Gradient(colors: [Color.black, Color.black]),
-//                                    startPoint: .topLeading,
-//                                    endPoint: .bottomTrailing
-//                                )
-//                            )
-                            .cornerRadius(12)
-                            .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                            )
-                    }
-                }
+                
+                
+//                LazyVGrid(columns: columns, spacing: 15) {
+//                    ForEach(technologies, id: \.self) { tech in
+                Text(technologies.joined(separator: ", ")).lineLimit(nil) // Allows unlimited lines
+                
+                            .font(.system(size: sizeTextInCard))
+                            .foregroundColor( themeManager.currentTheme.subTextColor)
+                            .padding(.horizontal, 10)
+                            .padding(.bottom, 10)
+//                    }
+//                }
                 .padding(.horizontal, 10).padding(.vertical, 10)
             }
+            .cardStyle()
             
-            .padding(8) // Reduce padding
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
-            )
+//            .padding(8) // Reduce padding
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 14)
+//                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//            )
         }.padding(.horizontal, 25)
     }
 }
 
 struct HobbiesCardView: View {
     var hobbies: [String] = []
+    
+    var sizeTextInCard = 30.0
+    
+    @EnvironmentObject var themeManager : ThemeManager
     
     let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -966,57 +979,46 @@ struct HobbiesCardView: View {
                 Text("Hobbies")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.white.opacity(0.9))
+                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                LazyVGrid(columns: columns, spacing: 15) {
-                    ForEach(hobbies, id: \.self) { hobby in
-                        Text(hobby.dropFirst())
-                            .font(.subheadline)
-                            .foregroundColor(.black)
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 15)
-                            .background(.white)
-//                            .background(
-//                                LinearGradient(
-//                                    gradient: Gradient(colors: [Color.green, Color.blue]),
-//                                    startPoint: .topLeading,
-//                                    endPoint: .bottomTrailing
-//                                )
-//                            )
-                            .cornerRadius(12)
-                            .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                            )
-                    }
-                }
+//                LazyVGrid(columns: columns, spacing: 15) {
+//                    ForEach(hobbies, id: \.self) { hobby in
+                Text(hobbies.joined(separator: ", ")).lineLimit(nil) // Allows unlimited lines
+                            .font(.system(size: sizeTextInCard))
+                            .foregroundColor( themeManager.currentTheme.subTextColor )
+                            .padding(.horizontal, 10)
+                            .padding(.bottom, 10)
+//                    }
+//                }
                 .padding(.horizontal, 10).padding(.vertical, 10)
             }
+            .cardStyle()
             
-            .padding(8)
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
-            )
+//            .padding(8)
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 14)
+//                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//            )
         }.padding(.horizontal, 25)
     }
 }
 
 struct SmokingCardView: View {
     var smoking: String = ""
+    var sizeTextInCard = 30.0
+    @EnvironmentObject var themeManager : ThemeManager
     
     var body: some View {
         VStack {
@@ -1024,46 +1026,37 @@ struct SmokingCardView: View {
                 Text("Smoking")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack {
                     
-                    Spacer()
-                    
                     Text(smoking.isEmpty ? "Not Specified" : smoking)
-                        .font(.subheadline)
-                        .foregroundColor(.black)
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 15)
-                        .background(.white)
-//                        .background(getGradient(for: smoking)) // Dynamic background
-                        .cornerRadius(12)
-                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                        )
+                        .font(.system(size: sizeTextInCard))
+                        .foregroundColor( themeManager.currentTheme.subTextColor )
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, 10)
                     
                     Spacer()
                 }.padding(.vertical, 10)
             }
-            .padding(8) // Reduce padding
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
-            )
+            .cardStyle()
+//            .padding(8) // Reduce padding
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 14)
+//                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//            )
         }.padding(.horizontal, 25)
     }
     
@@ -1106,6 +1099,8 @@ struct SmokingCardView: View {
 
 struct DrinkingCardView: View {
     var drinking: String = ""
+    var sizeTextInCard = 30.0
+    @EnvironmentObject var themeManager : ThemeManager
     
     var body: some View {
         VStack {
@@ -1113,45 +1108,35 @@ struct DrinkingCardView: View {
                 Text("Drinking")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.white.opacity(0.9)) // Modern white tint
+                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack {
-                    Spacer()
-               
+                  
                 Text(drinking.isEmpty ? "Not Specified" : drinking)
-                    .font(.subheadline)
-                    .foregroundColor(.black)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 15)
-                    .background(.white)
-//                    .background(getGradient(for: drinking)) // Dynamic background
-                    .cornerRadius(12)
-                    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                    )
-                    
+                        .font(.system(size: sizeTextInCard))
+                        .foregroundColor( themeManager.currentTheme.subTextColor )
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, 10)
                     Spacer()
                 }.padding(.vertical, 10)
-            }
-            .padding(8) // Reduce padding
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
-            )
+            }.cardStyle()
+//            .padding(8) // Reduce padding
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 14)
+//                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//            )
         }.padding(.horizontal, 25)
     }
     
@@ -1195,6 +1180,10 @@ struct DrinkingCardView: View {
 
 struct JobRoleCardView: View {
     var jobRole: String = ""
+    var sizeTextInCard = 30.0
+    
+    @EnvironmentObject var themeManager : ThemeManager
+    
 
     var body: some View {
         VStack {
@@ -1202,47 +1191,38 @@ struct JobRoleCardView: View {
                 Text("Job Role")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.white.opacity(0.9))
+                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 
                 HStack {
-                    
-                    Spacer()
-                    
+               
                     Text(jobRole.isEmpty ? "Not Specified" : jobRole)
-                        .font(.subheadline)
-                        .foregroundColor(.black)
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 15)
-                        .background(.white)
-//                        .background(getGradient(for: jobRole)) // Dynamic gradient based on job level
-                        .cornerRadius(12)
-                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                        )
-                    
+                        .font(.system(size: sizeTextInCard))
+                        .foregroundColor( themeManager.currentTheme.subTextColor )
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, 10)
+                        .padding(.horizontal, 10).padding(.vertical, 10)
                     Spacer()
                 }
             }
-            .padding(8) // Reduce padding
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
-            )
+            .cardStyle()
+//            .padding(8) // Reduce padding
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 14)
+//                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//            )
         }.padding(.horizontal, 25)
     }
 

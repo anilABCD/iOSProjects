@@ -29,18 +29,18 @@ struct UpdateHobbiesView: View {
     
   
     @State var items: [SelectableItem] = [
-        SelectableItem(name: "#Reading"),
-        SelectableItem(name: "#Traveling"),
-        SelectableItem(name: "#Cooking"),
-        SelectableItem(name: "#Sports"),
-        SelectableItem(name: "#Movies"),
-        SelectableItem(name: "#Music"),
-        SelectableItem(name: "#Dancing"),
-        SelectableItem(name: "#Gaming"),
-        SelectableItem(name: "#Hiking"),
-        SelectableItem(name: "#Photography"),
-        SelectableItem(name: "#Painting"),
-        SelectableItem(name: "#Writing")
+        SelectableItem(name: "Reading"),
+        SelectableItem(name: "Traveling"),
+        SelectableItem(name: "Cooking"),
+        SelectableItem(name: "Sports"),
+        SelectableItem(name: "Movies"),
+        SelectableItem(name: "Music"),
+        SelectableItem(name: "Dancing"),
+        SelectableItem(name: "Gaming"),
+        SelectableItem(name: "Hiking"),
+        SelectableItem(name: "Photography"),
+        SelectableItem(name: "Painting"),
+        SelectableItem(name: "Writing")
     ]
     
     
@@ -56,7 +56,7 @@ struct UpdateHobbiesView: View {
     {
         let selectedItems = items
                 .filter { $0.isSelected }
-                .map { String($0.name.dropFirst()) } // Convert Substring to String
+                .map { String($0.name) } // Convert Substring to String
                 .joined(separator: ", ") // Removed extra space before the comma
 
             return selectedItems.isEmpty ? "No Item Selected" : selectedItems
@@ -251,6 +251,6 @@ struct UpdateHobbiesView_Previews: PreviewProvider {
     var showNextButton : Bool = false ;
     
     static var previews: some View {
-        UpdateHobbiesView( showNextButton : true ).environmentObject(TokenManager())
+        UpdateHobbiesView( showNextButton : true ).environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
