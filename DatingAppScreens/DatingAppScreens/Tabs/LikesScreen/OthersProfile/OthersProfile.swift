@@ -11,7 +11,11 @@ import SwiftUI
 struct OthersProfileView: View {
     let profile: Profile?
     let photoUrl : String
-
+    
+    let sizeTextInCard = 15.0;
+    
+    @EnvironmentObject var themeManager : ThemeManager
+    
     var body: some View {
         ScrollView {
             if let photoURLString = profile?.photo, let url = URL(string: "\(photoUrl)/\(photoURLString)") {
@@ -25,13 +29,13 @@ struct OthersProfileView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 400, height: 300)
-                            .clipShape(Circle())
+//                            .clipShape(Circle())
                     case .failure:
-                        Image(systemName: "person.crop.circle.badge.exclamationmark")
+                        Image(systemName: "person.crop.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 400, height: 300)
-                            .clipShape(Circle())
+//                            .clipShape(Circle())
                     @unknown default:
                         EmptyView()
                     }
@@ -47,13 +51,16 @@ struct OthersProfileView: View {
             Text(profile?.name ?? "Unknown")
                 .font(.largeTitle)
                 .padding()
+                .foregroundColor( themeManager.currentTheme.navigationLinkColor )
+                
 
-            BioCardView(bio: profile?.bio ?? "")
-            JobRoleCardView(jobRole: profile?.jobRole ?? "")
-            TechnologiesCardView(technologies: profile?.technologies ?? [])
-            HobbiesCardView(hobbies: profile?.hobbies ?? [])
-            SmokingCardView(smoking: profile?.smoking ?? "")
-            DrinkingCardView(drinking: profile?.drinking ?? "" )
+            BioCardView(bio: profile?.bio ?? "" ,sizeTextInCard: sizeTextInCard )
+            AgeCardView(dob: profile?.dob )
+            JobRoleCardView(jobRole: profile?.jobRole ?? "", sizeTextInCard: sizeTextInCard )
+            TechnologiesCardView(technologies: profile?.technologies ?? [], sizeTextInCard: sizeTextInCard )
+            HobbiesCardView(hobbies: profile?.hobbies ?? [], sizeTextInCard: sizeTextInCard )
+            SmokingCardView(smoking: profile?.smoking ?? "", sizeTextInCard: sizeTextInCard )
+            DrinkingCardView(drinking: profile?.drinking ?? "" , sizeTextInCard: sizeTextInCard )
 
             Spacer()
             
@@ -61,7 +68,7 @@ struct OthersProfileView: View {
             Color.clear
                 .frame(height: 120) // This will push the content up and allow scrolling
         }
-        .navigationTitle("Profile")
-        .padding()
+            .navigationBarTitle("Profile" , displayMode: .inline)
+        .padding().background(themeManager.currentTheme.backgroundColor)
     }
 }

@@ -109,7 +109,7 @@ struct LikeItemView: View {
                                            .frame(width: 50, height: 50)
                                            .clipShape(Circle())
                                    case .failure:
-                                       Image(systemName: "person.crop.circle.badge.exclamationmark")
+                                       Image(systemName: "person.crop.circle")
                                            .resizable()
                                            .aspectRatio(contentMode: .fill)
                                            .frame(width: 50, height: 50)

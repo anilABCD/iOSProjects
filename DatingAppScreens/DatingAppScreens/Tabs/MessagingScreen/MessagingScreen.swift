@@ -55,7 +55,7 @@ struct CustomBackButton: View {
                                         .frame(width: imageSize, height: imageSize)
                                         .clipShape(Circle())
                                 case .failure:
-                                    Image(systemName: "person.crop.circle.badge.exclamationmark")
+                                    Image(systemName: "person.crop.circle")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: imageSize, height: imageSize )
