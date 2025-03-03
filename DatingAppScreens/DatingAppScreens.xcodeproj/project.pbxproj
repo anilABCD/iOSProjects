@@ -23,6 +23,8 @@
 		B7434CF22D63D49700C190AB /* UpdateSmokingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */; };
 		B74484CD2D3F6E6500FC4119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */; };
 		B7453FCC8150D871474A0CFE /* libPods-DatingAppScreensTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24CE1DBB042EB1905708F0EA /* libPods-DatingAppScreensTests.a */; };
+		B749C1A32D7554E80060F2FB /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B749C1A22D7554E80060F2FB /* ToastView.swift */; };
+		B749C1A62D7555580060F2FB /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B749C1A52D7555580060F2FB /* ToastManager.swift */; };
 		B74C179B2D6AA80100A334C7 /* UpdateGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74C179A2D6AA7F900A334C7 /* UpdateGenderView.swift */; };
 		B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74E89A92C197E1B005DD13C /* LoginSocialView.swift */; };
 		B750772F2D4FA98C00EC676D /* UploadYourAdditionalPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */; };
@@ -32,6 +34,7 @@
 		B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76039242BF0F8A90088DFB7 /* HomeView.swift */; };
 		B76620002C107B1100C3D548 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661FFF2C107B1100C3D548 /* LocationManager.swift */; };
 		B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B90852C153B1100BA7B5D /* GlobalConstants.swift */; };
+		B76F8C8B2D7462B8000584A2 /* MultiSelectPicker 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F8C8A2D7462B8000584A2 /* MultiSelectPicker 2.swift */; };
 		B77156C82D63E74200947058 /* UpdateDrinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77156C72D63E73700947058 /* UpdateDrinkingView.swift */; };
 		B77156CA2D63F49500947058 /* UpdateJobRole2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77156C92D63F48D00947058 /* UpdateJobRole2View.swift */; };
 		B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772800C2C19BBA100446085 /* UserSettingsScreen.swift */; };
@@ -70,6 +73,9 @@
 		B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */; };
 		B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */; };
 		B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */; };
+		B7F432962D742E9000122E5A /* MultiSelectPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F432952D742E9000122E5A /* MultiSelectPicker.swift */; };
+		B7F432982D742F7B00122E5A /* AnimationExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F432972D742F7B00122E5A /* AnimationExamples.swift */; };
+		B7F4329A2D74330200122E5A /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F432992D74330200122E5A /* SideMenuView.swift */; };
 		B7F4CE792D1BB43700F92EDB /* UpdateJobRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4CE782D1BB42E00F92EDB /* UpdateJobRoleView.swift */; };
 		E5CA8AD73DE041FE49A82380 /* libPods-DatingAppScreensUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7021EAA07A9892220AE73256 /* libPods-DatingAppScreensUITests.a */; };
 /* End PBXBuildFile section */
@@ -111,6 +117,8 @@
 		B73C5B662D2B002E0030F136 /* DateUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		B7434CF12D63D48D00C190AB /* UpdateSmokingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSmokingView.swift; sourceTree = "<group>"; };
 		B74484CC2D3F6E6200FC4119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B749C1A22D7554E80060F2FB /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		B749C1A52D7555580060F2FB /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
 		B74C179A2D6AA7F900A334C7 /* UpdateGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGenderView.swift; sourceTree = "<group>"; };
 		B74E89A92C197E1B005DD13C /* LoginSocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialView.swift; sourceTree = "<group>"; };
 		B750772E2D4FA97E00EC676D /* UploadYourAdditionalPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadYourAdditionalPhotos.swift; sourceTree = "<group>"; };
@@ -120,6 +128,7 @@
 		B76039242BF0F8A90088DFB7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B7661FFF2C107B1100C3D548 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B76B90852C153B1100BA7B5D /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
+		B76F8C8A2D7462B8000584A2 /* MultiSelectPicker 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultiSelectPicker 2.swift"; sourceTree = "<group>"; };
 		B77156C72D63E73700947058 /* UpdateDrinkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDrinkingView.swift; sourceTree = "<group>"; };
 		B77156C92D63F48D00947058 /* UpdateJobRole2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateJobRole2View.swift; sourceTree = "<group>"; };
 		B772800C2C19BBA100446085 /* UserSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsScreen.swift; sourceTree = "<group>"; };
@@ -162,6 +171,9 @@
 		B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingExample.swift; sourceTree = "<group>"; };
 		B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesScreen.swift; sourceTree = "<group>"; };
 		B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesModel.swift; sourceTree = "<group>"; };
+		B7F432952D742E9000122E5A /* MultiSelectPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelectPicker.swift; sourceTree = "<group>"; };
+		B7F432972D742F7B00122E5A /* AnimationExamples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationExamples.swift; sourceTree = "<group>"; };
+		B7F432992D74330200122E5A /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 		B7F4CE782D1BB42E00F92EDB /* UpdateJobRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateJobRoleView.swift; sourceTree = "<group>"; };
 		BFD6BC4A1445D851D192D506 /* Pods-DatingAppScreensTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.release.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.release.xcconfig"; sourceTree = "<group>"; };
 		C12E0A146B4AA9C68BB0BB0D /* Pods-DatingAppScreensTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingAppScreensTests.debug.xcconfig"; path = "Target Support Files/Pods-DatingAppScreensTests/Pods-DatingAppScreensTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -246,6 +258,15 @@
 			path = AppDelegate;
 			sourceTree = "<group>";
 		};
+		B749C1A42D7555500060F2FB /* ToastView */ = {
+			isa = PBXGroup;
+			children = (
+				B749C1A52D7555580060F2FB /* ToastManager.swift */,
+				B749C1A22D7554E80060F2FB /* ToastView.swift */,
+			);
+			path = ToastView;
+			sourceTree = "<group>";
+		};
 		B76B90812C1538D100BA7B5D /* LoginView */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +282,15 @@
 				B76B90852C153B1100BA7B5D /* GlobalConstants.swift */,
 			);
 			path = GlobalConstants;
+			sourceTree = "<group>";
+		};
+		B76F8C892D7462AD000584A2 /* Multiselect */ = {
+			isa = PBXGroup;
+			children = (
+				B76F8C8A2D7462B8000584A2 /* MultiSelectPicker 2.swift */,
+				B7F432952D742E9000122E5A /* MultiSelectPicker.swift */,
+			);
+			path = Multiselect;
 			sourceTree = "<group>";
 		};
 		B772800B2C19BB8700446085 /* UserSettingsScreen */ = {
@@ -434,6 +464,10 @@
 		B7E2A8392C17017C008ADE0E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B749C1A42D7555500060F2FB /* ToastView */,
+				B76F8C892D7462AD000584A2 /* Multiselect */,
+				B7F432992D74330200122E5A /* SideMenuView.swift */,
+				B7F432972D742F7B00122E5A /* AnimationExamples.swift */,
 				B7CDA99F2D734DAB00B0A327 /* CardStyle.swift */,
 				B7E93D792D62635B00259177 /* SingleSelectPopUpChipSelectionSheet.swift */,
 				B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */,
@@ -743,6 +777,7 @@
 			files = (
 				B7E93D7A2D62635B00259177 /* SingleSelectPopUpChipSelectionSheet.swift in Sources */,
 				B784EDF22C19ECD000FF97C3 /* UpdateHobbiesView.swift in Sources */,
+				B749C1A32D7554E80060F2FB /* ToastView.swift in Sources */,
 				B77A36F42BF863D00051ACF1 /* RegisterView.swift in Sources */,
 				7CEA45602C42645C00524FB3 /* MatchedModel.swift in Sources */,
 				B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */,
@@ -752,8 +787,11 @@
 				B772800D2C19BBA100446085 /* UserSettingsScreen.swift in Sources */,
 				B76620002C107B1100C3D548 /* LocationManager.swift in Sources */,
 				B75F69B12C1B4AD90099E112 /* UpdateDOBView.swift in Sources */,
+				B7F432982D742F7B00122E5A /* AnimationExamples.swift in Sources */,
 				B7DB2C392D19A97A000DF909 /* UpdateDescribeYourself.swift in Sources */,
+				B76F8C8B2D7462B8000584A2 /* MultiSelectPicker 2.swift in Sources */,
 				B77156CA2D63F49500947058 /* UpdateJobRole2View.swift in Sources */,
+				B7F432962D742E9000122E5A /* MultiSelectPicker.swift in Sources */,
 				B772800F2C19D62200446085 /* Utils.swift in Sources */,
 				B71753732D4B4B2B00834FD3 /* UnreadChatCountResponse.swift in Sources */,
 				B7C523742D5AD744002412E6 /* ThemedTextModifier.swift in Sources */,
@@ -776,11 +814,13 @@
 				B79D44D02BEF1F2B00F0AA8B /* DatingAppScreensApp.swift in Sources */,
 				B750772F2D4FA98C00EC676D /* UploadYourAdditionalPhotos.swift in Sources */,
 				B74E89AA2C197E1B005DD13C /* LoginSocialView.swift in Sources */,
+				B749C1A62D7555580060F2FB /* ToastManager.swift in Sources */,
 				B717AAAC2D3032FD007BA6B0 /* UIImageExtension.swift in Sources */,
 				B7103F562D279D290044F414 /* PersistentCacheManager.swift in Sources */,
 				B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */,
 				B7B78C2B2D5B63EA00651770 /* ThemedTextButtonModifier.swift in Sources */,
 				B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */,
+				B7F4329A2D74330200122E5A /* SideMenuView.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
 				B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */,
 				B7434CF22D63D49700C190AB /* UpdateSmokingView.swift in Sources */,

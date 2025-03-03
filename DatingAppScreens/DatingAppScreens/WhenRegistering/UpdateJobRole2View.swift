@@ -30,7 +30,7 @@ struct UpdateJobRole2View: View {
     @EnvironmentObject private var tokenManger : TokenManager
     
     @EnvironmentObject private var themeManager : ThemeManager
-  
+   
     @Environment(\.presentationMode) var presentationMode
    
     @State var isFristTimeUpdatingJobRole = false;
@@ -48,8 +48,7 @@ struct UpdateJobRole2View: View {
         GridItem(.flexible()),
 
     ]
-    
-
+  
     
     @State var items: [SelectableItem] = jobRoles.map { SelectableItem(name: $0) }
     

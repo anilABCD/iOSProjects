@@ -9,7 +9,8 @@ struct UpdateHobbiesView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     
     @EnvironmentObject private var themeManager : ThemeManager
-    
+    @StateObject var toastManager = ToastManager() // Global Toast Manager
+
     @Environment(\.presentationMode) var presentationMode
     @State var isFirstTimeUpdatingProfile = false;
     
@@ -46,11 +47,27 @@ struct UpdateHobbiesView: View {
     
     @State var status: String? = nil
     
+    var selectedItems: [SelectableItem] {
+          items.filter { $0.isSelected }
+      }
+
+    
     func toggleSelection(for item: SelectableItem) {
+        
+        if( item.isSelected == false) {
+            if selectedItems.count == 5 {
+                toastManager.showToast(message: "You can select up to 5 items only!")
+                return;
+            }
+        }
+        
+        
+        
         if let index = items.firstIndex(where: { $0.id == item.id }) {
             items[index].isSelected.toggle()
         }
     }
+    
     
     func getSelectedItems ( ) -> String
     {
@@ -150,20 +167,49 @@ struct UpdateHobbiesView: View {
              
                
             }
+            
            
-            HStack {
-             
-                
-                Text("\(getSelectedItems())").lineLimit(1).foregroundColor( themeManager.currentTheme.id == "light" ? .black.opacity(0.8) :  .white)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding().background(themeManager.currentTheme.secondaryColor.opacity(0.1))
-                    .cornerRadius(10)
-                    .padding(.horizontal, 30)
-                    .padding(.bottom , 10)
-                
-                
-                Spacer()
-            }
+//            HStack {
+//             
+//                
+//                Text("\(getSelectedItems())").lineLimit(1).foregroundColor( themeManager.currentTheme.id == "light" ? .black.opacity(0.8) :  .white)
+//                    .frame(maxWidth: .infinity, alignment: .leading)
+//                    .padding().background(themeManager.currentTheme.secondaryColor.opacity(0.1))
+//                    .cornerRadius(10)
+//                    .padding(.horizontal, 30)
+//                    .padding(.bottom , 10)
+//                
+//                
+//                Spacer()
+//            }
+//
+            
+            LazyVGrid(columns: columns, spacing: 10) {
+                   ForEach(items.indices, id: \.self) { index in
+                       if items[index].isSelected {
+                           HStack {
+                               Text(items[index].name)
+                                   .lineLimit(1)
+                                   .foregroundColor(themeManager.currentTheme.id == "light" ? .black.opacity(0.8) : .white)
+
+                               Spacer()
+
+                               Button(action: {
+                                   items[index].isSelected = false
+                               }) {
+                                   Image(systemName: "xmark.circle.fill")
+                                       .foregroundColor(.red)
+                               }
+                           }
+                           .padding()
+                           .frame(maxWidth: .infinity, alignment: .leading)
+                           .background(themeManager.currentTheme.secondaryColor.opacity(0.1))
+                           .cornerRadius(10)
+                       }
+                   }
+               }
+               .padding(.horizontal, 30)
+               .padding(.bottom, 10)
             
             ScrollView {
 //                
@@ -243,6 +289,16 @@ struct UpdateHobbiesView: View {
                     .padding()
             }
         }.padding(.bottom, showNextButton ? 0 : 110).navigationBarTitle("", displayMode: .inline).background( themeManager.currentTheme.backgroundColor )
+            .overlay(
+            VStack {
+                if toastManager.isShowing {
+                    ToastView(message: toastManager.message)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                        .animation(.easeInOut(duration: 0.3), value: toastManager.isShowing)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        )
     }
 }
 
