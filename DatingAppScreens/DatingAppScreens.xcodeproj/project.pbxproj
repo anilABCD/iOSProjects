@@ -33,6 +33,7 @@
 		B75F69B12C1B4AD90099E112 /* UpdateDOBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75F69B02C1B4AD90099E112 /* UpdateDOBView.swift */; };
 		B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76039242BF0F8A90088DFB7 /* HomeView.swift */; };
 		B76620002C107B1100C3D548 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661FFF2C107B1100C3D548 /* LocationManager.swift */; };
+		B7678AEC2D75FF9E002BDBF4 /* HeightScaleControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7678AEB2D75FF9E002BDBF4 /* HeightScaleControl.swift */; };
 		B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B90852C153B1100BA7B5D /* GlobalConstants.swift */; };
 		B76F8C8B2D7462B8000584A2 /* MultiSelectPicker 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F8C8A2D7462B8000584A2 /* MultiSelectPicker 2.swift */; };
 		B77156C82D63E74200947058 /* UpdateDrinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77156C72D63E73700947058 /* UpdateDrinkingView.swift */; };
@@ -127,6 +128,7 @@
 		B75F69B02C1B4AD90099E112 /* UpdateDOBView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDOBView.swift; sourceTree = "<group>"; };
 		B76039242BF0F8A90088DFB7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B7661FFF2C107B1100C3D548 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		B7678AEB2D75FF9E002BDBF4 /* HeightScaleControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightScaleControl.swift; sourceTree = "<group>"; };
 		B76B90852C153B1100BA7B5D /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		B76F8C8A2D7462B8000584A2 /* MultiSelectPicker 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultiSelectPicker 2.swift"; sourceTree = "<group>"; };
 		B77156C72D63E73700947058 /* UpdateDrinkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDrinkingView.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 		B7E2A8392C17017C008ADE0E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B7678AEB2D75FF9E002BDBF4 /* HeightScaleControl.swift */,
 				B749C1A42D7555500060F2FB /* ToastView */,
 				B76F8C892D7462AD000584A2 /* Multiselect */,
 				B7F432992D74330200122E5A /* SideMenuView.swift */,
@@ -796,6 +799,7 @@
 				B71753732D4B4B2B00834FD3 /* UnreadChatCountResponse.swift in Sources */,
 				B7C523742D5AD744002412E6 /* ThemedTextModifier.swift in Sources */,
 				B7C5236E2D5ACA38002412E6 /* Themes.swift in Sources */,
+				B7678AEC2D75FF9E002BDBF4 /* HeightScaleControl.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
 				B7CDA9A02D734DAB00B0A327 /* CardStyle.swift in Sources */,
