@@ -269,6 +269,14 @@
 			path = ToastView;
 			sourceTree = "<group>";
 		};
+		B7678AED2D7606CC002BDBF4 /* HeightScaleControls */ = {
+			isa = PBXGroup;
+			children = (
+				B7678AEB2D75FF9E002BDBF4 /* HeightScaleControl.swift */,
+			);
+			path = HeightScaleControls;
+			sourceTree = "<group>";
+		};
 		B76B90812C1538D100BA7B5D /* LoginView */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,7 +474,7 @@
 		B7E2A8392C17017C008ADE0E /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				B7678AEB2D75FF9E002BDBF4 /* HeightScaleControl.swift */,
+				B7678AED2D7606CC002BDBF4 /* HeightScaleControls */,
 				B749C1A42D7555500060F2FB /* ToastView */,
 				B76F8C892D7462AD000584A2 /* Multiselect */,
 				B7F432992D74330200122E5A /* SideMenuView.swift */,
