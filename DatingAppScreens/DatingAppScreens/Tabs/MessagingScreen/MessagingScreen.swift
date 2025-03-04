@@ -95,7 +95,8 @@ struct ChatView: View {
     
     @EnvironmentObject private var tokenManager : TokenManager
     
-
+    @EnvironmentObject private var themeManager : ThemeManager
+    
     let profile: Profile?
     let photoUrl : String
     var onBackAction: () -> Void
@@ -465,8 +466,29 @@ struct ChatView: View {
             }
         }
     }
+    
+    func sectionHeaderYear(for year: String) -> some View {
+        Text(removeNumberInParentheses(from: year))
+            .font(.largeTitle)
+            .foregroundColor(themeManager.currentTheme.textColor)
+    }
 
-  
+    
+    func sectionHeaderMonth(for month: String) -> some View {
+        Text(removeNumberInParenthesesFromMonth(from: month))
+            .font(.largeTitle)
+            .foregroundColor(themeManager.currentTheme.textColor)
+    }
+
+    
+    func sectionHeaderWeekday(for weekday: String) -> some View {
+        Text(removeNumberInParentheses(from : weekday))
+            .font(.largeTitle)
+            .foregroundColor(themeManager.currentTheme.textColor)
+    }
+   
+    
+    
     var body: some View {
        
         NavigationView {
@@ -482,20 +504,24 @@ struct ChatView: View {
                             Text(error)
                                 .foregroundColor(.red)
                         } else {
+                            
+                            
                             ScrollViewReader { proxy in
                                 List {
                                            // Iterate through Year groups
                                            ForEach(groupedMessages.keys.sorted(by: >), id: \.self) { year in
                                                
                                                VStack {
-                                                   Section(header: Text(removeNumberInParentheses(from : year)).font(.largeTitle)) {
+                                                   Section(header:
+                                                            sectionHeaderYear(for: year)
+                                                       ) {
                                                        // Iterate through Month groups
                                                        ForEach(groupedMessages[year]?.keys.sorted() ?? [], id: \.self) { month in
                                                            VStack {
-                                                               Section(header: Text(removeNumberInParenthesesFromMonth(from : month)).font(.title2)) {
+                                                               Section(header:sectionHeaderMonth( for: month )) {
                                                                    // Iterate through Weekday groups
                                                                    ForEach(groupedMessages[year]?[month]?.keys.sorted() ?? [], id: \.self) { weekday in
-                                                                       Section(header: Text(removeNumberInParentheses(from : weekday)).font(.headline)) {
+                                                                       Section(header: sectionHeaderWeekday( for : weekday )) {
                                                                            // Safely unwrap and reverse messages
                                                                            if let messages = groupedMessages[year]?[month]?[weekday] {
                                                                                ForEach(messages.reversed(), id: \.id) { message in
@@ -559,6 +585,7 @@ struct ChatView: View {
                                                                                                            .padding()
                                                                                                            .background(Color.blue.opacity(0.2))
                                                                                                            .cornerRadius(10)
+                                                                                                           .foregroundColor(themeManager.currentTheme.textColor)
                                                                                                    }
 //                                                                                                   
                                                                                                  
@@ -573,13 +600,14 @@ struct ChatView: View {
                                                                                                    Text( messageStatus(otherUserId: profile?.id ?? "" , message: message) )
                                                                                                        .font(.caption2)
                                                                                                        .foregroundColor(message.isRead(by: profile?.id ?? "") ? .blue : .gray)
-
+                                                                                                       .foregroundColor(themeManager.currentTheme.secondaryColor)
+                                                                                                   
                                                                                                    if ( !message.isSent ){
                                                                                                        Image(systemName: "clock")
                                                                                                                            .foregroundColor(.gray)
                                                                                                                            .font(.system(size: 10))
                                                                                                                            .padding(.leading, 5)
-
+                                                                                                                           .foregroundColor(themeManager.currentTheme.secondaryColor)
                                                                                                    }
                                                                                                    
                                                                                                    
@@ -624,6 +652,7 @@ struct ChatView: View {
                                                                                                            .padding()
                                                                                                            .background(Color.blue.opacity(0.2))
                                                                                                            .cornerRadius(10)
+                                                                                                           .foregroundColor(themeManager.currentTheme.textColor)
                                                                                                    }
                                                                                                    
                                                                                                    Spacer() // Push the message to the left
@@ -636,7 +665,7 @@ struct ChatView: View {
                                                                                                    Text(message.timestamp, style: .time)
                                                                                                        .font(.caption2)
                                                                                                        .foregroundColor(.gray)
-                                                                                                   
+                                                                                                       .foregroundColor(themeManager.currentTheme.secondaryColor)
                                                                                                    
                                                                                                    Spacer() // Push the message to the left
                                                                                                }
@@ -646,7 +675,10 @@ struct ChatView: View {
                                                                                            
                                                                                            Spacer()
                                                                                        }
-                                                                                   }
+                                                                                   } .listRowBackground(themeManager.currentTheme.backgroundColor)
+                                                                                   .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+                                                                                   
+                                                                                   .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
                                                                                    .id(message.id) // Ensure stability
                                                                                }
                                                                            }
@@ -659,11 +691,18 @@ struct ChatView: View {
                                                    }
                                                    
                                                }.rotationEffect(.degrees(180)) // Rotate the entire List
+                                                   .listRowBackground(themeManager.currentTheme.backgroundColor)
                                            }
                                        }
-                                       .rotationEffect(.degrees(180)) // Rotate the entire List
+                                .rotationEffect(.degrees(180)) // Rotate the entire List
+                                      
+                                       .scrollContentBackground(.hidden) // Removes default background
+                                       .background(themeManager.currentTheme.backgroundColor)
                                        .listStyle(PlainListStyle())
-                                
+//                                       .listStyle(.insetGrouped)
+                                      
+                                       .accentColor(themeManager.currentTheme.primaryColor) // Global fallback
+                                     
 //                                .onChange(of: messages.count) { _ in
 //                                    
 //                                    withAnimation {
@@ -1001,7 +1040,7 @@ struct ChatView: View {
                 
                 .padding(.bottom , tokenManager.isKeyboardOpen ? 4 : 45)
                 
-            }
+            }  .background(themeManager.currentTheme.backgroundColor)
            .onChange(of: webSocketManager.deliveredMessageData) { newValue in
                 
                 // Ensure chat is available
@@ -1060,7 +1099,7 @@ struct ChatView: View {
             
             
         } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl, hideTabBar: $hideTabBar  )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading).navigationBarBackButtonHidden(true)
-            
+            .background(themeManager.currentTheme.backgroundColor)
            
      
     }
@@ -1120,13 +1159,17 @@ struct AsyncImageViewer: View {
     }
 }
 
+
+#if DEBUG
+
 struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
     @State static var hideTabBar: Bool = false // Dummy state variable for preview
 
     static var previews: some View {
-        ChatView(  profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", otherUserId: "")).environmentObject(TokenManager())
+        ChatView(  profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", otherUserId: "")).environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
 
+#endif
 

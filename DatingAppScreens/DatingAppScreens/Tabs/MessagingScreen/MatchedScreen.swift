@@ -134,6 +134,46 @@ struct MatchedProfilesForMessagingListScreenView: View {
 //
                       
                       VStack {
+                          
+                          
+                          
+                          HStack {
+                                      TextField("Search User...", text: $searchText)
+                                          .padding(10)
+                                          .padding(.leading, 35) // Space for icon
+                                          .background(Color(.systemGray6))
+                                          .cornerRadius(20)
+                                          .overlay(
+                                              HStack {
+                                                  Image(systemName: "magnifyingglass")
+                                                      .foregroundColor(themeManager.currentTheme.secondaryColor)
+                                                      .padding(.leading, 10)
+                                                  Spacer()
+                                                  if !searchText.isEmpty {
+                                                      Button(action: { searchText = "" }) {
+                                                          Image(systemName: "xmark.circle.fill")
+                                                              .foregroundColor(themeManager.currentTheme.secondaryColor)
+                                                      }
+                                                      .padding(.trailing, 10)
+                                                  }
+                                              }
+                                          )
+                                      
+    //                                  Button(action: {
+    ////                                      performSearch()
+    //                                  }) {
+    //                                      Image(systemName: "arrow.right.circle.fill")
+    //                                          .resizable()
+    //                                          .frame(width: 30, height: 30)
+    //                                          .foregroundColor(.blue)
+    //                                  }
+    //                                  .padding(.leading, 5)
+    //                                  .shadow(radius: 3)
+                                  }
+                          .padding()
+                          .background( themeManager.currentTheme.backgroundColor)
+                          
+                          
                           ScrollView(.horizontal, showsIndicators: false) {
                               
                               HStack(alignment: .top, spacing: 4) { // Add spacing between items if needed
@@ -235,44 +275,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                       }.frame(maxWidth:.infinity ) .padding(.horizontal)// Adds a blue border with a width of 2
                           .background( themeManager.currentTheme.backgroundColor)
                       
-                      
-                      
-                      HStack {
-                                  TextField("Search User...", text: $searchText)
-                                      .padding(10)
-                                      .padding(.leading, 35) // Space for icon
-                                      .background(Color(.systemGray6))
-                                      .cornerRadius(20)
-                                      .overlay(
-                                          HStack {
-                                              Image(systemName: "magnifyingglass")
-                                                  .foregroundColor(themeManager.currentTheme.secondaryColor)
-                                                  .padding(.leading, 10)
-                                              Spacer()
-                                              if !searchText.isEmpty {
-                                                  Button(action: { searchText = "" }) {
-                                                      Image(systemName: "xmark.circle.fill")
-                                                          .foregroundColor(themeManager.currentTheme.secondaryColor)
-                                                  }
-                                                  .padding(.trailing, 10)
-                                              }
-                                          }
-                                      )
-                                  
-//                                  Button(action: {
-////                                      performSearch()
-//                                  }) {
-//                                      Image(systemName: "arrow.right.circle.fill")
-//                                          .resizable()
-//                                          .frame(width: 30, height: 30)
-//                                          .foregroundColor(.blue)
-//                                  }
-//                                  .padding(.leading, 5)
-//                                  .shadow(radius: 3)
-                              }
-                      .padding()
-                      .background( themeManager.currentTheme.backgroundColor)
-                      
+                     
                          
 //                   List(likes) { like in
 //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
