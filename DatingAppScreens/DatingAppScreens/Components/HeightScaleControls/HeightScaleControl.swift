@@ -30,7 +30,10 @@ struct HeightScaleControl: View {
                                     .frame(width: value % 12 == 0 ? 3 : 1, height: value % 12 == 0 ? 35 : 20)
 
                                 if value % 12 == 0 {
-                                    Text("\(heightToFeetAndInches(value))")
+                                    
+                                    
+                                    Text("\(heightToFeetAndInches(value).first ?? " ")")
+//                                    Color.clear
                                         .font(.system(size: 14, weight: .bold))
                                         .foregroundColor(.gray)
                                         .padding(.top, 5)
@@ -46,6 +49,9 @@ struct HeightScaleControl: View {
                                 updateHeight(from: newOffset, width: geometry.size.width)
                             }
                     })
+                 
+             
+                    
                 }
             }
             .frame(height: 70)
@@ -55,6 +61,7 @@ struct HeightScaleControl: View {
                     .fill(Color.red)
                     .frame(width: 3, height: 50) // Center Indicator
             )
+            .offset(x : -10)
             .padding(.horizontal, 20)
         }
         .padding()
@@ -88,3 +95,4 @@ struct HeightScaleControl_Previews: PreviewProvider {
         HeightScaleControl()
     }
 }
+
