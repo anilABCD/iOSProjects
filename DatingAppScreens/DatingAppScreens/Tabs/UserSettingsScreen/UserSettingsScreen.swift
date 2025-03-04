@@ -62,7 +62,7 @@ struct UserSettingsView : View {
                                             
                                    }.zIndex(1)
                                }
-                               .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                               .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                                
                                .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
                         
@@ -90,7 +90,7 @@ struct UserSettingsView : View {
                                             
                                    }.zIndex(1)
                                }
-                               .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                               .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                                
                                .accentColor(themeManager.currentTheme.primaryColor) // For default arrow (if used)
                         
@@ -118,7 +118,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
                         
                         NavigationLink(destination: UpdateTechnologyNewView()) {
@@ -144,7 +144,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
                         NavigationLink(destination: UpdateHobbiesView()) {
 //                            Text("Hobbies").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -168,7 +168,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
                         NavigationLink(destination: UpdateDOBView()) {
 //                            Text("Dob , Habbits").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -193,7 +193,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
                         NavigationLink(destination: UpdateDescribeYourselfView ()) {
 //                            Text("Bio").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -218,7 +218,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
                         NavigationLink(destination: UpdateJobRole2View ()) {
 //                            Text("Job Role").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -243,7 +243,7 @@ struct UserSettingsView : View {
                                 
                             }
                             .zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
                         
                         NavigationLink(destination: UpdateSmokingView ()) {
@@ -268,7 +268,7 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
                         NavigationLink(destination: UpdateDrinkingView ()) {
 //                            Text("Bio").foregroundColor(themeManager.currentTheme.primaryColor)
@@ -292,8 +292,16 @@ struct UserSettingsView : View {
                                         .offset(x: 18) // Adjust horizontal position
                                 
                             }.zIndex(1)
-                        } .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
+                        } .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
                         
+                        
+                        HStack {
+                            Spacer()
+                            Button("Logout"){
+                                tokenManger.resetAccessToken()
+                            }
+                            Spacer()
+                        }
                     }
                     
 //                    .overlay(Rectangle().frame(height: 1).foregroundColor(themeManager.currentTheme.primaryColor), alignment: .bottom)
@@ -311,9 +319,13 @@ struct UserSettingsView : View {
                     
 //                    Rectangle().frame(height: 100).background(themeManager.currentTheme.backgroundColor)
                     
+                   
+                    
                     VStack {
                         
                     }.frame(height: 200).listRowBackground(themeManager.currentTheme.backgroundColor) // Custom
+                    
+                
                     
                 }.scrollContentBackground(.hidden) // Removes default background
                 .background(themeManager.currentTheme.backgroundColor)
@@ -322,7 +334,7 @@ struct UserSettingsView : View {
                 .accentColor(themeManager.currentTheme.primaryColor) // Global fallback
                 
                 
-        
+              
                 
             }.navigationBarTitle("Profile Settings" , displayMode: .inline).background(themeManager.currentTheme.backgroundColor).onAppear(){
                 

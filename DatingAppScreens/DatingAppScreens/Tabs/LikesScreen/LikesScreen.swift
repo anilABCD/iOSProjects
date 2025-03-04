@@ -28,39 +28,53 @@ struct LikesScreenView: View {
     
     var body: some View {
         NavigationStack {
-//                   List(likes) { like in
-//                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
-                       
-            List {
-                ForEach(likes) { like in  // Iterate over likes directly
-                    
-                    NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil , photoUrl: "\(tokenManger.serverImageURL)")) {
-                        LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
-                            .onAppear {
-                                if let index = likes.firstIndex(where: { $0.id == like.id }), index == likes.count - 5 {
-                                    //                                              loadMoreItems()
-                                    print ("load more")
-                                }
+            VStack {
+         
+                        List {
+                            
+                            if ( likes.isEmpty){
                                 
+                                HStack {
+                                    
+                                    Text("No Likes to show")
+                                } .listRowBackground(themeManager.currentTheme.backgroundColor)
+                                    .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                             }
-                    }
-                    
-                    
-                }
-                
-            }.listStyle(PlainListStyle()).navigationBarTitle("Likes" , displayMode: .inline)  // Ensure title is within NavigationStack
-//                           .onAppear {
-//                               if index == likes.count - 5 {
-//                                  loadMoreItems()
-//                               }
-//                           }
-//                   }
-                  
-        }
+                            
+                            ForEach(likes) { like in  // Iterate over likes directly
+            
+                              
+                                
+                                NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil , photoUrl: "\(tokenManger.serverImageURL)")) {
+                                    LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
+                                        .onAppear {
+                                            if let index = likes.firstIndex(where: { $0.id == like.id }), index == likes.count - 5 {
+                                                //                                              loadMoreItems()
+                                                print ("load more")
+                                            }
+            
+                                        }
+                                } .listRowBackground(themeManager.currentTheme.backgroundColor)
+                                    .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+                                // Custom
+            
+            
+                            }
+            
+                        }
+                        .scrollContentBackground(.hidden) // Removes default background
+                    .background(themeManager.currentTheme.backgroundColor)
+                    .listStyle(.insetGrouped)
+                   
+                    .accentColor(themeManager.currentTheme.primaryColor) // Global fallback
+            
+           }.frame(maxWidth: .infinity, maxHeight: .infinity) .navigationBarTitle("Likes" , displayMode: .inline) .background(themeManager.currentTheme.backgroundColor)
+        }.background(themeManager.currentTheme.backgroundColor) // Forces it to take the full screen
+           
         .onAppear(){
             
             updateNavigationBarColor()
-            
+           
             Task {
                 do {
                     try await fetchLikes()
@@ -93,6 +107,9 @@ struct LikeItemView: View {
     let like: LikesResponse
     let photoURL : String;
     
+    
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
         HStack {
             if let imageName = like.userFrom?.photo , let url = URL(string: "\(photoURL)/\("resized-")\(imageName)")
@@ -114,21 +131,32 @@ struct LikeItemView: View {
                                            .aspectRatio(contentMode: .fill)
                                            .frame(width: 50, height: 50)
                                            .clipShape(Circle())
+                                           .foregroundColor(themeManager.currentTheme.id == "light" ? .black : .white) // Red color
+
                                    @unknown default:
                                        EmptyView()
                                    }
                                }
+                        
                                .padding(.trailing, 8)
             }
             VStack(alignment: .leading) {
-                Text(like.userFrom?.name ?? "Unknown")
+                Text(like.userFrom?.name ?? "Unknown").foregroundColor(themeManager.currentTheme.textColor)
                     .font(.headline)
                 if let technologies = like.userFrom?.technologies {
                     Text(technologies.joined(separator: ", "))
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(themeManager.currentTheme.secondaryColor)
                 }
             }
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13)) // Standard system chevron size
+                .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
+             
+                .background(themeManager.currentTheme.backgroundColor)
+                .offset(x: 18) // Adjust horizontal position
         }
         .padding(.vertical, 4)
     }
@@ -139,7 +167,7 @@ struct LikesScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
        
     static var previews: some View {
-        LikesScreenView().environmentObject(TokenManager())
+        LikesScreenView().environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
 

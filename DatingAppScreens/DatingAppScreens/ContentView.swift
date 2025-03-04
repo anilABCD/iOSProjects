@@ -236,7 +236,7 @@ struct ContentView: View {
         
         VStack {
             
-            HeightScaleControl()
+//            HeightScaleControl()
             
             ZStack {
                 
@@ -510,10 +510,7 @@ struct ContentView: View {
                         
                     }
                     else {
-                        
-                        Button("Reset Token"){
-                            tokenManager.resetAccessToken()
-                        }
+                     
                         
                         ZStack {
                             
@@ -703,7 +700,7 @@ struct ContentView: View {
                                                 }
                                                 
                                                 .padding()
-                                                .background(themeManager.currentTheme.backgroundColor)
+                                                .background(themeManager.currentTheme.tabsBackgroundColor)
                                                 .shadow(color: themeManager.currentTheme.primaryColor.opacity(0.1), radius: 10, x: 0, y: -5)
 //                                                .overlay(
 //                                          

@@ -14,6 +14,10 @@ struct AppTheme {
     let navigationLinkColor: Color
     let secondaryColor: Color
     let backgroundColor: Color
+    
+    let cardBackgroundColor : Color
+    let tabsBackgroundColor : Color
+    
     let textColor: Color
     let subTextColor : Color
     
@@ -35,7 +39,11 @@ struct Themes {
         navigationLinkColor: .black,
       
         secondaryColor: .gray,
-        backgroundColor: .white,
+        backgroundColor: .white.opacity(0.5),
+        
+        cardBackgroundColor : .white ,
+        tabsBackgroundColor :.white,
+        
         textColor: .black,
         subTextColor : .black.opacity(0.5) ,
         
@@ -57,6 +65,10 @@ struct Themes {
         navigationLinkColor: .white,
         secondaryColor: .gray,
         backgroundColor: .black,
+        
+        cardBackgroundColor : .black ,
+        tabsBackgroundColor :.black,
+        
         textColor: .white,
         subTextColor: .white.opacity(0.5),
   
@@ -76,6 +88,10 @@ struct Themes {
         navigationLinkColor: .red,
         secondaryColor: .orange,
         backgroundColor: .black,
+        
+        cardBackgroundColor : .black ,
+        tabsBackgroundColor :.black,
+        
         textColor: .white,
         subTextColor: .white.opacity(0.5),
         

@@ -211,7 +211,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                                   
                                                   
                                                   Text(onlineProfile?.name?.prefix(10) ?? "" )
-                                                      .font(.headline)
+                                                      .font(.headline).foregroundColor(themeManager.currentTheme.textColor)
                                               }.frame(maxWidth:.infinity)
                                               
                                           }
@@ -221,8 +221,10 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                       
                                   }
                               }.padding(.top , 10)
+                                  .background( themeManager.currentTheme.backgroundColor)
                               
-                          }
+                          } .background( themeManager.currentTheme.backgroundColor)
+                          
                           
                           
                               Divider()// Full-width divider
@@ -231,7 +233,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                           
                           
                       }.frame(maxWidth:.infinity ) .padding(.horizontal)// Adds a blue border with a width of 2
-                      
+                          .background( themeManager.currentTheme.backgroundColor)
                       
                       
                       
@@ -244,13 +246,13 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                       .overlay(
                                           HStack {
                                               Image(systemName: "magnifyingglass")
-                                                  .foregroundColor(.gray)
+                                                  .foregroundColor(themeManager.currentTheme.secondaryColor)
                                                   .padding(.leading, 10)
                                               Spacer()
                                               if !searchText.isEmpty {
                                                   Button(action: { searchText = "" }) {
                                                       Image(systemName: "xmark.circle.fill")
-                                                          .foregroundColor(.gray)
+                                                          .foregroundColor(themeManager.currentTheme.secondaryColor)
                                                   }
                                                   .padding(.trailing, 10)
                                               }
@@ -269,7 +271,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
 //                                  .shadow(radius: 3)
                               }
                       .padding()
-                      
+                      .background( themeManager.currentTheme.backgroundColor)
                       
                          
 //                   List(likes) { like in
@@ -279,7 +281,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                           
                           
                           if self.matched.count == 0 {
-                              Text("No Online Members").modifier(ThemedTextModifier())
+                              Text("No Online Members").modifier(ThemedTextModifier()) .listRowBackground(themeManager.currentTheme.backgroundColor)
                           }
                           
                           ForEach(matched) { match in  // Iterate over likes directly
@@ -307,11 +309,18 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                           
                                       }
                               }
+                              .listRowBackground(themeManager.currentTheme.backgroundColor)
+                              
+                              //Custom
                               
 //                              Text("\(match.unreadCounts)")
                           }
                       }
+                      .scrollContentBackground(.hidden)
+                      .background(themeManager.currentTheme.backgroundColor)
                       .listStyle(PlainListStyle())
+      //                .edgesIgnoringSafeArea(.all)
+                      .accentColor(themeManager.currentTheme.primaryColor) // Global fallback
                       
                   } .navigationBarTitle("Messages" , displayMode: .inline)
                   
@@ -394,6 +403,8 @@ struct MatchedItemView: View {
     let unreadCounts : [String:Int]?
     let userId : String
     
+    @EnvironmentObject var themeManager: ThemeManager
+    
     // Function to format the time from a timestamp
         func formatTime(from date: Date) -> String {
             let formatter = DateFormatter()
@@ -422,6 +433,8 @@ struct MatchedItemView: View {
                                            .aspectRatio(contentMode: .fill)
                                            .frame(width: 50, height: 50)
                                            .clipShape(Circle())
+                                           .foregroundColor(themeManager.currentTheme.id == "light" ? .black : .white) // Red color
+
                                    @unknown default:
                                        EmptyView()
                                    }
@@ -432,7 +445,7 @@ struct MatchedItemView: View {
                 
                 HStack {
                     Text(profile?.name ?? "Unknown")
-                        .font(.headline)
+                        .font(.headline).foregroundColor(themeManager.currentTheme.textColor)
 //                    if let technologies = profile?.technologies {
 //                        Text(" ( \(technologies.joined(separator: ", ")) )")
 //                            .font(.subheadline)
@@ -454,7 +467,7 @@ struct MatchedItemView: View {
                         Text("\(unreadCount)")
                             
                             .font(.caption2) // Small font size for badge
-                            .foregroundColor(.white) // White text color
+                            .foregroundColor(themeManager.currentTheme.textColor)
                             .padding(6) // Small padding for a compact circle
                             .background(Circle().fill(Color.blue)) // Blue circle background
                             .frame(minWidth: 20, minHeight: 20) // Ensure consistent circular shape
@@ -468,7 +481,7 @@ struct MatchedItemView: View {
                     HStack {
                         Text(text)
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(themeManager.currentTheme.secondaryColor)
                         
                         Spacer()
                         
@@ -485,14 +498,14 @@ struct MatchedItemView: View {
                 if let imageUrl = lastMessage?.image , let timestamp = lastMessage?.timestamp {
                     HStack {
                         Image( systemName: "camera.fill").font(.subheadline)
-                        
+                            .foregroundColor(themeManager.currentTheme.id == "light" ? .black : .white) // Red color
                         Spacer()
                         
                         
                         
                         Text(timestamp, style: .time)
                             .font(.caption2)
-                            .foregroundColor(.gray)
+                            .foregroundColor(themeManager.currentTheme.secondaryColor)
                         
                         
                     }

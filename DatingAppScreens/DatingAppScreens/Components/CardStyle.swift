@@ -15,7 +15,7 @@ struct CardStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding(8)
-            .background(themeManager.currentTheme.backgroundColor)
+            .background(themeManager.currentTheme.cardBackgroundColor)
             .foregroundColor(.gray)
             .cornerRadius(20)
             .shadow(color: .gray.opacity(0.3), radius: 5)
