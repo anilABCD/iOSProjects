@@ -575,6 +575,10 @@ struct SwipeableView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     @State private var initialDragPosition: CGPoint = .zero
     
+    
+    @State private var image: UIImage?
+    
+    
     var sizeTextInCard = 15.0
     
     
@@ -587,71 +591,91 @@ struct SwipeableView: View {
                         ZStack(alignment: .bottomLeading) {
                             // Use AsyncImage to load remote images
                             
-                            
-                            AsyncImage(url: URL(string: "\(tokenManger.serverImageURL)/\(item.photo ?? "image.jpg")")) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                    
-                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
-                                    
-                                        .offset(x: offset.width, y: 0)
-                                        .cornerRadius(20) // Add corner radius here
-                                        .rotationEffect(.degrees(Double(offset.width / 20)))
-                                    
-                                    //                                           .gesture(
-                                    //                                            DragGesture()
-                                    //                                                                                      .onChanged { gesture in
-                                    //                                                                                          // Track the initial position of the drag
-                                    //                                                                                          if initialDragPosition == .zero {
-                                    //                                                                                              initialDragPosition = gesture.startLocation
-                                    //                                                                                          }
-                                    //
-                                    //                                                                                          // Update the offset with both x and y translations
-                                    //                                                                                          offset = gesture.translation
-                                    //                                                                                      }
-                                    //                                                                                      .onEnded { gesture in
-                                    //                                                                                          let swipeThreshold: CGFloat = 50 // Threshold to detect swipe
-                                    //
-                                    //                                                                                          // Handle horizontal swipe (left or right)
-                                    //                                                                                          if abs(gesture.translation.width) > swipeThreshold {
-                                    //                                                                                              if gesture.translation.width > 0 {
-                                    //                                                                                                  swipeRight() // Swipe Right
-                                    //                                                                                              } else {
-                                    //                                                                                                  swipeLeft() // Swipe Left
-                                    //                                                                                              }
-                                    //                                                                                          }
-                                    //                                                                                          // Handle vertical swipe (up or down)
-                                    //                                                                                          else if abs(gesture.translation.height) > swipeThreshold {
-                                    //                                                                                              if gesture.translation.height < 0 {
-                                    //                                                                                                  swipeUp() // Swipe Up
-                                    //                                                                                              } else {
-                                    //                                                                                                  swipeDown() // Swipe Down
-                                    //                                                                                              }
-                                    //                                                                                          } else {
-                                    //                                                                                              // If it's not a meaningful swipe, reset the offset
-                                    //                                                                                              withAnimation {
-                                    //                                                                                                  offset = .zero
-                                    //                                                                                              }
-                                    //                                                                                          }
-                                    //                                                                                      }
-                                    //                                   )
-                                case .failure:
-                                    Color.gray // Fallback for failed loading
-                                    
-                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
-                                    
-                                        .offset(x: offset.width, y: 0)
-                                        .cornerRadius(20) // Add corner radius here
-                                        .rotationEffect(.degrees(Double(offset.width / 20)))
-                                @unknown default:
-                                    EmptyView()
-                                }
-                            }
+//                            
+//                            AsyncImage(url: URL(string: "\(tokenManger.serverImageURL)/\(item.photo ?? "image.jpg")")) { phase in
+//                                switch phase {
+//                                case .empty:
+//                                    ProgressView()
+//                                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+//                                case .success(let image):
+//                                    image
+//                                        .resizable()
+//                                    
+//                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
+//                                    
+//                                        .offset(x: offset.width, y: 0)
+//                                        .cornerRadius(20) // Add corner radius here
+//                                        .rotationEffect(.degrees(Double(offset.width / 20)))
+//                                    
+//                                    //                                           .gesture(
+//                                    //                                            DragGesture()
+//                                    //                                                                                      .onChanged { gesture in
+//                                    //                                                                                          // Track the initial position of the drag
+//                                    //                                                                                          if initialDragPosition == .zero {
+//                                    //                                                                                              initialDragPosition = gesture.startLocation
+//                                    //                                                                                          }
+//                                    //
+//                                    //                                                                                          // Update the offset with both x and y translations
+//                                    //                                                                                          offset = gesture.translation
+//                                    //                                                                                      }
+//                                    //                                                                                      .onEnded { gesture in
+//                                    //                                                                                          let swipeThreshold: CGFloat = 50 // Threshold to detect swipe
+//                                    //
+//                                    //                                                                                          // Handle horizontal swipe (left or right)
+//                                    //                                                                                          if abs(gesture.translation.width) > swipeThreshold {
+//                                    //                                                                                              if gesture.translation.width > 0 {
+//                                    //                                                                                                  swipeRight() // Swipe Right
+//                                    //                                                                                              } else {
+//                                    //                                                                                                  swipeLeft() // Swipe Left
+//                                    //                                                                                              }
+//                                    //                                                                                          }
+//                                    //                                                                                          // Handle vertical swipe (up or down)
+//                                    //                                                                                          else if abs(gesture.translation.height) > swipeThreshold {
+//                                    //                                                                                              if gesture.translation.height < 0 {
+//                                    //                                                                                                  swipeUp() // Swipe Up
+//                                    //                                                                                              } else {
+//                                    //                                                                                                  swipeDown() // Swipe Down
+//                                    //                                                                                              }
+//                                    //                                                                                          } else {
+//                                    //                                                                                              // If it's not a meaningful swipe, reset the offset
+//                                    //                                                                                              withAnimation {
+//                                    //                                                                                                  offset = .zero
+//                                    //                                                                                              }
+//                                    //                                                                                          }
+//                                    //                                                                                      }
+//                                    //                                   )
+//                                case .failure:
+//                                    Color.gray // Fallback for failed loading
+//                                    
+//                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
+//                                    
+//                                        .offset(x: offset.width, y: 0)
+//                                        .cornerRadius(20) // Add corner radius here
+//                                        .rotationEffect(.degrees(Double(offset.width / 20)))
+//                                @unknown default:
+//                                    EmptyView()
+//                                }
+//                            }
+//                            
+                            CachedImageView(
+                                        url: URL(string: "\(tokenManger.serverImageURL)/\(item.photo ?? "image.jpg")"),
+                                        width: UIScreen.main.bounds.width - 25.0,
+                                        height: UIScreen.main.bounds.height * 0.6,
+                                        failureView: {
+                                            VStack {
+                                                Color.gray
+                                                    .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
+                                                    .cornerRadius(20)
+//
+//                                                Button("Retry") {
+//                                                    // Implement retry logic if needed
+//                                                }
+//                                                .padding()
+                                            }
+                                        }
+                                    ) .offset(x: offset.width, y: 0)
+                                .cornerRadius(20) // Add corner radius here
+                                .rotationEffect(.degrees(Double(offset.width / 20)))
                             
                             // Text overlay on the image
                             VStack(alignment: .leading, spacing: 8) {

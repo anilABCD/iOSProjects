@@ -18,35 +18,53 @@ struct OthersProfileView: View {
     
     var body: some View {
         ScrollView {
-            if let photoURLString = profile?.photo, let url = URL(string: "\(photoUrl)/\(photoURLString)") {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                            .frame(width: 400, height: 300)
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 400, height: 300)
-//                            .clipShape(Circle())
-                    case .failure:
-                        Image(systemName: "person.crop.circle")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 400, height: 300)
-//                            .clipShape(Circle())
-                    @unknown default:
-                        EmptyView()
-                    }
-                }
-            } else {
-                Image(systemName: "person.crop.circle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 200, height: 200)
-                    .clipShape(Circle())
-            }
+            
+            CachedImageView(
+                        url: URL(string: "\(photoUrl)/\(profile?.photo ?? "")"),
+                        width: 400,
+                        height: 300,
+                      
+                        failureView: {
+                            VStack {
+                                Image(systemName: "person.crop.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 400, height: 300)
+                                
+                            }
+                        },
+                        storeInDisk : true
+                    )
+            
+//            if let photoURLString = profile?.photo, let url = URL(string: "\(photoUrl)/\(photoURLString)") {
+//                AsyncImage(url: url) { phase in
+//                    switch phase {
+//                    case .empty:
+//                        ProgressView()
+//                            .frame(width: 400, height: 300)
+//                    case .success(let image):
+//                        image
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fill)
+//                            .frame(width: 400, height: 300)
+////                            .clipShape(Circle())
+//                    case .failure:
+//                        Image(systemName: "person.crop.circle")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 400, height: 300)
+////                            .clipShape(Circle())
+//                    @unknown default:
+//                        EmptyView()
+//                    }
+//                }
+//            } else {
+//                Image(systemName: "person.crop.circle")
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fill)
+//                    .frame(width: 200, height: 200)
+//                    .clipShape(Circle())
+//            }
 
             Text(profile?.name ?? "Unknown")
                 .font(.largeTitle)
