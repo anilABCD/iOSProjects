@@ -518,7 +518,9 @@ struct ChatView: View {
                                                        // Iterate through Month groups
                                                        ForEach(groupedMessages[year]?.keys.sorted() ?? [], id: \.self) { month in
                                                            VStack {
-                                                               Section(header:sectionHeaderMonth( for: month )) {
+                                                               Section(header:
+                                                                        
+                                                                        sectionHeaderMonth( for: month )) {
                                                                    // Iterate through Weekday groups
                                                                    ForEach(groupedMessages[year]?[month]?.keys.sorted() ?? [], id: \.self) { weekday in
                                                                        Section(header: sectionHeaderWeekday( for : weekday )) {

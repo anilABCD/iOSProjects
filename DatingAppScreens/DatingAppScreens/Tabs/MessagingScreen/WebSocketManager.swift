@@ -110,7 +110,10 @@ class WebSocketManager: ObservableObject {
             self.registerUser(userId: self.userId)
         }
         
-        
+        socket.on(clientEvent: .disconnect) { data, _ in
+               print("WebSocket disconnected: \(data)")
+               self.reconnect() // Automatically attempt to reconnect
+           }
         
         socket.connect()
         
@@ -224,6 +227,14 @@ class WebSocketManager: ObservableObject {
                 self.refreshChatList = UUID();
             }
                
+        }
+    }
+    
+    // Function to handle reconnection
+    func reconnect() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { // Wait for 5 seconds before reconnecting
+            print("Reconnecting WebSocket...")
+            self.connect()
         }
     }
     

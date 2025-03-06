@@ -92,7 +92,7 @@ struct LikesScreenView: View {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
            
-            appearance.backgroundColor = UIColor(themeManager.currentTheme.backgroundColor)
+        appearance.backgroundColor = UIColor(themeManager.currentTheme.cardBackgroundColor)
         appearance.titleTextAttributes = [.foregroundColor: UIColor( themeManager.currentTheme.id == "light" ? .black : themeManager.currentTheme.primaryColor)] // Title color
             
             UINavigationBar.appearance().standardAppearance = appearance
