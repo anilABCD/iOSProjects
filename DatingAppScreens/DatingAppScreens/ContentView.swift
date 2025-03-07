@@ -535,12 +535,20 @@ struct ContentView: View {
                                         //                                            print("\(tokenManager.localhost)/\(tokenManager.photo)")
                                         //                                        }
                                         
+//                                        
+//                                        Spacer()
+//                                        
+//                                        Spacer()
+//                                        
+                                        Image("40")
+                                            .resizable()
+                                            .frame(width: 80, height: 50)
+                                            .background( themeManager.currentTheme.id == "light" ? Color.white : .black )
+                                            .rotationEffect(Angle.degrees(13))
                                         
-                                        Spacer()
-                                        
-                                        Text("Devo")
-                                            .modifier(ThemedTextModifier()) // ✅ Corrected method
-                                            .fontWeight(.bold) // ✅ Apply font weight correctly
+//                                        Text("Devo")
+//                                            .modifier(ThemedTextModifier()) // ✅ Corrected method
+//                                            .fontWeight(.bold) // ✅ Apply font weight correctly
                                         
                                         Spacer()
                                         

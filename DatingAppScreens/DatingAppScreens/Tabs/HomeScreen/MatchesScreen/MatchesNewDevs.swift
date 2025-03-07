@@ -754,7 +754,7 @@ struct SwipeableView: View {
                     
                     JobRoleCardView(jobRole: item.jobRole ?? "" , sizeTextInCard: sizeTextInCard )
                     
-                    HobbiesCardView(hobbies: item.hobbies ?? [] , sizeTextInCard: sizeTextInCard )
+                    HobbiesCardView(hobbies2: item.hobbies ?? [], sizeTextInCard: sizeTextInCard )
                     
                     SmokingCardView(smoking: item.smoking ?? "" , sizeTextInCard: sizeTextInCard )
                     
@@ -974,6 +974,9 @@ struct TechnologiesCardView: View {
         GridItem(.flexible())
     ]
     
+    @State var rowsCount:Int = 0
+
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 10) {
@@ -987,17 +990,22 @@ struct TechnologiesCardView: View {
                 
                 
                 
+                WrapViewNormal (options: technologies, selectedSize: .medium , rowsCount: $rowsCount )
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 10)
+                    .padding(.bottom, 10)
+                
 //                LazyVGrid(columns: columns, spacing: 15) {
 //                    ForEach(technologies, id: \.self) { tech in
-                Text(technologies.joined(separator: ", ")).lineLimit(nil) // Allows unlimited lines
-                
-                            .font(.system(size: sizeTextInCard))
-                            .foregroundColor( themeManager.currentTheme.subTextColor)
-                            .padding(.horizontal, 10)
-                            .padding(.bottom, 10)
-//                    }
-//                }
-                .padding(.horizontal, 10).padding(.vertical, 10)
+//                Text(technologies.joined(separator: ", ")).lineLimit(nil) // Allows unlimited lines
+//                
+//                            .font(.system(size: sizeTextInCard))
+//                            .foregroundColor( themeManager.currentTheme.subTextColor)
+//                            .padding(.horizontal, 10)
+//                            .padding(.bottom, 10)
+////                    }
+////                }
+               
             }
             .cardStyle()
             
@@ -1020,11 +1028,18 @@ struct TechnologiesCardView: View {
 }
 
 struct HobbiesCardView: View {
-    var hobbies: [String] = []
+    var hobbies2: [String] = []
     
     var sizeTextInCard = 30.0
     
     @EnvironmentObject var themeManager : ThemeManager
+    
+    
+    @State var hobbies : [String] = []
+    
+    @State var rowsCount:Int = 0
+
+    
     
     let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -1041,18 +1056,24 @@ struct HobbiesCardView: View {
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
+         
+                WrapViewNormal (options: hobbies2, selectedSize: .medium  , rowsCount: $rowsCount)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 10)
+                    .padding(.bottom, 10)
                 
-//                LazyVGrid(columns: columns, spacing: 15) {
-//                    ForEach(hobbies, id: \.self) { hobby in
-                Text(hobbies.joined(separator: ", ")).lineLimit(nil) // Allows unlimited lines
-                            .font(.system(size: sizeTextInCard))
-                            .foregroundColor( themeManager.currentTheme.subTextColor )
-                            .padding(.horizontal, 10)
-                            .padding(.bottom, 10)
-//                    }
-//                }
-                .padding(.horizontal, 10).padding(.vertical, 10)
+////                LazyVGrid(columns: columns, spacing: 15) {
+////                    ForEach(hobbies, id: \.self) { hobby in
+//                Text(hobbies.joined(separator: ", ")).lineLimit(nil) // Allows unlimited lines
+//                            .font(.system(size: sizeTextInCard))
+//                            .foregroundColor( themeManager.currentTheme.subTextColor )
+//                            .padding(.horizontal, 10)
+//                            .padding(.bottom, 10)
+////                    }
+////                }
+//                .padding(.horizontal, 10).padding(.vertical, 10)
             }
+            .frame(height: ( CGFloat(rowsCount) * 120))
             .cardStyle()
             
 //            .padding(8)
@@ -1070,6 +1091,9 @@ struct HobbiesCardView: View {
 //                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
 //            )
         }.padding(.horizontal, 25)
+            .onAppear(){
+                self.hobbies = hobbies2 + ["aasdfasdfdsafaf", "asdfasdfasdf" , "dfdfdfdfdf" , "asdfasdfasdf"]
+            }
     }
 }
 
@@ -1077,6 +1101,11 @@ struct SmokingCardView: View {
     var smoking: String = ""
     var sizeTextInCard = 30.0
     @EnvironmentObject var themeManager : ThemeManager
+    
+    
+    @State var rowsCount:Int = 0
+
+    
     
     var body: some View {
         VStack {
@@ -1089,16 +1118,21 @@ struct SmokingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                HStack {
-                    
-                    Text(smoking.isEmpty ? "Not Specified" : smoking)
-                        .font(.system(size: sizeTextInCard))
-                        .foregroundColor( themeManager.currentTheme.subTextColor )
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 10)
-                    
-                    Spacer()
-                }.padding(.vertical, 10)
+                WrapViewNormal (options: [smoking.isEmpty ? "Not Specified" : smoking], selectedSize: .medium , rowsCount: $rowsCount )
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 10)
+                    .padding(.bottom, 10)
+                
+//                HStack {
+//                    
+//                    Text(smoking.isEmpty ? "Not Specified" : smoking)
+//                        .font(.system(size: sizeTextInCard))
+//                        .foregroundColor( themeManager.currentTheme.subTextColor )
+//                        .padding(.horizontal, 10)
+//                        .padding(.bottom, 10)
+//                    
+//                    Spacer()
+//                }.padding(.vertical, 10)
             }
             .cardStyle()
 //            .padding(8) // Reduce padding
@@ -1160,6 +1194,11 @@ struct DrinkingCardView: View {
     var sizeTextInCard = 30.0
     @EnvironmentObject var themeManager : ThemeManager
     
+    
+    @State var rowsCount:Int = 0
+
+    
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 4) { // Reduce spacing
@@ -1171,15 +1210,22 @@ struct DrinkingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                HStack {
-                  
-                Text(drinking.isEmpty ? "Not Specified" : drinking)
-                        .font(.system(size: sizeTextInCard))
-                        .foregroundColor( themeManager.currentTheme.subTextColor )
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 10)
-                    Spacer()
-                }.padding(.vertical, 10)
+                WrapViewNormal (options: [drinking.isEmpty ? "Not Specified" : drinking], selectedSize: .medium , rowsCount: $rowsCount )
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 10)
+                    .padding(.bottom, 10)
+                
+//                
+//                HStack {
+//                  
+//                Text(drinking.isEmpty ? "Not Specified" : drinking)
+//                        .font(.system(size: sizeTextInCard))
+//                        .foregroundColor( themeManager.currentTheme.subTextColor )
+//                        .padding(.horizontal, 10)
+//                        .padding(.bottom, 10)
+//                    Spacer()
+//                }.padding(.vertical, 10)
+                
             }.cardStyle()
 //            .padding(8) // Reduce padding
 //            .background(
@@ -1241,7 +1287,7 @@ struct JobRoleCardView: View {
     var sizeTextInCard = 30.0
     
     @EnvironmentObject var themeManager : ThemeManager
-    
+    @State var rowsCount:Int = 0
 
     var body: some View {
         VStack {
@@ -1254,18 +1300,23 @@ struct JobRoleCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
+                WrapViewNormal (options: [jobRole.isEmpty ? "Not Specified" : jobRole], selectedSize: .medium , rowsCount: $rowsCount )
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 10)
+                    .padding(.bottom, 10)
                 
-                HStack {
-               
-                    Text(jobRole.isEmpty ? "Not Specified" : jobRole)
-                        .font(.system(size: sizeTextInCard))
-                        .foregroundColor( themeManager.currentTheme.subTextColor )
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 10)
-                        .padding(.horizontal, 10).padding(.vertical, 10)
-                    Spacer()
-                }
+//                HStack {
+//               
+//                    Text(jobRole.isEmpty ? "Not Specified" : jobRole)
+//                        .font(.system(size: sizeTextInCard))
+//                        .foregroundColor( themeManager.currentTheme.subTextColor )
+//                        .padding(.horizontal, 10)
+//                        .padding(.bottom, 10)
+//                        .padding(.horizontal, 10).padding(.vertical, 10)
+//                    Spacer()
+//                }
             }
+           
             .cardStyle()
 //            .padding(8) // Reduce padding
 //            .background(

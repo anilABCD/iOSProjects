@@ -23,6 +23,10 @@
         </dict>
         
 	</array>
+    
+    <key>CFBundleDisplayName</key>
+    <string>Devos</string>
+
 	<key>FacebookAppID</key>
 	<string>2176052856159826</string>
 	<key>FacebookClientToken</key>

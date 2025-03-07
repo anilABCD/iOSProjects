@@ -76,7 +76,7 @@ struct OthersProfileView: View {
             AgeCardView(dob: profile?.dob )
             JobRoleCardView(jobRole: profile?.jobRole ?? "", sizeTextInCard: sizeTextInCard )
             TechnologiesCardView(technologies: profile?.technologies ?? [], sizeTextInCard: sizeTextInCard )
-            HobbiesCardView(hobbies: profile?.hobbies ?? [], sizeTextInCard: sizeTextInCard )
+            HobbiesCardView(  hobbies2: profile?.hobbies ?? [], sizeTextInCard: sizeTextInCard )
             SmokingCardView(smoking: profile?.smoking ?? "", sizeTextInCard: sizeTextInCard )
             DrinkingCardView(drinking: profile?.drinking ?? "" , sizeTextInCard: sizeTextInCard )
 
