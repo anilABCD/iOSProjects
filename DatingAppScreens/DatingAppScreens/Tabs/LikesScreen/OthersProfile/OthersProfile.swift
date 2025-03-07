@@ -29,6 +29,7 @@ struct OthersProfileView: View {
                                 Image(systemName: "person.crop.circle")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(themeManager.currentTheme.id == "light" ? Color.black : Color.white )
                                     .frame(width: 400, height: 300)
                                 
                             }

@@ -14,7 +14,7 @@ struct CachedImageView<FailureView: View>: View {
   
     var storeInDisk : Bool = false ;
     
-  
+
     var isCircle : Bool = false
     var cacheExpiryInterval : TimeInterval = 60 * 60 * 24 * 7 ;
     
@@ -31,6 +31,7 @@ struct CachedImageView<FailureView: View>: View {
                     .frame(width: width, height: height)
                     
                     .cornerRadius( isCircle ? width : 20)
+                   
                     
             } else if isLoading {
                 ProgressView()

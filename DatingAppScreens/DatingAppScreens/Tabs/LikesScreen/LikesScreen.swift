@@ -124,6 +124,7 @@ struct LikeItemView: View {
                                 Image(systemName: "person.crop.circle")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(themeManager.currentTheme.id == "light" ? Color.black : Color.white )
                                     .frame(width: 50, height: 50)
                                 
                             }
