@@ -5,7 +5,7 @@ struct SplashScreenView: View {
 
     var body: some View {
         VStack {
-            Image("splashscreenlogo")
+            Image("splashscreenlogo2")
                 .resizable()
                 .frame(width: 300, height: 189)
                 .cornerRadius(20)
