@@ -96,6 +96,9 @@ struct ContentView: View {
     @State private var selectedTabForIndicator = 0
     @EnvironmentObject private var tokenManager: TokenManager
     
+    
+    @EnvironmentObject private var networkMonitoring : NetworkMonitor
+    
     @EnvironmentObject private var themeManager: ThemeManager
     
     @Binding  var deepLinkData: DeepLinkData?
@@ -866,6 +869,30 @@ struct ContentView: View {
                 removeKeyboardListeners();
             }
         }.background(themeManager.currentTheme.backgroundColor)
+            .overlay{
+                if !networkMonitoring.isConnected {
+                
+                    VStack {
+                    
+                        Image(systemName: "wifi.exclamationmark") // SF Symbol
+                                        .font(.system(size: 50))
+                                        .foregroundColor(.red)
+                        
+                        
+                        
+                        Text("No Internet Connection")
+                                        .font(.headline)
+                                        .foregroundColor(.red)
+                        
+                    }
+                    .padding()
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(radius: 5)
+                    .padding()
+                           
+                }
+            }
 }
     
     func handleDeepLink () {

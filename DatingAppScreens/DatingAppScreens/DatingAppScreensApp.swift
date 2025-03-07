@@ -307,7 +307,7 @@ struct DatingAppScreensApp: App {
     
     @StateObject private var themeManager = ThemeManager()
 
-    
+    @StateObject private var networkMonitor = NetworkMonitor()
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var showSplashScreen = true
@@ -332,7 +332,7 @@ struct DatingAppScreensApp: App {
                 else
                 {
                 
-                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher).environmentObject(themeManager)
+                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher).environmentObject(themeManager).environmentObject(networkMonitor)
                         .onOpenURL { url in
                                            // First, try to handle Google Sign-In URL
                                            if GIDSignIn.sharedInstance.handle(url) {
