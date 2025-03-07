@@ -11,11 +11,13 @@ struct CachedImageView<FailureView: View>: View {
     let width: CGFloat
     let height: CGFloat
     let failureView: () -> FailureView
-    
+  
     var storeInDisk : Bool = false ;
     
+  
+    var isCircle : Bool = false
     var cacheExpiryInterval : TimeInterval = 60 * 60 * 24 * 7 ;
-
+    
     @State private var image: UIImage?
     @State private var isLoading = true
     @State private var hasFailed = false
@@ -27,7 +29,9 @@ struct CachedImageView<FailureView: View>: View {
                     .resizable()
                     .scaledToFill()
                     .frame(width: width, height: height)
-                    .cornerRadius(20)
+                    
+                    .cornerRadius( isCircle ? width : 20)
+                    
             } else if isLoading {
                 ProgressView()
                     .frame(width: width, height: height)

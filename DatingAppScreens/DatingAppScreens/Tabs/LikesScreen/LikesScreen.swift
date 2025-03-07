@@ -112,34 +112,55 @@ struct LikeItemView: View {
     
     var body: some View {
         HStack {
-            if let imageName = like.userFrom?.photo , let url = URL(string: "\(photoURL)/\("resized-")\(imageName)")
-            {
-                AsyncImage(url: url) { phase in
-                                   switch phase {
-                                   case .empty:
-                                       ProgressView()
-                                           .frame(width: 50, height: 50)
-                                   case .success(let image):
-                                       image
-                                           .resizable()
-                                           .aspectRatio(contentMode: .fill)
-                                           .frame(width: 50, height: 50)
-                                           .clipShape(Circle())
-                                   case .failure:
-                                       Image(systemName: "person.crop.circle")
-                                           .resizable()
-                                           .aspectRatio(contentMode: .fill)
-                                           .frame(width: 50, height: 50)
-                                           .clipShape(Circle())
-                                           .foregroundColor(themeManager.currentTheme.id == "light" ? .black : .white) // Red color
-
-                                   @unknown default:
-                                       EmptyView()
-                                   }
-                               }
-                        
-                               .padding(.trailing, 8)
-            }
+            
+            
+            CachedImageView(
+                url: URL(string: "\(photoURL)/\("resized-")\(like.userFrom?.photo ?? "")"),
+                        width: 50,
+                        height: 50,
+                      
+                        failureView: {
+                            VStack {
+                                Image(systemName: "person.crop.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 50, height: 50)
+                                
+                            }
+                        },
+                        storeInDisk : true,
+                isCircle : true 
+                    )
+            
+//            
+//            if let imageName = like.userFrom?.photo , let url = URL(string: "\(photoURL)/\("resized-")\(imageName)")
+//            {
+//                AsyncImage(url: url) { phase in
+//                                   switch phase {
+//                                   case .empty:
+//                                       ProgressView()
+//                                           .frame(width: 50, height: 50)
+//                                   case .success(let image):
+//                                       image
+//                                           .resizable()
+//                                           .aspectRatio(contentMode: .fill)
+//                                           .frame(width: 50, height: 50)
+//                                           .clipShape(Circle())
+//                                   case .failure:
+//                                       Image(systemName: "person.crop.circle")
+//                                           .resizable()
+//                                           .aspectRatio(contentMode: .fill)
+//                                           .frame(width: 50, height: 50)
+//                                           .clipShape(Circle())
+//                                           .foregroundColor(themeManager.currentTheme.id == "light" ? .black : .white) // Red color
+//
+//                                   @unknown default:
+//                                       EmptyView()
+//                                   }
+//                               }
+//                        
+//                               .padding(.trailing, 8)
+//            }
             VStack(alignment: .leading) {
                 Text(like.userFrom?.name ?? "Unknown").foregroundColor(themeManager.currentTheme.textColor)
                     .font(.headline)
