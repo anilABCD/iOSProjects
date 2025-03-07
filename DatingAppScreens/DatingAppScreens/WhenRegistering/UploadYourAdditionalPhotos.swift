@@ -22,6 +22,7 @@ struct ImageUploaderView: View {
     
     
     @EnvironmentObject private var tokenManger : TokenManager
+    @EnvironmentObject private var themeManager : ThemeManager
     
     @State private var isFirstTimeUpdating = false;
   
@@ -33,39 +34,65 @@ struct ImageUploaderView: View {
     let title: String
     
     var body: some View {
-        VStack {
-            HStack {
-                Text(title)
-                    .font(.title)
-                    .foregroundColor(.primary)
-                Spacer()
-            }.padding(.horizontal)
+        
+        ZStack {
             
-            if let image = image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-            }
-            else if (
-                ( imageNumber == 1 && tokenManger.photo1 != "" ) ||
-                ( imageNumber == 2 && tokenManger.photo2 != "" ) ||
-                ( imageNumber == 3 && tokenManger.photo3 != "" ) ||
-                ( imageNumber == 4 && tokenManger.photo4 != "" )
-            ) {
+            // Dashed Border
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(
+                    Color.blue,
+                    style: StrokeStyle(lineWidth: 2, dash: [6])
+                )
+                .frame(width: 130) // Adjust size
+                .background(Color.blue.opacity(0.1)) // Light blue background
+               
+                .cornerRadius(12)
+            
+            VStack {
+                HStack {
+                    Spacer()
+                    Text(title)
+                        .font(themeManager.currentTheme.subHeadLinefont)
+                        .foregroundColor(.primary)
+                    Spacer()
+                }.padding(.horizontal)
                 
-                switch imageNumber {
-                case 1 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo1)")
-                        .clipShape(Circle()).frame(width: 100, height: 100)
-                case 2 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo2)")
-                        .clipShape(Circle()).frame(width: 100, height: 100)
-                case 3 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo3)")
-                        .clipShape(Circle()).frame(width: 100, height: 100)
-                case 4 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo4)")
-                        .clipShape(Circle()).frame(width: 100, height: 100)
-                default:
+                if let image = image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                }
+                else if (
+                    ( imageNumber == 1 && tokenManger.photo1 != "" ) ||
+                    ( imageNumber == 2 && tokenManger.photo2 != "" ) ||
+                    ( imageNumber == 3 && tokenManger.photo3 != "" ) ||
+                    ( imageNumber == 4 && tokenManger.photo4 != "" )
+                ) {
+                    
+                    switch imageNumber {
+                    case 1 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo1)")
+                            .clipShape(Circle()).frame(width: 100, height: 100)
+                    case 2 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo2)")
+                            .clipShape(Circle()).frame(width: 100, height: 100)
+                    case 3 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo3)")
+                            .clipShape(Circle()).frame(width: 100, height: 100)
+                    case 4 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo4)")
+                            .clipShape(Circle()).frame(width: 100, height: 100)
+                    default:
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundColor(.black)
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                    }
+                    
+                    
+                } else {
                     Image(systemName: "person.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -75,31 +102,21 @@ struct ImageUploaderView: View {
                         .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                 }
                 
-               
-            } else {
-                Image(systemName: "person.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .foregroundColor(.black)
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-            }
-            
-            PhotosPicker(selection: $photoPickerItem, matching: .images) {
-                Text("Upload Photo").modifier(ThemedTextButtonModifier())
-            }
-            
-        }
-        .onChange(of: photoPickerItem) { newValue in
-            Task {
-                if let photoPickerItem = newValue,
-                   let data = try? await photoPickerItem.loadTransferable(type: Data.self),
-                   let imagedata = UIImage(data: data) {
-                    image = imagedata
-                    await uploadImage()
+                PhotosPicker(selection: $photoPickerItem, matching: .images) {
+                    Text("Upload").modifier(ThemedTextButtonModifier())
                 }
-                photoPickerItem = nil
+                
+            }
+            .onChange(of: photoPickerItem) { newValue in
+                Task {
+                    if let photoPickerItem = newValue,
+                       let data = try? await photoPickerItem.loadTransferable(type: Data.self),
+                       let imagedata = UIImage(data: data) {
+                        image = imagedata
+                        await uploadImage()
+                    }
+                    photoPickerItem = nil
+                }
             }
         }
     }
@@ -250,15 +267,15 @@ struct UploadYourAdditionalPhotosView: View {
         VStack{
            
             HStack {
-                Text("Addtional Photos to attract more users").font(.subheadline).padding()
+                Text("Addtional Photos to attract more users").font(themeManager.currentTheme.subHeadLinefont).padding()
                 Spacer()
             }
             LazyVGrid(columns: columns, spacing: 16) {
                 if isLoaded { // Views appear when isLoaded becomes true
-                    ImageUploaderView(imageNumber: 1, image: $image1, title: "Photo 1")
-                    ImageUploaderView(imageNumber: 2, image: $image2, title: "Photo 2")
-                    ImageUploaderView(imageNumber: 3, image: $image3, title: "Photo 3")
-                    ImageUploaderView(imageNumber: 4, image: $image4, title: "Photo 4")
+                    ImageUploaderView(imageNumber: 1, image: $image1, title: "1").frame(width: 130 )
+                    ImageUploaderView(imageNumber: 2, image: $image2, title: "2").frame(width: 130)
+                    ImageUploaderView(imageNumber: 3, image: $image3, title: "3").frame(width: 130 )
+                    ImageUploaderView(imageNumber: 4, image: $image4, title: "4").frame(width: 130 )
                 }
                         }
             .padding().background( themeManager.currentTheme.backgroundColor)

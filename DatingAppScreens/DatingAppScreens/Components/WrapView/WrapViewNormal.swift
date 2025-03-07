@@ -23,8 +23,15 @@ struct WrapViewNormal : View {
     let options: [String]
     
    var selectedSize: CapsuleSize
+
+    @EnvironmentObject var themeManager: ThemeManager
  
     @Binding var rowsCount : Int
+    
+    
+    var backgroundColor : Color =  Color(hex: "#002855")
+    var foregroundColor : Color =  .white
+    
 
     @State private var rows: [[String]] = []
 
@@ -44,11 +51,11 @@ struct WrapViewNormal : View {
                 HStack(spacing: 6) {
                     ForEach(row, id: \.self) { option in
                         Text(option)
-                            .font(.system(size: selectedSize.fontSize)) // Dynamic font size
+                            .font(.custom(themeManager.currentTheme.fontName, size: selectedSize.fontSize)) // Dynamic font size
                             .padding(.horizontal, selectedSize.padding)
                             .padding(.vertical, selectedSize.padding / 2)
-                            .background( Color(hex: "#002855"))
-                            .foregroundColor(.white)
+                            .background(backgroundColor)
+                            .foregroundColor(foregroundColor)
                             .clipShape(Capsule())
                             .fixedSize(horizontal: true, vertical: false) // Prevents truncation
                            

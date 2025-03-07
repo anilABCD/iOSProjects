@@ -1026,9 +1026,10 @@ struct ChatView: View {
                                     
                                 }) {
                                     Text("Send")
+                                        .font(themeManager.currentTheme.font)
                                         .padding(.horizontal, 20)
                                         .padding(.vertical, 10)
-                                        .background(Color.blue)
+                                        .background(themeManager.currentTheme.buttonColor)
                                         .foregroundColor(.white)
                                         .cornerRadius(8)
                                 }

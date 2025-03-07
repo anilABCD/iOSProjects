@@ -608,9 +608,11 @@ struct SwipeableView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     @State private var initialDragPosition: CGPoint = .zero
     
+    @EnvironmentObject private var themeManager : ThemeManager
     
     @State private var image: UIImage?
     
+    @State private var rowsCount : Int = 1
     
     var sizeTextInCard = 15.0
     
@@ -715,22 +717,31 @@ struct SwipeableView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 
                                 Text(item.name ?? "Unknown Name")
-                                    .font(.title)
+                                    .font( themeManager.currentTheme.font) // Adjust as needed
+
                                     .bold()
                                     .foregroundColor(.white)
+                                    .padding(.horizontal)
+//                                Text("Experience: \(item.experience ?? 0) years")
+//                                    .font( themeManager.currentTheme.subHeadLinefont)
                                 
-                                Text("Experience: \(item.experience ?? 0) years")
-                                    .font(.subheadline)
+                                // Default system subheadline size ≈ 15pt
+
                                     .foregroundColor(.white)
                                 
-                                Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
-                                    .font(.subheadline)
-                                    .frame(width:  UIScreen.main.bounds.width - 40.0 ,alignment: .leading) // Align text to the leading edge )
-                                    .foregroundColor(.white).lineLimit(nil) // Allow multiple lines
-                                    .fixedSize(horizontal: false, vertical: true) // Ensure it wraps vertically
+                                WrapViewNormal(options: item.technologies ?? [] , selectedSize: .medium , rowsCount : $rowsCount ,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
+                                    .padding()
+//
+                              
+//                                Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
+//                                    .font( themeManager.currentTheme.subHeadLinefont)
+//                                    .frame(width:  UIScreen.main.bounds.width - 40.0 ,alignment: .leading) // Align text to the leading edge )
+//                                    .foregroundColor(.white).lineLimit(nil) // Allow multiple lines
+//                                    .fixedSize(horizontal: false, vertical: true) // Ensure it wraps vertically
+//
                                 
                             }
-                            .padding(8)
+                            
                             
                             .background(
                                 LinearGradient(
@@ -740,7 +751,8 @@ struct SwipeableView: View {
                                 )
                             ) .cornerRadius(20) // Add corner radius here
                         }
-                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+                       
+                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
                         .opacity(isHidden ? 0 : 1).padding(8)
                         
                     }
@@ -880,7 +892,7 @@ struct AgeCardView: View {
         VStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Age")
-                    .font(.headline)
+                    .font(themeManager.currentTheme.headlinefont)
                     .fontWeight(.bold)
                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
@@ -888,7 +900,7 @@ struct AgeCardView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text("\(age) years")
-                    .font(.system(size: 40, weight: .bold))
+                    .font(.custom(themeManager.currentTheme.fontName, size: 40 ))
                     .foregroundColor( themeManager.currentTheme.subTextColor)
                     .padding(.horizontal, 10)
                     .padding(.bottom, 10)
@@ -927,7 +939,7 @@ struct BioCardView: View {
         VStack {
             VStack(alignment: .leading, spacing: 4) { // Reduce spacing
                 Text("About Me")
-                               .font(.headline)
+                    .font(themeManager.currentTheme.headlinefont)
                                .fontWeight(.bold)
                                .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                                .padding(.horizontal, 10)
@@ -935,7 +947,7 @@ struct BioCardView: View {
                                .frame(maxWidth: .infinity, alignment: .leading)
                            
                            Text(bio)
-                               .font(.subheadline)
+                    .font(themeManager.currentTheme.subHeadLinefont)
                                .foregroundColor( themeManager.currentTheme.subTextColor)
                                .lineLimit(nil)
                                .padding(.horizontal, 10)
@@ -984,7 +996,7 @@ struct TechnologiesCardView: View {
         VStack {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Technologies")
-                    .font(.headline)
+                    .font(themeManager.currentTheme.headlinefont)
                     .fontWeight(.bold)
                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
@@ -1057,7 +1069,7 @@ struct HobbiesCardView: View {
         VStack {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Hobbies")
-                    .font(.headline)
+                    .font(themeManager.currentTheme.headlinefont)
                     .fontWeight(.bold)
                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
@@ -1118,7 +1130,7 @@ struct SmokingCardView: View {
         VStack {
             VStack(alignment: .leading, spacing: 4) { // Reduce spacing
                 Text("Smoking")
-                    .font(.headline)
+                    .font(themeManager.currentTheme.headlinefont)
                     .fontWeight(.bold)
                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
@@ -1210,7 +1222,7 @@ struct DrinkingCardView: View {
         VStack {
             VStack(alignment: .leading, spacing: 4) { // Reduce spacing
                 Text("Drinking")
-                    .font(.headline)
+                    .font(themeManager.currentTheme.headlinefont)
                     .fontWeight(.bold)
                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)
@@ -1300,7 +1312,7 @@ struct JobRoleCardView: View {
         VStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Job Role")
-                    .font(.headline)
+                    .font(themeManager.currentTheme.headlinefont)
                     .fontWeight(.bold)
                     .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
                     .padding(.horizontal, 10)

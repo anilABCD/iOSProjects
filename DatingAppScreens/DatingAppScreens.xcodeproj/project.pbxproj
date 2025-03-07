@@ -77,6 +77,8 @@
 		B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6C9512C175D6100F321A9 /* OthersProfile.swift */; };
 		B7E898782D054BBA00F0D41D /* UpdateNotificationPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */; };
 		B7E93D7A2D62635B00259177 /* SingleSelectPopUpChipSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E93D792D62635B00259177 /* SingleSelectPopUpChipSelectionSheet.swift */; };
+		B7EC04802D7B3B4C00E21568 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7EC047F2D7B3B4C00E21568 /* Poppins-Regular.ttf */; };
+		B7EC04822D7B3B5A00E21568 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7EC04812D7B3B5A00E21568 /* Poppins-Bold.ttf */; };
 		B7EC28582BF8B5AC004CC808 /* SkeletonLoadingExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */; };
 		B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */; };
 		B7F2A7FA2C171BF900A51B3D /* MatchesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */; };
@@ -182,6 +184,8 @@
 		B7E6C9512C175D6100F321A9 /* OthersProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersProfile.swift; sourceTree = "<group>"; };
 		B7E898772D054BA000F0D41D /* UpdateNotificationPermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateNotificationPermissionsView.swift; sourceTree = "<group>"; };
 		B7E93D792D62635B00259177 /* SingleSelectPopUpChipSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectPopUpChipSelectionSheet.swift; sourceTree = "<group>"; };
+		B7EC047F2D7B3B4C00E21568 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		B7EC04812D7B3B5A00E21568 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		B7EC28572BF8B5AC004CC808 /* SkeletonLoadingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingExample.swift; sourceTree = "<group>"; };
 		B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesScreen.swift; sourceTree = "<group>"; };
 		B7F2A7F92C171BF900A51B3D /* MatchesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesModel.swift; sourceTree = "<group>"; };
@@ -383,6 +387,7 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B7EC047E2D7B3B1900E21568 /* Fonts */,
 				B75388D82D7AF18900641BDD /* Services */,
 				B7C523722D5AD73E002412E6 /* Text */,
 				B7C5236F2D5ACCD2002412E6 /* Button */,
@@ -581,6 +586,15 @@
 			path = OthersProfile;
 			sourceTree = "<group>";
 		};
+		B7EC047E2D7B3B1900E21568 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B7EC047F2D7B3B4C00E21568 /* Poppins-Regular.ttf */,
+				B7EC04812D7B3B5A00E21568 /* Poppins-Bold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		B7F2A7F62C17129700A51B3D /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,8 +730,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7EC04802D7B3B4C00E21568 /* Poppins-Regular.ttf in Resources */,
 				B79D44D72BEF1F2C00F0AA8B /* Preview Assets.xcassets in Resources */,
 				B79D44D42BEF1F2C00F0AA8B /* Assets.xcassets in Resources */,
+				B7EC04822D7B3B5A00E21568 /* Poppins-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1067,6 +1083,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DatingAppScreens/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Devos;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to allow you to take photos.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to provide continuous tracking even when the app is in the background.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show you relevant content.";
@@ -1109,6 +1126,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DatingAppScreens/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Devos;
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to allow you to take photos.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to provide continuous tracking even when the app is in the background.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show you relevant content.";

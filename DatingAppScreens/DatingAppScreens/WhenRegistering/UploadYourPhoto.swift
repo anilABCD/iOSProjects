@@ -37,7 +37,7 @@ struct UploadYourPhotoView: View {
                 HStack {
                     
                     Text("Upload Your Photo")
-                        .font(.title) // Use .subheadline or .callout for smaller text
+                        .font(themeManager.currentTheme.titlefont) // Use .subheadline or .callout for smaller text
                         .modifier(ThemedTextModifier())
                  
                     Spacer();

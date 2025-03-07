@@ -26,7 +26,12 @@ struct AppTheme {
     let buttonColor: Color
     let buttonSecondaryColor : Color
     
+    let fontName : String
     let font: Font
+    let titlefont : Font
+    let subHeadLinefont : Font
+    let headlinefont : Font
+    
     let cornerRadius: CGFloat
     let shadowRadius: CGFloat
 }
@@ -44,17 +49,26 @@ struct Themes {
         cardBackgroundColor : .white ,
         tabsBackgroundColor :.white,
         
+        
+        
+        
         textColor: .black,
         subTextColor : .black.opacity(0.5) ,
         
         popUpBackgroundColor : .blue ,
         
-        buttonColor: .blue,
+        buttonColor: Color(hex:"#0057D9") ,
         
         
         buttonSecondaryColor: .blue.opacity(0.9) ,
         
-        font: .system(size: 16, weight: .regular),
+        fontName: "Poppins" ,
+        
+        font: .custom("Poppins", size: 18),
+        titlefont : .custom("Poppins", size: 28) ,
+        subHeadLinefont : .custom("Poppins", size: 15) ,
+        headlinefont :  .custom("Poppins", size: 17), // Approximate headline size in iOS
+        
         cornerRadius: 12,
         shadowRadius: 5
     )
@@ -77,7 +91,14 @@ struct Themes {
         
         buttonColor: .cyan,
         buttonSecondaryColor : .white.opacity(0.1) ,
-        font: .system(size: 16, weight: .medium),
+        
+        fontName: "Poppins" ,
+        
+        font: .custom("Poppins", size: 18),
+        titlefont : .custom("Poppins", size: 28) ,
+        subHeadLinefont : .custom("Poppins", size: 15) ,
+        headlinefont :  .custom("Poppins", size: 17), // Approximate headline size in iOS
+        
         cornerRadius: 12,
         shadowRadius: 5
     )
@@ -98,8 +119,15 @@ struct Themes {
         popUpBackgroundColor : .red.opacity(0.5) ,
         
         buttonColor: .red,
-        buttonSecondaryColor: .red, 
-        font: .system(size: 18, weight: .bold),
+        buttonSecondaryColor: .red,
+        
+        fontName: "Poppins" ,
+        font: .custom("Poppins", size: 18),
+        titlefont : .custom("Poppins", size: 28) ,
+        subHeadLinefont : .custom("Poppins", size: 15) ,
+        headlinefont :  .custom("Poppins", size: 17), // Approximate headline size in iOS
+        
+        
         cornerRadius: 20,
         shadowRadius: 8
     )

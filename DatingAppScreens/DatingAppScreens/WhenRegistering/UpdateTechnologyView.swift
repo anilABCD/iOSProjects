@@ -177,7 +177,7 @@ struct UpdateTechnologyNewView: View {
             HStack {
                 
                 Text("Technologies")
-                    .font(.title) // Use .subheadline or .callout for smaller text
+                    .font(themeManager.currentTheme.titlefont) // Use .subheadline or .callout for smaller text
                     
                     .modifier(ThemedTextModifier())
                     
@@ -215,6 +215,7 @@ struct UpdateTechnologyNewView: View {
                            HStack {
                                Text(items[index].name)
                                    .lineLimit(1)
+                                   .font(themeManager.currentTheme.font)
                                    .foregroundColor(themeManager.currentTheme.id == "light" ? .black.opacity(0.8) : .white)
 
                                Spacer()
@@ -320,7 +321,7 @@ struct ItemView: View {
     var body: some View {
         Text(item.name)
 //            .fontWeight(item.isSelected ? .semibold : .regular)
-            .font( .system(size: 14))
+            .font( .custom( themeManager.currentTheme.fontName , size: 14))
             .foregroundColor(item.isSelected ? ( themeManager.currentTheme.id == "light" ?  .black : .white ) : ( themeManager.currentTheme.id == "light" ?  .black : .white ) )
             .padding(.vertical, 10)
             .padding(.horizontal)

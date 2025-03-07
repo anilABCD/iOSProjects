@@ -4,29 +4,20 @@
 <dict>
 	<key>CFBundleURLTypes</key>
 	<array>
-		
-        <dict>
+		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb2176052856159826</string>
 			</array>
 		</dict>
-		
-        <dict/>
-        
-        <!-- Add the URL Scheme for Google Sign-In -->
-        <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.googleusercontent.apps.346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln</string>
-            </array>
-        </dict>
-        
+		<dict/>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.346488674498-2qr8r4s789h0ec3jd8n5offr38jrqkln</string>
+			</array>
+		</dict>
 	</array>
-    
-    <key>CFBundleDisplayName</key>
-    <string>Devos</string>
-
 	<key>FacebookAppID</key>
 	<string>2176052856159826</string>
 	<key>FacebookClientToken</key>
@@ -41,6 +32,11 @@
 	<array>
 		<string>fbapi</string>
 		<string>fb-messenger-share-api</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-Bold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

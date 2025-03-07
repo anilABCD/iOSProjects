@@ -238,6 +238,7 @@ struct ContentView: View {
     var body: some View {
         
         VStack {
+         
             
 //            HeightScaleControl()
             
@@ -581,6 +582,13 @@ struct ContentView: View {
                                         
                                         HomeView().onAppear(){
                                             tokenManager.isMenuView = false
+                                             
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                                                        for family in UIFont.familyNames {
+                                                            print(family)
+                                                        }
+                                                    })
+                                               
                                         }
                                         //                                    .tabItem {
                                         //                                        Label("", systemImage: "rectangle.stack")
@@ -1236,6 +1244,7 @@ struct SideMenuView: View {
             Spacer()
         }
         .frame(maxWidth: 600, alignment: .leading)
+        
 
     }
     
