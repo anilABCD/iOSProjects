@@ -1076,10 +1076,11 @@ struct HobbiesCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
          
-                WrapViewNormal (options: formattedHobbies, selectedSize: .medium  , rowsCount: $rowsCount)
+                WrapViewNormal (options: formattedHobbies, selectedSize: .medium  , rowsCount: $rowsCount )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
+                    
                 
 ////                LazyVGrid(columns: columns, spacing: 15) {
 ////                    ForEach(hobbies, id: \.self) { hobby in
@@ -1092,7 +1093,7 @@ struct HobbiesCardView: View {
 ////                }
 //                .padding(.horizontal, 10).padding(.vertical, 10)
             }
-            .frame(height: ( CGFloat(rowsCount) * 120))
+            .frame(height: ( CGFloat(rowsCount) * 150))
             .cardStyle()
             
 //            .padding(8)

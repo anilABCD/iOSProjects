@@ -28,10 +28,10 @@ struct WrapViewNormal : View {
  
     @Binding var rowsCount : Int
     
-    
+   
     var backgroundColor : Color =  Color(hex: "#002855")
     var foregroundColor : Color =  .white
-    
+    var maxWidth : CGFloat = 80.0
 
     @State private var rows: [[String]] = []
 
@@ -69,7 +69,7 @@ struct WrapViewNormal : View {
     private func arrangeItems() {
         var currentRow: [String] = []
         var rowWidth: CGFloat = 0
-        let maxWidth = UIScreen.main.bounds.width - 40 // Adjust for padding
+        let maxWidth = UIScreen.main.bounds.width - maxWidth // Adjust for padding
 
         for option in options {
             let optionWidth = textSize(for: option, fontSize: selectedSize.fontSize).width + selectedSize.padding * 2
