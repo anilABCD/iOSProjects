@@ -13,6 +13,8 @@ struct CachedImageView<FailureView: View>: View {
     let failureView: () -> FailureView
     
     var storeInDisk : Bool = false ;
+    
+    var cacheExpiryInterval : TimeInterval = 60 * 60 * 24 * 7 ;
 
     @State private var image: UIImage?
     @State private var isLoading = true
@@ -53,7 +55,7 @@ struct CachedImageView<FailureView: View>: View {
         
     
         
-        loadImage(url: url , storeInDisk : storeInDisk) { loadedImage in
+        loadImage(url: url , storeInDisk : storeInDisk , cacheExpiryInterval: cacheExpiryInterval) { loadedImage in
             
             DispatchQueue.main.async {
                 self.isLoading = false

@@ -11,47 +11,82 @@ class ImageCache {
     static let shared = NSCache<NSString, UIImage>()
 }
 
-func saveImageToDisk(image: UIImage, url: URL) {
+//let cacheExpiryInterval: TimeInterval = 60 * 60 * 24 // 1 day (in seconds)
+
+
+func saveImageToDisk(image: UIImage, url: URL, cacheExpiryInterval: TimeInterval) {
     if let data = image.jpegData(compressionQuality: 1.0) {
         let fileURL = getFilePath(for: url)
+        let metadataURL = getMetadataFilePath(for: url)
+        
         try? data.write(to: fileURL)
+        
+        let expiryDate = Date().addingTimeInterval(cacheExpiryInterval)
+        let metadata = ["expiry": expiryDate.timeIntervalSince1970]
+        
+        if let metadataData = try? JSONSerialization.data(withJSONObject: metadata) {
+            try? metadataData.write(to: metadataURL)
+        }
     }
-}
-
-func getFilePath(for url: URL) -> URL {
-    let fileName = url.lastPathComponent // Use the last path component as the filename
-    let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-    return directory.appendingPathComponent(fileName)
 }
 
 func loadImageFromDisk(url: URL) -> UIImage? {
     let fileURL = getFilePath(for: url)
+    let metadataURL = getMetadataFilePath(for: url)
+
+    guard let metadataData = try? Data(contentsOf: metadataURL),
+          let metadata = try? JSONSerialization.jsonObject(with: metadataData) as? [String: TimeInterval],
+          let expiryTimestamp = metadata["expiry"],
+          Date().timeIntervalSince1970 < expiryTimestamp else {
+        deleteImageFromDisk(url: url) // Remove expired file
+        return nil
+    }
+
     if let data = try? Data(contentsOf: fileURL) {
         return UIImage(data: data)
     }
     return nil
 }
 
+func deleteImageFromDisk(url: URL) {
+    let fileURL = getFilePath(for: url)
+    let metadataURL = getMetadataFilePath(for: url)
+    try? FileManager.default.removeItem(at: fileURL)
+    try? FileManager.default.removeItem(at: metadataURL)
+}
 
+func getFilePath(for url: URL) -> URL {
+    let fileName = url.lastPathComponent
+    let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    return directory.appendingPathComponent(fileName)
+}
 
-func loadImage(url: URL , storeInDisk : Bool, completion: @escaping (UIImage?) -> Void) {
-    
-    // First, check NSCache (in-memory)
+func getMetadataFilePath(for url: URL) -> URL {
+    let fileName = url.lastPathComponent + ".meta"
+    let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    return directory.appendingPathComponent(fileName)
+}
+
+func loadImage(url: URL, storeInDisk: Bool, cacheExpiryInterval: TimeInterval, completion: @escaping (UIImage?) -> Void) {
     if let cachedImage = ImageCache.shared.object(forKey: url.absoluteString as NSString) {
+        
+        print("Loaded From RAM Cache")
+        
         completion(cachedImage)
         return
     }
     
-    if( storeInDisk ) {
-        // Second, check disk storage
+    if storeInDisk {
+        
+        print("Loaded From Disk")
+        
         if let diskImage = loadImageFromDisk(url: url) {
-            ImageCache.shared.setObject(diskImage, forKey: url.absoluteString as NSString) // Store in memory
+            ImageCache.shared.setObject(diskImage, forKey: url.absoluteString as NSString)
             completion(diskImage)
             return
         }
     }
     
-    // Finally, download from network
     URLSession.shared.dataTask(with: url) { data, response, error in
         if let error = error {
             print("Failed to load image: \(error.localizedDescription)")
@@ -60,17 +95,14 @@ func loadImage(url: URL , storeInDisk : Bool, completion: @escaping (UIImage?) -
             }
             return
         }
-        
-//         Check for HTTP response and status code
-         
-        if let httpResponse = response as? HTTPURLResponse {
-            if !(200...299).contains(httpResponse.statusCode) { // Not a successful response
-                print("HTTP Error: \(httpResponse.statusCode)")
-                DispatchQueue.main.async {
-                    completion(nil) // Return nil for bad response codes
-                }
-                return
+
+        if let httpResponse = response as? HTTPURLResponse,
+           !(200...299).contains(httpResponse.statusCode) {
+            print("HTTP Error: \(httpResponse.statusCode)")
+            DispatchQueue.main.async {
+                completion(nil)
             }
+            return
         }
         
         guard let data = data, let image = UIImage(data: data) else {
@@ -81,59 +113,14 @@ func loadImage(url: URL , storeInDisk : Bool, completion: @escaping (UIImage?) -
             return
         }
         
-        // Save to NSCache
         ImageCache.shared.setObject(image, forKey: url.absoluteString as NSString)
-        
-        
-        if ( storeInDisk ){
-            // Save to Disk
-            saveImageToDisk(image: image, url: url)
+
+        if storeInDisk {
+            saveImageToDisk(image: image, url: url, cacheExpiryInterval: cacheExpiryInterval)
         }
-        
+
         DispatchQueue.main.async {
             completion(image)
         }
     }.resume()
 }
-
-//
-//func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) {
-//    
-//    print(url)
-//    
-//    if let cachedImage = ImageCache.shared.object(forKey: url.absoluteString as NSString) {
-//        completion(cachedImage)
-//        return
-//    }
-//    
-//    URLSession.shared.dataTask(with: url) { data, response, error in
-//        
-//        if let error = error {
-//            print("Failed to load image: \(error.localizedDescription)")
-//            DispatchQueue.main.async {
-//                completion(nil) // Return nil in case of failure
-//            }
-//            return
-//        }
-//        
-//        
-//           // Check for HTTP response and status code
-//           if let httpResponse = response as? HTTPURLResponse {
-//               if !(200...299).contains(httpResponse.statusCode) { // Not a successful response
-//                   print("HTTP Error: \(httpResponse.statusCode)")
-//                   DispatchQueue.main.async {
-//                       completion(nil) // Return nil for bad response codes
-//                   }
-//                   return
-//               }
-//           }
-//
-//        
-//        if let data = data, let image = UIImage(data: data) {
-//            ImageCache.shared.setObject(image, forKey: url.absoluteString as NSString)
-//            DispatchQueue.main.async {
-//                completion(image)
-//            }
-//        }
-//    }.resume()
-//}

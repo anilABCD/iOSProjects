@@ -26,6 +26,9 @@ struct MatchesNewDevsView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     @EnvironmentObject private var themeManager : ThemeManager
     
+    
+    @State var loadAllImagesAfterDelay : Double = 2;
+    @State var loadAllImages : Bool = false
    
     let buttonClickDelay : Double = 0.5 ;
     
@@ -197,10 +200,12 @@ struct MatchesNewDevsView: View {
                        
                        VStack (spacing: 0 ) {
                            
-                           
+                         
                            ZStack {
                                if !profiles.isEmpty {
                                    ForEach(profiles.indices , id: \.self ) { index in
+                                       
+                                     
                                        
                                        if index == profiles.count - 1 { // Show topmost item
                                            
@@ -253,6 +258,29 @@ struct MatchesNewDevsView: View {
                                             
                                            )
                                        }
+                                       
+                                       
+                                       if ( loadAllImages ) {
+                                           CachedImageView(
+                                            url: URL(string: "\(tokenManger.serverImageURL)/\(profiles[index].photo ?? "image.jpg")"),
+                                            width: UIScreen.main.bounds.width - 25.0,
+                                            height: UIScreen.main.bounds.height * 0.6,
+                                            failureView: {
+                                                VStack {
+                                                    Color.gray
+                                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
+                                                        .cornerRadius(20)
+                                                    //
+                                                    //                                                Button("Retry") {
+                                                    //                                                    // Implement retry logic if needed
+                                                    //                                                }
+                                                    //                                                .padding()
+                                                }
+                                            },
+                                            storeInDisk : true
+                                           ).hidden()
+                                       }
+                                       
                                    }
                                }
                            }.frame(maxHeight:.infinity)
@@ -375,6 +403,11 @@ struct MatchesNewDevsView: View {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0 ) {
                         isLoading = false
+                    }
+
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + loadAllImagesAfterDelay ) {
+                        loadAllImages = true
                     }
 
                     
@@ -672,7 +705,8 @@ struct SwipeableView: View {
 //                                                }
 //                                                .padding()
                                             }
-                                        }
+                                        },
+                                        storeInDisk : true
                                     ) .offset(x: offset.width, y: 0)
                                 .cornerRadius(20) // Add corner radius here
                                 .rotationEffect(.degrees(Double(offset.width / 20)))
