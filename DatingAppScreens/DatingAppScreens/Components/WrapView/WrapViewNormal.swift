@@ -23,7 +23,7 @@ struct WrapViewNormal : View {
     let options: [String]
     
    var selectedSize: CapsuleSize
-    
+ 
     @Binding var rowsCount : Int
 
     @State private var rows: [[String]] = []

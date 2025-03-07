@@ -978,6 +978,9 @@ struct TechnologiesCardView: View {
 
     
     var body: some View {
+        
+        let formattedTechnologies = technologies.map { "#\($0)" }
+        
         VStack {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Technologies")
@@ -990,7 +993,7 @@ struct TechnologiesCardView: View {
                 
                 
                 
-                WrapViewNormal (options: technologies, selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: formattedTechnologies, selectedSize: .medium , rowsCount: $rowsCount )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1047,6 +1050,10 @@ struct HobbiesCardView: View {
     ]
     
     var body: some View {
+        
+        let formattedHobbies = hobbies2.map { "#\($0)" }
+        
+        
         VStack {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Hobbies")
@@ -1057,7 +1064,7 @@ struct HobbiesCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
          
-                WrapViewNormal (options: hobbies2, selectedSize: .medium  , rowsCount: $rowsCount)
+                WrapViewNormal (options: formattedHobbies, selectedSize: .medium  , rowsCount: $rowsCount)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1091,9 +1098,9 @@ struct HobbiesCardView: View {
 //                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
 //            )
         }.padding(.horizontal, 25)
-            .onAppear(){
-                self.hobbies = hobbies2 + ["aasdfasdfdsafaf", "asdfasdfasdf" , "dfdfdfdfdf" , "asdfasdfasdf"]
-            }
+//            .onAppear(){
+//                self.hobbies = hobbies2 + ["aasdfasdfdsafaf", "asdfasdfasdf" , "dfdfdfdfdf" , "asdfasdfasdf"]
+//            }
     }
 }
 
@@ -1118,7 +1125,7 @@ struct SmokingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                WrapViewNormal (options: [smoking.isEmpty ? "Not Specified" : smoking], selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: [smoking.isEmpty ? "Not Specified" : "#\(smoking)"], selectedSize: .medium , rowsCount: $rowsCount )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1210,7 +1217,7 @@ struct DrinkingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                WrapViewNormal (options: [drinking.isEmpty ? "Not Specified" : drinking], selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: [drinking.isEmpty ? "Not Specified" : "#\(drinking)"], selectedSize: .medium , rowsCount: $rowsCount )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1300,7 +1307,7 @@ struct JobRoleCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                WrapViewNormal (options: [jobRole.isEmpty ? "Not Specified" : jobRole], selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: [jobRole.isEmpty ? "Not Specified" : "#\(jobRole)"], selectedSize: .medium , rowsCount: $rowsCount )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
