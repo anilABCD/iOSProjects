@@ -302,6 +302,9 @@ struct UserSettingsView : View {
                             }
                             Spacer()
                         }
+                        
+                        
+                        Text("Location\(tokenManger.location  ?? "Not Set")")
                     }
                     
 //                    .overlay(Rectangle().frame(height: 1).foregroundColor(themeManager.currentTheme.primaryColor), alignment: .bottom)

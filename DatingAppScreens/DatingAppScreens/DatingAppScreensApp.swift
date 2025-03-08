@@ -138,7 +138,7 @@ class TokenManager: ObservableObject {
      @AppStorage("photo4") var photo4: String = ""
     
     // Store location as a string in AppStorage (latitude,longitude)
-      @AppStorage("location") private var location : String = ""
+      @AppStorage("location") var location : String = ""
     
      @AppStorage("gender") var gender: String = ""
     
@@ -283,6 +283,9 @@ class TokenManager: ObservableObject {
         
         self.gender = ""
         
+        self.location = ""
+        
+        UserDefaults.standard.set(nil, forKey: "lastUpdateTime")
 //        self.notificationSettings = "";
 //        self.locationSettings = "";
         

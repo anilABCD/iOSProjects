@@ -89,9 +89,7 @@ struct HomeView: View {
   
     
      @State private var permissionGranted = false
-     
-    @StateObject private var locationManager = LocationManager()
-      
+   
     var body: some View {
         
        

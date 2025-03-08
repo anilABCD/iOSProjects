@@ -2,18 +2,17 @@ import CoreLocation
 import SwiftUI
 import Combine
 
-class LocationPermissionManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+class LocationServiceManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
     private var completion: ((Bool) -> Void)?
     @Published var userLocation: CLLocation?
-    @AppStorage("location") private var locationString : String = ""
+    @AppStorage("location")  var locationString : String = ""
     override init() {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
-        
-        loadSavedLocation()
+       
     }
 
     // Request location permission
@@ -48,6 +47,7 @@ class LocationPermissionManager: NSObject, ObservableObject, CLLocationManagerDe
     func stopUpdatingLocation() {
         print("Stopping location updates...")
         locationManager.stopUpdatingLocation()
+        locationManager.delegate = nil
 //        locationManager.delegate = nil  // Completely disables location updates
     }
 
@@ -57,12 +57,14 @@ class LocationPermissionManager: NSObject, ObservableObject, CLLocationManagerDe
         
         let now = Date()
         
-        // Retrieve last update time from UserDefaults
-        if let lastUpdate = UserDefaults.standard.object(forKey: "lastUpdateTime") as? Date , let userlocation = self.userLocation {
-            let timeElapsed = now.timeIntervalSince(lastUpdate)
-            if timeElapsed < 3600 {  // 3600 seconds = 1 hour
-                print("Skipping update, only \(Int(timeElapsed)) seconds passed since last update.")
-                return
+        if ( !locationString.isEmpty ) {
+            // Retrieve last update time from UserDefaults
+            if let lastUpdate = UserDefaults.standard.object(forKey: "lastUpdateTime") as? Date {
+                let timeElapsed = now.timeIntervalSince(lastUpdate)
+                if timeElapsed < 3600 {  // 3600 seconds = 1 hour
+                    print("Skipping update, only \(Int(timeElapsed)) seconds passed since last update.")
+                    return
+                }
             }
         }
 
@@ -70,6 +72,7 @@ class LocationPermissionManager: NSObject, ObservableObject, CLLocationManagerDe
         DispatchQueue.main.async {
             self.userLocation = location
             self.saveLocation(location)
+            UserDefaults.standard.set(now, forKey: "lastUpdateTime")
         }
         
         
@@ -83,14 +86,5 @@ class LocationPermissionManager: NSObject, ObservableObject, CLLocationManagerDe
           locationString = locationString2
           print("Saved location to AppStorage: \(locationString)")
       }
-      
-      // Load location from AppStorage
-      private func loadSavedLocation() {
-          let savedString = locationString
-          let components = savedString.split(separator: ",").map { Double($0) }
-          if let lat = components.first, let lon = components.last {
-              userLocation = CLLocation(latitude: lat ?? 0.0, longitude: lon ?? 00.0)
-              print("Loaded saved location: \(lat), \(lon)")
-          }
-      }
+  
 }

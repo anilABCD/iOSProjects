@@ -27,7 +27,7 @@ struct MatchesScreenView : View {
     
      @State private var permissionGranted = false
   
-    @StateObject private var locationPermissionManager = LocationPermissionManager()
+    @StateObject private var locationServiceManager = LocationServiceManager()
     @State private var permissionGrantedLocation: Bool = false
     
     var body: some View {
@@ -194,7 +194,7 @@ struct MatchesScreenView : View {
                 if tokenManger.locationSettings == "granted" {
                     
                     print("start updating location")
-                    locationPermissionManager.startUpdatingLocation()
+                    locationServiceManager.startUpdatingLocation()
                 }
                     
                 print ( currentStep , "abcd")
@@ -234,10 +234,17 @@ struct MatchesScreenView : View {
 //            
 //            SideMenuView(isMenuVisible: $isMenuVisible , path: $path
 //            )
-        }.onChange(of: locationPermissionManager.userLocation)  { newValue in
+        }.onChange(of: locationServiceManager.userLocation)  { newValue in
+            
+            guard let newValue else { return }
             
             print("new location" , newValue)
-            locationPermissionManager.stopUpdatingLocation()
+            let locationString = "\(newValue.coordinate.latitude),\(newValue.coordinate.longitude)"
+            tokenManger.location = locationString
+            
+            locationServiceManager.stopUpdatingLocation()
+            
+            
             
         }
         
@@ -278,7 +285,7 @@ struct MatchesScreenView : View {
     private func requestLocationPermission() {
         
         if ( tokenManger.locationSettings == "" ) {
-            locationPermissionManager.requestLocationPermission { granted in
+            locationServiceManager.requestLocationPermission { granted in
                 
                 self.permissionGrantedLocation = granted
                 
