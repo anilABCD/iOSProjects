@@ -16,7 +16,7 @@ struct MatchesScreenView : View {
     @State private var currentIndex = -1 ;
     @EnvironmentObject private var tokenManger : TokenManager
     @EnvironmentObject private var themeManager : ThemeManager
-    
+    @StateObject private var locationViewModel = GeoLocationViewModel()
     @Binding var path :[MyNavigation<String>]
     
     @State private var isMenuVisible = true
@@ -26,9 +26,7 @@ struct MatchesScreenView : View {
     @State private var currentStep : Int = 3
     
      @State private var permissionGranted = false
-    @StateObject private var locationManager = LocationManager()
-    
-    
+  
     @StateObject private var locationPermissionManager = LocationPermissionManager()
     @State private var permissionGrantedLocation: Bool = false
     
@@ -113,7 +111,12 @@ struct MatchesScreenView : View {
                                     requestNotificationPermission { granted in
                                         permissionGranted = granted
                                         
-                                        tokenManger.notificationSettings = "applied"
+                                        if ( granted ) {
+                                            tokenManger.notificationSettings = "granted"
+                                        }
+                                        else {
+                                            tokenManger.notificationSettings = "denied"
+                                        }
                                         
                                         currentStep = 2
                                     }
@@ -167,6 +170,11 @@ struct MatchesScreenView : View {
                             }
                 
                 
+            }.onChange(of: locationPermissionManager.userLocation)  { newValue in
+                
+                print("new location" , newValue)
+                locationPermissionManager.stopUpdatingLocation()
+                
             }
             
             
@@ -187,6 +195,13 @@ struct MatchesScreenView : View {
                     else  {
                         currentStep = 3
                     }
+                
+                
+                if tokenManger.locationSettings == "granted" {
+                    
+                    print("start updating location")
+                    locationPermissionManager.startUpdatingLocation()
+                }
                     
                 print ( currentStep , "abcd")
                 
@@ -225,6 +240,8 @@ struct MatchesScreenView : View {
 //            
 //            SideMenuView(isMenuVisible: $isMenuVisible , path: $path
 //            )
+        }.onAppear(){
+            
         }
     }
     
@@ -267,7 +284,24 @@ struct MatchesScreenView : View {
                 
                 self.permissionGrantedLocation = granted
                 
-                tokenManger.locationSettings = "applied";
+              
+                if granted {
+                
+                    print("✅ Location permission **granted**")
+                
+                    tokenManger.locationSettings = "granted";
+                    
+                 
+                }
+                else
+                {
+                           print("❌ Location permission **denied**")
+                    
+                    tokenManger.locationSettings = "denied";
+                    
+                    locationViewModel.fetchLocation();
+                    
+                }
                 
                 DispatchQueue.main.async {
                     self.currentStep = 3
@@ -304,7 +338,7 @@ struct  MatchesScreennView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
        
     static var previews: some View {
-        MatchesScreenView(path: $path).environmentObject(TokenManager())
+        MatchesScreenView(path: $path).environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
 

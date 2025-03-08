@@ -64,7 +64,7 @@ struct LikesScreenView: View {
                         }
                         .scrollContentBackground(.hidden) // Removes default background
                     .background(themeManager.currentTheme.backgroundColor)
-                    .listStyle(.insetGrouped)
+                    .listStyle(PlainListStyle())
                    
                     .accentColor(themeManager.currentTheme.primaryColor) // Global fallback
             
