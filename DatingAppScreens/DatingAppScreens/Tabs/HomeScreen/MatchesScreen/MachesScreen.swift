@@ -196,6 +196,9 @@ struct MatchesScreenView : View {
                     print("start updating location")
                     locationServiceManager.startUpdatingLocation()
                 }
+                else {
+                    locationViewModel.fetchLocation()
+                }
                     
                 print ( currentStep , "abcd")
                 
@@ -245,6 +248,15 @@ struct MatchesScreenView : View {
             locationServiceManager.stopUpdatingLocation()
             
             
+            
+        }
+        .onChange( of: locationViewModel.location ) { newValue in
+            
+            guard let newValue else { return }
+            
+            print("new location geo js" , newValue)
+            let locationString = "\(newValue.latitude ?? "" ),\(newValue.longitude ?? "" )"
+            tokenManger.location = locationString
             
         }
         

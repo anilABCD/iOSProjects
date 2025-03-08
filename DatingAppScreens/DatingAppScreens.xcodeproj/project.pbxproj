@@ -61,6 +61,7 @@
 		B79D44EB2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EA2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift */; };
 		B79D44ED2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */; };
 		B79FF56B2C258E9B007E77DC /* MessagingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */; };
+		B7A7EAA12D7C133D00FD0F5F /* Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A7EAA02D7C133900FD0F5F /* Print.swift */; };
 		B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */; };
 		B7B6106C2D784F8700AC43CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6106B2D784F8700AC43CE /* Color.swift */; };
 		B7B78C2B2D5B63EA00651770 /* ThemedTextButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B78C2A2D5B63EA00651770 /* ThemedTextButtonModifier.swift */; };
@@ -168,6 +169,7 @@
 		B79D44EA2BEF1F2C00F0AA8B /* DatingAppScreensUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITests.swift; sourceTree = "<group>"; };
 		B79D44EC2BEF1F2C00F0AA8B /* DatingAppScreensUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatingAppScreensUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingScreen.swift; sourceTree = "<group>"; };
+		B7A7EAA02D7C133900FD0F5F /* Print.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Print.swift; sourceTree = "<group>"; };
 		B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		B7B6106B2D784F8700AC43CE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B7B78C2A2D5B63EA00651770 /* ThemedTextButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedTextButtonModifier.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 		B71184A82C0F7674004FC55C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B7A7EAA02D7C133900FD0F5F /* Print.swift */,
 				B76DACFE2D7975B60054970F /* ImageCache.swift */,
 				B77B92F92D432CC5007B3A37 /* ClosingKeyboard.swift */,
 				B717AAAB2D3032F3007BA6B0 /* UIImageExtension.swift */,
@@ -906,6 +909,7 @@
 				B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */,
 				B7F4329A2D74330200122E5A /* SideMenuView.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
+				B7A7EAA12D7C133D00FD0F5F /* Print.swift in Sources */,
 				B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */,
 				B7434CF22D63D49700C190AB /* UpdateSmokingView.swift in Sources */,
 				7CEA455E2C42630100524FB3 /* MatchedScreen.swift in Sources */,
