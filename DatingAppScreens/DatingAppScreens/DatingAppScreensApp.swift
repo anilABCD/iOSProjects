@@ -137,6 +137,9 @@ class TokenManager: ObservableObject {
      @AppStorage("photo3") var photo3: String = ""
      @AppStorage("photo4") var photo4: String = ""
     
+    // Store location as a string in AppStorage (latitude,longitude)
+      @AppStorage("location") private var location : String = ""
+    
      @AppStorage("gender") var gender: String = ""
     
      @AppStorage("hobbies") var hobbies: String = ""

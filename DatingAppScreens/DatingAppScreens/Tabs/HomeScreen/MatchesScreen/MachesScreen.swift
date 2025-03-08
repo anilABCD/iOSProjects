@@ -170,13 +170,7 @@ struct MatchesScreenView : View {
                             }
                 
                 
-            }.onChange(of: locationPermissionManager.userLocation)  { newValue in
-                
-                print("new location" , newValue)
-                locationPermissionManager.stopUpdatingLocation()
-                
             }
-            
             
             
             .frame(  maxHeight: .infinity , alignment: .topLeading )
@@ -240,9 +234,13 @@ struct MatchesScreenView : View {
 //            
 //            SideMenuView(isMenuVisible: $isMenuVisible , path: $path
 //            )
-        }.onAppear(){
+        }.onChange(of: locationPermissionManager.userLocation)  { newValue in
+            
+            print("new location" , newValue)
+            locationPermissionManager.stopUpdatingLocation()
             
         }
+        
     }
     
     func checkNotificationPermission(completion: @escaping (Bool) -> Void) {
