@@ -7,7 +7,7 @@
  
 
 
-let debug = false  // Set to false to disable logging
+let debug = true  // Set to false to disable logging
 
 func print(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     if debug {

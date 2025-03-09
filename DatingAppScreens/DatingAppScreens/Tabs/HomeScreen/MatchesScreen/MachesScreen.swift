@@ -113,6 +113,10 @@ struct MatchesScreenView : View {
                                         
                                         if ( granted ) {
                                             tokenManger.notificationSettings = "granted"
+                                            
+                                            DispatchQueue.main.async {
+                                                       UIApplication.shared.registerForRemoteNotifications()
+                                                   }
                                         }
                                         else {
                                             tokenManger.notificationSettings = "denied"
@@ -188,6 +192,68 @@ struct MatchesScreenView : View {
                     }
                     else  {
                         currentStep = 3
+                        
+                        
+                        checkNotificationPermission { isGranted in
+                            permissionGranted = isGranted
+                            if  tokenManger.notificationSettings == "" {
+                                requestNotificationPermission { granted in
+                                    permissionGranted = granted
+                                    
+                                    if ( granted ) {
+                                        tokenManger.notificationSettings = "granted"
+                                        
+                                        DispatchQueue.main.async {
+                                                   UIApplication.shared.registerForRemoteNotifications()
+                                               }
+                                    }
+                                    else {
+                                        tokenManger.notificationSettings = "denied"
+                                    }
+                                    
+                                    currentStep = 2
+                                }
+                            }
+                            
+                            if tokenManger.notificationSettings == "applied" {
+                                currentStep = 2
+                            }
+                        }
+                        
+                        
+                        locationServiceManager.requestLocationPermission { granted in
+                            
+                            self.permissionGrantedLocation = granted
+                            
+                          
+                            if granted {
+                            
+                                print("✅ Location permission **granted**")
+                            
+                                tokenManger.locationSettings = "granted";
+                                
+                             
+                            }
+                            else
+                            {
+                                       print("❌ Location permission **denied**")
+                                
+                                tokenManger.locationSettings = "denied";
+                                
+                                locationViewModel.fetchLocation();
+                                
+                            }
+                            
+                            DispatchQueue.main.async {
+                                self.currentStep = 3
+                            }
+                            
+                            print ( currentStep , "abcdef")
+                            
+                        }
+                        
+                        // even when complete(true/false) is not called due to settings already done .
+                        tokenManger.locationSettings = "applied";
                     }
                 
                 
@@ -264,9 +330,21 @@ struct MatchesScreenView : View {
     
     func checkNotificationPermission(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                completion(settings.authorizationStatus == .authorized)
-               
+            
+            if settings.authorizationStatus == .notDetermined {
+                print("Notifications Not determined yet.")
+                DispatchQueue.main.async {
+                    completion(settings.authorizationStatus == .authorized)
+                    
+                }
+            } else if settings.authorizationStatus == .authorized {
+                print("Notifications authorized.")
+                DispatchQueue.main.async {
+                           UIApplication.shared.registerForRemoteNotifications()
+                       }
+                
+            } else {
+                print("Notification permission was denied previously.")
             }
         }
     }

@@ -451,65 +451,6 @@ struct ContentView: View {
                         
                     } else if ( !isHome && ( tokenManager.accessToken == "" || tokenManager.technologies == "" || tokenManager.photo == "" || tokenManager.hobbies == "" || tokenManager.isProfileDobSmokingDrinkingEmpty() || tokenManager.bio == "" || tokenManager.jobRole == "" ) ) {
                         
-//                        VStack {
-//                            
-//                            NavigationStack(path: $path) {
-//                                
-//                                //                            Group {
-//                                //
-//                                //
-//                                ////                                if tokenManager.accessToken.isEmpty {
-//                                ////
-//                                ////                                    LoginView(path: $path)
-//                                ////                                } else
-//                                ////                                if tokenManager.photo.isEmpty {
-//                                ////
-//                                ////                                    UploadYourPhotoView(path:$path)
-//                                ////
-//                                ////                                } else if tokenManager.technologies.isEmpty {
-//                                ////                                    UpdateTechnologyView(path: $path)
-//                                ////                                } else {
-//                                ////                                    LoginView(path: $path)
-//                                ////                                }
-//                                //                            }
-//                                
-//                                //                                LoginView(path: $path).navigationDestination(for: MyNavigation<String>.self) { view in
-//                                //                                    switch view.appView {
-//                                //                                    case .signIn:
-//                                //                                        LoginSocialView(path:$path)
-//                                //                                    case .signUp:
-//                                //                                        RegisterView(path:$path)
-//                                //                                    case .page1:
-//                                //                                        UploadYourPhotoView(path: $path)
-//                                //                                    case .page2:
-//                                //                                        UpdateTechnologyNewView(path: $path)
-//                                //                                    case .page3:
-//                                //                                        UpdateHobbiesView(path : $path)
-//                                //                                    case .page4:
-//                                //                                        ProfileEditorView(path : $path)
-//                                //                                    case .page5 :
-//                                //                                        UpdateDescribeYourselfView(path : $path)
-//                                //                                    case .notificationPermissionPage :
-//                                //                                        Text("Notifications Settings")
-//                                //                                    case .home:
-//                                //                                        Text("Technologies")
-//                                //                                    case .page6:
-//                                //                                        UpdateJobRoleView(path : $path)
-//                                //                                    }
-//                                //                                }
-//                            }
-//                            
-//                            
-//                        }.frame( maxWidth:.infinity)
-//                            .navigationBarTitle("", displayMode: .inline)
-//                            .onAppear(){
-//                                
-//                                //                                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1 ){
-//                                
-//                                handleNavigation()
-//                                //                                                }
-//                                
-//                            }
                         
                         
                     }
@@ -522,24 +463,7 @@ struct ContentView: View {
                                 if tokenManager.isMenuView == false {
                                     HStack {
                                         
-                                        
-                                        // Temporarly Commented If Needed , I Will Add In Future , The Menu . on the left top corner.
-                                        //                                    Image("menu").resizable().frame(width: 25, height: 25)
-                                        //                                        .font(.title)
-                                        //
-                                        //                                        .cornerRadius(4)
-                                        //                                        .onTapGesture {
-                                        //                                            withAnimation {
-                                        //                                                isMenuVisible.toggle()
-                                        //                                            }
-                                        //
-                                        //                                            print("\(tokenManager.localhost)/\(tokenManager.photo)")
-                                        //                                        }
-                                        
-//                                        
-//                                        Spacer()
-//                                        
-//                                        Spacer()
+                                       
 //                                        
                                         Image("40")
                                             .resizable()
@@ -547,9 +471,7 @@ struct ContentView: View {
                                             .background( themeManager.currentTheme.id == "light" ? Color.white : .black )
                                             .rotationEffect(Angle.degrees(13))
                                         
-//                                        Text("Devo")
-//                                            .modifier(ThemedTextModifier()) // ✅ Corrected method
-//                                            .fontWeight(.bold) // ✅ Apply font weight correctly
+//
                                         
                                         Spacer()
                                         

@@ -19,6 +19,7 @@ class LocationServiceManager: NSObject, ObservableObject, CLLocationManagerDeleg
     func requestLocationPermission(completion: @escaping (Bool) -> Void) {
         self.completion = completion
         locationManager.requestWhenInUseAuthorization()
+        locationManager.requestAlwaysAuthorization()
     }
 
     // Handle permission changes
