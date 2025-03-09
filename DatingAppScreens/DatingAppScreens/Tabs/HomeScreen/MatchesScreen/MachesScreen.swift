@@ -328,26 +328,6 @@ struct MatchesScreenView : View {
         
     }
     
-    func checkNotificationPermission(completion: @escaping (Bool) -> Void) {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            
-            if settings.authorizationStatus == .notDetermined {
-                print("Notifications Not determined yet.")
-                DispatchQueue.main.async {
-                    completion(settings.authorizationStatus == .authorized)
-                    
-                }
-            } else if settings.authorizationStatus == .authorized {
-                print("Notifications authorized.")
-                DispatchQueue.main.async {
-                           UIApplication.shared.registerForRemoteNotifications()
-                       }
-                
-            } else {
-                print("Notification permission was denied previously.")
-            }
-        }
-    }
 
     func getNotificationStatus(completion: @escaping (String) -> Void) {
             let center = UNUserNotificationCenter.current()
