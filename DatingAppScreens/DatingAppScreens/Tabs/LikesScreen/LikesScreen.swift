@@ -108,61 +108,84 @@ struct LikesScreenView: View {
                             .listRowSeparatorTint(themeManager.currentTheme.navigationLinkColor)
                         }
                         
-                        ForEach(likes) { like in
-                            NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil, photoUrl: "\(tokenManger.serverImageURL)")) {
-                                LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
-                            }
-                            .listRowBackground(themeManager.currentTheme.backgroundColor)
-                            .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
-                            .id(like.id) // Add id for scroll tracking
+                        ForEach(Array(likes.enumerated()), id: \.element.id) { index, like in
                             
-                            .overlay(GeometryReader { geo in  // ✅ Use overlay instead of background
-                                Color.clear
-                                    .preference(key: VisibleItemKey.self, value: like.id)
-                            })
-                        }
-                        
-                        
-                        ForEach(loadMore) { item in
-                            LoadMoreView(id :item.id)
-                            .id(item.id)
-                            .overlay(GeometryReader { geo in
-                                
-                                DispatchQueue.main.async {
-                                               print("Dynamic overlay executed for \(item.id)")
-                                               
-                                    loadMoreItems()
-                                        
-                                           }
-                                
-                                return Color.clear
-                                    .preference(key: VisibleItemKey.self, value: item.id) // ✅ Tracks visibility
-                            })
-                        }
-                        
-                        if !likes.isEmpty && hasMoreData {
-     
-                            HStack {
-                                Spacer()
-                                Text("Loading\(skip)")
-                                
-                                if isLoading {
-                                    ProgressView()
-                                        .padding()
-                                    
-                                   
+                            
+                            if ( index == likes.count - 5 ){
+                                NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil, photoUrl: "\(tokenManger.serverImageURL)")) {
+                                    LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
                                 }
-                                Spacer()
+                                .listRowBackground(themeManager.currentTheme.backgroundColor)
+                                .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+                                .id(like.id) // Add id for scroll tracking
+                                .overlay(GeometryReader { geo in  // ✅ Use overlay instead of background
+                                    
+                                    DispatchQueue.main.async {
+                                                   print("Dynamic overlay executed for \(like.id)")
+                                                   
+                                        loadMoreItems()
+                                            
+                                     }
+                                    
+                                    return Color.clear
+                                        .preference(key: VisibleItemKey.self, value: like.id)
+                                })
                             }
-                            .id("loadMore-\(skip)")// ✅ Forces SwiftUI to recreate when `skip` changes
-                            .listRowBackground(themeManager.currentTheme.backgroundColor)
-                            .listRowSeparator(.hidden)
-                            .overlay(GeometryReader { geo in  // ✅ Use overlay instead of background
-                                Color.clear
-                                    .preference(key: VisibleItemKey.self, value: "loadMore-\(skip)")
-                            })
+                            else {
+                                NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil, photoUrl: "\(tokenManger.serverImageURL)")) {
+                                    LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
+                                }
+                                .listRowBackground(themeManager.currentTheme.backgroundColor)
+                                .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+                                .id(like.id) // Add id for scroll tracking
+                               
+                            }
                         }
-                        Color.clear.frame(height:100)
+
+//                        
+//                        ForEach(loadMore) { item in
+//                            LoadMoreView(id :item.id)
+//                            .id(item.id)
+//                            .overlay(GeometryReader { geo in
+//                                
+//                                DispatchQueue.main.async {
+//                                               print("Dynamic overlay executed for \(item.id)")
+//                                               
+//                                    loadMoreItems()
+//                                        
+//                                           }
+//                                
+//                                return Color.clear
+//                                    .preference(key: VisibleItemKey.self, value: item.id) // ✅ Tracks visibility
+//                            })
+//                        }
+//                        
+//                        if !likes.isEmpty && hasMoreData {
+//     
+//                            HStack {
+//                                Spacer()
+//                                Text("Loading\(skip)")
+//                                
+//                                if isLoading {
+//                                    ProgressView()
+//                                        .padding()
+//                                    
+//                                   
+//                                }
+//                                Spacer()
+//                            }
+//                            .id("loadMore-\(skip)")// ✅ Forces SwiftUI to recreate when `skip` changes
+//                            .listRowBackground(themeManager.currentTheme.backgroundColor)
+//                            .listRowSeparator(.hidden)
+//                            .overlay(GeometryReader { geo in  // ✅ Use overlay instead of background
+//                                Color.clear
+//                                    .preference(key: VisibleItemKey.self, value: "loadMore-\(skip)")
+//                            })
+//                        }
+                        
+                        if ( likes.count > 8 ) {
+                            Color.clear.frame(height:100)
+                        }
                         
                     }
                     .scrollContentBackground(.hidden)
