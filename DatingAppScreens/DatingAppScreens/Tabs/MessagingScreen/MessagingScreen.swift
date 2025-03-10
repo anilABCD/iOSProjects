@@ -585,9 +585,21 @@ struct ChatView: View {
                                                                                                    else {
                                                                                                        Text(message.text)
                                                                                                            .padding()
-                                                                                                           .background(Color.blue.opacity(0.2))
-                                                                                                           .cornerRadius(10)
-                                                                                                           .foregroundColor(themeManager.currentTheme.textColor)
+                                                                                                           .background(
+                                                                                                               themeManager.currentTheme.id == "light" 
+                                                                                                               ? themeManager.currentTheme.buttonColor
+                                                                                                               : themeManager.currentTheme.buttonColor.opacity(0.8)
+                                                                                                           )
+                                                                                                           .foregroundColor(.white)
+                                                                                                           .cornerRadius(15)
+                                                                                                           .shadow(
+                                                                                                               color: themeManager.currentTheme.id == "light" 
+                                                                                                               ? Color.black.opacity(0.1)
+                                                                                                               : Color.black.opacity(0.2),
+                                                                                                               radius: 3,
+                                                                                                               x: 0,
+                                                                                                               y: 2
+                                                                                                           )
                                                                                                    }
 //                                                                                                   
                                                                                                  
@@ -598,10 +610,18 @@ struct ChatView: View {
                                                                                                    Spacer() // Push the message to the right
                                                                                                    Text(message.timestamp, style: .time)
                                                                                                        .font(.caption2)
-                                                                                                       .foregroundColor(.gray)
+                                                                                                       .foregroundColor(
+                                                                                                           themeManager.currentTheme.id == "light"
+                                                                                                           ? .gray
+                                                                                                           : themeManager.currentTheme.secondaryColor.opacity(0.7)
+                                                                                                       )
                                                                                                    Text( messageStatus(otherUserId: profile?.id ?? "" , message: message) )
                                                                                                        .font(.caption2)
-                                                                                                       .foregroundColor(message.isRead(by: profile?.id ?? "") ? .blue : .gray)
+                                                                                                       .foregroundColor(
+                                                                                                           message.isRead(by: profile?.id ?? "")
+                                                                                                           ? themeManager.currentTheme.buttonColor
+                                                                                                           : themeManager.currentTheme.secondaryColor.opacity(0.7)
+                                                                                                       )
                                                                                                        .foregroundColor(themeManager.currentTheme.secondaryColor)
                                                                                                    
                                                                                                    if ( !message.isSent ){
@@ -652,9 +672,21 @@ struct ChatView: View {
                                                                                                    else {
                                                                                                        Text(message.text)
                                                                                                            .padding()
-                                                                                                           .background(Color.blue.opacity(0.2))
-                                                                                                           .cornerRadius(10)
+                                                                                                           .background(
+                                                                                                               themeManager.currentTheme.id == "light"
+                                                                                                               ? Color(UIColor.systemGray6)
+                                                                                                               : themeManager.currentTheme.buttonSecondaryColor
+                                                                                                           )
                                                                                                            .foregroundColor(themeManager.currentTheme.textColor)
+                                                                                                           .cornerRadius(15)
+                                                                                                           .shadow(
+                                                                                                               color: themeManager.currentTheme.id == "light"
+                                                                                                               ? Color.black.opacity(0.05)
+                                                                                                               : Color.black.opacity(0.1),
+                                                                                                               radius: 2,
+                                                                                                               x: 0,
+                                                                                                               y: 1
+                                                                                                           )
                                                                                                    }
                                                                                                    
                                                                                                    Spacer() // Push the message to the left
@@ -666,8 +698,11 @@ struct ChatView: View {
                                                                                                    // Optionally, show a timestamp or other info here
                                                                                                    Text(message.timestamp, style: .time)
                                                                                                        .font(.caption2)
-                                                                                                       .foregroundColor(.gray)
-                                                                                                       .foregroundColor(themeManager.currentTheme.secondaryColor)
+                                                                                                       .foregroundColor(
+                                                                                                           themeManager.currentTheme.id == "light"
+                                                                                                           ? .gray
+                                                                                                           : themeManager.currentTheme.secondaryColor.opacity(0.7)
+                                                                                                       )
                                                                                                    
                                                                                                    Spacer() // Push the message to the left
                                                                                                }
@@ -1027,11 +1062,27 @@ struct ChatView: View {
                                 }) {
                                     Text("Send")
                                         .font(themeManager.currentTheme.font)
-                                        .padding(.horizontal, 20)
-                                        .padding(.vertical, 10)
-                                        .background(themeManager.currentTheme.buttonColor)
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 8)
+                                        .background(
+                                            themeManager.currentTheme.id == "light"
+                                            ? themeManager.currentTheme.buttonColor
+                                            : themeManager.currentTheme.buttonColor.opacity(0.9)
+                                        )
                                         .foregroundColor(.white)
-                                        .cornerRadius(8)
+                                        .cornerRadius(12)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                                        )
+                                        .shadow(
+                                            color: themeManager.currentTheme.id == "light"
+                                            ? Color.black.opacity(0.08)
+                                            : Color.black.opacity(0.15),
+                                            radius: 3,
+                                            x: 0,
+                                            y: 2
+                                        )
                                 }
                                 .padding(.trailing)
                                 
