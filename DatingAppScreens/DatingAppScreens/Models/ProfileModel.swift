@@ -93,6 +93,43 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         case gender
     }
     
+    init(  objectId : ObjectId ,  name: String? ,
+      email: String? ,
+      photo: String?,
+      experience: Int?,
+      technologies: [String]?,
+    
+      hobbies: [String]?,
+      drinking: String?,
+      smoking : String?,
+      jobRole : String?,
+    
+      dob: Date?, // Added Date of Birth
+       
+    
+      bio: String?,
+      isOnline: Bool?,
+    
+      gender : String?){
+        
+        self.objectId = objectId
+        self.name = name
+        self.email = email
+        self.photo = photo
+        self.experience = experience
+        self.technologies = technologies
+        self.hobbies = hobbies
+        self.drinking = drinking
+        self.smoking = smoking
+        self.jobRole = jobRole
+        self.dob = dob
+        self.bio = bio
+        self.isOnline = isOnline
+        self.gender = gender
+        self.leftSwipe = UUID()
+        self.rightSwipe = UUID()
+    }
+    
     // Custom Decoding to Handle dob as String or Timestamp
        init(from decoder: Decoder) throws {
            let container = try decoder.container(keyedBy: CodingKeys.self)

@@ -33,6 +33,8 @@ struct LikesScreenView: View {
 
    
     @State var skip : Int = 0
+    let skipIncrement : Int = 20;
+    
     @State private var isLoading = false
     @State private var hasMoreData = true
     
@@ -78,7 +80,7 @@ struct LikesScreenView: View {
             } else {
                 likes = likes + likesResponse
                 
-                skip = skip + 10 ;
+                skip = skip + skipIncrement ;
             
                 loadMore = [LoadMoreItem(id: skip.description)]
                 
@@ -112,7 +114,7 @@ struct LikesScreenView: View {
                             
                             
                             if ( index == likes.count - 5 ){
-                                NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil, photoUrl: "\(tokenManger.serverImageURL)")) {
+                                NavigationLink(destination: OthersProfileView(othersProfile: like.userFrom ?? nil, photoUrl: "\(tokenManger.serverImageURL)")) {
                                     LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
                                 }
                                 .listRowBackground(themeManager.currentTheme.backgroundColor)
@@ -133,7 +135,7 @@ struct LikesScreenView: View {
                                 })
                             }
                             else {
-                                NavigationLink(destination: OthersProfileView(profile: like.userFrom ?? nil, photoUrl: "\(tokenManger.serverImageURL)")) {
+                                NavigationLink(destination: OthersProfileView(othersProfile: like.userFrom ?? nil, photoUrl: "\(tokenManger.serverImageURL)")) {
                                     LikeItemView(like: like, photoURL: "\(tokenManger.serverImageURL)")
                                 }
                                 .listRowBackground(themeManager.currentTheme.backgroundColor)
