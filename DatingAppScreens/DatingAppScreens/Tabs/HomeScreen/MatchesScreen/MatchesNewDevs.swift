@@ -729,7 +729,7 @@ struct SwipeableView: View {
 
                                     .foregroundColor(.white)
                                 
-                                WrapViewNormal(options: item.technologies ?? [] , selectedSize: .medium , rowsCount : $rowsCount ,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
+                                WrapViewNormal(options: item.technologies ?? [] , selectedSize: .medium,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
                                     .padding()
 //
                               
@@ -1005,7 +1005,7 @@ struct TechnologiesCardView: View {
                 
                 
                 
-                WrapViewNormal (options: formattedTechnologies, selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: formattedTechnologies, selectedSize: .medium)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1052,7 +1052,7 @@ struct HobbiesCardView: View {
     
     @State var hobbies : [String] = []
     
-    @State var rowsCount:Int = 0
+    @State var rowsCount:Int = 1
 
     
     
@@ -1076,11 +1076,10 @@ struct HobbiesCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
          
-                WrapViewNormal (options: formattedHobbies, selectedSize: .medium  , rowsCount: $rowsCount )
+                WrapViewNormal (options: formattedHobbies, selectedSize: .medium )
                     .padding(.horizontal, 10)
-                    .padding(.vertical, 10)
-                    .padding(.bottom, 10)
-                    
+                    .padding(.bottom , 10)
+                   
                 
 ////                LazyVGrid(columns: columns, spacing: 15) {
 ////                    ForEach(hobbies, id: \.self) { hobby in
@@ -1092,8 +1091,10 @@ struct HobbiesCardView: View {
 ////                    }
 ////                }
 //                .padding(.horizontal, 10).padding(.vertical, 10)
+                
+               
             }
-            .frame(height: ( CGFloat(rowsCount) * 150))
+           
             .cardStyle()
             
 //            .padding(8)
@@ -1138,7 +1139,7 @@ struct SmokingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                WrapViewNormal (options: [smoking.isEmpty ? "Not Specified" : "#\(smoking)"], selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: [smoking.isEmpty ? "Not Specified" : "#\(smoking)"], selectedSize: .medium  )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1230,7 +1231,7 @@ struct DrinkingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                WrapViewNormal (options: [drinking.isEmpty ? "Not Specified" : "#\(drinking)"], selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: [drinking.isEmpty ? "Not Specified" : "#\(drinking)"], selectedSize: .medium )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1320,7 +1321,7 @@ struct JobRoleCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                WrapViewNormal (options: [jobRole.isEmpty ? "Not Specified" : "#\(jobRole)"], selectedSize: .medium , rowsCount: $rowsCount )
+                WrapViewNormal (options: [jobRole.isEmpty ? "Not Specified" : "#\(jobRole)"], selectedSize: .medium )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)

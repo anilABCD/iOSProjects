@@ -25,10 +25,7 @@ struct WrapViewNormal : View {
    var selectedSize: CapsuleSize
 
     @EnvironmentObject var themeManager: ThemeManager
- 
-    @Binding var rowsCount : Int
-    
-   
+  
     var backgroundColor : Color =  Color(hex: "#002855")
     var foregroundColor : Color =  .white
     var maxWidth : CGFloat = 80.0
@@ -42,7 +39,7 @@ struct WrapViewNormal : View {
         .onAppear {
             self.arrangeItems()
         }
-        .frame(maxHeight: calculateHeight())
+        .frame(height: calculateHeight())
     }
 
     private func generateWrappedItems(in totalWidth: CGFloat) -> some View {
@@ -75,6 +72,7 @@ struct WrapViewNormal : View {
             let optionWidth = textSize(for: option, fontSize: selectedSize.fontSize).width + selectedSize.padding * 2
             if rowWidth + optionWidth > maxWidth - 10 {
                 rows.append(currentRow)
+               
                 currentRow = [option]
                 rowWidth = optionWidth
             } else {
@@ -85,12 +83,17 @@ struct WrapViewNormal : View {
 
         if !currentRow.isEmpty {
             rows.append(currentRow)
-            rowsCount += 1 
         }
+        
     }
 
     private func calculateHeight() -> CGFloat {
-        return CGFloat(rows.count * Int(selectedSize.fontSize + 12)) // Approximate row height
+        guard !rows.isEmpty else { return 0 } // If no rows, height is 0
+
+           let rowHeight = selectedSize.fontSize + 12 // Approximate row height
+           let totalSpacing = CGFloat(rows.count - 1) * 6 // Spacing between rows
+
+           return CGFloat(rows.count) * rowHeight + totalSpacing
     }
 
     private func textSize(for text: String, fontSize: CGFloat) -> CGSize {

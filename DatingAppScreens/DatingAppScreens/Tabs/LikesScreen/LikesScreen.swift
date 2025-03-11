@@ -121,7 +121,8 @@ struct LikesScreenView: View {
                                 .overlay(GeometryReader { geo in  // ✅ Use overlay instead of background
                                     
                                     DispatchQueue.main.async {
-                                                   print("Dynamic overlay executed for \(like.id)")
+                                                   
+                                        print("Dynamic overlay executed for \(like.id)")
                                                    
                                         loadMoreItems()
                                             
