@@ -60,6 +60,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     var bio: String?
     var isOnline: Bool?
     
+    var gender : String?
+    
     var leftSwipe : UUID = UUID()
     var rightSwipe : UUID = UUID()
     
@@ -87,6 +89,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         
         case bio
         case isOnline
+        
+        case gender
     }
     
     // Custom Decoding to Handle dob as String or Timestamp
@@ -108,6 +112,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
            self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
            self.isOnline = try container.decodeIfPresent(Bool.self, forKey: .isOnline)
 
+           self.gender = try container.decodeIfPresent(String.self, forKey: .gender)
+           
            self.leftSwipe = UUID()
            self.rightSwipe = UUID()
            
@@ -143,7 +149,7 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
                lhs.photo == rhs.photo &&
                lhs.experience == rhs.experience &&
                lhs.technologies == rhs.technologies &&
-        
+       
         lhs.dob == rhs.dob &&
         
                 lhs.hobbies == rhs.hobbies &&
@@ -155,7 +161,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         lhs.rightSwipe == rhs.rightSwipe &&
         
                lhs.bio == rhs.bio &&
-               lhs.isOnline == rhs.isOnline
+               lhs.isOnline == rhs.isOnline &&
+        lhs.gender == rhs.gender
     }
     
     // Implementing `Hashable` protocol
@@ -178,6 +185,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
            
            hasher.combine(bio)
            hasher.combine(isOnline)
+           
+           hasher.combine(gender)
            
            hasher.combine(dob)
        }

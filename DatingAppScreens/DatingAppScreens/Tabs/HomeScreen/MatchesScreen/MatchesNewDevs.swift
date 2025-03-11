@@ -615,7 +615,7 @@ struct SwipeableView: View {
     @State private var rowsCount : Int = 1
     
     var sizeTextInCard = 15.0
-    
+    var selectedSize : CapsuleSize = .medium
     
     var body: some View {
         
@@ -716,30 +716,51 @@ struct SwipeableView: View {
                             // Text overlay on the image
                             VStack(alignment: .leading, spacing: 8) {
                                 
-                                Text(item.name ?? "Unknown Name")
-                                    .font( themeManager.currentTheme.font) // Adjust as needed
-
-                                    .bold()
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal)
-//                                Text("Experience: \(item.experience ?? 0) years")
-//                                    .font( themeManager.currentTheme.subHeadLinefont)
-                                
-                                // Default system subheadline size ≈ 15pt
-
-                                    .foregroundColor(.white)
-                                
-                                WrapViewNormal(options: item.technologies ?? [] , selectedSize: .medium,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
-                                    .padding()
-//
-                              
-//                                Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
-//                                    .font( themeManager.currentTheme.subHeadLinefont)
-//                                    .frame(width:  UIScreen.main.bounds.width - 40.0 ,alignment: .leading) // Align text to the leading edge )
-//                                    .foregroundColor(.white).lineLimit(nil) // Allow multiple lines
-//                                    .fixedSize(horizontal: false, vertical: true) // Ensure it wraps vertically
-//
-                                
+                                VStack(alignment: .leading,spacing: 8) {
+                                    Text(item.name ?? "Unknown Name")
+                                        .font( themeManager.currentTheme.font) // Adjust as needed
+                                    
+                                        .bold()
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal)
+                                    //                                Text("Experience: \(item.experience ?? 0) years")
+                                    //                                    .font( themeManager.currentTheme.subHeadLinefont)
+                                    
+                                    // Default system subheadline size ≈ 15pt
+                                    
+                                        .foregroundColor(.white)
+                                    
+                                    WrapViewNormal(options: item.technologies ?? [] , selectedSize: .medium,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
+                                        .padding(.horizontal)
+                                    //
+                                    
+                                    if let gender = item.gender {
+                                        
+                                        HStack {
+                                            Image( "\(gender)-symbol").resizable().frame(width: 15 , height: 15)
+                                            Text( "\(Utils.UDate.getAge(dob : item.dob))")
+                                                .font(.custom(themeManager.currentTheme.fontName, size: selectedSize.fontSize )) // Dynamic font size
+                                        }
+                                        .padding(.horizontal, selectedSize.padding)
+                                        .padding(.vertical, selectedSize.padding / 2)
+                                        .background( Color( hex: "#58DFF1"))
+                                        .foregroundColor(.black)
+                                        .clipShape(Capsule())
+                                        .fixedSize(horizontal: true, vertical: false) // Prevents truncation
+                                        .padding(.horizontal)
+                                        
+                                        //                                Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
+                                        //                                    .font( themeManager.currentTheme.subHeadLinefont)
+                                        //                                    .frame(width:  UIScreen.main.bounds.width - 40.0 ,alignment: .leading) // Align text to the leading edge )
+                                        //                                    .foregroundColor(.white).lineLimit(nil) // Allow multiple lines
+                                        //                                    .fixedSize(horizontal: false, vertical: true) // Ensure it wraps vertically
+                                        //
+                                    }
+                                }
+                                .padding(.bottom)
+//                                else {
+//                                    Text( "no gender")
+//                                }
                             }
                             
                             
