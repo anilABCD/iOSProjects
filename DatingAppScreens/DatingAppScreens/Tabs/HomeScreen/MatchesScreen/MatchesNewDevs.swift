@@ -730,7 +730,7 @@ struct SwipeableView: View {
                                     
                                         .foregroundColor(.white)
                                     
-                                    WrapViewNormal(options: item.technologies ?? [] , selectedSize: .medium,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
+                                    WrapViewArray(options: $item.technologies , selectedSize: .medium,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
                                         .padding(.horizontal)
                                     //
                                     
@@ -783,15 +783,16 @@ struct SwipeableView: View {
                     
                     AgeCardView(dob: item.dob )
                     
-                    TechnologiesCardView(technologies: item.technologies ?? [] , sizeTextInCard: sizeTextInCard )
+                    TechnologiesCardView(technologies: $item.technologies  , sizeTextInCard: sizeTextInCard )
                     
-                    JobRoleCardView(jobRole: item.jobRole ?? "" , sizeTextInCard: sizeTextInCard )
+                    JobRoleCardView(jobRole: $item.jobRole  , sizeTextInCard: sizeTextInCard )
                     
-                    HobbiesCardView(hobbies2: item.hobbies ?? [], sizeTextInCard: sizeTextInCard )
+                    HobbiesCardView(hobbies2: $item.hobbies , sizeTextInCard: sizeTextInCard )
                     
-                    SmokingCardView(smoking: item.smoking ?? "" , sizeTextInCard: sizeTextInCard )
+                    SmokingCardView(smoking: $item.smoking , sizeTextInCard: sizeTextInCard )
                     
-                    DrinkingCardView(drinking: item.drinking ?? "" , sizeTextInCard: sizeTextInCard )
+                  
+                    DrinkingCardView(drinking: $item.drinking  , sizeTextInCard: sizeTextInCard )
                     
 //                    Text("Profile Bio:")
 //                        .frame(maxWidth: .infinity, alignment: .leading)
@@ -996,7 +997,7 @@ struct BioCardView: View {
 }
 
 struct TechnologiesCardView: View {
-    var technologies: [String] = ["Swift", "UI/UX Design", "Cloud Computing", "SwiftUI", "iOS Development", "React", "Machine Learning", "DevOps", "Xcode", "Firebase"]
+    @Binding var technologies: [String]?
    
     var sizeTextInCard = 30.0
     
@@ -1012,8 +1013,8 @@ struct TechnologiesCardView: View {
     
     var body: some View {
         
-        let formattedTechnologies = technologies.map { "#\($0)" }
-        
+//        let formattedTechnologies = technologies.map { "#\($0)" }
+//        
         VStack {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Technologies")
@@ -1026,7 +1027,7 @@ struct TechnologiesCardView: View {
                 
                 
                 
-                WrapViewNormal (options: formattedTechnologies, selectedSize: .medium)
+                WrapViewArray (options: $technologies, selectedSize: .medium)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1064,7 +1065,7 @@ struct TechnologiesCardView: View {
 }
 
 struct HobbiesCardView: View {
-    var hobbies2: [String] = []
+    @Binding var hobbies2: [String]?
     
     var sizeTextInCard = 30.0
     
@@ -1084,8 +1085,8 @@ struct HobbiesCardView: View {
     
     var body: some View {
         
-        let formattedHobbies = hobbies2.map { "#\($0)" }
-        
+//        let formattedHobbies = hobbies2.map { "#\($0)" }
+//        
         
         VStack {
             VStack(alignment: .leading, spacing: 10) {
@@ -1097,7 +1098,7 @@ struct HobbiesCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
          
-                WrapViewNormal (options: formattedHobbies, selectedSize: .medium )
+                WrapViewArray (options: $hobbies2, selectedSize: .medium )
                     .padding(.horizontal, 10)
                     .padding(.bottom , 10)
                    
@@ -1140,7 +1141,7 @@ struct HobbiesCardView: View {
 }
 
 struct SmokingCardView: View {
-    var smoking: String = ""
+    @Binding var smoking: String?
     var sizeTextInCard = 30.0
     @EnvironmentObject var themeManager : ThemeManager
     
@@ -1160,7 +1161,7 @@ struct SmokingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                WrapViewNormal (options: [smoking.isEmpty ? "Not Specified" : "#\(smoking)"], selectedSize: .medium  )
+                WrapViewSingle (option: $smoking, selectedSize: .medium  )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1232,7 +1233,7 @@ struct SmokingCardView: View {
 }
 
 struct DrinkingCardView: View {
-    var drinking: String = ""
+    @Binding var drinking: String?
     var sizeTextInCard = 30.0
     @EnvironmentObject var themeManager : ThemeManager
     
@@ -1252,7 +1253,11 @@ struct DrinkingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                WrapViewNormal (options: [drinking.isEmpty ? "Not Specified" : "#\(drinking)"], selectedSize: .medium )
+               
+                
+                
+                WrapViewSingle (option: $drinking
+                , selectedSize: .medium )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1325,7 +1330,7 @@ struct DrinkingCardView: View {
 
 
 struct JobRoleCardView: View {
-    var jobRole: String = ""
+    @Binding var jobRole: String?
     var sizeTextInCard = 30.0
     
     @EnvironmentObject var themeManager : ThemeManager
@@ -1341,8 +1346,8 @@ struct JobRoleCardView: View {
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
-                WrapViewNormal (options: [jobRole.isEmpty ? "Not Specified" : "#\(jobRole)"], selectedSize: .medium )
+               
+                WrapViewSingle (option: $jobRole, selectedSize: .medium )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)

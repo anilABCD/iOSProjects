@@ -33,7 +33,7 @@
 		B750C9EE2BEF4C9300B278B7 /* MachesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */; };
 		B75388DA2D7AF18F00641BDD /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75388D92D7AF18F00641BDD /* NetworkMonitor.swift */; };
 		B75388EC2D7AF7A400641BDD /* WrapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75388EB2D7AF7A400641BDD /* WrapView.swift */; };
-		B75388EF2D7AF99200641BDD /* WrapViewNormal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75388EE2D7AF99200641BDD /* WrapViewNormal.swift */; };
+		B75388EF2D7AF99200641BDD /* WrapViewArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75388EE2D7AF99200641BDD /* WrapViewArray.swift */; };
 		B75F69B12C1B4AD90099E112 /* UpdateDOBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75F69B02C1B4AD90099E112 /* UpdateDOBView.swift */; };
 		B76039252BF0F8A90088DFB7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76039242BF0F8A90088DFB7 /* HomeView.swift */; };
 		B7678AEC2D75FF9E002BDBF4 /* HeightScaleControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7678AEB2D75FF9E002BDBF4 /* HeightScaleControl.swift */; };
@@ -140,7 +140,7 @@
 		B750C9ED2BEF4C9300B278B7 /* MachesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachesScreen.swift; sourceTree = "<group>"; };
 		B75388D92D7AF18F00641BDD /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		B75388EB2D7AF7A400641BDD /* WrapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrapView.swift; sourceTree = "<group>"; };
-		B75388EE2D7AF99200641BDD /* WrapViewNormal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrapViewNormal.swift; sourceTree = "<group>"; };
+		B75388EE2D7AF99200641BDD /* WrapViewArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrapViewArray.swift; sourceTree = "<group>"; };
 		B75F69B02C1B4AD90099E112 /* UpdateDOBView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDOBView.swift; sourceTree = "<group>"; };
 		B76039242BF0F8A90088DFB7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B7678AEB2D75FF9E002BDBF4 /* HeightScaleControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightScaleControl.swift; sourceTree = "<group>"; };
@@ -316,7 +316,7 @@
 		B75388ED2D7AF86F00641BDD /* WrapView */ = {
 			isa = PBXGroup;
 			children = (
-				B75388EE2D7AF99200641BDD /* WrapViewNormal.swift */,
+				B75388EE2D7AF99200641BDD /* WrapViewArray.swift */,
 				B75388EB2D7AF7A400641BDD /* WrapView.swift */,
 			);
 			path = WrapView;
@@ -882,7 +882,7 @@
 				7CEA45602C42645C00524FB3 /* MatchedModel.swift in Sources */,
 				B7F2A7F82C1712F100A51B3D /* LikesScreen.swift in Sources */,
 				B79D44D22BEF1F2B00F0AA8B /* ContentView.swift in Sources */,
-				B75388EF2D7AF99200641BDD /* WrapViewNormal.swift in Sources */,
+				B75388EF2D7AF99200641BDD /* WrapViewArray.swift in Sources */,
 				B79FF56B2C258E9B007E77DC /* MessagingScreen.swift in Sources */,
 				B75388EC2D7AF7A400641BDD /* WrapView.swift in Sources */,
 				B7C523772D5AD80F002412E6 /* ThemeToggleButton.swift in Sources */,

@@ -12,7 +12,22 @@ struct OthersProfileView: View {
     var othersProfile: Profile?
     let photoUrl : String
     
-    @State var profile : Profile? = nil
+    @State var profile : Profile = Profile(
+        objectId: ObjectId(value: ""),
+        name: nil,
+        email: nil,
+        photo: nil,
+        experience: nil,
+        technologies: nil,
+        hobbies: nil,
+        drinking: nil,
+        smoking: nil,
+        jobRole: nil,
+        dob: nil,
+        bio: nil,
+        isOnline: nil,
+        gender: nil
+    )
     
     let sizeTextInCard = 15.0;
     
@@ -33,15 +48,31 @@ struct OthersProfileView: View {
         
         let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/profiles/othersProfile", accessToken: tokenManger.accessToken , data: data, parameters: nil )
         
-        let othersProfile1 : Profile? = try await fetchData(from: urlRequest)
+        let fetchedProfile : Profile? = try await fetchData(from: urlRequest)
          
-         print("othersProfile fetched :\(othersProfile)")
+        print("othersProfile fetched :\(String(describing: fetchedProfile))")
         
-        DispatchQueue.main.async {
-            
-            if let othersProfile1 = othersProfile1 {
-                self.profile = othersProfile1
-                print("othersProfile fetched: \(othersProfile1)")
+        DispatchQueue.main.async { [self] in
+            if let fetchedProfile = fetchedProfile {
+                withAnimation {
+                    profile = Profile(
+                        objectId: fetchedProfile.objectId,
+                        name: fetchedProfile.name,
+                        email: fetchedProfile.email,
+                        photo: fetchedProfile.photo,
+                        experience: fetchedProfile.experience,
+                        technologies: fetchedProfile.technologies,
+                        hobbies: fetchedProfile.hobbies,
+                        drinking: fetchedProfile.drinking,
+                        smoking: fetchedProfile.smoking,
+                        jobRole: fetchedProfile.jobRole,
+                        dob: fetchedProfile.dob,
+                        bio: fetchedProfile.bio,
+                        isOnline: fetchedProfile.isOnline,
+                        gender: fetchedProfile.gender
+                    )
+                }
+                print("othersProfile fetched and updated: \(fetchedProfile)")
             }
             
             isLoading = false
@@ -53,12 +84,13 @@ struct OthersProfileView: View {
     
     var body: some View {
         ScrollView {
-            
-            CachedImageView(
-                        url: URL(string: "\(photoUrl)/\(profile?.photo ?? "")"),
+            if (!profile.id.isEmpty) {
+                VStack {
+                    CachedImageView(
+                        url: URL(string: "\(photoUrl)/\(profile.photo ?? "")"),
                         width: 400,
                         height: 300,
-                      
+                        
                         failureView: {
                             VStack {
                                 Image(systemName: "person.crop.circle")
@@ -66,82 +98,53 @@ struct OthersProfileView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .foregroundColor(themeManager.currentTheme.id == "light" ? Color.black : Color.white )
                                     .frame(width: 400, height: 300)
-                                
                             }
                         },
                         storeInDisk : true
-                    ).id(profile?.photo) // 🔥 Forces re-render when `photo` changes
-            
-//            Text("\(photoUrl)/\(profile?.photo ?? "")")
-            
-//            if let photoURLString = profile?.photo, let url = URL(string: "\(photoUrl)/\(photoURLString)") {
-//                AsyncImage(url: url) { phase in
-//                    switch phase {
-//                    case .empty:
-//                        ProgressView()
-//                            .frame(width: 400, height: 300)
-//                    case .success(let image):
-//                        image
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fill)
-//                            .frame(width: 400, height: 300)
-////                            .clipShape(Circle())
-//                    case .failure:
-//                        Image(systemName: "person.crop.circle")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 400, height: 300)
-////                            .clipShape(Circle())
-//                    @unknown default:
-//                        EmptyView()
-//                    }
-//                }
-//            } else {
-//                Image(systemName: "person.crop.circle")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(width: 200, height: 200)
-//                    .clipShape(Circle())
-//            }
-
-            Text(profile?.name ?? "Unknown")
-                .font(.largeTitle)
-                .padding()
-                .foregroundColor( themeManager.currentTheme.navigationLinkColor )
-                
-
-            BioCardView(bio: profile?.bio ?? "" ,sizeTextInCard: sizeTextInCard ).id(profile?.bio)
-            AgeCardView(dob: profile?.dob ).id(profile?.dob)
-            JobRoleCardView(jobRole: profile?.jobRole ?? "", sizeTextInCard: sizeTextInCard ).id(profile?.jobRole)
-            TechnologiesCardView(technologies: profile?.technologies ?? [], sizeTextInCard: sizeTextInCard ).id(profile?.technologies)
-            HobbiesCardView(  hobbies2: profile?.hobbies ?? [], sizeTextInCard: sizeTextInCard ).id(profile?.hobbies)
-            SmokingCardView(smoking: profile?.smoking ?? "", sizeTextInCard: sizeTextInCard ).id(profile?.smoking)
-            DrinkingCardView(drinking: profile?.drinking ?? "" , sizeTextInCard: sizeTextInCard ).id(profile?.drinking)
-
-            Spacer()
-            
-            // Temporary height element at the bottom (100 height)
-            Color.clear
-                .frame(height: 120) // This will push the content up and allow scrolling
-        }.onAppear(){
-            
+                    )
+                    
+//                    Text("\(photoUrl)/\(profile.photo ?? "")")
+                    
+                    Text(profile.name ?? "Unknown")
+                        .font(.largeTitle)
+                        .padding()
+                        .foregroundColor(themeManager.currentTheme.navigationLinkColor)
+                    
+                    BioCardView(bio: profile.bio ?? "", sizeTextInCard: sizeTextInCard)
+                    AgeCardView(dob: profile.dob)
+                    JobRoleCardView(jobRole: $profile.jobRole, sizeTextInCard: sizeTextInCard)
+                    TechnologiesCardView(technologies: $profile.technologies, sizeTextInCard: sizeTextInCard)
+                    HobbiesCardView(hobbies2: $profile.hobbies, sizeTextInCard: sizeTextInCard)
+                    SmokingCardView(smoking: $profile.smoking, sizeTextInCard: sizeTextInCard)
+                    DrinkingCardView(drinking: $profile.drinking, sizeTextInCard: sizeTextInCard)
+                    
+                    Spacer()
+                    
+                    Color.clear
+                        .frame(height: 120)
+                }
+                .id(profile.objectId.value)
+            }
+        }
+        .onAppear {
             print("others Profile: \(othersProfile)")
             
             DispatchQueue.main.async {
-              
-                profile = othersProfile;
+                if let othersProfile = othersProfile {
+                    profile = othersProfile
+                }
+                
                 Task {
-                               do {
-                                   try await fetchThisProfile()
-                               }catch {
-                                   print ("\(error.localizedDescription)")
-                               }
-                 }
+                    do {
+                        try await fetchThisProfile()
+                    } catch {
+                        print("\(error.localizedDescription)")
+                    }
+                }
             }
-           
-//
         }
-            .navigationBarTitle("Profile" , displayMode: .inline)
-        .padding().background(themeManager.currentTheme.backgroundColor)
+        .navigationBarTitle("Profile", displayMode: .inline)
+        .padding()
+        .background(themeManager.currentTheme.backgroundColor)
     }
 }
