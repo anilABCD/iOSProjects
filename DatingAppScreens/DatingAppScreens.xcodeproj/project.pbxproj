@@ -51,6 +51,7 @@
 		B77C2D052C1A85880026E36E /* Chips.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C2D042C1A85880026E36E /* Chips.swift */; };
 		B78180892C039A550040FADB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78180882C039A550040FADB /* ProfileView.swift */; };
 		B784EDF22C19ECD000FF97C3 /* UpdateHobbiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */; };
+		B78E74B12D8159160078A8D5 /* ChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78E74B02D8159160078A8D5 /* ChipItem.swift */; };
 		B793200D2BF4975300FE954A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200C2BF4975300FE954A /* LoginView.swift */; };
 		B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200E2BF49AEF00FE954A /* SignUpData.swift */; };
 		B79B38BB2BFEF2A9007D1E01 /* UploadYourPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79B38BA2BFEF2A9007D1E01 /* UploadYourPhoto.swift */; };
@@ -158,6 +159,7 @@
 		B77C2D042C1A85880026E36E /* Chips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips.swift; sourceTree = "<group>"; };
 		B78180882C039A550040FADB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHobbiesView.swift; sourceTree = "<group>"; };
+		B78E74B02D8159160078A8D5 /* ChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipItem.swift; sourceTree = "<group>"; };
 		B793200C2BF4975300FE954A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B793200E2BF49AEF00FE954A /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		B7957DA62BF76CA700D7E26A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -372,6 +374,14 @@
 			path = Experimental;
 			sourceTree = "<group>";
 		};
+		B78E74B22D815C390078A8D5 /* Chips */ = {
+			isa = PBXGroup;
+			children = (
+				B78E74B02D8159160078A8D5 /* ChipItem.swift */,
+			);
+			path = Chips;
+			sourceTree = "<group>";
+		};
 		B79D44C32BEF1F2B00F0AA8B = {
 			isa = PBXGroup;
 			children = (
@@ -538,6 +548,7 @@
 		B7E2A8392C17017C008ADE0E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B78E74B22D815C390078A8D5 /* Chips */,
 				B75388ED2D7AF86F00641BDD /* WrapView */,
 				B76DAD002D79775D0054970F /* CachedImageView.swift */,
 				B7678AED2D7606CC002BDBF4 /* HeightScaleControls */,
@@ -897,6 +908,7 @@
 				B71753732D4B4B2B00834FD3 /* UnreadChatCountResponse.swift in Sources */,
 				B7C523742D5AD744002412E6 /* ThemedTextModifier.swift in Sources */,
 				B7C5236E2D5ACA38002412E6 /* Themes.swift in Sources */,
+				B78E74B12D8159160078A8D5 /* ChipItem.swift in Sources */,
 				B7678AEC2D75FF9E002BDBF4 /* HeightScaleControl.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,

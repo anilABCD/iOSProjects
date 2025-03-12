@@ -733,29 +733,31 @@ struct SwipeableView: View {
                                     WrapViewArray(options: $item.technologies , selectedSize: .medium,backgroundColor: .white , foregroundColor: .black ).frame(maxWidth: UIScreen.main.bounds.width-25.0 )
                                         .padding(.horizontal)
                                     //
-                                    
-                                    if let gender = item.gender {
-                                        
+                                   
                                         HStack {
-                                            Image( "\(gender)-symbol").resizable().frame(width: 15 , height: 15)
-                                            Text( "\(Utils.UDate.getAge(dob : item.dob))")
-                                                .font(.custom(themeManager.currentTheme.fontName, size: selectedSize.fontSize )) // Dynamic font size
-                                        }
-                                        .padding(.horizontal, selectedSize.padding)
-                                        .padding(.vertical, selectedSize.padding / 2)
-                                        .background( Color( hex: "#58DFF1"))
-                                        .foregroundColor(.black)
-                                        .clipShape(Capsule())
-                                        .fixedSize(horizontal: true, vertical: false) // Prevents truncation
-                                        .padding(.horizontal)
+                                            if let gender = item.gender {
+                                                ChipItem(text: "\(Utils.UDate.getAge(dob: item.dob)) age", selectedSize: .medium, icon: "\(gender)-symbol")
+                                                   
+                                            }
+
+                                            if let jobRole = item.jobRole {
+                                                ChipItem(text: "job role :  \(jobRole)", selectedSize: .medium, icon: "jobRole2")
+                                                    
+                                            }
+                                            
+                                            Spacer()
+                                        }.padding(.horizontal)
                                         
+                                 
                                         //                                Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
                                         //                                    .font( themeManager.currentTheme.subHeadLinefont)
                                         //                                    .frame(width:  UIScreen.main.bounds.width - 40.0 ,alignment: .leading) // Align text to the leading edge )
                                         //                                    .foregroundColor(.white).lineLimit(nil) // Allow multiple lines
                                         //                                    .fixedSize(horizontal: false, vertical: true) // Ensure it wraps vertically
                                         //
-                                    }
+                                                                        
+                                  
+                                    
                                 }
                                 .padding(.bottom)
 //                                else {
