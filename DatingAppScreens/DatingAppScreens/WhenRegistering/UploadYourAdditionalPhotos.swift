@@ -73,14 +73,61 @@ struct ImageUploaderView: View {
                 ) {
                     
                     switch imageNumber {
-                    case 1 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo1)")
-                            .clipShape(Circle()).frame(width: 100, height: 100)
-                    case 2 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo2)")
-                            .clipShape(Circle()).frame(width: 100, height: 100)
-                    case 3 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo3)")
-                            .clipShape(Circle()).frame(width: 100, height: 100)
-                    case 4 : AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo4)")
-                            .clipShape(Circle()).frame(width: 100, height: 100)
+                    case 1 :
+                        
+                            CachedImageView(
+                                url: URL(string: "\(tokenManger.serverImageURL)/\(tokenManger.photo1 ?? "image.jpg")"),
+                                width: 100,
+                                height: 100,
+                                failureView: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .resizable()  .clipShape(Circle()).frame(width: 100, height: 100)
+                                    
+                                },
+                                storeInDisk : true
+                            )
+                                .clipShape(Circle()).frame(width: 100, height: 100)
+                           
+                        
+                    case 2 :  CachedImageView(
+                        url: URL(string: "\(tokenManger.serverImageURL)/\(tokenManger.photo2 ?? "image.jpg")"),
+                        width: 100,
+                        height: 100,
+                        failureView: {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()  .clipShape(Circle()).frame(width: 100, height: 100)
+                            
+                        },
+                        storeInDisk : true
+                    )
+                        .clipShape(Circle()).frame(width: 100, height: 100)
+                   
+                    case 3 :  CachedImageView(
+                        url: URL(string: "\(tokenManger.serverImageURL)/\(tokenManger.photo3 ?? "image.jpg")"),
+                        width: 100,
+                        height: 100,
+                        failureView: {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()  .clipShape(Circle()).frame(width: 100, height: 100)
+                            
+                        },
+                        storeInDisk : true
+                    )
+                        .clipShape(Circle()).frame(width: 100, height: 100)
+                   
+                    case 4 :  CachedImageView(
+                        url: URL(string: "\(tokenManger.serverImageURL)/\(tokenManger.photo4 ?? "image.jpg")"),
+                        width: 100,
+                        height: 100,
+                        failureView: {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()  .clipShape(Circle()).frame(width: 100, height: 100)
+                            
+                        },
+                        storeInDisk : true
+                    )
+                        .clipShape(Circle()).frame(width: 100, height: 100)
+                   
                     default:
                         Image(systemName: "person.fill")
                             .resizable()
@@ -126,7 +173,7 @@ struct ImageUploaderView: View {
         
         
            guard let image = image,
-                 let imageData = image.jpegData(compressionQuality: 1.0) else {
+                 let imageData = resizeImage(image, maxFileSize: 4) else {
                print("No image or failed to convert image to data.")
                return
            }

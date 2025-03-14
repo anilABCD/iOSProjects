@@ -20,6 +20,9 @@ struct UploadYourPhotoView: View {
     
     @State private var photoPickerItem : PhotosPickerItem?;
     @Environment(\.presentationMode) var presentationMode // For dismissing the view
+    
+    @State private var resizedImageData: Data?
+
        
     var showNextButton : Bool = false ;
     
@@ -56,8 +59,19 @@ struct UploadYourPhotoView: View {
                 }
                 else if ( tokenManger.photo != "")
                 {
-                    AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo)")
+                    CachedImageView(
+                        url: URL(string: "\(tokenManger.serverImageURL)/\(tokenManger.photo ?? "image.jpg")"),
+                        width: 200,
+                        height: 200,
+                        failureView: {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()  .clipShape(Circle()).frame(width: 200, height: 200)
+                            
+                        },
+                        storeInDisk : true
+                    )
                         .clipShape(Circle()).frame(width: 200, height: 200)
+                    
                 }
                 else{
                     
@@ -150,10 +164,12 @@ struct UploadYourPhotoView: View {
         
         
            guard let image = image,
-                 let imageData = image.jpegData(compressionQuality: 1.0) else {
+                 let imageData = resizeImage(image, maxFileSize: 4) else {
                print("No image or failed to convert image to data.")
                return
            }
+        
+        
 
            guard let url = URL(string: "\(tokenManger.localhost)/user/uploadImage") else {
                print("Invalid URL.")
@@ -193,7 +209,7 @@ struct UploadYourPhotoView: View {
                    isUploading = false
                }
                
-               let (data, response) = try await URLSession.shared.data(for: request)
+               let (data, response ) = try await URLSession.shared.data(for: request)
                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                    print("Image uploaded successfully!")
                    
@@ -228,7 +244,7 @@ struct UploadYourPhotoView: View {
                    
 //                   uploadResult = "Image uploaded successfully!"
                } else {
-                   print("Failed to upload image.")
+                   print("Failed to upload image.\(response)")
 //                   uploadResult = "Failed to upload image."
                }
                

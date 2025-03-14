@@ -19,6 +19,9 @@ struct Constants {
     static let localhost = "http://192.168.1.5:80"
     static let serverImageURL = "http://192.168.1.5:80/images"
     
+//    static let localhost = "http://82.25.105.7"
+//    static let serverImageURL = "https://ddt3gc1fx7dtf.cloudfront.net/uploads"
+//    
 
 // get from : ifconfig : check all ipaddresses from ifconfig , give this list to chatgpt , chagpt will provide with the ip addressses list . to work on iphone
 // prompt : to use by the iPhone device when connected to xcode

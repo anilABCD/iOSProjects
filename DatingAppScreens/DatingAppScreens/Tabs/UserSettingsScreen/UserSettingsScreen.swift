@@ -27,7 +27,19 @@ struct UserSettingsView : View {
      
         NavigationStack {
             VStack {
-                AsyncImageView(photoURL: "\(tokenManger.serverImageURL)/\(tokenManger.photo)").frame(width: 200, height: 200).clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/).padding()
+                CachedImageView(
+                    url: URL(string: "\(tokenManger.serverImageURL)/\(tokenManger.photo ?? "image.jpg")"),
+                    width: 100,
+                    height: 100,
+                    failureView: {
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()  .clipShape(Circle()).frame(width: 200, height: 200)
+                        
+                    },
+                    storeInDisk : true
+                )
+                    .clipShape(Circle()).frame(width: 200, height: 200)
+               
                 
                 HStack {
                     Spacer()
