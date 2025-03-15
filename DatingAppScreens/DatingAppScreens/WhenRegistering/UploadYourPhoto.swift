@@ -164,11 +164,11 @@ struct UploadYourPhotoView: View {
         
         
            guard let image = image,
-                 let imageData = resizeImage(image, maxFileSize: 4) else {
+                 let imageData = resizeImage(image, maxFileSize: 1) else {
                print("No image or failed to convert image to data.")
                return
            }
-        
+         
         
 
            guard let url = URL(string: "\(tokenManger.localhost)/user/uploadImage") else {

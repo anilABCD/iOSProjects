@@ -173,7 +173,7 @@ struct ImageUploaderView: View {
         
         
            guard let image = image,
-                 let imageData = resizeImage(image, maxFileSize: 4) else {
+                 let imageData = resizeImage(image, maxFileSize: 1) else {
                print("No image or failed to convert image to data.")
                return
            }
