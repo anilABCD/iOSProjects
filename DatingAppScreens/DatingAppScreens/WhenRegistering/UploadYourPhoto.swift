@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import PhotosUI
 
@@ -9,6 +7,7 @@ struct UploadYourPhotoView: View {
     
     
     @State private var image : UIImage?
+    @State private var tempImage: UIImage? // Add temporary image holder
     
     @EnvironmentObject private var tokenManger : TokenManager
     
@@ -22,6 +21,7 @@ struct UploadYourPhotoView: View {
     @Environment(\.presentationMode) var presentationMode // For dismissing the view
     
     @State private var resizedImageData: Data?
+    @StateObject private var toastManager = ToastManager() // Add toast manager
 
        
     var showNextButton : Bool = false ;
@@ -132,129 +132,164 @@ struct UploadYourPhotoView: View {
             }.frame(maxWidth: .infinity) 
             
         }.frame(maxWidth: .infinity).background( themeManager.currentTheme.backgroundColor ) // Keeps the back button
-           
+            .overlay(
+                VStack {
+                    if toastManager.isShowing {
+                        ToastView(message: toastManager.message)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .animation(.easeInOut(duration: 0.3), value: toastManager.isShowing)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            )
             .onChange(of: photoPickerItem) { newValue in
                 Task {
                     if let photoPickerItem = newValue {
-                        if let data = try? await photoPickerItem.loadTransferable(type: Data.self) {
-                            
-                            if let imagedata = UIImage(data: data){
-                                image = imagedata
-                              
-                                Task {
-                                   
-                                    await uploadImage()
+                        // Dismiss picker immediately
+                        DispatchQueue.main.async {
+                            self.photoPickerItem = nil
+                        }
                         
-                                    
-                                }
-                                
+                        // Try to load the image data
+                        if let data = try? await photoPickerItem.loadTransferable(type: Data.self),
+                           let imagedata = UIImage(data: data) {
+                            // Store in temporary variable instead of showing immediately
+                            self.tempImage = imagedata
+                            
+                            // Set loading state
+                            DispatchQueue.main.async {
+                                isUploading = true
                             }
                             
-                            // Process the loaded data asynchronously
+                            // Start upload
+                            await uploadImage()
                         }
                     }
-                   
-                    photoPickerItem = nil
                 }
-            } .navigationBarTitle("", displayMode: .inline).background( themeManager.currentTheme.backgroundColor ) // Keeps the back button
+            }
+            
+            // Remove the separate image onChange handler since we're handling upload right after image selection
+            
+            // Add loading overlay
+            .overlay {
+                if isUploading == true {
+                    ZStack {
+                        Rectangle()
+                            .fill(.ultraThinMaterial)
+                            .edgesIgnoringSafeArea(.all)
+                        
+                        VStack(spacing: 20) {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: themeManager.currentTheme.textColor))
+                                .scaleEffect(2.0)
+                            
+                            Text("Uploading...")
+                                .font(.headline)
+                                .foregroundColor(themeManager.currentTheme.textColor)
+                                .padding(.top, 4)
+                        }
+                        .padding(30)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(themeManager.currentTheme.backgroundColor.opacity(0.8))
+                                .shadow(radius: 10)
+                        )
+                    }
+                }
+            }
+            .navigationBarTitle("", displayMode: .inline).background( themeManager.currentTheme.backgroundColor )
     }
     
     
     func uploadImage() async {
-        
-        
-           guard let image = image,
-                 let imageData = resizeImage(image, maxFileSize: 1) else {
-               print("No image or failed to convert image to data.")
-               return
-           }
-         
-        
+        guard let tempImage = tempImage,
+              let imageData = resizeImage(tempImage, maxFileSize: 1) else {
+            print("No image or failed to convert image to data.")
+            DispatchQueue.main.async {
+                isUploading = false
+                toastManager.showToast(message: "Failed to process image")
+            }
+            return
+        }
 
-           guard let url = URL(string: "\(tokenManger.localhost)/user/uploadImage") else {
-               print("Invalid URL.")
-               return
-           }
+        guard let url = URL(string: "\(tokenManger.localhost)/user/uploadImage") else {
+            print("Invalid URL.")
+            DispatchQueue.main.async {
+                isUploading = false
+                toastManager.showToast(message: "Invalid URL")
+            }
+            return
+        }
 
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
 
-           let boundary = UUID().uuidString
-           let fieldName = "myImage"
-           let fileName = "image.jpg"
-        let token = tokenManger.accessToken;
-           request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        let boundary = UUID().uuidString
+        let fieldName = "myImage"
+        let fileName = "image.jpg"
+        let token = tokenManger.accessToken
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
+        var body = Data()
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
 
-           var body = Data()
+        request.httpBody = body
         
-           body.append("--\(boundary)\r\n".data(using: .utf8)!)
-           body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
-           body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-           body.append(imageData)
-           body.append("\r\n".data(using: .utf8)!)
-   
-           body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-    
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                print("Image uploaded successfully!")
+                
+                if let rawDataString = String(data: data, encoding: .utf8) {
+                    print("Raw response data: \(rawDataString)")
+                }
+                
+                do {
+                    let decodedResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
+                    print("image decoded successfully")
+                    if let photo = decodedResponse.data?.user?.photo {
+                        DispatchQueue.main.async {
+                            tokenManger.updatePhoto(photo: photo)
+                            image = tempImage // Only set the display image after successful upload
+                            print("Photo: \(photo)")
+                            toastManager.showToast(message: "Image uploaded successfully!")
+                        }
+                    } else {
+                        print("No Token")
+                        DispatchQueue.main.async {
+                            toastManager.showToast(message: "Failed to update photo")
+                        }
+                    }
+                } catch {
+                    print("Failed to decode response: \(error)")
+                }
+            } else {
+                print("Failed to upload image.\(response)")
 
-           request.httpBody = body
+                 DispatchQueue.main.async {
+                        toastManager.showToast(message: "Failed to process server response")
+                    }
+
+            }
+        } catch {
+            print("Error uploading image: \(error)")
+              DispatchQueue.main.async {
+                isUploading = false
+                toastManager.showToast(message: "Error uploading image")
+            }
+        }
         
-      
-           do {
-               isUploading = true
-               
-               defer {
-                   isUploading = false
-               }
-               
-               let (data, response ) = try await URLSession.shared.data(for: request)
-               if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                   print("Image uploaded successfully!")
-                   
-                   // Print the raw data for debugging
-                   if let rawDataString = String(data: data, encoding: .utf8) {
-                       print("Raw response data: \(rawDataString)")
-                   }
-                   
-                   do {
-                       let decodedResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
-                           // Save token locally
-                           print ("image decoded successfully")
-                           if let photo = decodedResponse.data?.user?.photo {
-                               
-                               DispatchQueue.main.async {
-                                   
-                                   tokenManger.updatePhoto(photo: photo)
-                                   print("Photo: \(photo)")
-                                   
-                               }
-                           } else {
-                               print("No Token")
-                           }
-                           
-                           
-                       
-                       
-                   }
-                   catch {
-                       print("Failed to decode response: \(error)")
-                   }
-                   
-//                   uploadResult = "Image uploaded successfully!"
-               } else {
-                   print("Failed to upload image.\(response)")
-//                   uploadResult = "Failed to upload image."
-               }
-               
-             
-               
-           } catch {
-               print("Error uploading image: \(error)")
-//               uploadResult = "Error uploading image: \(error.localizedDescription)"
-           }
-       }
+        // Always ensure loading state is cleared
+        DispatchQueue.main.async {
+            isUploading = false
+        }
+    }
     
     //    Button(action: {
     //   //                         requestPhotoLibraryPermission()

@@ -14,11 +14,12 @@ import PhotosUI
 struct ImageUploaderView: View {
     
     var imageNumber : Int ;
+    var onUploadStatus: (String) -> Void // Add callback for upload status
     
     @Binding var image: UIImage?
     @State private var photoPickerItem: PhotosPickerItem?
     @State private var showAlert = false
-    
+    @State private var tempImage: UIImage? // Temporary image holder
     
     
     @EnvironmentObject private var tokenManger : TokenManager
@@ -151,131 +152,175 @@ struct ImageUploaderView: View {
                 
                 PhotosPicker(selection: $photoPickerItem, matching: .images) {
                     Text("Upload").modifier(ThemedTextButtonModifier())
-                }
+                }.disabled(isUploading == true)
                 
             }
             .onChange(of: photoPickerItem) { newValue in
-                Task {
-                    if let photoPickerItem = newValue,
-                       let data = try? await photoPickerItem.loadTransferable(type: Data.self),
-                       let imagedata = UIImage(data: data) {
-                        image = imagedata
-                        await uploadImage()
+                if let photoPickerItem = newValue {
+                    // Close the picker immediately
+                    DispatchQueue.main.async {
+                        self.photoPickerItem = nil
+                        self.isUploading = true
                     }
-                    photoPickerItem = nil
+
+                    Task {
+                        if let data = try? await photoPickerItem.loadTransferable(type: Data.self),
+                           let imagedata = UIImage(data: data) {
+                            // Store in temporary variable
+                            self.tempImage = imagedata
+                            // Start upload
+                            await uploadImage()
+                        }
+                    }
                 }
             }
+            
+            // Loading Overlay
+            if isUploading == true {
+                Color.black.opacity(0.4)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                    
+                    Text("Uploading...")
+                        .foregroundColor(.white)
+                        .padding(.top, 10)
+                }
+            }
+            
+            
         }
     }
     
     
     func uploadImage() async {
-        
-        
-           guard let image = image,
-                 let imageData = resizeImage(image, maxFileSize: 1) else {
-               print("No image or failed to convert image to data.")
-               return
-           }
+        guard let tempImage = tempImage,
+              let imageData = resizeImage(tempImage, maxFileSize: 1) else {
+            print("No image or failed to convert image to data.")
+            DispatchQueue.main.async {
+                isUploading = false
+                onUploadStatus("Failed to process image") // Use callback instead
+            }
+            return
+        }
 
-           guard let url = URL(string: "\(tokenManger.localhost)/user/uploadPhotosAdditional") else {
-               print("Invalid URL.")
-               return
-           }
+        guard let url = URL(string: "\(tokenManger.localhost)/user/uploadPhotosAdditional") else {
+            print("Invalid URL.")
+            DispatchQueue.main.async {
+                isUploading = false
+                onUploadStatus("Invalid URL") // Use callback instead
+            }
+            return
+        }
 
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
 
-           let boundary = UUID().uuidString
-           let fieldName = "myImage"
-           let fileName = "image.jpg"
+        let boundary = UUID().uuidString
+        let fieldName = "myImage"
+        let fileName = "image.jpg"
         let token = tokenManger.accessToken;
-           request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         request.setValue("\(imageNumber)", forHTTPHeaderField: "X-Image-Number")
 
-           var body = Data()
+        var body = Data()
         
-           body.append("--\(boundary)\r\n".data(using: .utf8)!)
-           body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
-           body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-           body.append(imageData)
-           body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: .utf8)!)
    
-           body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
     
 
-           request.httpBody = body
-        
-      
-           do {
-               
-               isUploading = true
-               
-               defer {
-                   isUploading = false
-               }
-               
-               let (data, response) = try await URLSession.shared.data(for: request)
-               if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                   print("Image uploaded successfully!")
-                   
-                   // Print the raw data for debugging
-                   if let rawDataString = String(data: data, encoding: .utf8) {
-                       print("Raw response data: \(rawDataString)")
-                   }
-                   
-                   do {
-                       let decodedResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
-                           // Save token locally
-                           print ("image decoded successfully")
-                           if let photo = decodedResponse.data?.user?.photo {
+        request.httpBody = body
+    
+   
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                print("Image uploaded successfully!")
+                
+                // Print the raw data for debugging
+                if let rawDataString = String(data: data, encoding: .utf8) {
+                    print("Raw response data: \(rawDataString)")
+                }
+                
+                do {
+                    let decodedResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
+                        // Save token locally
+                        print ("image decoded successfully")
+                        if let photo = decodedResponse.data?.user?.photo {
+                            
+                            DispatchQueue.main.async {
+                                
+                                
+                                switch imageNumber {
+                                
+                                case 1: 
+                                    tokenManger.updatePhoto1(photo: photo)
+                                    image = tempImage
+                                case 2: 
+                                    tokenManger.updatePhoto2(photo: photo)
+                                    image = tempImage
+                                case 3: 
+                                    tokenManger.updatePhoto3(photo: photo)
+                                    image = tempImage
+                                case 4: 
+                                    tokenManger.updatePhoto4(photo: photo)
+                                    image = tempImage
+                                default:
+                                    break
+                                }
+                                
                                
-                               DispatchQueue.main.async {
-                                   
-                                   
-                                   switch imageNumber {
-                                    
-                                   case 1 : tokenManger.updatePhoto1(photo: photo)
-                                   case 2 : tokenManger.updatePhoto2(photo: photo)
-                                   case 3 : tokenManger.updatePhoto3(photo: photo)
-                                   case 4 : tokenManger.updatePhoto4(photo: photo)
-                                       
-                                   default:
-                                       break
-                                   }
-                                   
-                                  
-                                   print("Photo: \(photo)")
-                                   
-                               }
-                           } else {
-                               print("No Token")
-                           }
-                           
-                           
-                       
-                       
-                   }
-                   catch {
-                       print("Failed to decode response: \(error)")
-                   }
-                   
-//                   uploadResult = "Image uploaded successfully!"
-               } else {
-                   print("Failed to upload image.")
-//                   uploadResult = "Failed to upload image."
-               }
-               
-             
-               
-           } catch {
-               print("Error uploading image: \(error)")
-//               uploadResult = "Error uploading image: \(error.localizedDescription)"
-           }
-       }
+                                print("Photo: \(photo)")
+                                onUploadStatus("Photo \(imageNumber) uploaded successfully!") // Use callback instead
+                                
+                            }
+                        } else {
+                            print("No Token")
+                            DispatchQueue.main.async {
+                                onUploadStatus("Failed to update photo") // Use callback instead
+                            }
+                        }
+                        
+                        
+                
+                
+                }
+                catch {
+                    print("Failed to decode response: \(error)")
+                    DispatchQueue.main.async {
+                        onUploadStatus("Failed to process server response") // Use callback instead
+                    }
+                }
+                
+            } else {
+                print("Failed to upload image.")
+                DispatchQueue.main.async {
+                    onUploadStatus("Failed to upload image") // Use callback instead
+                }
+            }
+            
+            DispatchQueue.main.async {
+                isUploading = false
+            }
+            
+        } catch {
+            print("Error uploading image: \(error)")
+            DispatchQueue.main.async {
+                isUploading = false
+                onUploadStatus("Error uploading image") // Use callback instead
+            }
+        }
+    }
 }
 
 
@@ -309,6 +354,8 @@ struct UploadYourAdditionalPhotosView: View {
           GridItem(.flexible()) // Two flexible columns
       ]
       
+    @StateObject private var toastManager = ToastManager() // Add toast manager here
+    
     var body: some View {
         
         VStack{
@@ -319,10 +366,10 @@ struct UploadYourAdditionalPhotosView: View {
             }
             LazyVGrid(columns: columns, spacing: 16) {
                 if isLoaded { // Views appear when isLoaded becomes true
-                    ImageUploaderView(imageNumber: 1, image: $image1, title: "1").frame(width: 130 )
-                    ImageUploaderView(imageNumber: 2, image: $image2, title: "2").frame(width: 130)
-                    ImageUploaderView(imageNumber: 3, image: $image3, title: "3").frame(width: 130 )
-                    ImageUploaderView(imageNumber: 4, image: $image4, title: "4").frame(width: 130 )
+                    ImageUploaderView(imageNumber: 1, onUploadStatus: showToast, image: $image1, title: "1").frame(width: 130 )
+                    ImageUploaderView(imageNumber: 2, onUploadStatus: showToast, image: $image2, title: "2").frame(width: 130)
+                    ImageUploaderView(imageNumber: 3, onUploadStatus: showToast, image: $image3, title: "3").frame(width: 130 )
+                    ImageUploaderView(imageNumber: 4, onUploadStatus: showToast, image: $image4, title: "4").frame(width: 130 )
                 }
                         }
             .padding().background( themeManager.currentTheme.backgroundColor)
@@ -419,7 +466,16 @@ struct UploadYourAdditionalPhotosView: View {
                 withAnimation(.easeInOut(duration: 0.5)) {
                     isLoaded = true // Triggers animation
                 }
-            }
+            } .overlay(
+                VStack {
+                    if toastManager.isShowing {
+                        ToastView(message: toastManager.message)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .animation(.easeInOut(duration: 0.3), value: toastManager.isShowing)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            )
         
 //        .frame(maxWidth: .infinity)
 //           
@@ -449,27 +505,10 @@ struct UploadYourAdditionalPhotosView: View {
 //            } .navigationBarTitle("", displayMode: .inline) // Keeps the back button
     }
     
-    
-    //    Button(action: {
-    //   //                         requestPhotoLibraryPermission()
-    //   //                                     })
-    //   //                      {
-    //   //                                         VStack {
-    //   //                                             Image(systemName: "arrow.up.circle.fill")
-    //   //                                                 .resizable()
-    //   //                                                 .frame(width: 60, height: 60)
-    //   //                                             Text("Upload Photo")
-    //   //                                                 .font(.title2)
-    //   //                                                 .padding(.top, 8)
-    //   //                                         }
-    //   //                                         .padding()
-    //   //                                     }
-    //   //                      .sheet(isPresented: $isPickerPresented, onDismiss: handleSheetDismiss) {
-    //   //                          PhotoPicker(selectedImage: $selectedImage)
-    //   //
-    //   //                      }
-    //   //                            .frame(minWidth: 300).background(.blue).foregroundColor(.white).cornerRadius(20)
-    
+    // Function to show toast message
+    private func showToast(_ message: String) {
+        toastManager.showToast(message: message)
+    }
 }
 
 struct UploadYourAdditionalPhotosView_Previews: PreviewProvider {

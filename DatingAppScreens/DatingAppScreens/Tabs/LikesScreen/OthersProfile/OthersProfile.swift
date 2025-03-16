@@ -103,7 +103,7 @@ struct OthersProfileView: View {
                         storeInDisk : true
                     )
                     
-//                    Text("\(photoUrl)/\(profile.photo ?? "")")
+                    Text("\(photoUrl)/\(profile.photo ?? "")")
                     
                     Text(profile.name ?? "Unknown")
                         .font(.largeTitle)
