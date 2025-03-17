@@ -124,7 +124,20 @@ catch{
 
 class TokenManager: ObservableObject {
     
-     @AppStorage("accessToken") var accessToken: String = ""
+    // Computed property for accessToken
+        var accessToken: String {
+            get {
+                (try? getToken() ?? "") ?? ""  // ✅ Safe unwrapping
+            }
+            set {
+                do {
+                    try saveToken(newValue)
+                } catch {
+                    print("Error saving token: \(error)")
+                }
+            }
+        }
+
      @AppStorage("userId") var userId: String = ""
      @AppStorage("email") var email: String = ""
      @AppStorage("name") var name: String = ""
@@ -179,6 +192,8 @@ class TokenManager: ObservableObject {
     @Published var serverImageURL : String = Constants.serverImageURL;
     
     func updateAccessToken( token: String , userId: String , email : String , name : String , photo:String , technologies : String , hobbies : String , bio : String , jobRole : String , dob : String , smoking : String , drinking : String , photo1 : String , photo2 : String , photo3: String , photo4 : String , gender: String ) {
+        
+        saveToken(token)
      
         self.userId = userId
         self.accessToken = token
@@ -264,6 +279,8 @@ class TokenManager: ObservableObject {
     func resetAccessToken () {
         
         self.accessToken = ""
+       
+        
         self.email = ""
         self.name = ""
         self.photo = ""

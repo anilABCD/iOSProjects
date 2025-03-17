@@ -52,6 +52,8 @@
 		B77C2D052C1A85880026E36E /* Chips.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C2D042C1A85880026E36E /* Chips.swift */; };
 		B78180892C039A550040FADB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78180882C039A550040FADB /* ProfileView.swift */; };
 		B784EDF22C19ECD000FF97C3 /* UpdateHobbiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */; };
+		B786E4C82D87C79400E4A2AA /* Keychainaccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = B786E4C72D87C78B00E4A2AA /* Keychainaccess.swift */; };
+		B786E4CA2D87C89500E4A2AA /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = B786E4C92D87C89500E4A2AA /* KeychainAccess */; };
 		B78E74B12D8159160078A8D5 /* ChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78E74B02D8159160078A8D5 /* ChipItem.swift */; };
 		B793200D2BF4975300FE954A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200C2BF4975300FE954A /* LoginView.swift */; };
 		B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B793200E2BF49AEF00FE954A /* SignUpData.swift */; };
@@ -161,6 +163,7 @@
 		B77C2D042C1A85880026E36E /* Chips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips.swift; sourceTree = "<group>"; };
 		B78180882C039A550040FADB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B784EDF12C19ECD000FF97C3 /* UpdateHobbiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHobbiesView.swift; sourceTree = "<group>"; };
+		B786E4C72D87C78B00E4A2AA /* Keychainaccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychainaccess.swift; sourceTree = "<group>"; };
 		B78E74B02D8159160078A8D5 /* ChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipItem.swift; sourceTree = "<group>"; };
 		B793200C2BF4975300FE954A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B793200E2BF49AEF00FE954A /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
@@ -216,6 +219,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B786E4CA2D87C89500E4A2AA /* KeychainAccess in Frameworks */,
 				78CEFF87C8E2721C4600B03C /* Pods_DatingAppScreens.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,12 +381,27 @@
 			path = Experimental;
 			sourceTree = "<group>";
 		};
+		B786E4C12D87C47C00E4A2AA /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				B786E4C72D87C78B00E4A2AA /* Keychainaccess.swift */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
 		B78E74B22D815C390078A8D5 /* Chips */ = {
 			isa = PBXGroup;
 			children = (
 				B78E74B02D8159160078A8D5 /* ChipItem.swift */,
 			);
 			path = Chips;
+			sourceTree = "<group>";
+		};
+		B794239B2D873D0300B4CED6 /* CoreDataEntities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CoreDataEntities;
 			sourceTree = "<group>";
 		};
 		B79D44C32BEF1F2B00F0AA8B = {
@@ -410,6 +429,7 @@
 		B79D44CE2BEF1F2B00F0AA8B /* DatingAppScreens */ = {
 			isa = PBXGroup;
 			children = (
+				B786E4C12D87C47C00E4A2AA /* Keychain */,
 				B7EC047E2D7B3B1900E21568 /* Fonts */,
 				B75388D82D7AF18900641BDD /* Services */,
 				B7C523722D5AD73E002412E6 /* Text */,
@@ -433,6 +453,7 @@
 				B79D44D12BEF1F2B00F0AA8B /* ContentView.swift */,
 				B79D44D32BEF1F2C00F0AA8B /* Assets.xcassets */,
 				B79D44D52BEF1F2C00F0AA8B /* Preview Content */,
+				B794239B2D873D0300B4CED6 /* CoreDataEntities */,
 			);
 			path = DatingAppScreens;
 			sourceTree = "<group>";
@@ -755,6 +776,7 @@
 			mainGroup = B79D44C32BEF1F2B00F0AA8B;
 			packageReferences = (
 				B7957DA72BF771F600D7E26A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				B786E4C62D87C59500E4A2AA /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = B79D44CD2BEF1F2B00F0AA8B /* Products */;
 			projectDirPath = "";
@@ -928,6 +950,7 @@
 				B77C2D052C1A85880026E36E /* Chips.swift in Sources */,
 				B7E6C9472C174A6E00F321A9 /* LikesModel.swift in Sources */,
 				B7C523712D5ACCDA002412E6 /* ThemedButtonStyle.swift in Sources */,
+				B786E4C82D87C79400E4A2AA /* Keychainaccess.swift in Sources */,
 				B74C179B2D6AA80100A334C7 /* UpdateGenderView.swift in Sources */,
 				B76DAD012D79775D0054970F /* CachedImageView.swift in Sources */,
 				B77B92FA2D432CCC007B3A37 /* ClosingKeyboard.swift in Sources */,
@@ -1325,6 +1348,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B786E4C62D87C59500E4A2AA /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		B7957DA72BF771F600D7E26A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -1334,6 +1365,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B786E4C92D87C89500E4A2AA /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B786E4C62D87C59500E4A2AA /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B79D44C42BEF1F2B00F0AA8B /* Project object */;
 }

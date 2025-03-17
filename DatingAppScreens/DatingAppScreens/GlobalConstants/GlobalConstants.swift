@@ -17,8 +17,8 @@ struct Constants {
 //    static let serverImageURL = "https://ddt3gc1fx7dtf.cloudfront.net"
     
     static let localhost = "http://192.168.1.5:80"
-//    static let serverImageURL = "http://192.168.1.5:80/images"
-    static let serverImageURL = "https://pub-2a3a7a4c45aa4ce48c3b32ffedbdb469.r2.dev/uploads"
+    static let serverImageURL = "http://192.168.1.5:80/images"
+//    static let serverImageURL = "https://pub-2a3a7a4c45aa4ce48c3b32ffedbdb469.r2.dev/uploads"
     
     
 //    static let localhost = "http://82.25.105.7"
