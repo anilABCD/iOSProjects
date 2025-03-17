@@ -203,7 +203,7 @@ struct UploadYourPhotoView: View {
     
     func uploadImage() async {
         guard let tempImage = tempImage,
-              let imageData = resizeImage(tempImage, maxFileSize: 1) else {
+              let imageData = resizeImage(tempImage, maxFileSize: 300 * 1024) else {
             print("No image or failed to convert image to data.")
             DispatchQueue.main.async {
                 isUploading = false
