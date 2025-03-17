@@ -11,7 +11,7 @@ import UserNotifications
 
 import GoogleSignIn
 import FacebookLogin
-
+import SwiftData
 
 
 func storeDeviceNotificationToken(_ userId: String) {
@@ -322,6 +322,14 @@ struct DeepLinkData : Equatable {
 @main
 struct DatingAppScreensApp: App {
     @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
+    
+    
+    var sharedModelContainer: ModelContainer = {
+         let schema = Schema([ProfileEntity.self]) // Register both
+         let container = try! ModelContainer(for: schema)
+         return container
+     }()
+     
 
     @State private var deepLinkData: DeepLinkData?
 
@@ -354,7 +362,7 @@ struct DatingAppScreensApp: App {
                 else
                 {
                 
-                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher).environmentObject(themeManager).environmentObject(networkMonitor)
+                    ContentView(isHome: false , deepLinkData: $deepLinkData).environmentObject(tokenManager).environmentObject(dataFetcher).environmentObject(themeManager) .environmentObject(networkMonitor).modelContainer(sharedModelContainer)
                         .onOpenURL { url in
                                            // First, try to handle Google Sign-In URL
                                            if GIDSignIn.sharedInstance.handle(url) {

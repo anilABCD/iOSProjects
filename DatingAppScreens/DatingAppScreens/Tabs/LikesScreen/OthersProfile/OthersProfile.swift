@@ -13,7 +13,7 @@ struct OthersProfileView: View {
     let photoUrl : String
     
     @State var profile : Profile = Profile(
-        objectId: ObjectId(value: ""),
+        id: "",
         name: nil,
         email: nil,
         photo: nil,
@@ -56,7 +56,7 @@ struct OthersProfileView: View {
             if let fetchedProfile = fetchedProfile {
                 withAnimation {
                     profile = Profile(
-                        objectId: fetchedProfile.objectId,
+                        id: fetchedProfile.id,
                         name: fetchedProfile.name,
                         email: fetchedProfile.email,
                         photo: fetchedProfile.photo,
@@ -123,7 +123,7 @@ struct OthersProfileView: View {
                     Color.clear
                         .frame(height: 120)
                 }
-                .id(profile.objectId.value)
+                .id(profile.id)
             }
         }
         .onAppear {

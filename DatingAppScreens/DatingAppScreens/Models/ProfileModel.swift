@@ -42,7 +42,9 @@ struct ObjectId: Codable, Equatable , Hashable{
 }
 
 struct Profile: Identifiable, Codable, Equatable, Hashable {
-    var objectId: ObjectId
+//    var objectId: ObjectId
+    
+    var id : String
     var name: String?
     var email: String?
     var photo: String?
@@ -66,14 +68,14 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     var rightSwipe : UUID = UUID()
     
     
-    // Computed property for Identifiable protocol
-    var id: String {
-        return objectId.value
-    }
-    
+//    // Computed property for Identifiable protocol
+//    var id: String {
+//        return objectId.value
+//    }
+//    
     // Custom enum for decoding (mapping keys)
     enum CodingKeys: String, CodingKey {
-        case objectId = "_id"
+        case id
         case name
         case email
         case photo
@@ -93,7 +95,7 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         case gender
     }
     
-    init(  objectId : ObjectId ,  name: String? ,
+    init(  id : String ,  name: String? ,
       email: String? ,
       photo: String?,
       experience: Int?,
@@ -112,7 +114,7 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     
       gender : String?){
         
-        self.objectId = objectId
+        self.id = id
         self.name = name
         self.email = email
         self.photo = photo
@@ -134,7 +136,7 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
        init(from decoder: Decoder) throws {
            let container = try decoder.container(keyedBy: CodingKeys.self)
 
-           self.objectId = try container.decode(ObjectId.self, forKey: .objectId)
+           self.id = try container.decode(String.self, forKey: .id)
            self.name = try container.decodeIfPresent(String.self, forKey: .name)
            self.email = try container.decodeIfPresent(String.self, forKey: .email)
            self.photo = try container.decodeIfPresent(String.self, forKey: .photo)
@@ -180,7 +182,7 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
 
     // Implementing `Equatable` protocol
     static func == (lhs: Profile, rhs: Profile) -> Bool {
-        return lhs.objectId == rhs.objectId &&
+        return lhs.id == rhs.id &&
                lhs.name == rhs.name &&
                lhs.email == rhs.email &&
                lhs.photo == rhs.photo &&
@@ -204,7 +206,7 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     
     // Implementing `Hashable` protocol
        func hash(into hasher: inout Hasher) {
-           hasher.combine(objectId)
+           hasher.combine(id)
            hasher.combine(name)
            hasher.combine(email)
            hasher.combine(photo)

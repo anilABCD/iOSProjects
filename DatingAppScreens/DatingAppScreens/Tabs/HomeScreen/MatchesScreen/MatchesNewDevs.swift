@@ -8,6 +8,7 @@
 import Foundation
 
 import SwiftUI
+import SwiftData
 
 
 struct MatchesNewDevsView: View {
@@ -16,7 +17,8 @@ struct MatchesNewDevsView: View {
     @State var isPopupPresented = false // 1
     @State private var selectedPerson: String = "John Doe"
     
-    
+    @Environment(\.modelContext) private var modelContext
+
     @State var swipeRightId : String = ""
     @State var swipeLeftId : String = ""
     

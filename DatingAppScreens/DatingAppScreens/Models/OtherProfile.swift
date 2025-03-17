@@ -158,7 +158,7 @@ struct OtherProfileEncodable: Encodable {
 extension OtherProfile {
     func toProfile() -> Profile {
         return Profile(
-            objectId: self.objectId,
+            id: self.id,
             name: self.name,
             email: self.email,
             photo: self.photo,

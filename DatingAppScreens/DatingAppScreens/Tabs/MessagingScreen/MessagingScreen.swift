@@ -194,7 +194,7 @@ struct ChatView: View {
         
         let baseURL = "\(tokenManager.localhost)/messages/chats"
         let accessToken = tokenManager.accessToken
-        let parameters :  [ String:String]? = ["user1": tokenManager.userId , "user2": profile?.objectId.value ?? ""]
+        let parameters :  [ String:String]? = ["user1": tokenManager.userId , "user2": profile?.id ?? ""]
         
         do {
             let request = try createURLRequest(
@@ -891,7 +891,7 @@ struct ChatView: View {
                      
                     }
                     .onAppear(){
-                        webSocketManager.otherUserId = profile?.objectId.value ?? "" ;
+                        webSocketManager.otherUserId = profile?.id ?? "" ;
                         
                         Task {
                             
@@ -1102,6 +1102,8 @@ struct ChatView: View {
                     
                     // Ensure newValue belongs to the correct chat
                     guard newValue.chatId == currentChat.id else { return }
+               
+//               print ( webSocketManager.deliveredMessageData , newValue.chatId )
                     
                     // Find and update the message in `messages`
                     if let index = messages.firstIndex(where: { $0.timestamp == newValue.timestamp }) {
