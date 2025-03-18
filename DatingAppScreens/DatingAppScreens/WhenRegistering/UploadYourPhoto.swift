@@ -142,7 +142,7 @@ struct UploadYourPhotoView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             )
-            .onChange(of: photoPickerItem) { newValue in
+            .onChange(of: photoPickerItem) { _ , newValue in
                 Task {
                     if let photoPickerItem = newValue {
                         // Dismiss picker immediately

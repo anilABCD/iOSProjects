@@ -829,13 +829,13 @@ struct SwipeableView: View {
                     .frame(height: 120) // This will push the content up and allow scrolling
                 
             }.padding()
-                .onChange(of: item.leftSwipe ) { _ in
+                .onChange(of: item.leftSwipe ) {
                     
                     self.swipeLeft();
                     
                     
                 }
-                .onChange(of: item.rightSwipe ) { _ in
+                .onChange(of: item.rightSwipe ) {  
                     
                     self.swipeRight();
                     

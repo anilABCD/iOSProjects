@@ -49,7 +49,7 @@ struct UpdateDescribeYourselfView : View {
                         .padding()
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
-                        .onChange(of: bio) { newValue in
+                        .onChange(of: bio) { _ , newValue in
                             if newValue.count > maxLetters {
                                 bio = String(newValue.prefix(maxLetters))
                             }

@@ -39,7 +39,7 @@ struct WrapViewArray : View {
         .onAppear {
             self.arrangeItems()
         }
-        .onChange(of: options) { newValue in
+        .onChange(of: options) { _  , newValue in
             
             self.arrangeItems()
         }
@@ -133,7 +133,7 @@ struct WrapViewSingle : View {
         .onAppear {
             self.arrangeItems()
         }
-        .onChange(of: option ) { newValue in
+        .onChange(of: option ) { _ , newValue in
             
             self.arrangeItems()
         }

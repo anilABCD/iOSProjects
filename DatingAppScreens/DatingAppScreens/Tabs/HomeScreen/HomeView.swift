@@ -134,7 +134,7 @@ struct HomeView: View {
 //                            }
 //                        }
 //                    }
-                }.onChange(of: tokenManager.homeTabView ) { newValue in
+                }.onChange(of: tokenManager.homeTabView ) { _,newValue in
                     if let newValue = newValue {
                         if newValue == .page1 {
                             path.append(MyNavigation<String>(appView: .page1, params: Params<String>(data: "")))

@@ -155,7 +155,7 @@ struct ImageUploaderView: View {
                 }.disabled(isUploading == true)
                 
             }
-            .onChange(of: photoPickerItem) { newValue in
+            .onChange(of: photoPickerItem) { _ , newValue in
                 if let photoPickerItem = newValue {
                     // Close the picker immediately
                     DispatchQueue.main.async {

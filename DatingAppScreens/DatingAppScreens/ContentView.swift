@@ -402,48 +402,48 @@ struct ContentView: View {
                                        }
                                      
                                    }
-                                   .onChange(of: tokenManager.nextButtonWhenRegistrationProcess) { newValue in
+                                   .onChange(of: tokenManager.nextButtonWhenRegistrationProcess) {  _ , newValue in
                                        goToNextStep()
                                    }
-                                   .onChange(of: tokenManager.accessToken) { newValue in
+                                   .onChange(of: tokenManager.accessToken) { _ , newValue in
                                        handleNavigation()
                                        
                                    }  
-                                   .onChange(of: tokenManager.photo ) { newValue in
+                                   .onChange(of: tokenManager.photo ) { _ , newValue in
                                        
 //                                       goToNextStep()
                                    }
-                                   .onChange(of: tokenManager.technologies ) { newValue in
-                                       
-//                                       goToNextStep()
-                                       
-                                   }
-                                   .onChange(of: tokenManager.hobbies ) { newValue in
+                                   .onChange(of: tokenManager.technologies ) { _ , newValue in
                                        
 //                                       goToNextStep()
                                        
                                    }
-                                   .onChange(of: tokenManager.dob ) { newValue in
+                                   .onChange(of: tokenManager.hobbies ) { _ , newValue in
                                        
 //                                       goToNextStep()
                                        
                                    }
-                                   .onChange(of: tokenManager.drinking ) { newValue in
+                                   .onChange(of: tokenManager.dob ) { _ , newValue in
+                                       
+//                                       goToNextStep()
+                                       
+                                   }
+                                   .onChange(of: tokenManager.drinking ) { _ , newValue in
                                        
 //                                       handleNavigation()
                                        
                                    }
-                                   .onChange(of: tokenManager.smoking ) { newValue in
+                                   .onChange(of: tokenManager.smoking ) { _ , newValue in
                                        
 //                                       handleNavigation()
                                        
                                    }
-                                   .onChange(of: tokenManager.bio ) { newValue in
+                                   .onChange(of: tokenManager.bio ) { _ , newValue in
                                        
 //                                       handleNavigation()
                                        
                                    }
-                                   .onChange(of: tokenManager.jobRole ) { newValue in
+                                   .onChange(of: tokenManager.jobRole ) { _ , newValue in
                                        
                                        handleNavigation()
                                        
@@ -678,7 +678,7 @@ struct ContentView: View {
                         }
                     }
                     
-                }.onChange(of: tokenManager.userId) { newValue in
+                }.onChange(of: tokenManager.userId) { _ , newValue in
                     
                     // App became active
                     let userId = tokenManager.userId // Replace with actual user ID
@@ -705,7 +705,7 @@ struct ContentView: View {
                 
                 SideMenuView(selectedTab: $selectedTab, isMenuVisible: $isMenuVisible)
                 
-            }.onChange(of: scenePhase) { newPhase in
+            }.onChange(of: scenePhase) { _ , newPhase in
                 
                 print("Scene phase changed to: \(newPhase)")
                 if newPhase == .active {
@@ -733,7 +733,7 @@ struct ContentView: View {
                 }
                 
             }
-            .onChange(of: tokenManager.userId) { newValue in
+            .onChange(of: tokenManager.userId) { _ , newValue in
                 Task {
                     do {
                         
@@ -750,10 +750,10 @@ struct ContentView: View {
                     
                 }
             }
-            .onChange(of: deepLinkData) { newDeepLinkData in
+            .onChange(of: deepLinkData) { _ , newDeepLinkData in
                 handleDeepLink()
             }
-            .onChange(of : tokenManager.shouldRefecthUnreadCount) { newValue in
+            .onChange(of : tokenManager.shouldRefecthUnreadCount) { _, newValue in
                 
                 Task {
                     await countChatsWithUnreadMessages();

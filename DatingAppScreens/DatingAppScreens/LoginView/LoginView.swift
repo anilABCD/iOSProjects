@@ -213,7 +213,8 @@ struct LoginView: View {
 //                                           .frame(height: 50)
 //                                           .padding()
                             
-                            FacebookCustomLoginButton( facebookToken: $facebookToken).onChange(of: facebookToken ) { token in
+                            FacebookCustomLoginButton( facebookToken: $facebookToken)
+                                .onChange(of: facebookToken ) { _ , token in
                                 
                                 
                                 if let faceBooktoken = token {

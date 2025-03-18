@@ -303,7 +303,7 @@ struct MatchesScreenView : View {
 //            
 //            SideMenuView(isMenuVisible: $isMenuVisible , path: $path
 //            )
-        }.onChange(of: locationServiceManager.userLocation)  { newValue in
+        }.onChange(of: locationServiceManager.userLocation)  { _ , newValue in
             
             guard let newValue else { return }
             
@@ -316,7 +316,7 @@ struct MatchesScreenView : View {
             
             
         }
-        .onChange( of: locationViewModel.location ) { newValue in
+        .onChange( of: locationViewModel.location ) { _ , newValue in
             
             guard let newValue else { return }
             

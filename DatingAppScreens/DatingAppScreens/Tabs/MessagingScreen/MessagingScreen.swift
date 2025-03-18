@@ -750,7 +750,7 @@ struct ChatView: View {
 //                                    }
 //                                    
 //                                }
-                                       .onChange(of: selectedImageURL ) { newValue in
+                                       .onChange(of: selectedImageURL ) { _, newValue in
                                            
                                            if let imageURL = newValue {
                                                
@@ -758,7 +758,7 @@ struct ChatView: View {
                                            }
                                            
                                        }
-                                       .onChange(of: webSocketManager.messages.count) { _ in
+                                       .onChange(of: webSocketManager.messages.count) {
                                            
                                            let message = webSocketManager.messages.last
                                            
@@ -831,7 +831,7 @@ struct ChatView: View {
                                                    }
                                                }
 //                                           }
-                                       }  .onChange(of: messages.count ) { newCount in
+                                       }  .onChange(of: messages.count ) { _,newCount in
                                            guard let lastMessage = messages.first else { return } // Get only the last message
                                            updateGroupedMessages(existingGroupedMessages: &groupedMessages, newMessages: [lastMessage])
                                        }
@@ -953,7 +953,7 @@ struct ChatView: View {
                                     .font(.system(size: 24))
                                     .padding(.leading)
                             }
-                            .onChange(of: selectedItem) { newItem in
+                            .onChange(of: selectedItem) { _,newItem in
                                 Task {
                                     if let data = try? await newItem?.loadTransferable(type: Data.self),
                                        let uiImage = UIImage(data: data) {
@@ -1012,7 +1012,7 @@ struct ChatView: View {
                                     .padding(.leading)
                                 
                             }
-                            .onChange(of: selectedItem) { newItem in
+                            .onChange(of: selectedItem) { _,newItem in
                                 Task {
                                     if let data = try? await newItem?.loadTransferable(type: Data.self),
                                        let uiImage = UIImage(data: data) {
@@ -1110,7 +1110,7 @@ struct ChatView: View {
                 .padding(.bottom , tokenManager.isKeyboardOpen ? 4 : 45)
                 
             }  .background(themeManager.currentTheme.backgroundColor)
-           .onChange(of: webSocketManager.deliveredMessageData) { newValue in
+           .onChange(of: webSocketManager.deliveredMessageData) { _,newValue in
                 
                 // Ensure chat is available
                     guard let currentChat = chat else { return }

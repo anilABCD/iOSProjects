@@ -45,7 +45,7 @@ struct HeightScaleControl: View {
                     .background(GeometryReader { proxy in
                         Color.clear
                             .onAppear { updateHeight(from: proxy.frame(in: .global).minX, width: geometry.size.width) }
-                            .onChange(of: proxy.frame(in: .global).minX) { newOffset in
+                            .onChange(of: proxy.frame(in: .global).minX) { _ , newOffset in
                                 updateHeight(from: newOffset, width: geometry.size.width)
                             }
                     })

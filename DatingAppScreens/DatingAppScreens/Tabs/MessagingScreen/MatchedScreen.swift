@@ -131,150 +131,189 @@ struct MatchedProfilesForMessagingListScreenView: View {
                       
                       
                       
+                                                HStack {
+                                                            TextField("Search User...", text: $searchText)
+                                                                .padding(10)
+                                                                .padding(.leading, 35) // Space for icon
+                                                                .background(Color(.systemGray6))
+                                                                .cornerRadius(20)
+                                                                .overlay(
+                                                                    HStack {
+                                                                        Image(systemName: "magnifyingglass")
+                                                                            .foregroundColor(themeManager.currentTheme.secondaryColor)
+                                                                            .padding(.leading, 10)
+                                                                        Spacer()
+                                                                        if !searchText.isEmpty {
+                                                                            Button(action: { searchText = "" }) {
+                                                                                Image(systemName: "xmark.circle.fill")
+                                                                                    .foregroundColor(themeManager.currentTheme.secondaryColor)
+                                                                            }
+                                                                            .padding(.trailing, 10)
+                                                                        }
+                                                                    }
+                                                                )
+                      
+                          //                                  Button(action: {
+                          ////                                      performSearch()
+                          //                                  }) {
+                          //                                      Image(systemName: "arrow.right.circle.fill")
+                          //                                          .resizable()
+                          //                                          .frame(width: 30, height: 30)
+                          //                                          .foregroundColor(.blue)
+                          //                                  }
+                          //                                  .padding(.leading, 5)
+                          //                                  .shadow(radius: 3)
+                                                        }
+                                                .padding()
+                                                .background( themeManager.currentTheme.backgroundColor)
+                      
+                      
+                      
+                      
 //
                       
-                      VStack {
-                          
-                          
-                          
-                          HStack {
-                                      TextField("Search User...", text: $searchText)
-                                          .padding(10)
-                                          .padding(.leading, 35) // Space for icon
-                                          .background(Color(.systemGray6))
-                                          .cornerRadius(20)
-                                          .overlay(
-                                              HStack {
-                                                  Image(systemName: "magnifyingglass")
-                                                      .foregroundColor(themeManager.currentTheme.secondaryColor)
-                                                      .padding(.leading, 10)
-                                                  Spacer()
-                                                  if !searchText.isEmpty {
-                                                      Button(action: { searchText = "" }) {
-                                                          Image(systemName: "xmark.circle.fill")
-                                                              .foregroundColor(themeManager.currentTheme.secondaryColor)
-                                                      }
-                                                      .padding(.trailing, 10)
-                                                  }
-                                              }
-                                          )
-                                      
-    //                                  Button(action: {
-    ////                                      performSearch()
-    //                                  }) {
-    //                                      Image(systemName: "arrow.right.circle.fill")
-    //                                          .resizable()
-    //                                          .frame(width: 30, height: 30)
-    //                                          .foregroundColor(.blue)
-    //                                  }
-    //                                  .padding(.leading, 5)
-    //                                  .shadow(radius: 3)
-                                  }
-                          .padding()
-                          .background( themeManager.currentTheme.backgroundColor)
-                          
-                          
-                          ScrollView(.horizontal, showsIndicators: false) {
-                              
-                              HStack(alignment: .top, spacing: 4) { // Add spacing between items if needed
-                                  
-                                  
-                                  
-                                  if self.matched.count == 0 {
-                                      Text("No Online Members").modifier(ThemedTextModifier())
-                                  }
-                                  
-                                  ForEach(self.matched, id: \.id) { match in
-                                      
-                                      
-                                      
-                                      // Determine which profile to display
-                                      let onlineProfile = match.participants.first
-                                      
-                                      let photoUrl = URL(string: "\(tokenManger.serverImageURL)/\("resized-")\(onlineProfile?.photo ?? "" )" )
-                                      
-                                      
-                                      if (( onlineProfile?.isOnline ) != nil &&
-                                          
-                                          onlineProfile?.isOnline == true
-                                      ) {
-                                          
-                                          
-                                          NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.serverImageURL)/" , onBackAction: {
-                                              Task {
-                                                  do {
-                                                      try await fetchMatched()
-                                                  }catch{
-                                                      
-                                                  }
-                                              }
-                                          }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) ,// Hides the back button in ChatView
-                                                         
-                                                         tag: match,
-                                                         selection: $selectedMatch
-                                          ) {
-                                              
-                                              VStack {
-                                                  
-                                                  AsyncImage(url: photoUrl) { phase in
-                                                      switch phase {
-                                                      case .empty:
-                                                          ProgressView()
-                                                              .frame(width: 50, height: 50)
-                                                      case .success(let image):
-                                                          image
-                                                              .resizable()
-                                                              .aspectRatio(contentMode: .fill)
-                                                              .frame(width: 50, height: 50)
-                                                              .clipShape(Circle())
-                                                      case .failure:
-                                                          Image(systemName: "person.crop.circle")
-                                                              .resizable()
-                                                              .aspectRatio(contentMode: .fill)
-                                                              .frame(width: 50, height: 50)
-                                                              .clipShape(Circle())
-                                                      @unknown default:
-                                                          EmptyView()
-                                                      }
-                                                  }
-                                                  .padding(.trailing, 8)
-                                                  .overlay(
-                                                    Circle()
-                                                        .fill(Color.green)
-                                                        .frame(width: 14, height: 14)
-                                                        .overlay(
-                                                            Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
-                                                        )
-                                                        .offset(x: -1, y: -1), // Adjusting position to be near the circle
-                                                    alignment: .bottomTrailing
-                                                  )
-                                                  
-                                                  
-                                                  Text(onlineProfile?.name?.prefix(10) ?? "" )
-                                                      .font(.headline).foregroundColor(themeManager.currentTheme.textColor)
-                                              }.frame(maxWidth:.infinity)
-                                              
-                                          }
-                                          
-                                          
-                                      }
-                                      
-                                  }
-                              }.padding(.top , 10)
-                                  .background( themeManager.currentTheme.backgroundColor)
-                              
-                          } .background( themeManager.currentTheme.backgroundColor)
-                          
-                          
-                          
-                              Divider()// Full-width divider
-                              .frame(height: 1) // Adds a blue border with a width of 2 // Adjust height as needed
-                                  
-                          
-                          
-                      }.frame(maxWidth:.infinity ) .padding(.horizontal)// Adds a blue border with a width of 2
-                          .background( themeManager.currentTheme.backgroundColor)
-                      
+//                      VStack {
+//                          
+//                          
+//                          
+//                          HStack {
+//                                      TextField("Search User...", text: $searchText)
+//                                          .padding(10)
+//                                          .padding(.leading, 35) // Space for icon
+//                                          .background(Color(.systemGray6))
+//                                          .cornerRadius(20)
+//                                          .overlay(
+//                                              HStack {
+//                                                  Image(systemName: "magnifyingglass")
+//                                                      .foregroundColor(themeManager.currentTheme.secondaryColor)
+//                                                      .padding(.leading, 10)
+//                                                  Spacer()
+//                                                  if !searchText.isEmpty {
+//                                                      Button(action: { searchText = "" }) {
+//                                                          Image(systemName: "xmark.circle.fill")
+//                                                              .foregroundColor(themeManager.currentTheme.secondaryColor)
+//                                                      }
+//                                                      .padding(.trailing, 10)
+//                                                  }
+//                                              }
+//                                          )
+//                                      
+//    //                                  Button(action: {
+//    ////                                      performSearch()
+//    //                                  }) {
+//    //                                      Image(systemName: "arrow.right.circle.fill")
+//    //                                          .resizable()
+//    //                                          .frame(width: 30, height: 30)
+//    //                                          .foregroundColor(.blue)
+//    //                                  }
+//    //                                  .padding(.leading, 5)
+//    //                                  .shadow(radius: 3)
+//                                  }
+//                          .padding()
+//                          .background( themeManager.currentTheme.backgroundColor)
+//                          
+//                          
+//                          ScrollView(.horizontal, showsIndicators: false) {
+//                              
+//                              HStack(alignment: .top, spacing: 4) { // Add spacing between items if needed
+//                                  
+//                                  
+//                                  
+//                                  if self.matched.count == 0 {
+//                                      Text("No Online Members").modifier(ThemedTextModifier())
+//                                  }
+//                                  
+//                                  ForEach(self.matched, id: \.id) { match in
+//                                      
+//                                      
+//                                      
+//                                      // Determine which profile to display
+//                                      let onlineProfile = match.participants.first
+//                                      
+//                                      let photoUrl = URL(string: "\(tokenManger.serverImageURL)/\("resized-")\(onlineProfile?.photo ?? "" )" )
+//                                      
+//                                      
+//                                      if (( onlineProfile?.isOnline ) != nil &&
+//                                          
+//                                          onlineProfile?.isOnline == true
+//                                      ) {
+//                                          
+//                                          
+//                                          NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.serverImageURL)/" , onBackAction: {
+//                                              Task {
+//                                                  do {
+//                                                      try await fetchMatched()
+//                                                  }catch{
+//                                                      
+//                                                  }
+//                                              }
+//                                          }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) ,// Hides the back button in ChatView
+//                                                         
+//                                                         tag: match,
+//                                                         selection: $selectedMatch
+//                                          ) {
+//                                              
+//                                              VStack {
+//                                                  
+//                                                  AsyncImage(url: photoUrl) { phase in
+//                                                      switch phase {
+//                                                      case .empty:
+//                                                          ProgressView()
+//                                                              .frame(width: 50, height: 50)
+//                                                      case .success(let image):
+//                                                          image
+//                                                              .resizable()
+//                                                              .aspectRatio(contentMode: .fill)
+//                                                              .frame(width: 50, height: 50)
+//                                                              .clipShape(Circle())
+//                                                      case .failure:
+//                                                          Image(systemName: "person.crop.circle")
+//                                                              .resizable()
+//                                                              .aspectRatio(contentMode: .fill)
+//                                                              .frame(width: 50, height: 50)
+//                                                              .clipShape(Circle())
+//                                                      @unknown default:
+//                                                          EmptyView()
+//                                                      }
+//                                                  }
+//                                                  .padding(.trailing, 8)
+//                                                  .overlay(
+//                                                    Circle()
+//                                                        .fill(Color.green)
+//                                                        .frame(width: 14, height: 14)
+//                                                        .overlay(
+//                                                            Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
+//                                                        )
+//                                                        .offset(x: -1, y: -1), // Adjusting position to be near the circle
+//                                                    alignment: .bottomTrailing
+//                                                  )
+//                                                  
+//                                                  
+//                                                  Text(onlineProfile?.name?.prefix(10) ?? "" )
+//                                                      .font(.headline).foregroundColor(themeManager.currentTheme.textColor)
+//                                              }.frame(maxWidth:.infinity)
+//                                              
+//                                          }
+//                                          
+//                                          
+//                                      }
+//                                      
+//                                  }
+//                              }.padding(.top , 10)
+//                                  .background( themeManager.currentTheme.backgroundColor)
+//                              
+//                          } .background( themeManager.currentTheme.backgroundColor)
+//                          
+//                          
+//                          
+//                              Divider()// Full-width divider
+//                              .frame(height: 1) // Adds a blue border with a width of 2 // Adjust height as needed
+//                                  
+//                          
+//                          
+//                      }.frame(maxWidth:.infinity ) .padding(.horizontal)// Adds a blue border with a width of 2
+//                          .background( themeManager.currentTheme.backgroundColor)
+//                      
                      
                          
 //                   List(likes) { like in
@@ -335,7 +374,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
 //                           }
 //                   }
                   
-        }.onChange(of: webSocketManager.refreshChatList ) { value in
+        }.onChange(of: webSocketManager.refreshChatList ) { _, value in
             
             Task {
                 do {
@@ -346,7 +385,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                 }
             }
             
-        }.onChange(of: webSocketManager.newMessage ) { value in
+        }.onChange(of: webSocketManager.newMessage ) { _, value in
             
             tokenManger.shouldRefecthUnreadCount = UUID();
             
