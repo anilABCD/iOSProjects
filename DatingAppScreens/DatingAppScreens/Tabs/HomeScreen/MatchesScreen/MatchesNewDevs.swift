@@ -98,6 +98,8 @@ struct MatchesNewDevsView: View {
             do {
                 let newProfiles : [Profile] = try await fetchDataArray(from: urlRequest)
                 
+                 await ProfileService.saveProfilesToSwiftData(newProfiles, modelContext: modelContext)
+                
                 // Ensure UI updates with animation on the main thread
                 await MainActor.run {
                     withAnimation {
@@ -341,8 +343,7 @@ struct MatchesNewDevsView: View {
            
            
        }
-        .onChange( of : swipeRightId ) { newVaulue in
-            
+        .onChange( of : swipeRightId ) { _, newVaulue in
             
             Task {
                 do {
@@ -351,6 +352,7 @@ struct MatchesNewDevsView: View {
                     // Call the asynchronous function with the local copy
                     try await likeTheProfile(user2_id: newVaulue)
                     
+                    await ProfileService.deleteProfile(by: newVaulue, from: modelContext)
                      
                     if ( profiles.count == 5 ) {
                         try await fetchProfiles()
@@ -369,7 +371,7 @@ struct MatchesNewDevsView: View {
             }
             
         }
-        .onChange( of : swipeLeftId ) { newVaulue in
+        .onChange( of : swipeLeftId ) { _, newVaulue in
             
             
             Task {
@@ -379,6 +381,7 @@ struct MatchesNewDevsView: View {
                     // Call the asynchronous function with the local copy
 //                    try await likeTheProfile(user2_id: newVaulue)
                     
+                    await ProfileService.deleteProfile(by: newVaulue, from: modelContext)
                     
                     if ( profiles.count == 5 ) {
                         try await fetchProfiles()
@@ -401,7 +404,14 @@ struct MatchesNewDevsView: View {
                   
                     isLoading = true;
                     
-                    try await fetchProfiles()
+                    
+                    profiles = await ProfileService.fetchProfiles(from: modelContext)
+                    
+                    
+                    if ( profiles.count == 0) {
+                        
+                        try await fetchProfiles()
+                    }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0 ) {
                         isLoading = false
