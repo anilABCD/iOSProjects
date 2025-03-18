@@ -358,15 +358,15 @@ struct MatchedProfilesForMessagingListScreenView: View {
                    do {
                     try await fetchMatched()
                        
-                     tokenManger.shouldRefecthUnreadCount = UUID();
-                    
-                    webSocketManager.token = tokenManger.accessToken;
-                       
-                    webSocketManager.userId = tokenManger.userId;
-                       
-                       DispatchQueue.main.async {
-                           webSocketManager.connect()
-                       }
+//                     tokenManger.shouldRefecthUnreadCount = UUID();
+//                    
+//                    webSocketManager.token = tokenManger.accessToken;
+//                       
+//                    webSocketManager.userId = tokenManger.userId;
+//                       
+//                       DispatchQueue.main.async {
+//                           webSocketManager.connect()
+//                       }
                     
                  }
                  catch{

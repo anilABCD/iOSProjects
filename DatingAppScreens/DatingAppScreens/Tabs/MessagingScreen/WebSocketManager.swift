@@ -73,7 +73,8 @@ class WebSocketManager: ObservableObject {
     @Published var newMessage : UUID = UUID();
     @Published var refreshChatList : UUID = UUID();
     
-    
+  
+    @Published var chatId : String = ""
     
     private var socket: SocketIOClient!
     
@@ -108,14 +109,21 @@ class WebSocketManager: ObservableObject {
             print("WebSocket connected")
             
             self.registerUser(userId: self.userId)
+            self.onJoinChatUser(user2Id: self.otherUserId)
+            self.joinChat(chatId: self.chatId);
         }
         
         socket.on(clientEvent: .disconnect) { data, _ in
                print("WebSocket disconnected: \(data)")
-               self.reconnect() // Automatically attempt to reconnect
+            
+            if ( self.isOnChatScreen == true ) {   
+                self.reconnect() // Automatically attempt to reconnect
+            }
            }
         
         socket.connect()
+        
+      
         
         socket.on("messageDelivered") { data, _ in
             

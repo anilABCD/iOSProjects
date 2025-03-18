@@ -900,7 +900,22 @@ struct ChatView: View {
                             print ( groupedMessages)
                             print ("chat id", chat?.id)
                             if ( chat?.id != "" ) {
-                                self.webSocketManager.joinChat(chatId: self.chat?.id ?? "")
+                                
+                                
+                                tokenManager.shouldRefecthUnreadCount = UUID();
+                               
+                               webSocketManager.token = tokenManager.accessToken;
+                                  
+                               webSocketManager.userId = tokenManager.userId;
+                                  
+                                webSocketManager.chatId = self.chat?.id ?? "" ;
+                                
+                                  DispatchQueue.main.async {
+                                      webSocketManager.connect()
+                                  }
+                                
+//                                
+//                                self.webSocketManager.joinChat(chatId: self.chat?.id ?? "")
                             }
                             
 //                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
@@ -1138,7 +1153,7 @@ struct ChatView: View {
                 }
             }
             .onAppear(){
-                webSocketManager.onJoinChatUser(user2Id: profile?.id ?? "" )
+//                webSocketManager.onJoinChatUser(user2Id: profile?.id ?? "" )
                 
                 hideTabBar = true
                 
@@ -1151,6 +1166,8 @@ struct ChatView: View {
                 webSocketManager.onLeaveChatUser(user2Id: profile?.id ?? "" )
                 webSocketManager.isOnChatScreen = false;
                 self.tokenManager.shouldRefecthUnreadCount = UUID();
+                
+                webSocketManager.disconnect()
             }
             
             
