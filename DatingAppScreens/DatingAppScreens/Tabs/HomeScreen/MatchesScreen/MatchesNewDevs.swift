@@ -354,7 +354,7 @@ struct MatchesNewDevsView: View {
                     
                     await ProfileService.deleteProfile(by: newVaulue, from: modelContext)
                      
-                    if ( profiles.count == 5 ) {
+                    if ( profiles.count <= 5 ) {
                         try await fetchProfiles()
                     }
                     
@@ -383,7 +383,7 @@ struct MatchesNewDevsView: View {
                     
                     await ProfileService.deleteProfile(by: newVaulue, from: modelContext)
                     
-                    if ( profiles.count == 5 ) {
+                    if ( profiles.count <= 5 ) {
                         try await fetchProfiles()
                     }
                     

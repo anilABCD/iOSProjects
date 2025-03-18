@@ -87,7 +87,7 @@ class ProfileService {
                     isOnline: entity.isOnline,
                     gender: entity.gender
                 )
-            }
+            }.reversed()
         } catch {
             print("Error fetching profiles: \(error)")
             return []
