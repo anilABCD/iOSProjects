@@ -13,7 +13,7 @@ struct OthersProfileView: View {
     let photoUrl : String
     
     @State var profile : Profile = Profile(
-        id: "",
+        id: "asdf",
         name: nil,
         email: nil,
         photo: nil,

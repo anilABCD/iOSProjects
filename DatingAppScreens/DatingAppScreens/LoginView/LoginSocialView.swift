@@ -258,6 +258,9 @@ struct LoginSocialView: View {
                                                              photo4: decodedResponse.data?.user?.photo4 ??  "", gender: decodedResponse.data?.user?.gender ??  ""
                               )
                               
+                              tokenManger.shouldRefecthUnreadCount = UUID()
+                              
+                              
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
                               print("Email: \(decodedResponse.data?.user?.email ?? "No token received")")
@@ -328,6 +331,7 @@ struct LoginSocialView: View {
                                                           gender : decodedResponse.data?.user?.gender ??  "" 
                            )
                               
+                              tokenManger.shouldRefecthUnreadCount = UUID()
                             
                               print("Token: \(self.token ?? "No token received")")
                               print("Name: \(decodedResponse.data?.user?.name ?? "No token received")")
