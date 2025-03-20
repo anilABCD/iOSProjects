@@ -471,8 +471,8 @@ struct LikeItemView: View {
                             } .frame(width: 180, height: 240)
                         },
                         storeInDisk : true
-                
-                    )
+                       
+            )
             
 //            
 //            if let imageName = like.userFrom?.photo , let url = URL(string: "\(photoURL)/\("resized-")\(imageName)")

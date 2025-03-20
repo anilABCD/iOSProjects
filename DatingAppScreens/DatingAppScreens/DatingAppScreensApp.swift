@@ -330,7 +330,8 @@ struct DatingAppScreensApp: App {
          return container
      }()
      
-
+    @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
+      
     @State private var deepLinkData: DeepLinkData?
 
     @StateObject private var tokenManager = TokenManager()
@@ -352,6 +353,13 @@ struct DatingAppScreensApp: App {
                                SplashScreenView()
                                    .transition(.opacity)
                                    .onAppear {
+                                       
+                                       if !hasLaunchedBefore {
+                                                       deleteToken() // Clear Keychain on first launch after reinstall
+                                                       hasLaunchedBefore = true
+                                       }
+                                       
+                                       
                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                            withAnimation {
                                                showSplashScreen = false

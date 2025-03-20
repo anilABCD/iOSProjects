@@ -15,7 +15,7 @@
 
 import KeychainAccess
 
-let keychain = Keychain(service: "com.dating.app.screens.DatingAppScreens")
+let keychain = Keychain(service: "com.dating.app.screens.DatingAppScreens").accessibility(.whenPasscodeSetThisDeviceOnly) // Ensures deletion on app uninstall
 
 // Storing JWT
 func saveToken(_ token: String) {

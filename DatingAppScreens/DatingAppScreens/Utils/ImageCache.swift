@@ -88,27 +88,54 @@ func loadImage(url: URL, storeInDisk: Bool, cacheExpiryInterval: TimeInterval, c
     }
     
     URLSession.shared.dataTask(with: url) { data, response, error in
-        if let error = error {
-            print("Failed to load image: \(error.localizedDescription)")
-            DispatchQueue.main.async {
-                completion(nil)
-            }
-            return
-        }
+//        if let error = error {
+//            print("Failed to load image: \(error.localizedDescription)")
+//            DispatchQueue.main.async {
+//                completion(nil)
+//            }
+//            return
+//        }
 
-        if let httpResponse = response as? HTTPURLResponse,
-           !(200...299).contains(httpResponse.statusCode) {
-            print("HTTP Error: \(httpResponse.statusCode)")
-            DispatchQueue.main.async {
-                completion(nil)
+        if let httpResponse = response as? HTTPURLResponse {
+         
+                if httpResponse.statusCode == 404 {
+                    print("Image Not Found (404), using and caching default image")
+                    DispatchQueue.main.async {
+//                        let config = UIImage.SymbolConfiguration(pointSize: 600, weight: .bold, scale: .large)
+//                        if let defaultImage = UIImage(systemName: "person.crop.circle", withConfiguration: config)?.withRenderingMode(.alwaysOriginal) {
+                        
+                        if let defaultImage = createPaddedPlaceholderImage(size: CGSize(width: 300, height: 300), padding: 50) {
+                            
+                            // Store the default image in the cache
+                            ImageCache.shared.setObject(defaultImage, forKey: url.absoluteString as NSString)
+                            
+                            // Save to disk if enabled
+                            if storeInDisk {
+                                saveImageToDisk(image: defaultImage, url: url, cacheExpiryInterval: cacheExpiryInterval)
+                            }
+                            
+                            completion(defaultImage)
+                        } else {
+                            completion(nil) // Fallback if image generation fails
+                        }
+                    }
+                    return
+                    
+                } else if !(200...299).contains(httpResponse.statusCode) {
+                    print("HTTP Error: \(httpResponse.statusCode)")
+                    DispatchQueue.main.async {
+                        completion(nil) // Handle other HTTP errors normally
+                    }
+                    return
+                    
+                }
             }
-            return
-        }
+        
         
         guard let data = data, let image = UIImage(data: data) else {
             print("Invalid image data")
             DispatchQueue.main.async {
-                completion(nil)
+                completion(UIImage(systemName: "person.crop.circle"))
             }
             return
         }

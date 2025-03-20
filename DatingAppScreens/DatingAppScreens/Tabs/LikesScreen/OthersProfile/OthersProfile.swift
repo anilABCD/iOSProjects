@@ -89,7 +89,7 @@ struct OthersProfileView: View {
                     CachedImageView(
                         url: URL(string: "\(photoUrl)/\(profile.photo ?? "")"),
                         width: 400,
-                        height: 300,
+                        height: 400,
                         
                         failureView: {
                             VStack {
@@ -100,10 +100,11 @@ struct OthersProfileView: View {
                                     .frame(width: 400, height: 300)
                             }
                         },
-                        storeInDisk : true
+                        storeInDisk : true 
+
                     )
                     
-                    Text("\(photoUrl)/\(profile.photo ?? "")")
+//                    Text("\(photoUrl)/\(profile.photo ?? "")")
                     
                     Text(profile.name ?? "Unknown")
                         .font(.largeTitle)

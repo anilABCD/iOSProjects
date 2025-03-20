@@ -90,6 +90,8 @@ class DataFetcher: ObservableObject {
 
 struct ContentView: View {
     
+   
+    
     @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
     @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab = 0
@@ -760,6 +762,8 @@ struct ContentView: View {
                 }
             }
             .onAppear {
+                
+               
                 dataFetcher.startPolling()
                 
                 Task {

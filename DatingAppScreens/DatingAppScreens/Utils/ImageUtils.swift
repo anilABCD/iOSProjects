@@ -88,3 +88,20 @@ extension UIImage {
         return resizedImage
     }
 }
+
+
+func createPaddedPlaceholderImage(size: CGSize, padding: CGFloat) -> UIImage? {
+    let newSize = CGSize(width: size.width + padding * 2, height: size.height + padding * 2)
+    
+    let renderer = UIGraphicsImageRenderer(size: newSize)
+    return renderer.image { context in
+        UIColor.black.setFill()
+        context.fill(CGRect(origin: .zero, size: newSize))
+        
+        let config = UIImage.SymbolConfiguration(pointSize: size.width, weight: .bold, scale: .large)
+        if let placeholder = UIImage(systemName: "person.crop.circle", withConfiguration: config)?.withRenderingMode(.alwaysOriginal) {
+            let origin = CGPoint(x: padding, y: padding)
+            placeholder.draw(in: CGRect(origin: origin, size: size))
+        }
+    }
+}
