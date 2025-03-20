@@ -808,26 +808,31 @@ struct ChatView: View {
                                                                print ("index : "  , index)
                                                            }
                                                        
-                                                       
-                                                       print ("messageTime : \(messageTime)" , tokenManager.userId , (messageTime ) )
-                                                       
-                                                       
-                                                       print("\(messages.first)")
-                                                       
-                                                       print( "chatid " , chatId , self.chat?.id ?? "" )
-                                                       
-                                                       // Handle image, it could be null
-                                                       let image = message?["image"] as? String // If image is null, this will be nil
-                                                       
-                                                       let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp , image : image )
-                                                       
-                                                       
-//                                                       
-//                                                       DispatchQueue.main.async {
-//                                                           
-//                                                           messages.insert(newMessage , at : 0);
-//                                                           
-//                                                       }
+                                                       else {
+                                                           print ("messageTime : \(messageTime)" , tokenManager.userId , (messageTime ) )
+                                                           
+                                                           
+                                                           print("\(messages.first)")
+                                                           
+                                                           print( "chatid " , chatId , self.chat?.id ?? "" )
+                                                           
+                                                           // Handle image, it could be null
+                                                           var image = message?["image"] as? String // This will be nil if "image" is not a String
+
+                                                           if image?.isEmpty == true {
+                                                               image = nil
+                                                           }
+                                                           
+                                                           let newMessage = Chat.Message( sender: sender, text: messageText, timestamp: timeStamp , image : image )
+                                                           
+                                                           
+                                                           
+                                                           DispatchQueue.main.async {
+                                                               
+                                                               messages.insert(newMessage , at : 0);
+                                                               
+                                                           }
+                                                       }
                                                    }
                                                }
 //                                           }
