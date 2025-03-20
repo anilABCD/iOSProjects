@@ -509,7 +509,8 @@ struct LikeItemView: View {
                 
                 HStack {
                     
-                    Text("Age : \( Utils.UDate.getAge(dob:  like.userFrom?.dob))") .font(themeManager.currentTheme.subHeadLinefont).fontWeight(.bold).foregroundColor(.white)
+                  
+                    Text("Age : \( Utils.UDate.getAge(dob:  like.userFrom?.dob))") .font(themeManager.currentTheme.headlinefont).fontWeight(.bold).foregroundColor(.white)
                     
                     Spacer()
 //                    Text(like.userFrom?.name ?? "Unknown").foregroundColor(.black)
@@ -519,7 +520,7 @@ struct LikeItemView: View {
 //                            .font(themeManager.currentTheme.subHeadLinefont)
 //                            .foregroundColor(.black).fontWeight(.bold)
 //                    }
-                }.padding(.horizontal)
+                }.padding(.horizontal , 30)
 //                .background(.white.opacity(0.3))
             }
            
