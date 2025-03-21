@@ -331,7 +331,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                               // Determine which profile to display
                               let matchProfile = match.participants.first
                               
-                              NavigationLink(destination: ChatView( profile: matchProfile ?? nil , photoUrl: "\(tokenManger.serverImageURL)/", onBackAction: {
+                              NavigationLink(destination: ChatView( chatId: match.id , profile: matchProfile ?? nil , photoUrl: "\(tokenManger.serverImageURL)/", onBackAction: {
                                   Task {
                                       do {
                                           try await fetchMatched()

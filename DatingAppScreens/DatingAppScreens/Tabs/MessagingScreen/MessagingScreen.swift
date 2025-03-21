@@ -97,6 +97,7 @@ struct ChatView: View {
     
     @EnvironmentObject private var themeManager : ThemeManager
     
+    let chatId : String;
     let profile: Profile?
     let photoUrl : String
     var onBackAction: () -> Void
@@ -194,7 +195,7 @@ struct ChatView: View {
         
         let baseURL = "\(tokenManager.localhost)/messages/chats"
         let accessToken = tokenManager.accessToken
-        let parameters :  [ String:String]? = ["user1": tokenManager.userId , "user2": profile?.id ?? ""]
+        let parameters :  [ String:String]? = ["user1": tokenManager.userId , "user2": profile?.id ?? "" , "chatId" : chatId]
         
         do {
             let request = try createURLRequest(
@@ -1245,7 +1246,7 @@ struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var hideTabBar: Bool = false // Dummy state variable for preview
 
     static var previews: some View {
-        ChatView(  profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", otherUserId: "")).environmentObject(TokenManager()).environmentObject(ThemeManager())
+        ChatView( chatId:"", profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", otherUserId: "")).environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
 
