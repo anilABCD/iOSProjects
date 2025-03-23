@@ -359,8 +359,7 @@ struct DatingAppScreensApp: App {
                                                        hasLaunchedBefore = true
                                        }
                                       
-                                       tokenManager.location = ""
-                                       
+                                     
                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                            withAnimation {
                                                showSplashScreen = false
