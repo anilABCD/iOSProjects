@@ -54,6 +54,7 @@ class LocationServiceManager: NSObject, ObservableObject, CLLocationManagerDeleg
 
     // Handle location updates
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
         guard let location = locations.last else { return }
         
         let now = Date()
@@ -72,20 +73,26 @@ class LocationServiceManager: NSObject, ObservableObject, CLLocationManagerDeleg
         // Update userLocation and save timestamp
         DispatchQueue.main.async {
             self.userLocation = location
-            self.saveLocation(location)
+//            self.saveLocation(location)
             UserDefaults.standard.set(now, forKey: "lastUpdateTime")
         }
-        
-        
-        
+
         print("Location updated: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+        
     }
     
-    // Save location to AppStorage
-      private func saveLocation(_ location: CLLocation) {
-          let locationString2 = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-          locationString = locationString2
-          print("Saved location to AppStorage: \(locationString)")
-      }
-  
+
+//
+//
+//      Save location to AppStorage
+//
+//      private func saveLocation(_ location: CLLocation) {
+//          let locationString2 = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+//          locationString = locationString2
+//          print("Saved location to AppStorage: \(locationString)")
+//      }
+//
+//
+
+
 }

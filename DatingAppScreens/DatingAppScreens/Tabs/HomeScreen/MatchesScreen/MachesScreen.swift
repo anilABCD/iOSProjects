@@ -232,7 +232,7 @@ struct MatchesScreenView : View {
                             
                                 tokenManger.locationSettings = "granted";
                                 
-                             
+                                locationServiceManager.startUpdatingLocation()
                             }
                             else
                             {
@@ -240,8 +240,9 @@ struct MatchesScreenView : View {
                                 
                                 tokenManger.locationSettings = "denied";
                                 
-                                locationViewModel.fetchLocation();
-                                
+                                Task {
+                                    await locationViewModel.fetchLocation();
+                                }
                             }
                             
                             DispatchQueue.main.async {
@@ -257,15 +258,17 @@ struct MatchesScreenView : View {
                     }
                 
                 
-                if tokenManger.locationSettings == "granted" {
-                    
-                    print("start updating location")
-                    locationServiceManager.startUpdatingLocation()
-                }
-                else {
-                    locationViewModel.fetchLocation()
-                }
-                    
+//                if tokenManger.locationSettings == "granted" {
+//                    
+//                    print("start updating location")
+//                    locationServiceManager.startUpdatingLocation()
+//                }
+//                else {
+//                    Task {
+//                        await locationViewModel.fetchLocation()
+//                    }
+//                }
+//                    
                 print ( currentStep , "abcd")
                 
 //                locationManager.onAuthorizationChange = { newStatus in
@@ -309,7 +312,20 @@ struct MatchesScreenView : View {
             
             print("new location" , newValue)
             let locationString = "\(newValue.coordinate.latitude),\(newValue.coordinate.longitude)"
-            tokenManger.location = locationString
+           
+            Task {
+            
+                await UserService.shared.updateUserLocation(accessToken: tokenManger.accessToken, longitude: newValue.coordinate.longitude, latitude: newValue.coordinate.latitude )  { result in
+                    switch result {
+                    case .success:
+                        tokenManger.location = locationString
+                        print("Location updated successfully!")
+                    case .failure(let error):
+                        print("Failed to update location:", error.localizedDescription)
+                    }
+                }
+            
+            }
             
             locationServiceManager.stopUpdatingLocation()
             
@@ -317,12 +333,35 @@ struct MatchesScreenView : View {
             
         }
         .onChange( of: locationViewModel.location ) { _ , newValue in
-            
-            guard let newValue else { return }
-            
-            print("new location geo js" , newValue)
-            let locationString = "\(newValue.latitude ?? "" ),\(newValue.longitude ?? "" )"
-            tokenManger.location = locationString
+            Task {
+                   guard let newValue = newValue,
+                         let latitude = newValue.latitude,
+                         let longitude = newValue.longitude else { return }
+                   
+                   print("New location geo JS:", newValue)
+                   let locationString = "\(latitude),\(longitude)"
+
+                   do {
+                       // Ensure `updateUserLocation` is async and doesn't use a completion handler
+                        await UserService.shared.updateUserLocation(
+                           accessToken: tokenManger.accessToken,
+                           longitude: Double(longitude) ?? 0.0,
+                           latitude:  Double(latitude) ?? 0.0
+                       )
+                       { result in
+                                   switch result {
+                                   case .success:
+                                       tokenManger.location = locationString
+                                       print("Location updated successfully!")
+                                   case .failure(let error):
+                                       print("Failed to update location:", error.localizedDescription)
+                                   }
+                               }
+                       
+                   } catch {
+                       print("Failed to update location:", error)
+                   }
+               }
             
         }
         
@@ -366,6 +405,7 @@ struct MatchesScreenView : View {
                 
                     tokenManger.locationSettings = "granted";
                     
+                    locationServiceManager.startUpdatingLocation()
                  
                 }
                 else
@@ -374,8 +414,9 @@ struct MatchesScreenView : View {
                     
                     tokenManger.locationSettings = "denied";
                     
-                    locationViewModel.fetchLocation();
-                    
+                    Task {
+                        await locationViewModel.fetchLocation();
+                    }
                 }
                 
                 DispatchQueue.main.async {
@@ -386,8 +427,6 @@ struct MatchesScreenView : View {
                 
             }
             
-            // even when complete(true/false) is not called due to settings already done . 
-            tokenManger.locationSettings = "applied";
         }
         else{
             DispatchQueue.main.async {

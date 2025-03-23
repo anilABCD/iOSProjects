@@ -45,8 +45,6 @@ struct MatchedProfilesForMessagingListScreenView: View {
         do {
             
             
-            
-            
             let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
             
 //            // Update the `id` for each match and modify the lastMessage text, keeping previous message content intact

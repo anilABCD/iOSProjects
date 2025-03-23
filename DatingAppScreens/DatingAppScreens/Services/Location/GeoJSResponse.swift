@@ -45,7 +45,7 @@ struct GeoJSResponse: Codable, Identifiable, Equatable {
 class GeoLocationViewModel: ObservableObject {
     @Published var location: GeoJSResponse?
     @AppStorage("location")  var locationString : String = ""
-    func fetchLocation() {
+    func fetchLocation() async {
         
         let now = Date()
         

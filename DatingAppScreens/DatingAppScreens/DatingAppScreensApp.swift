@@ -358,7 +358,8 @@ struct DatingAppScreensApp: App {
                                                        deleteToken() // Clear Keychain on first launch after reinstall
                                                        hasLaunchedBefore = true
                                        }
-                                       
+                                      
+                                       tokenManager.location = ""
                                        
                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                            withAnimation {
@@ -380,6 +381,9 @@ struct DatingAppScreensApp: App {
                                            handleURL(url)
                     
                     }.onAppear {
+                        
+                      
+                        
                                    GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                                        // Check if `user` exists; otherwise, do something with `error`
                                }
