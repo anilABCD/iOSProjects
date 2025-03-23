@@ -64,6 +64,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
     
     var gender : String?
     
+    var distanceInKm : Double?
+    
     var leftSwipe : UUID = UUID()
     var rightSwipe : UUID = UUID()
     
@@ -92,7 +94,10 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         case bio
         case isOnline
         
+       
         case gender
+        
+        case distanceInKm
     }
     
     init(  id : String ,  name: String? ,
@@ -112,7 +117,11 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
       bio: String?,
       isOnline: Bool?,
     
-      gender : String?){
+      gender : String? ,
+    
+      distanceInKm : Double?
+    
+    ){
         
         self.id = id
         self.name = name
@@ -130,6 +139,7 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
         self.gender = gender
         self.leftSwipe = UUID()
         self.rightSwipe = UUID()
+        self.distanceInKm = distanceInKm
     }
     
     // Custom Decoding to Handle dob as String or Timestamp
@@ -152,6 +162,8 @@ struct Profile: Identifiable, Codable, Equatable, Hashable {
            self.isOnline = try container.decodeIfPresent(Bool.self, forKey: .isOnline)
 
            self.gender = try container.decodeIfPresent(String.self, forKey: .gender)
+           
+           self.distanceInKm = try container.decodeIfPresent(Double.self, forKey: .distanceInKm)
            
            self.leftSwipe = UUID()
            self.rightSwipe = UUID()

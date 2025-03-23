@@ -25,6 +25,7 @@ class ProfileEntity: Identifiable {
     var bio: String?
     var isOnline: Bool?
     var gender: String?
+    var distanceInKm : Double?
     
     init(
         id: String ,
@@ -40,7 +41,8 @@ class ProfileEntity: Identifiable {
         dob: Date? = nil,
         bio: String? = nil,
         isOnline: Bool? = nil,
-        gender: String? = nil
+        gender: String? = nil,
+        distanceInKm : Double? = nil
     ) {
         self.id = id
         self.name = name
@@ -56,6 +58,7 @@ class ProfileEntity: Identifiable {
         self.bio = bio
         self.isOnline = isOnline
         self.gender = gender
+        self.distanceInKm = distanceInKm
     }
 }
 
@@ -85,7 +88,8 @@ class ProfileService {
                     dob: entity.dob,
                     bio: entity.bio,
                     isOnline: entity.isOnline,
-                    gender: entity.gender
+                    gender: entity.gender ,
+                    distanceInKm : entity.distanceInKm
                 )
             }.reversed()
         } catch {
@@ -110,7 +114,8 @@ class ProfileService {
                 dob: profile.dob,
                 bio: profile.bio,
                 isOnline: profile.isOnline,
-                gender: profile.gender
+                gender: profile.gender,
+                distanceInKm: profile.distanceInKm
             )
             modelContext.insert(profileEntity) // Insert into SwiftData
         }

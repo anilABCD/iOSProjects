@@ -87,7 +87,8 @@ struct MatchesNewDevsView: View {
             technologies: (tokenManger.technologies),
             minAge: "15",
             maxAge: "100",
-            excludeProfileIds: excludeIdsString
+            excludeProfileIds: excludeIdsString ,
+            location: tokenManger.location
         )
          
         let urlRequest = try createURLRequest(method : "POST" , baseURL: baseURL, accessToken: tokenManger.accessToken , data: data, parameters: nil )
@@ -760,6 +761,17 @@ struct SwipeableView: View {
                                             Spacer()
                                         }.padding(.horizontal)
                                         
+                                    HStack {
+                                        if let distanceInKm = item.distanceInKm {
+                                            ChipItem(text: "\(Int(distanceInKm.rounded())) km Away", selectedSize: .large ,     backgroundColor: .green ,
+                                                     foregroundColor: .black ,
+                                                     isBold : true
+                                            )
+                                               
+                                        }
+ 
+                                        Spacer()
+                                    }.padding(.horizontal)
                                  
                                         //                                Text("Technologies: \(item.technologies?.joined(separator: ", ") ?? "N/A")")
                                         //                                    .font( themeManager.currentTheme.subHeadLinefont)

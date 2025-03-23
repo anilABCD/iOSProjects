@@ -26,7 +26,8 @@ struct OthersProfileView: View {
         dob: nil,
         bio: nil,
         isOnline: nil,
-        gender: nil
+        gender: nil,
+        distanceInKm: nil
     )
     
     let sizeTextInCard = 15.0;
@@ -69,7 +70,8 @@ struct OthersProfileView: View {
                         dob: fetchedProfile.dob,
                         bio: fetchedProfile.bio,
                         isOnline: fetchedProfile.isOnline,
-                        gender: fetchedProfile.gender
+                        gender: fetchedProfile.gender,
+                        distanceInKm: fetchedProfile.distanceInKm
                     )
                 }
                 print("othersProfile fetched and updated: \(fetchedProfile)")
@@ -139,7 +141,7 @@ struct OthersProfileView: View {
                     do {
                         try await fetchThisProfile()
                     } catch {
-                        print("\(error.localizedDescription)")
+                        print("other profile error : \(error)")
                     }
                 }
             }

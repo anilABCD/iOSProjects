@@ -23,6 +23,8 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
     var isOnline: Bool?
     var gender: String?
     
+    var distanceInKm : Double?
+    
     var id: String {
         return objectId.value
     }
@@ -42,6 +44,7 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
         case bio
         case isOnline
         case gender
+        case distanceInKm
     }
     
     init(objectId: ObjectId,
@@ -57,7 +60,10 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
          dob: Date? = nil,
          bio: String? = nil,
          isOnline: Bool? = nil,
-         gender: String? = nil) {
+         gender: String? = nil,
+    
+         distanceInKm: Double? = nil
+     ) {
         
         self.objectId = objectId
         self.name = name
@@ -73,6 +79,7 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
         self.bio = bio
         self.isOnline = isOnline
         self.gender = gender
+        self.distanceInKm = distanceInKm
     }
     
     // Custom decoder to handle date formatting
@@ -92,6 +99,7 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
         self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
         self.isOnline = try container.decodeIfPresent(Bool.self, forKey: .isOnline)
         self.gender = try container.decodeIfPresent(String.self, forKey: .gender)
+        self.distanceInKm = try container.decodeIfPresent(Double.self, forKey: .distanceInKm)
         
         // Handle date decoding with multiple formats
         if let dobString = try container.decodeIfPresent(String.self, forKey: .dob) {
@@ -130,6 +138,7 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
         hasher.combine(bio)
         hasher.combine(isOnline)
         hasher.combine(gender)
+        hasher.combine(distanceInKm)
     }
     
     // Implementing Equatable
@@ -147,7 +156,8 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
         lhs.dob == rhs.dob &&
         lhs.bio == rhs.bio &&
         lhs.isOnline == rhs.isOnline &&
-        lhs.gender == rhs.gender
+        lhs.gender == rhs.gender &&
+        lhs.distanceInKm == rhs.distanceInKm
     }
 }
 
@@ -171,7 +181,8 @@ extension OtherProfile {
             dob: self.dob,
             bio: self.bio,
             isOnline: self.isOnline,
-            gender: self.gender
+            gender: self.gender,
+            distanceInKm: self.distanceInKm
         )
     }
 }

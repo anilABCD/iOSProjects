@@ -98,4 +98,5 @@ struct MatchesFilter : Codable {
     let minAge : String
     let maxAge : String
     let excludeProfileIds : [String]
+    let location : String
 }
