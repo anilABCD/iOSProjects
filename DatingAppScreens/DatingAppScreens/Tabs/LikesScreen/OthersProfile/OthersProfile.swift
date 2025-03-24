@@ -43,42 +43,48 @@ struct OthersProfileView: View {
         
         isLoading = true
         
-         let data:OtherProfileEncodable = OtherProfileEncodable(userId: othersProfile?.id ?? "" , location: tokenManger.location);
+         let data:OtherProfileEncodable = OtherProfileEncodable(location: tokenManger.location);
         
         
-        
-        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/profiles/othersProfile", accessToken: tokenManger.accessToken , data: data, parameters: nil )
-        
-        let fetchedProfile : Profile? = try await fetchData(from: urlRequest)
-         
-        print("othersProfile fetched :\(String(describing: fetchedProfile))")
-        
-        DispatchQueue.main.async { [self] in
-            if let fetchedProfile = fetchedProfile {
-                withAnimation {
-                    profile = Profile(
-                        id: fetchedProfile.id,
-                        name: fetchedProfile.name,
-                        email: fetchedProfile.email,
-                        photo: fetchedProfile.photo,
-                        experience: fetchedProfile.experience,
-                        technologies: fetchedProfile.technologies,
-                        hobbies: fetchedProfile.hobbies,
-                        drinking: fetchedProfile.drinking,
-                        smoking: fetchedProfile.smoking,
-                        jobRole: fetchedProfile.jobRole,
-                        dob: fetchedProfile.dob,
-                        bio: fetchedProfile.bio,
-                        isOnline: fetchedProfile.isOnline,
-                        gender: fetchedProfile.gender,
-                        distanceInKm: fetchedProfile.distanceInKm
-                    )
-                }
-                print("othersProfile fetched and updated: \(fetchedProfile)")
-            }
-            
-            isLoading = false
-        }
+         if let othersProfile2 = othersProfile, !othersProfile2.id.isEmpty {
+          
+             
+             let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/profiles/othersProfile/\(othersProfile2.id)", accessToken: tokenManger.accessToken , data: data, parameters: nil )
+             
+             
+             let fetchedProfile : Profile? = try await fetchData(from: urlRequest)
+             
+             print("othersProfile fetched :\(String(describing: fetchedProfile))")
+             
+             DispatchQueue.main.async { [self] in
+                 if let fetchedProfile = fetchedProfile {
+                     withAnimation {
+                         profile = Profile(
+                            id: fetchedProfile.id,
+                            name: fetchedProfile.name,
+                            email: fetchedProfile.email,
+                            photo: fetchedProfile.photo,
+                            experience: fetchedProfile.experience,
+                            technologies: fetchedProfile.technologies,
+                            hobbies: fetchedProfile.hobbies,
+                            drinking: fetchedProfile.drinking,
+                            smoking: fetchedProfile.smoking,
+                            jobRole: fetchedProfile.jobRole,
+                            dob: fetchedProfile.dob,
+                            bio: fetchedProfile.bio,
+                            isOnline: fetchedProfile.isOnline,
+                            gender: fetchedProfile.gender,
+                            distanceInKm: fetchedProfile.distanceInKm
+                         )
+                     }
+                     print("othersProfile fetched and updated: \(fetchedProfile)")
+                 }
+                 
+                 isLoading = false
+             }
+         }else{
+             isLoading = false
+         }
          
     }
     

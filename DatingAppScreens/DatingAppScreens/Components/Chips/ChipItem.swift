@@ -15,6 +15,7 @@ struct ChipItem : View {
     var backgroundColor : Color = Color(hex: "#58DFF1")
     var foregroundColor : Color = .black
     var isBold : Bool = false
+    var isSystemIcon :Bool = false
     
     @EnvironmentObject var themeManager: ThemeManager
     
@@ -22,10 +23,17 @@ struct ChipItem : View {
         HStack {
             
             if let icon = icon {
-                Image("\(icon)")
-                    .resizable()
-                    .frame(width: 15, height: 15)
                 
+                if ( self.isSystemIcon ) {
+                    Image(systemName: icon) // SF Symbol for location
+                               .font(.largeTitle) // Adjust size
+                               .foregroundColor(.red) // Change color
+                }
+                else {
+                    Image("\(icon)")
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                }
 //                Text("icon \(icon)")
             }
             

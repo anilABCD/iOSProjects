@@ -749,12 +749,12 @@ struct SwipeableView: View {
                                    
                                         HStack {
                                             if let gender = item.gender {
-                                                ChipItem(text: "\(Utils.UDate.getAge(dob: item.dob)) age", selectedSize: .medium, icon: "\(gender)-symbol")
+                                                ChipItem(text: "\(Utils.UDate.getAge(dob: item.dob)) age", selectedSize: .large, icon: "\(gender)-symbol")
                                                    
                                             }
 
                                             if let jobRole = item.jobRole {
-                                                ChipItem(text: "job role :  \(jobRole)", selectedSize: .medium, icon: "jobRole2")
+                                                ChipItem(text: "job role :  \(jobRole)", selectedSize: .large, icon: "jobRole2")
                                                     
                                             }
                                             
@@ -763,9 +763,12 @@ struct SwipeableView: View {
                                         
                                     HStack {
                                         if let distanceInKm = item.distanceInKm {
-                                            ChipItem(text: "\(Int(distanceInKm.rounded())) km Away", selectedSize: .large ,     backgroundColor: .green ,
+                                            ChipItem(text: "\(Int(distanceInKm.rounded())) km Away", selectedSize: .large ,
+                                                     icon: "location-black" ,
+                                                     backgroundColor: Color(hex : "#F84B00") ,
                                                      foregroundColor: .black ,
                                                      isBold : true
+                                                    
                                             )
                                                
                                         }
@@ -1102,7 +1105,7 @@ struct TechnologiesCardView: View {
                 
                 
                 
-                WrapViewArray (options: $technologies, selectedSize: .medium)
+                WrapViewArray (options: $technologies, selectedSize: .large)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1173,7 +1176,7 @@ struct HobbiesCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
          
-                WrapViewArray (options: $hobbies2, selectedSize: .medium )
+                WrapViewArray (options: $hobbies2, selectedSize: .large )
                     .padding(.horizontal, 10)
                     .padding(.bottom , 10)
                    
@@ -1236,7 +1239,7 @@ struct SmokingCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                WrapViewSingle (option: $smoking, selectedSize: .medium  )
+                WrapViewSingle (option: $smoking, selectedSize: .large  )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1332,7 +1335,7 @@ struct DrinkingCardView: View {
                 
                 
                 WrapViewSingle (option: $drinking
-                , selectedSize: .medium )
+                                , selectedSize: .large )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)
@@ -1422,7 +1425,7 @@ struct JobRoleCardView: View {
                     .padding(.top, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
                
-                WrapViewSingle (option: $jobRole, selectedSize: .medium )
+                WrapViewSingle (option: $jobRole, selectedSize: .large )
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
                     .padding(.bottom, 10)

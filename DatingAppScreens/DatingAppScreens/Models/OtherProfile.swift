@@ -162,7 +162,7 @@ struct OtherProfile: Identifiable, Codable, Equatable, Hashable {
 }
 
 struct OtherProfileEncodable: Encodable {
-    var userId: String
+    
     var location : String
 }
 
