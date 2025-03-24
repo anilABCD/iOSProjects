@@ -22,6 +22,8 @@ struct MatchesNewDevsView: View {
     @State var swipeRightId : String = ""
     @State var swipeLeftId : String = ""
     
+    @State var showHeartAnimation : Bool = false
+    @State var showRejectedAnimation : Bool = false
   
     @State var isButtonDisabled : Bool = false;
     
@@ -270,33 +272,37 @@ struct MatchesNewDevsView: View {
                                            }
                                        }
                                        else
-                                       if ( showHeart ){
+                                       if ( index == profiles.count - 1 && showHeart ){
                                            
-                                           Image(systemName: "checkmark.circle.fill")
-                                                              .resizable()
-                                                              .foregroundColor(.green)
-                                                              .scaledToFit()
-                                                              .frame(width: 100, height: 100)
-                                                              .opacity(showHeart ? 1 : 0)
-                                                              .scaleEffect(showHeart ? 1.2 : 0.8)
-                                                              .animation(.easeInOut, value: showHeart)
-                                                             
+                                           Image(systemName: "heart.fill")
+                                               .resizable()
+                                               .scaledToFit()
+                                               .shadow(radius: 10)
+                                               .frame(width: 100, height: 100)
+                                               .foregroundColor(.pink)
+                                               .opacity(showHeartAnimation ? 1 : 0)
+                                               .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
+                                               .animation(.easeInOut, value: showHeartAnimation)
+                                           
                                        }
                                        else
-                                       if ( showRejected ){
+                                       if (  index == profiles.count - 1 && showRejected ){
                                            
                                            Image(systemName: "xmark.circle.fill")
                                                               .resizable()
+                                                             
                                                               .foregroundColor(.gray)
+                                                              
                                                               .scaledToFit()
+                                                              .shadow(radius: 3)
                                                               .frame(width: 100, height: 100)
-                                                              .opacity(showRejected ? 1 : 0)
-                                                              .scaleEffect(showRejected ? 1.2 : 0.8)
-                                                              .animation(.easeInOut, value: showRejected)
+                                                             
+                                                              .opacity(showRejectedAnimation ? 1 : 0)
+                                                              .scaleEffect(showRejectedAnimation ? 1.2 : 0.8)
+                                                              .animation(.easeInOut, value: showRejectedAnimation)
                                                              
                                        }
-                                       
-                                       
+                                  
                                        
                                        if ( loadAllImages ) {
                                            CachedImageView(
@@ -382,12 +388,17 @@ struct MatchesNewDevsView: View {
             Task {
                 do {
                     
-                  
-                    
-                        showHeart = true
-                
+                    showHeart = true
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showHeartAnimation = true
+                    }
                     DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay + 0.01 ) {
-                        showHeart = false
+                        
+                        showHeart = false ;
+                        
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showHeartAnimation = false
+                        }
                     }
                    
                     // Call the asynchronous function with the local copy
@@ -419,10 +430,19 @@ struct MatchesNewDevsView: View {
                 do {
                     
                    
-                        showRejected = true
+                    showRejected = true
+                    
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showRejectedAnimation = true
+                    }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay + 0.01 ) {
+                        
                         showRejected = false
+                        
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showRejectedAnimation = false
+                        }
                     }
                    
 //                     Call the asynchronous function with the local copy
@@ -944,13 +964,13 @@ struct SwipeableView: View {
           
           print ("swipe left called")
           
-          withAnimation(.easeIn(duration: 0.5)) {
+          withAnimation(.easeIn(duration: 0.2)) {
                offset = CGSize(width: -UIScreen.main.bounds.width, height: 0)
                isHidden = true
                
            }
           
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
               onSwipeLeft()
           }
        }
@@ -960,13 +980,13 @@ struct SwipeableView: View {
            print ("swipe right called")
            
            
-           withAnimation(.easeIn(duration: 0.5)) {
+           withAnimation(.easeIn(duration: 0.2)) {
                offset = CGSize(width: UIScreen.main.bounds.width, height: 0)
                isHidden = true
               
            }
            
-           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+           DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
                onSwipeRight()
            }
               

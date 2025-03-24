@@ -15,9 +15,9 @@ struct NoLikesView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)]),
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
+//            LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)]),
+//                           startPoint: .topLeading,
+//                           endPoint: .bottomTrailing)
             
 
 //                .ignoresSafeArea()
@@ -37,11 +37,12 @@ struct NoLikesView: View {
                 Text("No Likes Yet!")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                 
                 Text("Keep exploring and your special someone might be just a swipe away! 💕")
                     .font(.body)
-                    .foregroundColor(.white.opacity(0.8))
+                    .foregroundColor(.black)
+//                    .foregroundColor(.white.opacity(0.8))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 30)
                 

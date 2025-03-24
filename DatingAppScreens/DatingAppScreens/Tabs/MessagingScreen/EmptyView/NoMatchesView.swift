@@ -15,11 +15,11 @@ struct NoMatchesView: View {
     
     var body: some View {
         ZStack {
-            // Gradient Background
-            LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)]),
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+//            // Gradient Background
+//            LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)]),
+//                           startPoint: .topLeading,
+//                           endPoint: .bottomTrailing)
+//                .ignoresSafeArea()
             
             VStack(spacing: 20) {
                 // Animated Magnifying Glass
@@ -36,11 +36,12 @@ struct NoMatchesView: View {
                 Text("No Matches Found")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                 
                 Text("Keep exploring! Your perfect match might be just a swipe away. 💕")
                     .font(.body)
-                    .foregroundColor(.white.opacity(0.8))
+                    .foregroundColor(.black)
+//                    .foregroundColor(.white.opacity(0.8))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 30)
                 
