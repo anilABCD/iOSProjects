@@ -31,6 +31,10 @@ struct MatchesNewDevsView: View {
     
     @State var loadAllImagesAfterDelay : Double = 2;
     @State var loadAllImages : Bool = false
+    
+    
+    @State var showHeart : Bool = false;
+    @State var showRejected : Bool = false;
    
     let buttonClickDelay : Double = 0.5 ;
     
@@ -66,7 +70,7 @@ struct MatchesNewDevsView: View {
         let matches = Matches(user2_id: user2_id )
     
         
-        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/matches/", accessToken: tokenManger.accessToken, data: matches, parameters: nil)
+        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/profiles/reject/\(user2_id)", accessToken: tokenManger.accessToken, data: matches, parameters: nil)
         
          let response: MatchesResponse = try await fetchData(from: urlRequest)
         
@@ -210,9 +214,8 @@ struct MatchesNewDevsView: View {
                                if !profiles.isEmpty {
                                    ForEach(profiles.indices , id: \.self ) { index in
                                        
-                                     
-                                       
-                                       if index == profiles.count - 1 { // Show topmost item
+                                      
+                                       if index == profiles.count - 1 && showRejected == false && showHeart == false { // Show topmost item
                                            
                                            
                                            
@@ -223,14 +226,13 @@ struct MatchesNewDevsView: View {
                                                 
                                                 // Start an asynchronous task for the network request
                                                 
-                                                
+                                                if !profiles.isEmpty {
                                                     swipeRightId = profiles[index].id
-                                                                  
+                                                    
                                                     withAnimation {
                                                         removeProfile(at: index)
                                                     }
-
-                                                    
+                                                }
                                                 
                                                 
                                             } ,
@@ -261,8 +263,39 @@ struct MatchesNewDevsView: View {
                                                 
                                             }
                                             
-                                           )
+                                           ).onAppear(){
+                                               
+                                                   isButtonDisabled = false
+                                                
+                                           }
                                        }
+                                       else
+                                       if ( showHeart ){
+                                           
+                                           Image(systemName: "checkmark.circle.fill")
+                                                              .resizable()
+                                                              .foregroundColor(.green)
+                                                              .scaledToFit()
+                                                              .frame(width: 100, height: 100)
+                                                              .opacity(showHeart ? 1 : 0)
+                                                              .scaleEffect(showHeart ? 1.2 : 0.8)
+                                                              .animation(.easeInOut, value: showHeart)
+                                                             
+                                       }
+                                       else
+                                       if ( showRejected ){
+                                           
+                                           Image(systemName: "xmark.circle.fill")
+                                                              .resizable()
+                                                              .foregroundColor(.gray)
+                                                              .scaledToFit()
+                                                              .frame(width: 100, height: 100)
+                                                              .opacity(showRejected ? 1 : 0)
+                                                              .scaleEffect(showRejected ? 1.2 : 0.8)
+                                                              .animation(.easeInOut, value: showRejected)
+                                                             
+                                       }
+                                       
                                        
                                        
                                        if ( loadAllImages ) {
@@ -349,6 +382,13 @@ struct MatchesNewDevsView: View {
             Task {
                 do {
                     
+                  
+                    
+                        showHeart = true
+                
+                    DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay + 0.01 ) {
+                        showHeart = false
+                    }
                    
                     // Call the asynchronous function with the local copy
                     try await likeTheProfile(user2_id: newVaulue)
@@ -379,8 +419,14 @@ struct MatchesNewDevsView: View {
                 do {
                     
                    
-                    // Call the asynchronous function with the local copy
-//                    try await likeTheProfile(user2_id: newVaulue)
+                        showRejected = true
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay + 0.01 ) {
+                        showRejected = false
+                    }
+                   
+//                     Call the asynchronous function with the local copy
+                    try await unLikeTheProfile(user2_id: newVaulue)
                     
                     await ProfileService.deleteProfile(by: newVaulue, from: modelContext)
                     
@@ -446,12 +492,12 @@ struct MatchesNewDevsView: View {
            
         if(!profiles.isEmpty) {
          profiles[self.profiles.count-1].leftSwipe = UUID();
+            
+           
+            
        }
             
-            // Enable the button after 20ms
-            DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay ) {
-                isButtonDisabled = false
-            }
+          
             
         }
     }
@@ -468,11 +514,10 @@ struct MatchesNewDevsView: View {
             if(!profiles.isEmpty) {
                 profiles[self.profiles.count-1].rightSwipe = UUID();
                 
+           
+                
             }  // Enable the button after 20ms
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + buttonClickDelay ) {
-                isButtonDisabled = false
-            }
+           
             
         }
     }
@@ -616,6 +661,8 @@ struct SwipeableView: View {
     @Binding var item: Profile
     let onSwipeRight: () -> Void
     let onSwipeLeft: () -> Void
+    
+
     @State private var offset: CGSize = .zero
     @State private var isHidden: Bool = false
     @EnvironmentObject private var tokenManger : TokenManager
@@ -637,74 +684,7 @@ struct SwipeableView: View {
                 VStack {
                     VStack {
                         ZStack(alignment: .bottomLeading) {
-                            // Use AsyncImage to load remote images
                             
-//                            
-//                            AsyncImage(url: URL(string: "\(tokenManger.serverImageURL)/\(item.photo ?? "image.jpg")")) { phase in
-//                                switch phase {
-//                                case .empty:
-//                                    ProgressView()
-//                                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
-//                                case .success(let image):
-//                                    image
-//                                        .resizable()
-//                                    
-//                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
-//                                    
-//                                        .offset(x: offset.width, y: 0)
-//                                        .cornerRadius(20) // Add corner radius here
-//                                        .rotationEffect(.degrees(Double(offset.width / 20)))
-//                                    
-//                                    //                                           .gesture(
-//                                    //                                            DragGesture()
-//                                    //                                                                                      .onChanged { gesture in
-//                                    //                                                                                          // Track the initial position of the drag
-//                                    //                                                                                          if initialDragPosition == .zero {
-//                                    //                                                                                              initialDragPosition = gesture.startLocation
-//                                    //                                                                                          }
-//                                    //
-//                                    //                                                                                          // Update the offset with both x and y translations
-//                                    //                                                                                          offset = gesture.translation
-//                                    //                                                                                      }
-//                                    //                                                                                      .onEnded { gesture in
-//                                    //                                                                                          let swipeThreshold: CGFloat = 50 // Threshold to detect swipe
-//                                    //
-//                                    //                                                                                          // Handle horizontal swipe (left or right)
-//                                    //                                                                                          if abs(gesture.translation.width) > swipeThreshold {
-//                                    //                                                                                              if gesture.translation.width > 0 {
-//                                    //                                                                                                  swipeRight() // Swipe Right
-//                                    //                                                                                              } else {
-//                                    //                                                                                                  swipeLeft() // Swipe Left
-//                                    //                                                                                              }
-//                                    //                                                                                          }
-//                                    //                                                                                          // Handle vertical swipe (up or down)
-//                                    //                                                                                          else if abs(gesture.translation.height) > swipeThreshold {
-//                                    //                                                                                              if gesture.translation.height < 0 {
-//                                    //                                                                                                  swipeUp() // Swipe Up
-//                                    //                                                                                              } else {
-//                                    //                                                                                                  swipeDown() // Swipe Down
-//                                    //                                                                                              }
-//                                    //                                                                                          } else {
-//                                    //                                                                                              // If it's not a meaningful swipe, reset the offset
-//                                    //                                                                                              withAnimation {
-//                                    //                                                                                                  offset = .zero
-//                                    //                                                                                              }
-//                                    //                                                                                          }
-//                                    //                                                                                      }
-//                                    //                                   )
-//                                case .failure:
-//                                    Color.gray // Fallback for failed loading
-//                                    
-//                                        .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
-//                                    
-//                                        .offset(x: offset.width, y: 0)
-//                                        .cornerRadius(20) // Add corner radius here
-//                                        .rotationEffect(.degrees(Double(offset.width / 20)))
-//                                @unknown default:
-//                                    EmptyView()
-//                                }
-//                            }
-//                            
                             CachedImageView(
                                         url: URL(string: "\(tokenManger.serverImageURL)/\(item.photo ?? "image.jpg")"),
                                         width: UIScreen.main.bounds.width - 25.0,
@@ -722,9 +702,10 @@ struct SwipeableView: View {
                                             }
                                         },
                                         storeInDisk : true
-                                    ) .offset(x: offset.width, y: 0)
+                                    )
                                 .cornerRadius(20) // Add corner radius here
-                                .rotationEffect(.degrees(Double(offset.width / 20)))
+                               
+                            
                                
                             // Text overlay on the image
                             VStack(alignment: .leading, spacing: 8) {
@@ -801,10 +782,39 @@ struct SwipeableView: View {
                                     endPoint: .top
                                 )
                             ) .cornerRadius(20) // Add corner radius here
-                        } .simultaneousGesture(
+                        }.offset(x: offset.width, y: 0)
+                            .rotationEffect(.degrees(Double(offset.width / 20)))
+                            .simultaneousGesture(
                             DragGesture()
                                 .onChanged { value in
                                                        offset = value.translation // Move card with finger
+                                    let horizontalTranslation = value.translation.width
+                                    let verticalTranslation = value.translation.height
+                            
+                                    
+                                    if abs(horizontalTranslation) > abs(verticalTranslation) {
+                                        // Horizontal swipe
+                                        if horizontalTranslation > 50 {
+                                            
+                                            return;
+                                        } else if horizontalTranslation < -50 {
+                                            
+                                            
+                                            return
+                                        }
+                                        
+                                       
+                                    } else {
+                                        // Vertical swipe
+                                        if verticalTranslation < -50 {
+                                            
+                                            //                                            print("Up Swipe Detected")
+                                            
+                                        }
+                                        offset = .zero
+                                        
+                                    }
+                                    
                                 }
                                 .onEnded { value in
                                  
@@ -816,6 +826,7 @@ struct SwipeableView: View {
                                             if horizontalTranslation > 50 {
                                                 
                                                 print( "Right Swipe Detected")
+                                                
                                                 
                                                 swipeRight()
                                                 return;
@@ -930,24 +941,35 @@ struct SwipeableView: View {
  
   
       private func swipeLeft() {
-           withAnimation(.easeIn(duration: 0.5)) {
+          
+          print ("swipe left called")
+          
+          withAnimation(.easeIn(duration: 0.5)) {
                offset = CGSize(width: -UIScreen.main.bounds.width, height: 0)
                isHidden = true
                
            }
-          onSwipeLeft()
+          
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+              onSwipeLeft()
+          }
        }
 
        private func swipeRight() {
+           
+           print ("swipe right called")
+           
+           
            withAnimation(.easeIn(duration: 0.5)) {
                offset = CGSize(width: UIScreen.main.bounds.width, height: 0)
                isHidden = true
               
            }
            
-           
+           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                onSwipeRight()
-           
+           }
+              
        }
     
     

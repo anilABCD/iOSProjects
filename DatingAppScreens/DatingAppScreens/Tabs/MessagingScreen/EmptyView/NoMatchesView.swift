@@ -55,7 +55,7 @@ struct NoMatchesView: View {
                         .fontWeight(.bold)
                         .padding()
                         .frame(width: 200)
-                        .background(BlurView(style: .systemThinMaterial))
+                        .background(BlurView(style: .dark))
                         .foregroundColor(.white)
                         .cornerRadius(12)
                         .shadow(radius: 5)
