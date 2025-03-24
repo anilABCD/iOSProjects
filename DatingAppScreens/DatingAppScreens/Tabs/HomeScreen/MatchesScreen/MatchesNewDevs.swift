@@ -725,7 +725,7 @@ struct SwipeableView: View {
                                     ) .offset(x: offset.width, y: 0)
                                 .cornerRadius(20) // Add corner radius here
                                 .rotationEffect(.degrees(Double(offset.width / 20)))
-                            
+                               
                             // Text overlay on the image
                             VStack(alignment: .leading, spacing: 8) {
                                 
@@ -801,7 +801,46 @@ struct SwipeableView: View {
                                     endPoint: .top
                                 )
                             ) .cornerRadius(20) // Add corner radius here
-                        }
+                        } .simultaneousGesture(
+                            DragGesture()
+                                .onChanged { value in
+                                                       offset = value.translation // Move card with finger
+                                }
+                                .onEnded { value in
+                                 
+                                        let horizontalTranslation = value.translation.width
+                                        let verticalTranslation = value.translation.height
+                                        
+                                        if abs(horizontalTranslation) > abs(verticalTranslation) {
+                                            // Horizontal swipe
+                                            if horizontalTranslation > 50 {
+                                                
+                                                print( "Right Swipe Detected")
+                                                
+                                                swipeRight()
+                                                return;
+                                            } else if horizontalTranslation < -50 {
+                                                
+                                                print("Left Swipe Detected")
+                                                
+                                                swipeLeft()
+                                                return
+                                            }
+                                            
+                                            offset = .zero
+                                        } else {
+                                            // Vertical swipe
+                                            if verticalTranslation < -50 {
+                                                
+                                                //                                            print("Up Swipe Detected")
+                                                
+                                            }
+                                            offset = .zero
+                                            
+                                        }
+                                    }
+                               
+                        )
                        
                         .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
                         .opacity(isHidden ? 0 : 1).padding(8)
