@@ -28,7 +28,7 @@ struct WrapViewArray : View {
   
     var backgroundColor : Color =  Color(hex: "#002855")
     var foregroundColor : Color =  .white
-    var maxWidth : CGFloat = 80.0
+    var maxWidth : CGFloat = 120.0
 
     @State private var rows: [[String]] = []
 
@@ -43,7 +43,7 @@ struct WrapViewArray : View {
             
             self.arrangeItems()
         }
-        .frame(height: calculateHeight())
+        .frame(height: calculateHeight() + 20.0)
     }
 
     private func generateWrappedItems(in totalWidth: CGFloat) -> some View {
@@ -122,7 +122,7 @@ struct WrapViewSingle : View {
   
     var backgroundColor : Color =  Color(hex: "#002855")
     var foregroundColor : Color =  .white
-    var maxWidth : CGFloat = 80.0
+    var maxWidth : CGFloat = 120.0
 
     @State private var rows: [[String]] = []
 
@@ -137,7 +137,7 @@ struct WrapViewSingle : View {
             
             self.arrangeItems()
         }
-        .frame(height: calculateHeight())
+        .frame(height: calculateHeight() + 20.0)
     }
 
     private func generateWrappedItems(in totalWidth: CGFloat) -> some View {

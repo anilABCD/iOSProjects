@@ -72,6 +72,8 @@
 		B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */; };
 		B7B6106C2D784F8700AC43CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6106B2D784F8700AC43CE /* Color.swift */; };
 		B7B78C2B2D5B63EA00651770 /* ThemedTextButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B78C2A2D5B63EA00651770 /* ThemedTextButtonModifier.swift */; };
+		B7C0BBBA2D9146290043A227 /* NoLikesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0BBB92D9146290043A227 /* NoLikesView.swift */; };
+		B7C0BBBD2D914E4E0043A227 /* NoMatchesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0BBBC2D914E4E0043A227 /* NoMatchesView.swift */; };
 		B7C5236E2D5ACA38002412E6 /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C5236D2D5ACA38002412E6 /* Themes.swift */; };
 		B7C523712D5ACCDA002412E6 /* ThemedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C523702D5ACCDA002412E6 /* ThemedButtonStyle.swift */; };
 		B7C523742D5AD744002412E6 /* ThemedTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C523732D5AD744002412E6 /* ThemedTextModifier.swift */; };
@@ -188,6 +190,8 @@
 		B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		B7B6106B2D784F8700AC43CE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B7B78C2A2D5B63EA00651770 /* ThemedTextButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedTextButtonModifier.swift; sourceTree = "<group>"; };
+		B7C0BBB92D9146290043A227 /* NoLikesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoLikesView.swift; sourceTree = "<group>"; };
+		B7C0BBBC2D914E4E0043A227 /* NoMatchesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchesView.swift; sourceTree = "<group>"; };
 		B7C5236D2D5ACA38002412E6 /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 		B7C523702D5ACCDA002412E6 /* ThemedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedButtonStyle.swift; sourceTree = "<group>"; };
 		B7C523732D5AD744002412E6 /* ThemedTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedTextModifier.swift; sourceTree = "<group>"; };
@@ -508,11 +512,28 @@
 		B79FF5692C258E75007E77DC /* MessagingScreen */ = {
 			isa = PBXGroup;
 			children = (
+				B7C0BBBB2D914E470043A227 /* EmptyView */,
 				B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */,
 				B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */,
 				7CEA455D2C42630100524FB3 /* MatchedScreen.swift */,
 			);
 			path = MessagingScreen;
+			sourceTree = "<group>";
+		};
+		B7C0BBB82D9146210043A227 /* EmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				B7C0BBB92D9146290043A227 /* NoLikesView.swift */,
+			);
+			path = EmptyView;
+			sourceTree = "<group>";
+		};
+		B7C0BBBB2D914E470043A227 /* EmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				B7C0BBBC2D914E4E0043A227 /* NoMatchesView.swift */,
+			);
+			path = EmptyView;
 			sourceTree = "<group>";
 		};
 		B7C5236C2D5ACA30002412E6 /* Themes */ = {
@@ -648,6 +669,7 @@
 		B7E6C94F2C175D2E00F321A9 /* LikesScreen */ = {
 			isa = PBXGroup;
 			children = (
+				B7C0BBB82D9146210043A227 /* EmptyView */,
 				B7E6C9502C175D3C00F321A9 /* OthersProfile */,
 				B7F2A7F72C1712F100A51B3D /* LikesScreen.swift */,
 			);
@@ -990,8 +1012,10 @@
 				B7B78C2B2D5B63EA00651770 /* ThemedTextButtonModifier.swift in Sources */,
 				B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */,
 				B7F4329A2D74330200122E5A /* SideMenuView.swift in Sources */,
+				B7C0BBBA2D9146290043A227 /* NoLikesView.swift in Sources */,
 				B72434E42D8E968B00606B01 /* UpdateLocationRequest.swift in Sources */,
 				B793200F2BF49AEF00FE954A /* SignUpData.swift in Sources */,
+				B7C0BBBD2D914E4E0043A227 /* NoMatchesView.swift in Sources */,
 				B7A7EAA12D7C133D00FD0F5F /* Print.swift in Sources */,
 				B7E6C9522C175D6100F321A9 /* OthersProfile.swift in Sources */,
 				B7434CF22D63D49700C190AB /* UpdateSmokingView.swift in Sources */,

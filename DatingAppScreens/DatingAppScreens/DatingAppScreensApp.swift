@@ -180,6 +180,8 @@ class TokenManager: ObservableObject {
 
     @Published var isMenuView : Bool = false;
     
+    @Published var selectedTab : Int = 0 
+    
  
     @Published var isKeyboardOpen : Bool = false;
     
@@ -300,6 +302,9 @@ class TokenManager: ObservableObject {
         self.gender = ""
         
         self.location = ""
+        
+        
+        self.selectedTab = 0
         
         UserDefaults.standard.set(nil, forKey: "lastUpdateTime")
 //        self.notificationSettings = "";

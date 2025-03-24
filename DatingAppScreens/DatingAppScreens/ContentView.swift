@@ -94,7 +94,7 @@ struct ContentView: View {
     
     @StateObject private var dataFetcher = DataFetcher(pollingInterval: 60) // Example with 60 seconds interval
     @Environment(\.scenePhase) private var scenePhase
-    @State private var selectedTab = 0
+    
     @State private var selectedTabForIndicator = 0
     @EnvironmentObject private var tokenManager: TokenManager
     
@@ -502,7 +502,7 @@ struct ContentView: View {
                                     
                                     
                                     
-                                    TabView(selection: $selectedTab) {
+                                    TabView(selection: $tokenManager.selectedTab) {
                                         
                                         HomeView().onAppear(){
                                             tokenManager.isMenuView = false
@@ -549,7 +549,7 @@ struct ContentView: View {
                                         //                                        }
                                             .tag(3)
                                         
-                                    }.id(selectedTab)     .padding(.bottom , 5)
+                                    }.id(tokenManager.selectedTab)     .padding(.bottom , 5)
                                         .toolbar(.hidden, for: .tabBar)
                                         .padding(.bottom, -100) // Adjust bottom padding to compensate for space occupied by the tab bar
                                         .overlay(alignment: .bottom ) {
@@ -560,13 +560,13 @@ struct ContentView: View {
                                                     Spacer()
                                                     
                                                     VStack {
-                                                        TabBarItem(imageName: "rectangle.stack", title: "", isSelected: selectedTab == 0)
+                                                        TabBarItem(imageName: "rectangle.stack", title: "", isSelected: tokenManager.selectedTab == 0)
                                                             .onTapGesture {
-                                                                selectedTab = 0
+                                                                tokenManager.selectedTab = 0
 //                                                                withAnimation(.spring()) {
 //                                                                    selectedTabForIndicator = 0
 //                                                                                           }
-                                                                print("Selected tab: \(selectedTab)")
+                                                                print("Selected tab: \(tokenManager.selectedTab)")
                                                             }
                                                         
 //                                                        if selectedTabForIndicator == 0 {
@@ -580,13 +580,13 @@ struct ContentView: View {
                                                     }
                                                     
                                                     VStack {
-                                                        TabBarItem(imageName: "heart", title: "", isSelected: selectedTab == 1)
+                                                        TabBarItem(imageName: "heart", title: "", isSelected: tokenManager.selectedTab == 1)
                                                             .onTapGesture {
-                                                                selectedTab = 1
+                                                                tokenManager.selectedTab = 1
 //                                                                withAnimation(.spring()) {
 //                                                                    selectedTabForIndicator = 1
 //                                                                                           }
-                                                                print("Selected tab: \(selectedTab)")
+                                                                print("Selected tab: \(tokenManager.selectedTab)")
                                                             }
 //                                                        if selectedTabForIndicator == 1 {
 //                                                            RoundedRectangle(cornerRadius: 2)
@@ -599,13 +599,13 @@ struct ContentView: View {
                                                     }
                                                     
                                                     VStack {
-                                                    TabBarMessageItem(imageName: "message", title: "", isSelected: selectedTab == 2 , notificationCount: unreadChatCount )
+                                                        TabBarMessageItem(imageName: "message", title: "", isSelected: tokenManager.selectedTab == 2 , notificationCount: unreadChatCount )
                                                         .onTapGesture {
-                                                            selectedTab = 2
+                                                            tokenManager.selectedTab = 2
 //                                                            withAnimation(.spring()) {
 //                                                                selectedTabForIndicator = 2
 //                                                                                       }
-                                                            print("Selected tab: \(selectedTab)")
+                                                            print("Selected tab: \(tokenManager.selectedTab)")
                                                         }
                                                     
 //                                                        if selectedTabForIndicator == 2 {
@@ -619,13 +619,13 @@ struct ContentView: View {
                                                     }
                                                     
                                                     VStack {
-                                                    TabBarItem(imageName: "person", title: "", isSelected: selectedTab == 3)
+                                                        TabBarItem(imageName: "person", title: "", isSelected: tokenManager.selectedTab == 3)
                                                         .onTapGesture {
-                                                            selectedTab = 3
+                                                            tokenManager.selectedTab = 3
 //                                                            withAnimation(.spring()) {
 //                                                                selectedTabForIndicator = 3
 //                                                                                       }
-                                                            print("Selected tab: \(selectedTab)")
+                                                            print("Selected tab: \(tokenManager.selectedTab)")
                                                         }
                                                         
 //                                                        if selectedTabForIndicator == 3 {
@@ -705,7 +705,7 @@ struct ContentView: View {
                         }
                     }
                 
-                SideMenuView(selectedTab: $selectedTab, isMenuVisible: $isMenuVisible)
+                SideMenuView(selectedTab: $tokenManager.selectedTab, isMenuVisible: $isMenuVisible)
                 
             }.onChange(of: scenePhase) { _ , newPhase in
                 
@@ -786,7 +786,7 @@ struct ContentView: View {
                 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 
-                print("selected Tab : " , selectedTab )
+                print("selected Tab : " , tokenManager.selectedTab )
                 
                 Task {
                     do {
@@ -844,13 +844,13 @@ struct ContentView: View {
             // Navigate to the appropriate view based on deepLinkData
             switch deepLinkData.view {
             case "view1":
-                selectedTab = 2
+                tokenManager.selectedTab = 2
 //                    View1(parameter: deepLinkData.parameters["param"] ?? "")
             case "view2":
-                selectedTab = 3
+                tokenManager.selectedTab = 3
 //                    View2(parameter: deepLinkData.parameters["param"] ?? "")
             default:
-                selectedTab = 1
+                tokenManager.selectedTab = 1
             }
         }
     }
