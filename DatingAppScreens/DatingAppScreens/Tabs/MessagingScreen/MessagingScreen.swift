@@ -193,9 +193,9 @@ struct ChatView: View {
         self.isLoading = true
         self.error = nil
         
-        let baseURL = "\(tokenManager.localhost)/messages/chats"
+        let baseURL = "\(tokenManager.localhost)/messages/chats/\(chatId)"
         let accessToken = tokenManager.accessToken
-        let parameters :  [ String:String]? = ["user1": tokenManager.userId , "user2": profile?.id ?? "" , "chatId" : chatId]
+        let parameters :  [ String:String]? = ["user1": tokenManager.userId , "user2": profile?.id ?? ""]
         
         do {
             let request = try createURLRequest(

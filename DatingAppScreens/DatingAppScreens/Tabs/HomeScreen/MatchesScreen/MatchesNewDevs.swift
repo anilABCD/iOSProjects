@@ -749,12 +749,13 @@ struct SwipeableView: View {
                                    
                                         HStack {
                                             if let gender = item.gender {
-                                                ChipItem(text: "\(Utils.UDate.getAge(dob: item.dob)) age", selectedSize: .large, icon: "\(gender)-symbol")
+                                                ChipItem(text: "\(Utils.UDate.getAge(dob: item.dob)) age", selectedSize: .large, icon: "\(gender)-symbol" , isBold: true)
                                                    
                                             }
 
                                             if let jobRole = item.jobRole {
-                                                ChipItem(text: "job role :  \(jobRole)", selectedSize: .large, icon: "jobRole2")
+                                                ChipItem(text: "job role :  \(jobRole)", selectedSize: .large, icon: "jobRole2" ,
+                                                         isBold: true )
                                                     
                                             }
                                             
