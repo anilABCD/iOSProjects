@@ -43,7 +43,7 @@ struct OthersProfileView: View {
         
         isLoading = true
         
-        let data:OtherProfileEncodable = OtherProfileEncodable(userId: othersProfile?.id ?? "");
+         let data:OtherProfileEncodable = OtherProfileEncodable(userId: othersProfile?.id ?? "" , location: tokenManger.location);
         
         
         
@@ -108,11 +108,15 @@ struct OthersProfileView: View {
                     
 //                    Text("\(photoUrl)/\(profile.photo ?? "")")
                     
+                    
+                    
+                    
                     Text(profile.name ?? "Unknown")
                         .font(.largeTitle)
                         .padding()
                         .foregroundColor(themeManager.currentTheme.navigationLinkColor)
                     
+                    DistanceCardView(distanceInKm:  profile.distanceInKm)
                     BioCardView(bio: profile.bio ?? "", sizeTextInCard: sizeTextInCard)
                     AgeCardView(dob: profile.dob)
                     JobRoleCardView(jobRole: $profile.jobRole, sizeTextInCard: sizeTextInCard)

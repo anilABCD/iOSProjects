@@ -975,6 +975,55 @@ struct AgeCardView: View {
 
 
 
+struct DistanceCardView: View {
+    var distanceInKm: Double?
+    @EnvironmentObject var themeManager : ThemeManager
+    
+    var distance: String {
+         guard let distanceInKm = distanceInKm else { return "N/A" } // Handle nil case
+         return "\( Int(distanceInKm.rounded())) km away "
+        }
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Distance")
+                    .font(themeManager.currentTheme.headlinefont)
+                    .fontWeight(.bold)
+                    .foregroundColor(themeManager.currentTheme.navigationLinkColor.opacity(0.9)) // Modern white tint
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("\(distance)")
+                    .font(.custom(themeManager.currentTheme.fontName, size: 40 ))
+                    .foregroundColor( themeManager.currentTheme.subTextColor)
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 10)
+            }
+            .cardStyle()
+//            .padding(8)
+//            .background(
+//                LinearGradient(
+//                    gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.6)]),
+//                    startPoint: .topLeading,
+//                    endPoint: .bottomTrailing
+//                )
+//            )
+//            .cornerRadius(20)
+//            .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 14)
+//                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+//            )
+        }
+        .padding(.horizontal, 25)
+    }
+}
+
+
+
+
 struct BioCardView: View {
     var bio: String = ""
     
