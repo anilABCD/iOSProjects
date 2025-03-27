@@ -18,7 +18,7 @@ struct Matches : Encodable {
     
 }
 
-struct MatchesResponse : Identifiable, Decŏdable {
+struct MatchesResponse : Identifiable, Decodable {
    
     var user2_id: ObjectId?
     var user1_id: ObjectId?

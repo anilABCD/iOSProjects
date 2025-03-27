@@ -12,10 +12,13 @@ struct ChipItem : View {
     let text: String
     let selectedSize: CapsuleSize
     var icon : String? = nil
+
     var backgroundColor : Color = Color(hex: "#58DFF1")
     var foregroundColor : Color = .black
     var isBold : Bool = false
     var isSystemIcon :Bool = false
+    var maxWidth : CGFloat? = 100.0
+    
     
     @EnvironmentObject var themeManager: ThemeManager
     
@@ -42,6 +45,7 @@ struct ChipItem : View {
                 .if(isBold) { view in
                     view.fontWeight(.bold)
                 }
+                .frame(maxWidth: maxWidth, alignment: .leading) // Max width set to 100 pixels
         }
         .padding(.horizontal, selectedSize.padding)
         .padding(.vertical, selectedSize.padding / 2)

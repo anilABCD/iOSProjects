@@ -756,7 +756,12 @@ struct SwipeableView: View {
 
                                             if let jobRole = item.jobRole {
                                                 ChipItem(text: "job role :  \(jobRole)", selectedSize: .large, icon: "jobRole2" ,
-                                                         isBold: true )
+                                                         isBold: true ,
+                                                
+                                                         maxWidth: 200
+                                                
+                                                )
+                                                
                                                     
                                             }
                                             
