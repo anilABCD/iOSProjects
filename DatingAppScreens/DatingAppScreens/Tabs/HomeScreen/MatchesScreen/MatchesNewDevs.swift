@@ -57,7 +57,7 @@ struct MatchesNewDevsView: View {
         let matches = Matches(user2_id: user2_id )
     
         
-        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/matches/", accessToken: tokenManger.accessToken, data: matches, parameters: nil)
+        let urlRequest = try createURLRequest(method : "POST" , baseURL: "\(tokenManger.localhost)/likes/like", accessToken: tokenManger.accessToken, data: matches, parameters: nil)
         
          let response: MatchesResponse = try await fetchData(from: urlRequest)
         
@@ -405,7 +405,7 @@ struct MatchesNewDevsView: View {
                     try await likeTheProfile(user2_id: newVaulue)
                     
                     await ProfileService.deleteProfile(by: newVaulue, from: modelContext)
-                     
+               
                     if ( profiles.count <= 5 ) {
                         try await fetchProfiles()
                     }
