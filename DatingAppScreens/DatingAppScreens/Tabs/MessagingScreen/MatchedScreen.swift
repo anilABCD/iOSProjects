@@ -131,7 +131,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
             ZStack {
                 
                 
-                if isLoading {
+                if isLoading && self.matched.isEmpty {
                     
                     
                     HStack {
