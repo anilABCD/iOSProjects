@@ -71,6 +71,10 @@
 		B7A7EAA12D7C133D00FD0F5F /* Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A7EAA02D7C133900FD0F5F /* Print.swift */; };
 		B7AC6AF82C259EFC00FBCDDD /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */; };
 		B7B6106C2D784F8700AC43CE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6106B2D784F8700AC43CE /* Color.swift */; };
+		B7B77EBA2D980168005CF97D /* SlidingTabsFourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B77EB92D980168005CF97D /* SlidingTabsFourView.swift */; };
+		B7B77EBC2D98064C005CF97D /* SlidingTabsThreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B77EBB2D98064C005CF97D /* SlidingTabsThreeView.swift */; };
+		B7B77EBE2D98067A005CF97D /* SlidingTabsTwoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B77EBD2D98067A005CF97D /* SlidingTabsTwoView.swift */; };
+		B7B77EC12D9809FB005CF97D /* MatchedHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B77EC02D9809ED005CF97D /* MatchedHome.swift */; };
 		B7B78C2B2D5B63EA00651770 /* ThemedTextButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B78C2A2D5B63EA00651770 /* ThemedTextButtonModifier.swift */; };
 		B7C0BBBA2D9146290043A227 /* NoLikesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0BBB92D9146290043A227 /* NoLikesView.swift */; };
 		B7C0BBBD2D914E4E0043A227 /* NoMatchesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0BBBC2D914E4E0043A227 /* NoMatchesView.swift */; };
@@ -189,6 +193,10 @@
 		B7A7EAA02D7C133900FD0F5F /* Print.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Print.swift; sourceTree = "<group>"; };
 		B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		B7B6106B2D784F8700AC43CE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		B7B77EB92D980168005CF97D /* SlidingTabsFourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingTabsFourView.swift; sourceTree = "<group>"; };
+		B7B77EBB2D98064C005CF97D /* SlidingTabsThreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingTabsThreeView.swift; sourceTree = "<group>"; };
+		B7B77EBD2D98067A005CF97D /* SlidingTabsTwoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingTabsTwoView.swift; sourceTree = "<group>"; };
+		B7B77EC02D9809ED005CF97D /* MatchedHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedHome.swift; sourceTree = "<group>"; };
 		B7B78C2A2D5B63EA00651770 /* ThemedTextButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedTextButtonModifier.swift; sourceTree = "<group>"; };
 		B7C0BBB92D9146290043A227 /* NoLikesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoLikesView.swift; sourceTree = "<group>"; };
 		B7C0BBBC2D914E4E0043A227 /* NoMatchesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchesView.swift; sourceTree = "<group>"; };
@@ -512,12 +520,23 @@
 		B79FF5692C258E75007E77DC /* MessagingScreen */ = {
 			isa = PBXGroup;
 			children = (
+				B7B77EC02D9809ED005CF97D /* MatchedHome.swift */,
 				B7C0BBBB2D914E470043A227 /* EmptyView */,
 				B79FF56A2C258E9B007E77DC /* MessagingScreen.swift */,
 				B7AC6AF72C259EFC00FBCDDD /* WebSocketManager.swift */,
 				7CEA455D2C42630100524FB3 /* MatchedScreen.swift */,
 			);
 			path = MessagingScreen;
+			sourceTree = "<group>";
+		};
+		B7B77EB82D980158005CF97D /* TopTabs */ = {
+			isa = PBXGroup;
+			children = (
+				B7B77EBD2D98067A005CF97D /* SlidingTabsTwoView.swift */,
+				B7B77EBB2D98064C005CF97D /* SlidingTabsThreeView.swift */,
+				B7B77EB92D980168005CF97D /* SlidingTabsFourView.swift */,
+			);
+			path = TopTabs;
 			sourceTree = "<group>";
 		};
 		B7C0BBB82D9146210043A227 /* EmptyView */ = {
@@ -615,6 +634,7 @@
 		B7E2A8392C17017C008ADE0E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B7B77EB82D980158005CF97D /* TopTabs */,
 				B78E74B22D815C390078A8D5 /* Chips */,
 				B75388ED2D7AF86F00641BDD /* WrapView */,
 				B76DAD002D79775D0054970F /* CachedImageView.swift */,
@@ -980,10 +1000,14 @@
 				B7C5236E2D5ACA38002412E6 /* Themes.swift in Sources */,
 				B78E74B12D8159160078A8D5 /* ChipItem.swift in Sources */,
 				B7678AEC2D75FF9E002BDBF4 /* HeightScaleControl.swift in Sources */,
+				B7B77EBE2D98067A005CF97D /* SlidingTabsTwoView.swift in Sources */,
 				B793200D2BF4975300FE954A /* LoginView.swift in Sources */,
 				B72A3F322C1DA0BE00771B4A /* SplashScreen.swift in Sources */,
 				B75388DA2D7AF18F00641BDD /* NetworkMonitor.swift in Sources */,
+				B7B77EBA2D980168005CF97D /* SlidingTabsFourView.swift in Sources */,
+				B7B77EC12D9809FB005CF97D /* MatchedHome.swift in Sources */,
 				B7CDA9A02D734DAB00B0A327 /* CardStyle.swift in Sources */,
+				B7B77EBC2D98064C005CF97D /* SlidingTabsThreeView.swift in Sources */,
 				B71CBEC32D1DBDA400E81103 /* Chat.swift in Sources */,
 				B7FD13F12D7BBAE90059FB57 /* GeoJSResponse.swift in Sources */,
 				B76B90862C153B1100BA7B5D /* GlobalConstants.swift in Sources */,

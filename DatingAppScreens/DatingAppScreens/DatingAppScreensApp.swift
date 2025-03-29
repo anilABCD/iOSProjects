@@ -173,6 +173,10 @@ class TokenManager: ObservableObject {
     @Published var homeTabView : HomeTabEnumViews? = nil;
     @Published var shouldRefecthUnreadCount : UUID = UUID();
     
+    @Published var hideTopTabBar : Bool = false;
+    
+    @Published var hideTabBar : Bool = false;
+    
     
     @Published var nextButtonWhenRegistrationProcess : UUID = UUID();
     @Published var backButtonWhenRegistrationProcess : UUID = UUID();

@@ -105,7 +105,7 @@ struct ContentView: View {
     
     @Binding  var deepLinkData: DeepLinkData?
     
-    @State private var hideTabBar = false;
+  
     @Namespace private var animationNamespace
 
     // for previewes in XCode .
@@ -533,7 +533,7 @@ struct ContentView: View {
                                         //                                }
                                         //                                .tag(2)
                                         
-                                        MatchedProfilesForMessagingListScreenView( hideTabBar : $hideTabBar).onAppear(){
+                                        MatchedHome().onAppear(){
                                             tokenManager.isMenuView = true
                                         } .background(themeManager.currentTheme.backgroundColor) // Set background color of the first tab
                                         //                                        .tabItem {
@@ -554,7 +554,7 @@ struct ContentView: View {
                                         .padding(.bottom, -100) // Adjust bottom padding to compensate for space occupied by the tab bar
                                         .overlay(alignment: .bottom ) {
                                             
-                                            if( !hideTabBar) {
+                                            if( !tokenManager.hideTabBar) {
                                                 // Custom tab bar
                                                 HStack {
                                                     Spacer()

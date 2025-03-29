@@ -17,7 +17,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
     @EnvironmentObject private var tokenManger : TokenManager
     @EnvironmentObject private var themeManager : ThemeManager
     
-    @Binding var hideTabBar : Bool ;
+    
     @StateObject  var webSocketManager = WebSocketManager(token: "" , otherUserId: "")
     
     @State private var searchText = ""
@@ -110,27 +110,14 @@ struct MatchedProfilesForMessagingListScreenView: View {
       
     }
     
-//    func fetchMatchedOnline() async throws {
-//        
-//        let data:MatchedEncodable? = nil;
-//        
-//        let urlRequest = try createURLRequest(method : "GET" , baseURL: "\(tokenManger.localhost)/matches/search-matched-users", accessToken: tokenManger.accessToken , data: data, parameters: ["isOnlineQuery" : "true"] )
-//        
-//        let matchedResponse : [Chat] = try await fetchDataArray(from: urlRequest)
-//        
-//        matched = matchedResponse;
-//        
-//        print(matchedResponse)
-//    }
-//    
-//    
+ 
     var body: some View {
         NavigationStack {
                   
             
             ZStack {
                 
-                
+            
                 if isLoading && self.matched.isEmpty {
                     
                     
@@ -162,15 +149,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                     
                     
                     VStack( spacing: 0) {
-                        //
-                        //                      HStack{
-                        //                          Text("Messages").bold().font(.largeTitle)
-                        //                          Spacer()
-                        //                      }.padding(.horizontal).frame(height: 45)
-                        
-                        
-                        
-                        
+                      
                         
                         HStack {
                             TextField("Search User...", text: $searchText)
@@ -194,172 +173,13 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                     }
                                 )
                             
-                            //                                  Button(action: {
-                            ////                                      performSearch()
-                            //                                  }) {
-                            //                                      Image(systemName: "arrow.right.circle.fill")
-                            //                                          .resizable()
-                            //                                          .frame(width: 30, height: 30)
-                            //                                          .foregroundColor(.blue)
-                            //                                  }
-                            //                                  .padding(.leading, 5)
-                            //                                  .shadow(radius: 3)
+                        
                         }
                         .padding()
                         .background( themeManager.currentTheme.backgroundColor)
                         
                         
-                        
-                        
-                        //
-                        
-                        //                      VStack {
-                        //
-                        //
-                        //
-                        //                          HStack {
-                        //                                      TextField("Search User...", text: $searchText)
-                        //                                          .padding(10)
-                        //                                          .padding(.leading, 35) // Space for icon
-                        //                                          .background(Color(.systemGray6))
-                        //                                          .cornerRadius(20)
-                        //                                          .overlay(
-                        //                                              HStack {
-                        //                                                  Image(systemName: "magnifyingglass")
-                        //                                                      .foregroundColor(themeManager.currentTheme.secondaryColor)
-                        //                                                      .padding(.leading, 10)
-                        //                                                  Spacer()
-                        //                                                  if !searchText.isEmpty {
-                        //                                                      Button(action: { searchText = "" }) {
-                        //                                                          Image(systemName: "xmark.circle.fill")
-                        //                                                              .foregroundColor(themeManager.currentTheme.secondaryColor)
-                        //                                                      }
-                        //                                                      .padding(.trailing, 10)
-                        //                                                  }
-                        //                                              }
-                        //                                          )
-                        //
-                        //    //                                  Button(action: {
-                        //    ////                                      performSearch()
-                        //    //                                  }) {
-                        //    //                                      Image(systemName: "arrow.right.circle.fill")
-                        //    //                                          .resizable()
-                        //    //                                          .frame(width: 30, height: 30)
-                        //    //                                          .foregroundColor(.blue)
-                        //    //                                  }
-                        //    //                                  .padding(.leading, 5)
-                        //    //                                  .shadow(radius: 3)
-                        //                                  }
-                        //                          .padding()
-                        //                          .background( themeManager.currentTheme.backgroundColor)
-                        //
-                        //
-                        //                          ScrollView(.horizontal, showsIndicators: false) {
-                        //
-                        //                              HStack(alignment: .top, spacing: 4) { // Add spacing between items if needed
-                        //
-                        //
-                        //
-                        //                                  if self.matched.count == 0 {
-                        //                                      Text("No Online Members").modifier(ThemedTextModifier())
-                        //                                  }
-                        //
-                        //                                  ForEach(self.matched, id: \.id) { match in
-                        //
-                        //
-                        //
-                        //                                      // Determine which profile to display
-                        //                                      let onlineProfile = match.participants.first
-                        //
-                        //                                      let photoUrl = URL(string: "\(tokenManger.serverImageURL)/\("resized-")\(onlineProfile?.photo ?? "" )" )
-                        //
-                        //
-                        //                                      if (( onlineProfile?.isOnline ) != nil &&
-                        //
-                        //                                          onlineProfile?.isOnline == true
-                        //                                      ) {
-                        //
-                        //
-                        //                                          NavigationLink(destination: ChatView(profile: onlineProfile ?? nil , photoUrl: "\(tokenManger.serverImageURL)/" , onBackAction: {
-                        //                                              Task {
-                        //                                                  do {
-                        //                                                      try await fetchMatched()
-                        //                                                  }catch{
-                        //
-                        //                                                  }
-                        //                                              }
-                        //                                          }, hideTabBar : $hideTabBar, webSocketManager: webSocketManager) .navigationBarBackButtonHidden(true) ,// Hides the back button in ChatView
-                        //
-                        //                                                         tag: match,
-                        //                                                         selection: $selectedMatch
-                        //                                          ) {
-                        //
-                        //                                              VStack {
-                        //
-                        //                                                  AsyncImage(url: photoUrl) { phase in
-                        //                                                      switch phase {
-                        //                                                      case .empty:
-                        //                                                          ProgressView()
-                        //                                                              .frame(width: 50, height: 50)
-                        //                                                      case .success(let image):
-                        //                                                          image
-                        //                                                              .resizable()
-                        //                                                              .aspectRatio(contentMode: .fill)
-                        //                                                              .frame(width: 50, height: 50)
-                        //                                                              .clipShape(Circle())
-                        //                                                      case .failure:
-                        //                                                          Image(systemName: "person.crop.circle")
-                        //                                                              .resizable()
-                        //                                                              .aspectRatio(contentMode: .fill)
-                        //                                                              .frame(width: 50, height: 50)
-                        //                                                              .clipShape(Circle())
-                        //                                                      @unknown default:
-                        //                                                          EmptyView()
-                        //                                                      }
-                        //                                                  }
-                        //                                                  .padding(.trailing, 8)
-                        //                                                  .overlay(
-                        //                                                    Circle()
-                        //                                                        .fill(Color.green)
-                        //                                                        .frame(width: 14, height: 14)
-                        //                                                        .overlay(
-                        //                                                            Circle().stroke(Color.white, lineWidth: 2) // Adding circular border
-                        //                                                        )
-                        //                                                        .offset(x: -1, y: -1), // Adjusting position to be near the circle
-                        //                                                    alignment: .bottomTrailing
-                        //                                                  )
-                        //
-                        //
-                        //                                                  Text(onlineProfile?.name?.prefix(10) ?? "" )
-                        //                                                      .font(.headline).foregroundColor(themeManager.currentTheme.textColor)
-                        //                                              }.frame(maxWidth:.infinity)
-                        //
-                        //                                          }
-                        //
-                        //
-                        //                                      }
-                        //
-                        //                                  }
-                        //                              }.padding(.top , 10)
-                        //                                  .background( themeManager.currentTheme.backgroundColor)
-                        //
-                        //                          } .background( themeManager.currentTheme.backgroundColor)
-                        //
-                        //
-                        //
-                        //                              Divider()// Full-width divider
-                        //                              .frame(height: 1) // Adds a blue border with a width of 2 // Adjust height as needed
-                        //
-                        //
-                        //
-                        //                      }.frame(maxWidth:.infinity ) .padding(.horizontal)// Adds a blue border with a width of 2
-                        //                          .background( themeManager.currentTheme.backgroundColor)
-                        //
-                        
-                        
-                        //                   List(likes) { like in
-                        //                       LikeItemView(like: like , photoURL : "\(tokenManger.localhost)/images")
-                        
+                      
                         List {
                             
                             ForEach(matched) { match in  // Iterate over likes directly
@@ -375,7 +195,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
                                             isLoading = false
                                         }
                                     }
-                                }, hideTabBar: $hideTabBar, webSocketManager: webSocketManager)  // Hides the back button in ChatView
+                                } , webSocketManager: webSocketManager)  // Hides the back button in ChatView
                                                
                                 ) {
                                     MatchedItemView(profile : matchProfile ?? nil , photoURL: "\(tokenManger.serverImageURL)/", lastMessage : match.lastMessage , unreadCounts: match.unreadCounts , userId: tokenManger.userId )
@@ -403,7 +223,9 @@ struct MatchedProfilesForMessagingListScreenView: View {
                     }
                 }
                 
-            }.navigationBarTitle("Messages" , displayMode: .inline)
+            }
+            
+//            .navigationBarTitle("Messages" , displayMode: .inline)
                   
 //                           .onAppear {
 //                               if index == likes.count - 5 {
@@ -602,7 +424,7 @@ struct MatchedScreenView_Previews: PreviewProvider {
     @State static var path: [MyNavigation<String>] = [] // Define path as a static state variable
     @State static var hideTabBar :Bool = false;
     static var previews: some View {
-        MatchedProfilesForMessagingListScreenView( hideTabBar : $hideTabBar).environmentObject(TokenManager())
+        MatchedProfilesForMessagingListScreenView( ).environmentObject(TokenManager())
     }
 }
 

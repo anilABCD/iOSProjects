@@ -17,74 +17,126 @@ struct CustomBackButton: View {
   
     let profile: Profile?
     let photoUrl : String
-    @Binding var hideTabBar : Bool;
-    let imageSize = 45.0
+ 
+    let imageSize = 25.0
     
     var body: some View {
-        Button(action: {
+        
+        HStack {
             
-            hideTabBar = false ;
-            self.presentationMode.wrappedValue.dismiss()
-            
-            
-        }) {
-            HStack {
+            Button(action: {
                 
+                tokenManger.hideTabBar = false
+                tokenManger.hideTopTabBar = false
+                
+                self.presentationMode.wrappedValue.dismiss()
+                
+                
+            }) {
                 HStack {
                     
-                    // Back arrow
-                                  Image(systemName: "chevron.left")
-                                      .resizable()
-                                      .aspectRatio(contentMode: .fit)
-                                      .frame(width: 21.0, height: 21.0)
-                                      .padding(.trailing, 10) // Space between arrow and profile name
-                                  
+                    HStack {
+                        
+                        // Back arrow
+                        Image(systemName: "chevron.left")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 21.0, height: 21.0)
+                            .padding(.trailing, 10) // Space between arrow and profile name
+                        
+                        
+//                        if let photo = profile?.photo {
+//                            let photoURLString = "resized-\(photo)"
+//                            if let url = URL(string: "\(photoUrl)/\(photoURLString)") {
+//                                AsyncImage(url: url) { phase in
+//                                    switch phase {
+//                                    case .empty:
+//                                        ProgressView()
+//                                            .frame(width: imageSize, height: imageSize)
+//                                    case .success(let image):
+//                                        image
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fill)
+//                                            .frame(width: imageSize, height: imageSize)
+//                                            .clipShape(Circle())
+//                                    case .failure:
+//                                        Image(systemName: "person.crop.circle")
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                            .frame(width: imageSize, height: imageSize )
+//                                            .clipShape(Circle())
+//                                    @unknown default:
+//                                        EmptyView()
+//                                    }
+//                                }
+//                            } else {
+//                                Image(systemName: "person.crop.circle")
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fill)
+//                                    .frame(width: 20, height: 20)
+//                                    .clipShape(Circle())
+//                            }
+//                        } else {
+//                            Image(systemName: "person.crop.circle")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fill)
+//                                .frame(width: 20, height: 20)
+//                                .clipShape(Circle())
+//                        }
+//                        
+//                        Text(profile?.name ?? "")
+                    }
                     
-                    if let photo = profile?.photo {
-                        let photoURLString = "resized-\(photo)"
-                        if let url = URL(string: "\(photoUrl)/\(photoURLString)") {
-                            AsyncImage(url: url) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                        .frame(width: imageSize, height: imageSize)
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: imageSize, height: imageSize)
-                                        .clipShape(Circle())
-                                case .failure:
-                                    Image(systemName: "person.crop.circle")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: imageSize, height: imageSize )
-                                        .clipShape(Circle())
-                                @unknown default:
-                                    EmptyView()
-                                }
+                    Spacer()
+                }
+                
+            }
+            
+            HStack {
+                
+            
+                
+                if let photo = profile?.photo {
+                    let photoURLString = "resized-\(photo)"
+                    if let url = URL(string: "\(photoUrl)/\(photoURLString)") {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .frame(width: imageSize, height: imageSize)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: imageSize, height: imageSize)
+                                    .clipShape(Circle())
+                            case .failure:
+                                Image(systemName: "person.crop.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: imageSize, height: imageSize )
+                                    .clipShape(Circle())
+                            @unknown default:
+                                EmptyView()
                             }
-                        } else {
-                            Image(systemName: "person.crop.circle")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 20, height: 20)
-                                .clipShape(Circle())
                         }
                     } else {
                         Image(systemName: "person.crop.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 20, height: 20)
+                            .frame(width: imageSize, height: imageSize)
                             .clipShape(Circle())
                     }
-                    
-                    Text(profile?.name ?? "")
+                } else {
+                    Image(systemName: "person.crop.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: imageSize, height: imageSize)
+                        .clipShape(Circle())
                 }
                 
-                Spacer()
+                Text(profile?.name ?? "")
             }
-            
         }
     }
 }
@@ -101,7 +153,7 @@ struct ChatView: View {
     let profile: Profile?
     let photoUrl : String
     var onBackAction: () -> Void
-    @Binding var hideTabBar : Bool ;
+    
     @State var chat: Chat? // The chat data
     @State var messages: [Chat.Message] = [] // The messages to displ
     
@@ -1161,14 +1213,15 @@ struct ChatView: View {
             .onAppear(){
 //                webSocketManager.onJoinChatUser(user2Id: profile?.id ?? "" )
                 
-                hideTabBar = true
+                tokenManager.hideTabBar = true
                 
                 webSocketManager.isOnChatScreen = true;
                 
+                tokenManager.hideTopTabBar = true
                
             }
             .onDisappear(){
-                
+               
                 webSocketManager.onLeaveChatUser(user2Id: profile?.id ?? "" )
                 webSocketManager.isOnChatScreen = false;
                 self.tokenManager.shouldRefecthUnreadCount = UUID();
@@ -1177,7 +1230,7 @@ struct ChatView: View {
             }
             
             
-        } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl, hideTabBar: $hideTabBar  )).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading).navigationBarBackButtonHidden(true)
+        } .navigationBarTitle("") .navigationBarItems(leading: CustomBackButton(profile: profile , photoUrl: photoUrl)).frame(maxWidth: .infinity, maxHeight: .infinity , alignment: .topLeading).navigationBarBackButtonHidden(true)
             .background(themeManager.currentTheme.backgroundColor)
            
      
@@ -1246,7 +1299,7 @@ struct ChatViewScreenView_Previews: PreviewProvider {
     @State static var hideTabBar: Bool = false // Dummy state variable for preview
 
     static var previews: some View {
-        ChatView( chatId:"", profile: nil, photoUrl: "", onBackAction: {} , hideTabBar: $hideTabBar, webSocketManager:  WebSocketManager(token: "", otherUserId: "")).environmentObject(TokenManager()).environmentObject(ThemeManager())
+        ChatView( chatId:"", profile: nil, photoUrl: "", onBackAction: {} ,  webSocketManager:  WebSocketManager(token: "", otherUserId: "")).environmentObject(TokenManager()).environmentObject(ThemeManager())
     }
 }
 
