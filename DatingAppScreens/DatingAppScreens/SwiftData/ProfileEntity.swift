@@ -27,6 +27,8 @@ class ProfileEntity: Identifiable {
     var gender: String?
     var distanceInKm : Double?
     
+    var isFullProfileFetch : Bool = false
+    
     init(
         id: String ,
         name: String? = nil,
@@ -42,7 +44,9 @@ class ProfileEntity: Identifiable {
         bio: String? = nil,
         isOnline: Bool? = nil,
         gender: String? = nil,
-        distanceInKm : Double? = nil
+        distanceInKm : Double? = nil,
+        
+        isFullProfileFetch : Bool = false
     ) {
         self.id = id
         self.name = name
@@ -59,6 +63,8 @@ class ProfileEntity: Identifiable {
         self.isOnline = isOnline
         self.gender = gender
         self.distanceInKm = distanceInKm
+        
+        self.isFullProfileFetch = isFullProfileFetch
     }
 }
 
