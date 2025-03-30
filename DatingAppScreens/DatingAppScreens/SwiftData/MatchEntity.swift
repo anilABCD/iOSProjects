@@ -17,14 +17,14 @@ class MatchEntity {
     var initiator: ProfileEntity?
     var participants: [ProfileEntity]
     var updatedAt: Date // ✅ Cache expiry timestamp
-
+    var pageNumber : Int  // ✅ Store Page Number
     
-    init(id: String, status: String, initiator: ProfileEntity?, participants: [ProfileEntity] , updatedAt : Date) {
+    init(id: String, status: String ,  initiator: ProfileEntity?, participants: [ProfileEntity] , pageNumber : Int, updatedAt : Date) {
         self.id = id
         self.status = status
         self.initiator = initiator
         self.participants = participants
-        
+        self.pageNumber = pageNumber
         self.updatedAt = updatedAt
     }
     
