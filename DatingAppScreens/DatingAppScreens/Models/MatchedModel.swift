@@ -6,6 +6,12 @@ struct MatchedEncodable : Encodable {
   
 }
 
+
+struct NoDataEncodable : Encodable {
+    
+  
+}
+
 struct MatchedResponse : Identifiable, Decodable {
    
     var objectId : ObjectId;

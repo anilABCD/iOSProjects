@@ -11,7 +11,9 @@ import SwiftData
 
 
 @MainActor
-class MatchViewModel: ObservableObject {
+class MatchViewModel: ObservableObject , Identifiable {
+
+    let id: UUID = UUID()
     
     @Published var isLoading = false
     @Published var errorMessage: String?
@@ -23,15 +25,18 @@ class MatchViewModel: ObservableObject {
     private let pageSize = 10
     let modelContext: ModelContext
 
-    init(modelContext: ModelContext) {
+    init(modelContext: ModelContext , accessToken : String) {
+        
+        MatchService.setAccessToken(accessToken)
+        
         self.modelContext = modelContext
         Task {
-            await loadMatches( page: 1)
+            await loadRecivedMatches( page: 1)
         }
     }
 
     /// ✅ Load Matches from Cache or API
-    func loadMatches( page: Int) async {
+    func loadRecivedMatches( page: Int) async {
         guard !isLoading else { return }
         isLoading = true
 
@@ -64,7 +69,7 @@ class MatchViewModel: ObservableObject {
     func loadMore() {
         Task {
             if hasMore {
-                await loadMatches( page: page)
+                await loadRecivedMatches( page: page)
             }
         }
     }

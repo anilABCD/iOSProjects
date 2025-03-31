@@ -16,7 +16,8 @@ struct Match: Codable, Identifiable {
 }
 
 // API Response for Received Matches
-struct ReceivedMatchesResponse: Codable {
+struct ReceivedMatchesResponse: Codable , Identifiable {
+    let id = UUID()
     let receivedMatches: [Match]
     let totalReceivedMatches: Int
     let page: Int

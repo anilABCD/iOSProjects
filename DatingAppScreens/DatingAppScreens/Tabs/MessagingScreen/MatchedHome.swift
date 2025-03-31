@@ -10,7 +10,9 @@ import SwiftUI
 
 struct MatchedHome: View {
     
- 
+    @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var tokenManager : TokenManager
+    
     var body: some View {
         VStack {
             
@@ -33,7 +35,7 @@ struct MatchedHome: View {
                     showSeperator : true
                 ) {
                     
-                    VStack {  Text("Received").font(.title).padding()}
+                    MatchReceivedListView(viewModel: MatchViewModel(modelContext: modelContext , accessToken: tokenManager.accessToken))
                     VStack { Text("Sent").font(.title).padding() }
                     
                 }.navigationBarTitle("Messages" , displayMode: .inline)

@@ -4,15 +4,29 @@
 import Foundation
 import SwiftData
 
+class Service {
+    
+    private static var _accessToken: String?
+    
+    static var accessToken: String? {
+          get { _accessToken }
+      }
 
+    static func setAccessToken(_ token: String) {
+            print("Access token set.")
+            _accessToken = token
+    }
+    
+}
 
 @Observable
-class MatchService {
+class MatchService : Service {
     private static let cacheExpiryInterval: TimeInterval = 60 * 5 // 5 minutes
     static let shared = MatchService() // ✅ Singleton Instance
-
+    
+ 
     @MainActor
-    func fetchMatches(page: Int, perPage: Int, context: ModelContext) async throws -> [MatchEntity] {
+    func fetchMatches(page: Int, perPage: Int , context: ModelContext) async throws -> [MatchEntity] {
         // ✅ Fetch Cached Data for This Page
         let fetchDescriptor = FetchDescriptor<MatchEntity>()
         let cachedMatches: [MatchEntity] = try context.fetch(fetchDescriptor)
@@ -29,13 +43,15 @@ class MatchService {
             try deleteMatchesByPage(page, context: context)
         }
 
+        
+        var data : NoDataEncodable? = nil;
+        
+        let urlString = Constants.localhost + "/matches/received?page=\(page)&perPage=\(perPage)"
+        var request = try createURLRequest(method: "GET", baseURL: urlString, accessToken: MatchService.accessToken ?? "", data: data, parameters: nil)
         // ✅ Fetch from API if Cache Expired
-        let urlString = Constants.localhost + "/matches/?page=\(page)&perPage=\(perPage)"
-        guard let url = URL(string: urlString) else { throw URLError(.badURL) }
 
-        let (data, _) = try await URLSession.shared.data(from: url)
-        let decodedResponse = try JSONDecoder().decode(ReceivedMatchesResponse.self, from: data)
-
+        var decodedResponse : ReceivedMatchesResponse = try await fetchData(from: request)
+ 
         // ✅ Store the Fetched Data with Page Number
         try context.transaction {
             for match in decodedResponse.receivedMatches {
