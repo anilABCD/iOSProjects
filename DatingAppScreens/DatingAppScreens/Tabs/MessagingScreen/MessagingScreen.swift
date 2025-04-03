@@ -544,7 +544,7 @@ struct ChatView: View {
     
     var body: some View {
        
-        NavigationView {
+        NavigationStack {
             VStack {
                 
                 

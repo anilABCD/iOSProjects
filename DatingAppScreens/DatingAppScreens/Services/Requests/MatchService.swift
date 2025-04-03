@@ -19,13 +19,12 @@ class Service {
     
 }
 
-@Observable
+@MainActor
 class MatchService : Service {
     private static let cacheExpiryInterval: TimeInterval = 60 * 5 // 5 minutes
     static let shared = MatchService() // ✅ Singleton Instance
     
  
-    @MainActor
     func fetchMatches(page: Int, perPage: Int , context: ModelContext) async throws -> [MatchEntity] {
         // ✅ Fetch Cached Data for This Page
         let fetchDescriptor = FetchDescriptor<MatchEntity>()
@@ -42,32 +41,92 @@ class MatchService : Service {
             // ✅ Cache Expired - Delete Only This Page
             try deleteMatchesByPage(page, context: context)
         }
-
+        
+      
         
         var data : NoDataEncodable? = nil;
         
         let urlString = Constants.localhost + "/matches/received?page=\(page)&perPage=\(perPage)"
         var request = try createURLRequest(method: "GET", baseURL: urlString, accessToken: MatchService.accessToken ?? "", data: data, parameters: nil)
         // ✅ Fetch from API if Cache Expired
-
-        var decodedResponse : ReceivedMatchesResponse = try await fetchData(from: request)
  
-        // ✅ Store the Fetched Data with Page Number
-        try context.transaction {
-            for match in decodedResponse.receivedMatches {
-                let matchEntity = MatchEntity(
-                    id: match.id,
-                    status: match.status,
-                    initiator: match.initiator != nil ? ProfileEntity(id: match.initiator!.id , name : match.initiator!.name , photo: match.initiator!.photo , dob: match.initiator!.dob ) : nil,
-                    participants: match.participants?.map {  ProfileEntity(id: $0.id , name : $0.name , photo: $0.photo , dob: $0.dob ) } ?? [],
-                    pageNumber: page, // ✅ Store Page Number
-                    updatedAt: Date() // ✅ Cache Timestamp
-                )
-                context.insert(matchEntity)
+            var decodedResponse : ReceivedMatchesResponse = try await fetchData(from: request)
+        
+        
+        do {
+            try context.transaction {
+                for match in decodedResponse.receivedMatches {
+                    
+                    // ✅ Check if the initiator already exists
+                    let existingInitiator = try? context.fetch(FetchDescriptor<ProfileEntity>())
+                        .first(where: { $0.id == match.initiator?.id })
+                    
+                    let initiatorEntity: ProfileEntity? = existingInitiator ?? {
+                        if let initiator = match.initiator {
+                            let profile = ProfileEntity(
+                                id: initiator.id,
+                                name: initiator.name,
+                                photo: initiator.photo,
+                                dob: initiator.dob
+                            )
+                            context.insert(profile)  // ✅ Insert only if it doesn't exist
+                            return profile
+                        }
+                        return nil
+                    }()
+
+                    // ✅ Check if participants already exist
+                    let participantEntities: [ProfileEntity] = match.participants?.map { participant -> ProfileEntity in
+                        if let existingParticipant = try? context.fetch(FetchDescriptor<ProfileEntity>())
+                            .first(where: { $0.id == participant.id }) {
+                            return existingParticipant
+                        } else {
+                            let profile = ProfileEntity(
+                                id: participant.id,
+                                name: participant.name,
+                                photo: participant.photo,
+                                dob: participant.dob
+                            )
+                            context.insert(profile)  // ✅ Insert only if it doesn't exist
+                            return profile
+                        }
+                    } ?? []
+
+                    // ✅ Check if MatchEntity already exists
+                    let existingMatch = try? context.fetch(FetchDescriptor<MatchEntity>())
+                        .first(where: { $0.id == match.id })
+
+                    if existingMatch == nil {
+                        let matchEntity = MatchEntity(
+                            id: match.id,
+                            status: match.status,
+                            initiator: initiatorEntity,
+                            participants: participantEntities,
+                            pageNumber: page,
+                            updatedAt: Date()
+                        )
+                        context.insert(matchEntity)  // ✅ Insert MatchEntity only if it doesn't exist
+                    }
+                }
             }
+            
+            try context.save() // ✅ Save all changes
+            print("✅ Data Saved Successfully!")
+
+        } catch {
+            print("❌ Error Saving Context: \(error)")
         }
 
-        return try context.fetch(fetchDescriptor).filter { $0.pageNumber == page } // ✅ Return Cached Page
+ 
+
+       
+
+        var result = try context.fetch(fetchDescriptor)
+            //.filter { $0.pageNumber == page } // ✅ Return Cached Page
+        
+        print("MatchEntity result: \(result)")
+        
+        return result
     }
 
     func deleteMatchesByPage(_ page: Int, context: ModelContext) throws {

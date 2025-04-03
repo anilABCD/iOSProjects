@@ -334,7 +334,7 @@ struct DatingAppScreensApp: App {
     
     
     var sharedModelContainer: ModelContainer = {
-         let schema = Schema([ProfileEntity.self]) // Register both
+        let schema = Schema([ProfileEntity.self, MatchEntity.self]) // Register both
          let container = try! ModelContainer(for: schema)
          return container
      }()

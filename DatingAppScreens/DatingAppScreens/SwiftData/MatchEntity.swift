@@ -14,8 +14,12 @@ import SwiftData
 class MatchEntity {
     @Attribute(.unique) var id: String
     var status: String
-    var initiator: ProfileEntity?
-    var participants: [ProfileEntity]
+    
+ 
+      var initiator: ProfileEntity?
+ 
+      var participants: [ProfileEntity] = []
+    
     var updatedAt: Date // ✅ Cache expiry timestamp
     var pageNumber : Int  // ✅ Store Page Number
     

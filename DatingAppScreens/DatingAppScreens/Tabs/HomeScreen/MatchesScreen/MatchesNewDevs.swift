@@ -229,10 +229,17 @@ struct MatchesNewDevsView: View {
                                                 // Start an asynchronous task for the network request
                                                 
                                                 if !profiles.isEmpty {
-                                                    swipeRightId = profiles[index].id
+                                                    
+                                                  
+                                                    
+                                                    
                                                     
                                                     withAnimation {
-                                                        removeProfile(at: index)
+                                                        DispatchQueue.main.async {
+                                                            swipeRightId = profiles[index].id
+                                                            print ("swiperight Id: \(swipeRightId)")
+                                                            removeProfile(at: index)
+                                                        }
                                                     }
                                                 }
                                                 
@@ -407,6 +414,9 @@ struct MatchesNewDevsView: View {
                     
                     await ProfileService.deleteProfile(by: newVaulue, from: modelContext)
                
+                    
+                    print ("swipeRightId \(swipeRightId) deleted")
+                    
                     if ( profiles.count <= 5 ) {
                         try await fetchProfiles()
                     }

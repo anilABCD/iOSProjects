@@ -163,7 +163,7 @@ struct SlidingTabsTwoView<Content1: View, Content2: View>: View {
             
             Spacer()
         }
-        .padding()
+       
     }
 }
 //

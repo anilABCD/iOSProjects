@@ -27,6 +27,12 @@ class ProfileEntity: Identifiable {
     var gender: String?
     var distanceInKm : Double?
     
+    @Relationship(inverse: \MatchEntity.initiator)
+    var initiatedMatch: MatchEntity?
+
+    @Relationship(inverse: \MatchEntity.participants)
+    var matches: [MatchEntity] = []
+   
     var isFullProfileFetch : Bool = false
     
     init(
@@ -139,6 +145,9 @@ class ProfileService {
            do {
                if let entity = try context.fetch(descriptor).first {
                    context.delete(entity)
+                   
+                   print ("\(id) deleted successfully");
+                   
                    try context.save()
                }
            } catch {

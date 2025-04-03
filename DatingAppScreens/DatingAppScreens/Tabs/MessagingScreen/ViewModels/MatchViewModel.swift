@@ -35,28 +35,47 @@ class MatchViewModel: ObservableObject , Identifiable {
         }
     }
 
-    /// ✅ Load Matches from Cache or API
+
     func loadRecivedMatches( page: Int) async {
         guard !isLoading else { return }
         isLoading = true
 
         do {
 
+            print ("Matches Received STARTED:")
+            
             let matches = try await MatchService.shared.fetchMatches(page: page, perPage: pageSize, context: modelContext)
 
+            
+            print ("Matches Received: \(matches)")
+            
             if page == 1 {
-                receivedMatches = matches // ✅ First page replaces old data
+                DispatchQueue.main.async {
+                    self.receivedMatches = matches // ✅ Assigning to `@Published` should update UI
+                }
+                for match in matches {
+                    print ("Match ID: \(match.id)")
+                }
             } else {
 
                 let uniqueMatches = matches.filter { match in
                     !receivedMatches.contains { $0.id == match.id } // ✅ Avoid Duplicates
                 }
-
-                receivedMatches.append(contentsOf: uniqueMatches)
+                
+                DispatchQueue.main.async {
+                    self.receivedMatches.append(contentsOf: uniqueMatches)
+                }
+               
             }
 
             hasMore = matches.count == pageSize
             self.page += 1
+            
+            // ✅ Force UI update
+                        DispatchQueue.main.async {
+                            self.objectWillChange.send()
+                        }
+
 
         } catch {
             errorMessage = "Failed to load matches: \(error.localizedDescription)"
