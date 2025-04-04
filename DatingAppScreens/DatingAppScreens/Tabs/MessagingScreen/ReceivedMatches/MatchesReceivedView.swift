@@ -18,44 +18,145 @@ struct MatchesReceivedListView: View {
                 }
                 
             }
-            
-            List {
+        
+            MatchesListView(matches: $viewModel.receivedMatches , hasMore: $viewModel.hasMore , isLoading: $viewModel.isLoading)
                 
-                ForEach(viewModel.receivedMatches, id: \.id) { match in
-                   
-                    
-                    MatcheItemView(match: match, photoURL: "\(tokenManager.serverImageURL)")
-                    
-//                    MatchRowView(match: match)
-//                        .onAppear {
-//                            if match == viewModel.receivedMatches.last { // ✅ Load more when reaching last item
-//                                viewModel.loadMore()
-//                            }
+                
+//                VStack {
+//                    
+//                    
+//                    ScrollViewReader { proxy in
+//                        
+//                        ScrollView {
+//                            LazyVStack(alignment: .leading)
+//                            {
+//                                
+//                               
+//                                
+//                                
+////                                ForEach(Array(viewModel.receivedMatches.enumerated()), id: \.element.id) { index, match in
+////                                    if index % 2 == 0 { // Group items in pairs
+////                                        HStack {
+////                                            
+////                                            if index == viewModel.receivedMatches.count - 5 {
+////                                                
+////                                                NavigationLink(destination: NoLikesView() ) {
+////                                                    MatcheItemView(match: match, photoURL: "\(tokenManager.serverImageURL)")
+////                                                }
+////                                                .frame(maxWidth: .infinity)
+////                                                .listRowBackground(themeManager.currentTheme.backgroundColor)
+////                                                .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+////                                                .id(match.id)
+////                                                .overlay(GeometryReader { geo in
+////                                                    DispatchQueue.main.async {
+////                                                        print("Dynamic overlay executed for \(match.id)")
+////
+////                                                        //should be added .
+////                                                        //loadMoreItems()
+////                                                    }
+////                                                    return Color.clear
+////                                                         
+////                                                })
+////                                                
+////                                            }
+////                                            else {
+////                                                
+////                                                NavigationLink(destination: NoLikesView()) {
+////                                                    MatcheItemView(match: match, photoURL: "\(tokenManager.serverImageURL)")
+////                                                }
+////                                                .frame(maxWidth: .infinity)
+////                                                .listRowBackground(themeManager.currentTheme.backgroundColor)
+////                                                .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+////                                                .id(match.id)
+////                                            }
+////                                            
+////                                            
+////                                            if index + 1 < viewModel.receivedMatches.count {
+////                                                
+////                                                if ( index + 1 == viewModel.receivedMatches.count - 5 ) {
+////                                                    
+////                                                    
+////                                                    let nextMatch = viewModel.receivedMatches[index + 1]
+////                                                    
+////                                                    NavigationLink(destination: NoLikesView()) {
+////                                                        MatcheItemView(match: nextMatch, photoURL: "\(tokenManager.serverImageURL)")
+////                                                    }
+////                                                    .frame(maxWidth: .infinity)
+////                                                    .listRowBackground(themeManager.currentTheme.backgroundColor)
+////                                                    .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+////                                                    .id(nextMatch.id)
+////                                                    .overlay(GeometryReader { geo in
+////                                                        DispatchQueue.main.async {
+////                                                            print("Dynamic overlay executed for \(nextMatch.id)")
+////                                                            //should be implemented .
+//////                                                            loadMoreItems()
+////                                                        }
+////                                                        return Color.clear
+////                                                        
+////                                                    })
+////                                                    
+////                                                }
+////                                                else {
+////                                                    let nextMatch = viewModel.receivedMatches[index + 1]
+////                                                    NavigationLink(destination: NoLikesView()) {
+////                                                        MatcheItemView(match: match, photoURL: "\(tokenManager.serverImageURL)")
+////                                                    }
+////                                                    .frame(maxWidth: .infinity)
+////                                                    .listRowBackground(themeManager.currentTheme.backgroundColor)
+////                                                    .listRowSeparatorTint(themeManager.currentTheme.secondaryColor)
+////                                                    .id(nextMatch.id)
+////                                                }
+////                                            }
+////                                            else {
+////                                                Spacer().frame(maxWidth: .infinity)
+////                                            }
+////                                        }
+////                                        .frame(maxWidth: .infinity)
+////                                        
+////                                    }
+////                                }
+//                                
+//                                if viewModel.receivedMatches.count > 8 {
+//                                    Color.clear.frame(height: 100)
+//                                }
+//                                
+//                                
+//                                if !viewModel.receivedMatches.isEmpty && viewModel.hasMore {
+//                                    
+//                                    HStack {
+//                                        Spacer()
+//                                        
+//                                        if viewModel.isLoading {
+//                                            ProgressView()
+//                                                .padding()
+//                                            
+//                                            
+//                                        }
+//                                        Spacer()
+//                                    }
+//                                    
+//                                }
+//                                
+//                            } .frame(maxHeight: .infinity , alignment: .topLeading)
+//                                .background(themeManager.currentTheme.backgroundColor)
+//                                .background(GeometryReader { geo in
+//                                    Color.clear
+//                                        
+//                                })
+//                                
+//                            //                        .listStyle(PlainListStyle())
+//                                .accentColor(themeManager.currentTheme.primaryColor)
+//                                .padding(.top, 10)
 //                        }
-                }
+//                       
+//                        
+//                    }
+//                }
                 
-                if viewModel.isLoading {
-                    ProgressView("Loading more...") // ✅ Show loader while fetching more matches
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
-            }
-            .listStyle(PlainListStyle())
-            .background(themeManager.currentTheme.backgroundColor)
-            .refreshable {
-                Task {
-                    await viewModel.loadRecivedMatches(page: 1) // ✅ Refresh list
-                }
-            }
-            .alert(isPresented: Binding<Bool>(
-                get: { viewModel.errorMessage != nil },
-                set: { if !$0 { viewModel.errorMessage = nil } }
-            )) {
-                Alert(
-                    title: Text("Error"),
-                    message: Text(viewModel.errorMessage ?? "Something went wrong."),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//               
+//                .background(themeManager.currentTheme.backgroundColor)
+            
         }
     }
 }
@@ -78,29 +179,32 @@ struct MatcheItemView: View {
                 
                 VStack(alignment: .leading) {
                    
-                    CachedImageView(
-                        url: URL(string: "\(photoURL)/\(matchedUser.photo ?? "")"),
-                        width: 180,
-                        height: 240,
+                    HStack {
                         
-                        failureView: {
-                            VStack {
-                                Image(systemName: "person.crop.circle")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(themeManager.currentTheme.id == "light" ? Color.blue : Color.white )
-                                
-                                    .frame(width: 180, height: 240)
-                                    .background(.black)
-                                    .cornerRadius( 20)
-                                
-                                
-                                
-                            } .frame(width: 180, height: 240)
-                        },
-                        storeInDisk : true
-                        
-                    )
+                        CachedImageView(
+                            url: URL(string: "\(photoURL)/\(matchedUser.photo ?? "")"),
+                            width: 180,
+                            height: 240,
+                            
+                            failureView: {
+                                VStack {
+                                    Image(systemName: "person.crop.circle")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(themeManager.currentTheme.id == "light" ? Color.blue : Color.white )
+                                    
+                                        .frame(width: 180, height: 240)
+                                        .background(.black)
+                                        .cornerRadius( 20)
+                                    
+                                    
+                                    
+                                } .frame(width: 180, height: 240)
+                            },
+                            storeInDisk : true
+                            
+                        )
+                    }.frame(height: 240)
                     
                     //
                     //            if let imageName = like.userFrom?.photo , let url = URL(string: "\(photoURL)/\("resized-")\(imageName)")
@@ -131,7 +235,7 @@ struct MatcheItemView: View {
                     //
                     //                               .padding(.trailing, 8)
                     //            }
-                }.frame(alignment: .topLeading)
+                }.frame(maxWidth: .infinity, alignment: .topLeading) // Ensure it stays top-leading
                 
                 VStack(alignment: .leading) {
                     Spacer() // Pushes content to the bottom
@@ -152,19 +256,20 @@ struct MatcheItemView: View {
                         //                    }
                     }.padding(.horizontal , 30)
                     //                .background(.white.opacity(0.3))
-                }.frame(alignment: .topLeading)
+                }.frame(height: 240)
+                .frame(maxWidth: .infinity, alignment: .topLeading) // Ensure it stays top-leading
             }
-            else {
-                Text("no participant")
-            }
+           
 //            Image(systemName: "chevron.right")
 //                .font(.system(size: 13)) // Standard system chevron size
 //                .foregroundColor(themeManager.currentTheme.navigationLinkColor) // Chevron color
 //
 //                .background(themeManager.currentTheme.backgroundColor)
 //                .offset(x: 18) // Adjust horizontal position
-        }.background(.orange)
-        .padding(.vertical, 4)
+        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading) // Ensure ZStack fully respects top-leading
+            .padding(.horizontal,20)
+           
+       
     }
 }
 
