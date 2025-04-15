@@ -35,6 +35,8 @@ struct MatchesNewDevsView: View {
     @State var loadAllImages : Bool = false
     
     
+    @State var secondProfile : Profile?
+    
     @State var showHeart : Bool = false;
     @State var showRejected : Bool = false;
    
@@ -213,6 +215,54 @@ struct MatchesNewDevsView: View {
                            
                          
                            ZStack {
+                               
+                               
+//                               
+//                               if profiles.count >= 2 {
+//                                   let index = max(profiles.count - 2, 0) // fallbacks to 0 when only one profile left
+//                                   let binding = Binding(
+//                                       get: { profiles[index] },
+//                                       set: { profiles[index] = $0 }
+//                                   )
+//
+                               if let binding = Binding<Profile>($secondProfile) {
+                                   SwipeableView(
+                                       item: binding,
+                                       onSwipeRight: {
+                                           // logic
+                                       },
+                                       onSwipeLeft: {
+                                           // logic
+                                       },
+                                       shouldSwipe: false
+                                   )
+                                   .id(binding.wrappedValue.id)
+                               }
+//                               }
+//                               
+                               
+//                               
+//                               if profiles.count >= 1 && isButtonDisabled {
+//                                   let index = max(profiles.count - 1, 0) // fallbacks to 0 when only one profile left
+//                                   let binding = Binding(
+//                                       get: { profiles[index] },
+//                                       set: { profiles[index] = $0 }
+//                                   )
+//
+//                                   SwipeableView(
+//                                       item: binding,
+//                                       onSwipeRight: {
+//                                           // logic
+//                                       },
+//                                       onSwipeLeft: {
+//                                           // logic
+//                                       },
+//                                       shouldSwipe: false
+//                                   ).id( profiles[index].id)
+//                               }
+//                               
+//                               
+//                               
                                if !profiles.isEmpty {
                                    ForEach(profiles.indices , id: \.self ) { index in
                                        
@@ -270,12 +320,21 @@ struct MatchesNewDevsView: View {
                                                     removeProfile(at: index)
                                                 }
                                                 
-                                            }
+                                            } ,
+                                            shouldSwipe : true
                                             
                                            ).onAppear(){
                                                
-                                                   isButtonDisabled = false
-                                                
+                                               isButtonDisabled = false
+                                               
+                                               if (  profiles.indices.contains(index-1)
+                                               ){
+                                                   
+                                                   secondProfile = profiles[index-1]
+                                               }
+                                               else {
+                                                   secondProfile = nil
+                                               }
                                            }
                                        }
                                        else
@@ -555,7 +614,13 @@ struct MatchesNewDevsView: View {
     
     private func removeProfile(at index: Int) {
             guard profiles.indices.contains(index) else { return }
+        
+        
+        isButtonDisabled = true
+           
+        DispatchQueue.main.async {
             profiles.remove(at: index)
+        }
     
         }
   
@@ -694,6 +759,8 @@ struct SwipeableView: View {
     let onSwipeLeft: () -> Void
     
 
+    var shouldSwipe : Bool = true
+    
     @State private var offset: CGSize = .zero
     @State private var isHidden: Bool = false
     @EnvironmentObject private var tokenManger : TokenManager
@@ -818,42 +885,49 @@ struct SwipeableView: View {
                                     endPoint: .top
                                 )
                             ) .cornerRadius(20) // Add corner radius here
-                        }.offset(x: offset.width, y: 0)
-                            .rotationEffect(.degrees(Double(offset.width / 20)))
-                            .simultaneousGesture(
-                            DragGesture()
-                                .onChanged { value in
-                                                       offset = value.translation // Move card with finger
-                                    let horizontalTranslation = value.translation.width
-                                    let verticalTranslation = value.translation.height
+                        }
+                        .if(shouldSwipe) { view in
                             
-                                    
-                                    if abs(horizontalTranslation) > abs(verticalTranslation) {
-                                        // Horizontal swipe
-                                        if horizontalTranslation > 50 {
-                                            
-                                            return;
-                                        } else if horizontalTranslation < -50 {
-                                            
-                                            
-                                            return
-                                        }
+                            view.offset(x: offset.width, y: 0)
+                        }
+                        .if(shouldSwipe) { view in
+                            view.rotationEffect(.degrees(Double(offset.width / 20)))
+                        }
+                        .if(shouldSwipe) { view in
+                            view.simultaneousGesture(
+                                DragGesture()
+                                    .onChanged { value in
+                                        offset = value.translation // Move card with finger
+                                        let horizontalTranslation = value.translation.width
+                                        let verticalTranslation = value.translation.height
                                         
-                                       
-                                    } else {
-                                        // Vertical swipe
-                                        if verticalTranslation < -50 {
+                                        
+                                        if abs(horizontalTranslation) > abs(verticalTranslation) {
+                                            // Horizontal swipe
+                                            if horizontalTranslation > 50 {
+                                                
+                                                return;
+                                            } else if horizontalTranslation < -50 {
+                                                
+                                                
+                                                return
+                                            }
                                             
-                                            //                                            print("Up Swipe Detected")
+                                            
+                                        } else {
+                                            // Vertical swipe
+                                            if verticalTranslation < -50 {
+                                                
+                                                //                                            print("Up Swipe Detected")
+                                                
+                                            }
+                                            offset = .zero
                                             
                                         }
-                                        offset = .zero
                                         
                                     }
-                                    
-                                }
-                                .onEnded { value in
-                                 
+                                    .onEnded { value in
+                                        
                                         let horizontalTranslation = value.translation.width
                                         let verticalTranslation = value.translation.height
                                         
@@ -886,29 +960,36 @@ struct SwipeableView: View {
                                             
                                         }
                                     }
-                               
-                        )
-                       
+                                
+                            )
+                        }
                         .frame(width: UIScreen.main.bounds.width - 25.0, height: UIScreen.main.bounds.height * 0.6)
                         .opacity(isHidden ? 0 : 1).padding(8)
                         
                     }
                     
-                  
-                    BioCardView(bio: item.bio ?? "" , sizeTextInCard: sizeTextInCard )
-                    
-                    AgeCardView(dob: item.dob )
-                    
-                    TechnologiesCardView(technologies: $item.technologies  , sizeTextInCard: sizeTextInCard )
-                    
-                    JobRoleCardView(jobRole: $item.jobRole  , sizeTextInCard: sizeTextInCard )
-                    
-                    HobbiesCardView(hobbies2: $item.hobbies , sizeTextInCard: sizeTextInCard )
-                    
-                    SmokingCardView(smoking: $item.smoking , sizeTextInCard: sizeTextInCard )
-                    
-                  
-                    DrinkingCardView(drinking: $item.drinking  , sizeTextInCard: sizeTextInCard )
+                    VStack {
+                        BioCardView(bio: item.bio ?? "" , sizeTextInCard: sizeTextInCard )
+                        
+                        AgeCardView(dob: item.dob )
+                        
+                        TechnologiesCardView(technologies: $item.technologies  , sizeTextInCard: sizeTextInCard )
+                        
+                        JobRoleCardView(jobRole: $item.jobRole  , sizeTextInCard: sizeTextInCard )
+                        
+                        HobbiesCardView(hobbies2: $item.hobbies , sizeTextInCard: sizeTextInCard )
+                        
+                        SmokingCardView(smoking: $item.smoking , sizeTextInCard: sizeTextInCard )
+                        
+                        
+                        DrinkingCardView(drinking: $item.drinking  , sizeTextInCard: sizeTextInCard )
+                        
+                        
+                        // Temporary height element at the bottom (100 height)
+                        Color.clear
+                            .frame(height: 120) // This will push the content up and allow scrolling
+                        
+                    }.background(themeManager.currentTheme.backgroundWithNoOpacity)
                     
 //                    Text("Profile Bio:")
 //                        .frame(maxWidth: .infinity, alignment: .leading)
@@ -925,10 +1006,7 @@ struct SwipeableView: View {
                     
                 }
                 
-                
-                // Temporary height element at the bottom (100 height)
-                Color.clear
-                    .frame(height: 120) // This will push the content up and allow scrolling
+              
                 
             }.padding()
                 .onChange(of: item.leftSwipe ) {

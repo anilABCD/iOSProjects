@@ -15,6 +15,8 @@ struct AppTheme {
     let secondaryColor: Color
     let backgroundColor: Color
     
+    let backgroundWithNoOpacity : Color
+    
     let cardBackgroundColor : Color
     let tabsBackgroundColor : Color
     
@@ -45,6 +47,8 @@ struct Themes {
       
         secondaryColor: .gray,
         backgroundColor: .white.opacity(0.5),
+        
+        backgroundWithNoOpacity : .white ,
         
         cardBackgroundColor : .white ,
         tabsBackgroundColor :.white,
@@ -80,6 +84,8 @@ struct Themes {
         secondaryColor: .gray,
         backgroundColor: .black,
         
+        backgroundWithNoOpacity :.black ,
+        
         cardBackgroundColor : .black ,
         tabsBackgroundColor :.black,
         
@@ -109,6 +115,8 @@ struct Themes {
         navigationLinkColor: .red,
         secondaryColor: .orange,
         backgroundColor: .black,
+        
+        backgroundWithNoOpacity: .black ,
         
         cardBackgroundColor : .black ,
         tabsBackgroundColor :.black,
