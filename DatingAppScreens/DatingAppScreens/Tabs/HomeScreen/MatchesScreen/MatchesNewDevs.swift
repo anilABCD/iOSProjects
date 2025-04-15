@@ -224,20 +224,20 @@ struct MatchesNewDevsView: View {
 //                                       get: { profiles[index] },
 //                                       set: { profiles[index] = $0 }
 //                                   )
-//
-                               if let binding = Binding<Profile>($secondProfile) {
-                                   SwipeableView(
-                                       item: binding,
-                                       onSwipeRight: {
-                                           // logic
-                                       },
-                                       onSwipeLeft: {
-                                           // logic
-                                       },
-                                       shouldSwipe: false
-                                   )
-                                   .id(binding.wrappedValue.id)
-                               }
+////
+//                               if let binding = Binding<Profile>($secondProfile) {
+//                                   SwipeableView(
+//                                       item: binding,
+//                                       onSwipeRight: {
+//                                           // logic
+//                                       },
+//                                       onSwipeLeft: {
+//                                           // logic
+//                                       },
+//                                       shouldSwipe: false
+//                                   )
+//                                   .id(binding.wrappedValue.id)
+//                               }
 //                               }
 //                               
                                
@@ -267,9 +267,14 @@ struct MatchesNewDevsView: View {
                                    ForEach(profiles.indices , id: \.self ) { index in
                                        
                                       
-                                       if index == profiles.count - 1 && showRejected == false && showHeart == false { // Show topmost item
+                                       if ( index == profiles.count - 1 || ( ( index ) == profiles.count - 2 ) )
+
+                                       //                                            && showRejected == false && showHeart == false
+                                       
+                                       { // Show topmost item
                                            
                                            
+                                        
                                            
                                            SwipeableView(
                                             item: $profiles[index],
@@ -321,7 +326,7 @@ struct MatchesNewDevsView: View {
                                                 }
                                                 
                                             } ,
-                                            shouldSwipe : true
+                                            shouldSwipe : index == profiles.count - 1
                                             
                                            ).onAppear(){
                                                
@@ -337,37 +342,38 @@ struct MatchesNewDevsView: View {
                                                }
                                            }
                                        }
-                                       else
-                                       if ( index == profiles.count - 1 && showHeart ){
-                                           
-                                           Image(systemName: "heart.fill")
-                                               .resizable()
-                                               .scaledToFit()
-                                               .shadow(radius: 10)
-                                               .frame(width: 100, height: 100)
-                                               .foregroundColor(.pink)
-                                               .opacity(showHeartAnimation ? 1 : 0)
-                                               .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
-                                               .animation(.easeInOut, value: showHeartAnimation)
-                                           
-                                       }
-                                       else
-                                       if (  index == profiles.count - 1 && showRejected ){
-                                           
-                                           Image(systemName: "xmark.circle.fill")
-                                                              .resizable()
-                                                             
-                                                              .foregroundColor(.gray)
-                                                              
-                                                              .scaledToFit()
-                                                              .shadow(radius: 3)
-                                                              .frame(width: 100, height: 100)
-                                                             
-                                                              .opacity(showRejectedAnimation ? 1 : 0)
-                                                              .scaleEffect(showRejectedAnimation ? 1.2 : 0.8)
-                                                              .animation(.easeInOut, value: showRejectedAnimation)
-                                                             
-                                       }
+                                       
+//                                       
+//                                       if ( index == profiles.count - 1 && showHeart ){
+//                                           
+//                                           Image(systemName: "heart.fill")
+//                                               .resizable()
+//                                               .scaledToFit()
+//                                               .shadow(radius: 10)
+//                                               .frame(width: 100, height: 100)
+//                                               .foregroundColor(.pink)
+//                                               .opacity(showHeartAnimation ? 1 : 0)
+//                                               .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
+//                                               .animation(.easeInOut, value: showHeartAnimation)
+//                                           
+//                                       }
+//                                       else
+//                                       if (  index == profiles.count - 1 && showRejected ){
+//                                           
+//                                           Image(systemName: "xmark.circle.fill")
+//                                                              .resizable()
+//                                                             
+//                                                              .foregroundColor(.gray)
+//                                                              
+//                                                              .scaledToFit()
+//                                                              .shadow(radius: 3)
+//                                                              .frame(width: 100, height: 100)
+//                                                             
+//                                                              .opacity(showRejectedAnimation ? 1 : 0)
+//                                                              .scaleEffect(showRejectedAnimation ? 1.2 : 0.8)
+//                                                              .animation(.easeInOut, value: showRejectedAnimation)
+//                                                             
+//                                       }
                                   
                                        
                                        if ( loadAllImages ) {
@@ -772,6 +778,14 @@ struct SwipeableView: View {
     
     @State private var rowsCount : Int = 1
     
+    
+    @State var showHeartAnimation : Bool = false
+    @State var showRejectedAnimation : Bool = false
+  
+    @State var showHeart : Bool = false;
+    @State var showRejected : Bool = false;
+   
+    
     var sizeTextInCard = 15.0
     var selectedSize : CapsuleSize = .medium
     
@@ -803,7 +817,7 @@ struct SwipeableView: View {
                                     )
                                 .cornerRadius(20) // Add corner radius here
                                
-                            
+                       
                                
                             // Text overlay on the image
                             VStack(alignment: .leading, spacing: 8) {
@@ -885,6 +899,39 @@ struct SwipeableView: View {
                                     endPoint: .top
                                 )
                             ) .cornerRadius(20) // Add corner radius here
+                            
+                            
+                            
+                            ZStack {
+                                if showHeart {
+                                    Image(systemName: "heart.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .shadow(radius: 10)
+                                        .frame(width: 100, height: 100)
+                                        .foregroundColor(.pink)
+                                        .opacity(showHeartAnimation ? 1 : 0)
+                                        .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
+                                        .animation(.easeInOut, value: showHeartAnimation)
+                                }
+
+                                if showRejected {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .shadow(radius: 3)
+                                        .frame(width: 100, height: 100)
+                                        .foregroundColor(.black)
+                                        .opacity(showRejectedAnimation ? 1 : 0)
+                                        .scaleEffect(showRejectedAnimation ? 1.2 : 0.8)
+                                        .animation(.easeInOut, value: showRejectedAnimation)
+                                }
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .zIndex(1)
+
+                            
+                            
                         }
                         .if(shouldSwipe) { view in
                             
@@ -906,11 +953,34 @@ struct SwipeableView: View {
                                             // Horizontal swipe
                                             if horizontalTranslation > 50 {
                                                 
+                                                showRejected = false;
+                                                    showHeart = true;
+                                                
+                                                showRejectedAnimation = false;
+                                                showHeartAnimation = true;
+                                                
+                                                print("heart")
+                                                
                                                 return;
                                             } else if horizontalTranslation < -50 {
                                                 
+                                                showHeart = false;
+                                                showRejected = true
                                                 
+                                                showHeartAnimation = false;
+                                                showRejectedAnimation = true;
+                                               
+                                                print("rejected")
                                                 return
+                                            }
+                                            else {
+                                                
+                                                showHeart = false;
+                                                showRejected = false
+                                                
+                                                showHeartAnimation = false;
+                                                showRejectedAnimation = false;
+                                               
                                             }
                                             
                                             
@@ -1011,11 +1081,18 @@ struct SwipeableView: View {
             }.padding()
                 .onChange(of: item.leftSwipe ) {
                     
+                    
+                    self.showRejected = true;
+                    self.showRejectedAnimation = true;
+                    
                     self.swipeLeft();
                     
                     
                 }
                 .onChange(of: item.rightSwipe ) {  
+
+                    self.showHeart = true;
+                    self.showHeartAnimation = true;
                     
                     self.swipeRight();
                     
