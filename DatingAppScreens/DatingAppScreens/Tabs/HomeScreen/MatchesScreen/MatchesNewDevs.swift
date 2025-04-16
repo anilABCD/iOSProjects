@@ -198,7 +198,9 @@ struct MatchesNewDevsView: View {
     
     func removeProfile(with id: String) {
         if let index = profiles.firstIndex(where: { $0.id == id }) {
-            profiles.remove(at: index)
+            if profiles.indices.contains(index) {
+                profiles.remove(at: index)
+            }
         }
     }
         
@@ -287,15 +289,21 @@ struct MatchesNewDevsView: View {
                                                     
                                                   
                                                     
+                                                  if (  index == profiles.count - 1
+                                                  ) {
+                                                      
+                                                      withAnimation {
+                                                          DispatchQueue.main.async {
+                                                              swipeRightId = profiles[index].id
+                                                              print ("swiperight Id: \(swipeRightId)")
+                                                              removeProfile(at: index)
+                                                          }
+                                                          
+                                                      }
+                                                      
+                                                  }
                                                     
                                                     
-                                                    withAnimation {
-                                                        DispatchQueue.main.async {
-                                                            swipeRightId = profiles[index].id
-                                                            print ("swiperight Id: \(swipeRightId)")
-                                                            removeProfile(at: index)
-                                                        }
-                                                    }
                                                 }
                                                 
                                                 
@@ -320,9 +328,14 @@ struct MatchesNewDevsView: View {
                                                 
                                                 if !profiles.isEmpty {
                                                     
-                                                    swipeLeftId = profiles[index].id
-                                                    
-                                                    removeProfile(at: index)
+                                                    if (  index == profiles.count - 1
+                                                    ) {
+                                                        
+                                                        swipeLeftId = profiles[index].id
+                                                        
+                                                        removeProfile(at: index)
+                                                        
+                                                    }
                                                 }
                                                 
                                             } ,
@@ -625,7 +638,10 @@ struct MatchesNewDevsView: View {
         isButtonDisabled = true
            
         DispatchQueue.main.async {
-            profiles.remove(at: index)
+            
+            if profiles.indices.contains(index) {
+                profiles.remove(at: index)
+            }
         }
     
         }
