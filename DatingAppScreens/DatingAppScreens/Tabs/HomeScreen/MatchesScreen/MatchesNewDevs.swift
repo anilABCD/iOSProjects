@@ -913,6 +913,50 @@ struct SwipeableView: View {
                                         .opacity(showHeartAnimation ? 1 : 0)
                                         .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
                                         .animation(.easeInOut, value: showHeartAnimation)
+                
+//                                           // Big heart in the center
+//                                           Image(systemName: "heart.fill")
+//                                               .resizable()
+//                                               .scaledToFit()
+//                                               .shadow(radius: 10)
+//                                               .frame(width: 100, height: 100)
+//                                               .foregroundColor(.pink)
+//                                               .opacity(showHeartAnimation ? 1 : 0)
+//                                               .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
+//                                               .animation(.easeInOut, value: showHeartAnimation)
+                                           
+                                           // Small heart top-right
+                                           Image(systemName: "heart.fill")
+                                               .resizable()
+                                               .frame(width: 25, height: 25)
+                                               .foregroundColor(.pink)
+                                               .offset(x: 60, y: -60)
+                                               .rotationEffect(.degrees(20))
+                                           
+                                           // Small heart bottom-right
+                                           Image(systemName: "heart.fill")
+                                               .resizable()
+                                               .frame(width: 20, height: 20)
+                                               .foregroundColor(.pink)
+                                               .offset(x: 50, y: 50)
+                                               .rotationEffect(.degrees(-15))
+                                           
+                                           // Small heart top-left
+                                           Image(systemName: "heart.fill")
+                                               .resizable()
+                                               .frame(width: 20, height: 20)
+                                               .foregroundColor(.pink)
+                                               .offset(x: -60, y: -60)
+                                               .rotationEffect(.degrees(-20))
+                                           
+                                           // Small heart bottom-left
+                                           Image(systemName: "heart.fill")
+                                               .resizable()
+                                               .frame(width: 25, height: 25)
+                                               .foregroundColor(.pink)
+                                               .offset(x: -50, y: 50)
+                                               .rotationEffect(.degrees(15))
+                                       
                                 }
 
                                 if showRejected {
@@ -933,6 +977,7 @@ struct SwipeableView: View {
                             
                             
                         }
+                        .background(themeManager.currentTheme.backgroundWithNoOpacity)
                         .if(shouldSwipe) { view in
                             
                             view.offset(x: offset.width, y: 0)
@@ -1078,7 +1123,8 @@ struct SwipeableView: View {
                 
               
                 
-            }.padding()
+            }
+                .padding()
                 .onChange(of: item.leftSwipe ) {
                     
                     
