@@ -910,6 +910,7 @@ struct SwipeableView: View {
                                         .shadow(radius: 10)
                                         .frame(width: 100, height: 100)
                                         .foregroundColor(.pink)
+                                        .shadow(color: .white, radius: 10)
                                         .opacity(showHeartAnimation ? 1 : 0)
                                         .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
                                         .animation(.easeInOut, value: showHeartAnimation)
@@ -930,6 +931,7 @@ struct SwipeableView: View {
                                                .resizable()
                                                .frame(width: 25, height: 25)
                                                .foregroundColor(.pink)
+                                               .shadow(color: .white, radius: 6)
                                                .offset(x: 60, y: -60)
                                                .rotationEffect(.degrees(20))
                                            
@@ -938,6 +940,7 @@ struct SwipeableView: View {
                                                .resizable()
                                                .frame(width: 20, height: 20)
                                                .foregroundColor(.pink)
+                                               .shadow(color: .white, radius: 6)
                                                .offset(x: 50, y: 50)
                                                .rotationEffect(.degrees(-15))
                                            
@@ -946,6 +949,7 @@ struct SwipeableView: View {
                                                .resizable()
                                                .frame(width: 20, height: 20)
                                                .foregroundColor(.pink)
+                                               .shadow(color: .white, radius: 6)
                                                .offset(x: -60, y: -60)
                                                .rotationEffect(.degrees(-20))
                                            
@@ -954,6 +958,7 @@ struct SwipeableView: View {
                                                .resizable()
                                                .frame(width: 25, height: 25)
                                                .foregroundColor(.pink)
+                                               .shadow(color: .white, radius: 6)
                                                .offset(x: -50, y: 50)
                                                .rotationEffect(.degrees(15))
                                        
@@ -966,6 +971,7 @@ struct SwipeableView: View {
                                         .shadow(radius: 3)
                                         .frame(width: 100, height: 100)
                                         .foregroundColor(.black)
+                                        .shadow(color: .white, radius: 10)
                                         .opacity(showRejectedAnimation ? 1 : 0)
                                         .scaleEffect(showRejectedAnimation ? 1.2 : 0.8)
                                         .animation(.easeInOut, value: showRejectedAnimation)
