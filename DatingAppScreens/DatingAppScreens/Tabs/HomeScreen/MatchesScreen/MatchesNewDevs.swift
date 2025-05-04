@@ -364,7 +364,7 @@ struct MatchesNewDevsView: View {
 //                                               .scaledToFit()
 //                                               .shadow(radius: 10)
 //                                               .frame(width: 100, height: 100)
-//                                               .foregroundColor(.pink)
+//                                               .foregroundColor(.black)
 //                                               .opacity(showHeartAnimation ? 1 : 0)
 //                                               .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
 //                                               .animation(.easeInOut, value: showHeartAnimation)
@@ -919,14 +919,25 @@ struct SwipeableView: View {
                             
                             
                             ZStack {
+                                
+                                if showHeart || showRejected {
+//                                    // Circular background with white shadow
+                                    Circle()
+                                        .fill(Color.white) // Or any background color you prefer
+                                        .frame(width: 200, height: 200)
+                                        .shadow(color: .white.opacity(0.8), radius: 10, x: 0, y: 0)
+
+
+                                }
+                          
                                 if showHeart {
                                     Image(systemName: "heart.fill")
                                         .resizable()
                                         .scaledToFit()
                                         .shadow(radius: 10)
                                         .frame(width: 100, height: 100)
-                                        .foregroundColor(.pink)
-                                        .shadow(color: .white, radius: 10)
+                                        .foregroundColor(.red)
+                                        .shadow(color: .white, radius: 100)
                                         .opacity(showHeartAnimation ? 1 : 0)
                                         .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
                                         .animation(.easeInOut, value: showHeartAnimation)
@@ -937,7 +948,7 @@ struct SwipeableView: View {
 //                                               .scaledToFit()
 //                                               .shadow(radius: 10)
 //                                               .frame(width: 100, height: 100)
-//                                               .foregroundColor(.pink)
+//                                               .foregroundColor(.black)
 //                                               .opacity(showHeartAnimation ? 1 : 0)
 //                                               .scaleEffect(showHeartAnimation ? 1.2 : 0.8)
 //                                               .animation(.easeInOut, value: showHeartAnimation)
@@ -946,8 +957,8 @@ struct SwipeableView: View {
                                            Image(systemName: "heart.fill")
                                                .resizable()
                                                .frame(width: 25, height: 25)
-                                               .foregroundColor(.pink)
-                                               .shadow(color: .white, radius: 6)
+                                               .foregroundColor(.red)
+                                               .shadow(color: .white, radius: 16)
                                                .offset(x: 60, y: -60)
                                                .rotationEffect(.degrees(20))
                                            
@@ -955,16 +966,16 @@ struct SwipeableView: View {
                                            Image(systemName: "heart.fill")
                                                .resizable()
                                                .frame(width: 20, height: 20)
-                                               .foregroundColor(.pink)
-                                               .shadow(color: .white, radius: 6)
+                                               .foregroundColor(.red)
+                                               .shadow(color: .white, radius: 16)
                                                .offset(x: 50, y: 50)
                                                .rotationEffect(.degrees(-15))
                                            
                                            // Small heart top-left
                                            Image(systemName: "heart.fill")
                                                .resizable()
-                                               .frame(width: 20, height: 20)
-                                               .foregroundColor(.pink)
+                                               .frame(width: 20, height: 16)
+                                               .foregroundColor(.red)
                                                .shadow(color: .white, radius: 6)
                                                .offset(x: -60, y: -60)
                                                .rotationEffect(.degrees(-20))
@@ -973,8 +984,8 @@ struct SwipeableView: View {
                                            Image(systemName: "heart.fill")
                                                .resizable()
                                                .frame(width: 25, height: 25)
-                                               .foregroundColor(.pink)
-                                               .shadow(color: .white, radius: 6)
+                                               .foregroundColor(.red)
+                                               .shadow(color: .white, radius: 16)
                                                .offset(x: -50, y: 50)
                                                .rotationEffect(.degrees(15))
                                        
@@ -1713,7 +1724,7 @@ struct DrinkingCardView: View {
             )
         case "Frequently":
             return LinearGradient(
-                gradient: Gradient(colors: [Color.red, Color.pink]),
+                gradient: Gradient(colors: [Color.red, Color.black]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -1789,7 +1800,7 @@ struct JobRoleCardView: View {
         case "junior level":
             return LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
         case "mid level":
-            return LinearGradient(gradient: Gradient(colors: [Color.orange, Color.pink]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            return LinearGradient(gradient: Gradient(colors: [Color.orange, Color.black]), startPoint: .topLeading, endPoint: .bottomTrailing)
         case "senior level":
             return LinearGradient(gradient: Gradient(colors: [Color.indigo, Color.cyan]), startPoint: .topLeading, endPoint: .bottomTrailing)
         case "lead level":
@@ -1797,7 +1808,7 @@ struct JobRoleCardView: View {
         case "manager":
             return LinearGradient(gradient: Gradient(colors: [Color.red, Color.orange]), startPoint: .topLeading, endPoint: .bottomTrailing)
         case "director":
-            return LinearGradient(gradient: Gradient(colors: [Color.purple, Color.pink]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            return LinearGradient(gradient: Gradient(colors: [Color.purple, Color.black]), startPoint: .topLeading, endPoint: .bottomTrailing)
         case "vice president":
             return LinearGradient(gradient: Gradient(colors: [Color.blue, Color.teal]), startPoint: .topLeading, endPoint: .bottomTrailing)
         case "chief technology officer (cto)", "chief information officer (cio)", "chief product officer (cpo)", "chief operating officer (coo)":
