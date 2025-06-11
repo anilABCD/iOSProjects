@@ -9,6 +9,11 @@ import SwiftUI
 
 class ImageCache {
     static let shared = NSCache<NSString, UIImage>()
+    
+    init() {
+           ImageCache.shared.countLimit = 1000
+           ImageCache.shared.totalCostLimit = 500 * 1024 * 1024 // 500MB
+       }
 }
 
 //let cacheExpiryInterval: TimeInterval = 60 * 60 * 24 // 1 day (in seconds)

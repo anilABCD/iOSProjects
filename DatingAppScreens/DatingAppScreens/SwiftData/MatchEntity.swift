@@ -20,16 +20,20 @@ class MatchEntity {
  
       var participants: [ProfileEntity] = []
     
+    
+    var type : String?
+    
     var updatedAt: Date // ✅ Cache expiry timestamp
     var pageNumber : Int  // ✅ Store Page Number
     
-    init(id: String, status: String ,  initiator: ProfileEntity?, participants: [ProfileEntity] , pageNumber : Int, updatedAt : Date) {
+    init(id: String, status: String ,  initiator: ProfileEntity?, participants: [ProfileEntity] , pageNumber : Int, updatedAt : Date , type : String? ) {
         self.id = id
         self.status = status
         self.initiator = initiator
         self.participants = participants
         self.pageNumber = pageNumber
         self.updatedAt = updatedAt
+        self.type = type ;
     }
     
     // Computed property to get the matched user excluding self

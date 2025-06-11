@@ -36,7 +36,7 @@ struct MatchedHome: View {
                 ) {
                     
                     MatchesReceivedListView(viewModel: MatchViewModel(modelContext: modelContext , accessToken: tokenManager.accessToken))
-                    VStack { Text("Sent").font(.title).padding() }
+                    MatchesSentListView( viewModel: MatchViewModel(modelContext : modelContext , accessToken : tokenManager.accessToken))
                     
                 }.navigationBarTitle("Messages" , displayMode: .inline)
                 }

@@ -25,14 +25,18 @@ struct CachedImageView<FailureView: View>: View {
     var body: some View {
         Group {
             if let image = image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .background(.black)
-                    .frame(width: width, height: height)
-                    .clipped()
-                    .cornerRadius( isCircle ? width : 20)
+                
+                ZStack {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .background(.black)
+                        .frame(width: width, height: height)
+                        .clipped()
+                        .cornerRadius( isCircle ? width : 20)
                     
+//                    Text( hasFailed ? "Image Failed to Load" : "").foregroundColor(.white)
+                }
                     
             } else if isLoading {
                 ProgressView()
