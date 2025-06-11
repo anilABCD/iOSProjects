@@ -20,19 +20,20 @@ struct MatchesSentListView: View {
     @EnvironmentObject var tokenManager : TokenManager
     
     var body: some View {
-        NavigationStack {
-            
+        
+        
+        ZStack {
             if !viewModel.isLoadingSent && viewModel.sentMatches.isEmpty {
-               
+                
                 VStack {
                     NoMatchesView()
                 }
                 
             }
-        
-            MatchesListView(matches: $viewModel.sentMatches , hasMore: $viewModel.hasMoreSent , isLoading: $viewModel.isLoadingSent)
             
+            MatchesListView(matches: $viewModel.sentMatches , hasMore: $viewModel.hasMoreSent , isLoading: $viewModel.isLoadingSent)
         }
+        
     }
 }
 

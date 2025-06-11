@@ -16,31 +16,34 @@ struct MatchedHome: View {
     var body: some View {
         VStack {
             
-            SlidingTabsTwoView(
-                tabs: ["Messages", "Requests"] ,
-                barBottomTab: false ,
-                tabTitleBackgroundHighlighter: true ,
-                isSecondarTabs : true  ,
-                showBottomLine : true ,
-                showSeperator : false
-            ) {
-                
-                VStack { MatchedProfilesForMessagingListScreenView() }
-                VStack {  SlidingTabsTwoView(
-                    tabs: ["Received", "Sent"] ,
+            NavigationStack {
+                SlidingTabsTwoView(
+                    tabs: ["Messages", "Requests"] ,
                     barBottomTab: false ,
-                    tabTitleBackgroundHighlighter: false  ,
-                    isSecondarTabs : true ,
-                    showBottomLine : false ,
-                    showSeperator : true
+                    tabTitleBackgroundHighlighter: true ,
+                    isSecondarTabs : true  ,
+                    showBottomLine : true ,
+                    showSeperator : false
                 ) {
                     
-                    MatchesReceivedListView(viewModel: MatchViewModel(modelContext: modelContext , accessToken: tokenManager.accessToken))
-                    MatchesSentListView( viewModel: MatchViewModel(modelContext : modelContext , accessToken : tokenManager.accessToken))
-                    
-                }.navigationBarTitle("Messages" , displayMode: .inline)
+                    VStack { MatchedProfilesForMessagingListScreenView() }
+                    VStack {  SlidingTabsTwoView(
+                        tabs: ["Received", "Sent"] ,
+                        barBottomTab: false ,
+                        tabTitleBackgroundHighlighter: false  ,
+                        isSecondarTabs : true ,
+                        showBottomLine : false ,
+                        showSeperator : true
+                    ) {
+                        
+                        MatchesReceivedListView(viewModel: MatchViewModel(modelContext: modelContext , accessToken: tokenManager.accessToken))
+                        MatchesSentListView( viewModel: MatchViewModel(modelContext : modelContext , accessToken : tokenManager.accessToken))
+                        
+                    }
+                    }
                 }
-            }.navigationBarTitle("Messages" , displayMode: .inline)
+                
+            }
             
         }
     }

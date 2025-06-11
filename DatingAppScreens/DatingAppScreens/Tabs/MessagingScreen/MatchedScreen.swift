@@ -112,9 +112,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
     
  
     var body: some View {
-        NavigationStack {
-                  
-            
+     
             ZStack {
                 
             
@@ -234,7 +232,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
 //                           }
 //                   }
                   
-        }.onChange(of: webSocketManager.refreshChatList ) { _, value in
+        .onChange(of: webSocketManager.refreshChatList ) { _, value in
             
             Task {
                 do {
@@ -278,7 +276,7 @@ struct MatchedProfilesForMessagingListScreenView: View {
             
             print("On Dissepear")
             
-            self.webSocketManager.disconnect()
+//            self.webSocketManager.disconnect()
         }
     }
     
@@ -401,8 +399,8 @@ struct MatchedItemView: View {
                     HStack {
                         Image( systemName: "camera.fill").font(.subheadline)
                             .foregroundColor(themeManager.currentTheme.id == "light" ? .black : .white) // Red color
-                        Spacer()
                         
+                        Spacer()
                         
                         
                         Text(timestamp, style: .time)

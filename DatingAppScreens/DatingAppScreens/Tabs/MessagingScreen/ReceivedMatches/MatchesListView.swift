@@ -29,8 +29,9 @@ struct MatchesListView: View {
                             VStack {
                                 
 //                                Text(match.id)
-                                
-                                MatcheItemView(match: match, photoURL: "\(tokenManager.serverImageURL)")
+                                NavigationLink(destination: NoLikesView()) {
+                                    MatcheItemView(match: match, photoURL: "\(tokenManager.serverImageURL)")
+                                }
                                 
                                     
                                     .listRowBackground(themeManager.currentTheme.backgroundColor)
